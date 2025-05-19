@@ -5,8 +5,8 @@ using UnityEngine;
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     [SerializeField]
-    private bool _dontDestroy = true;
-    private static bool _isQuitting = false; 
+    private bool _dontDestroy = true; // DontDestroy �Ӽ� �������� ����
+    private static bool _isQuitting = false; // ������ ��� ����� �ν��Ͻ� ������ ���� ���� �÷��� ����
     private static T _instance;
     public static T Instance
     {
@@ -23,10 +23,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
                 if (1 < instances.Length)
                 {
-                   for (int i = 1; i < instances.Length; i++)
-                   {
+                    Debug.LogError($"�ߺ��� Singleton {typeof(T)} �ν��Ͻ��� �����Ǿ�, �ߺ� �ν��Ͻ� ���Ÿ� �����մϴ�.");
+                    for (int i = 1; i < instances.Length; i++)
+                    {
                         Destroy(instances[i].gameObject);
-                   }
+                    }
                 }
 
                 _instance = instances.Length > 0 ? instances[0] : null;
@@ -55,7 +56,18 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             DontDestroyOnLoad(transform.root.gameObject);
         }
-      
+        else
+        {
+            GameObject rootGO = GameObject.FindGameObjectWithTag("Singleton");
+            if (rootGO != null)
+            {
+                transform.SetParent(rootGO.transform);
+            }
+            else if (_dontDestroy)
+            {
+                DontDestroyOnLoad(gameObject);
+            }
+        }
     }
 
     private void OnApplicationQuit()
