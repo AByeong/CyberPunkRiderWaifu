@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.Serialization;
 
 public class EnemyManager : Singleton<EnemyManager>
@@ -15,16 +16,10 @@ public class EnemyManager : Singleton<EnemyManager>
    
    [SerializeField]
    private KillTracker _killTracker;
+
+
+   public PlayableDirector CinemachineDrector;
    
-   void Update()
-   {
-      if (Input.GetKey(KeyCode.Space))
-      {
-         InitSpawn();
-      }
-      
-      Time.timeScale = Timer;
-   }
 
    private void InitSpawn()
    {
