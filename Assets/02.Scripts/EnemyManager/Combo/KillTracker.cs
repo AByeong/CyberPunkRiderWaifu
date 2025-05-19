@@ -64,6 +64,19 @@ public class KillTracker : MonoBehaviour
 
        return -1;
    }
-   
+
+   public bool IsMissionCompleted()
+   {
+       if (MissionKillCount.Normal == KillCount.Normal && MissionKillCount.Elite == KillCount.Elite && MissionKillCount.Boss == KillCount.Boss)
+       {
+           return true;
+       }
+       else
+       {
+           return false;
+       }
+       
+       
+   }
    
 }

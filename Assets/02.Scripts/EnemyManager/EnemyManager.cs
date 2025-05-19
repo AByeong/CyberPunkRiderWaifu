@@ -10,7 +10,8 @@ public class EnemyManager : Singleton<EnemyManager>
    private MonsterSpawner[] _eliteMonsterSpawners;
    [SerializeField]
    private MonsterSpawner _bossMonsterSpawners;
-   
+
+   public float Timer = 1f;
    
    [SerializeField]
    private KillTracker _killTracker;
@@ -21,6 +22,8 @@ public class EnemyManager : Singleton<EnemyManager>
       {
          InitSpawn();
       }
+      
+      Time.timeScale = Timer;
    }
 
    private void InitSpawn()
