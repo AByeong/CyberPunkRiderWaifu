@@ -168,7 +168,7 @@ namespace Gamekit3D
         }
 
         // Called automatically by Unity once every Physics step.
-        void FixedUpdate()
+        void Update()
         {
             CacheAnimatorState();
 
