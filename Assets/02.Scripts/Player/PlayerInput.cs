@@ -56,7 +56,7 @@ namespace JY
             _movement.Set(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             _camera.Set(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             _isJump = Input.GetButton("Jump");
-
+            
             if (Input.GetButtonDown("Fire1"))
             {
                 if (m_AttackWaitCoroutine != null)

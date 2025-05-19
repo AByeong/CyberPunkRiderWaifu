@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
 using JY;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    public PlayerSO PlayerData;
-    public PlayerStats Stats;
+    // public PlayerSO PlayerData;
+    // public PlayerStats Stats;
     private PlayerInput _playerInput;
 
     public float maxForwardSpeed = 8f;        // How fast Ellen can run.
@@ -16,6 +14,7 @@ public class Player : MonoBehaviour
     public float maxTurnSpeed = 1200f;        // How fast Ellen turns when stationary.
     public float idleTimeout = 5f;            // How long before Ellen starts considering random idles.
     public bool canAttack;                    // Whether or not Ellen can swing her staff.
+    protected float m_IdleTimer;    
     
     public Animator Animator;
     // public Inventory Inventory;
@@ -32,6 +31,7 @@ public class Player : MonoBehaviour
     protected bool m_IsAnimatorTransitioning;
     protected AnimatorStateInfo m_PreviousCurrentStateInfo;    // Information about the base layer of the animator from last frame.
     protected AnimatorStateInfo m_PreviousNextStateInfo;
+    protected bool m_PreviousIsAnimatorTransitioning;
     protected float m_ForwardSpeed;
     protected float m_VerticalSpeed;  
     protected bool m_ReadyToJump; 
@@ -53,23 +53,27 @@ public class Player : MonoBehaviour
     readonly private int _hashInputDetected = Animator.StringToHash("InputDetected");
     readonly private int m_HashGrounded = Animator.StringToHash("Grounded");
     readonly private int m_HashForwardSpeed = Animator.StringToHash("ForwardSpeed");
-    
-    protected float m_DesiredForwardSpeed; 
-    
-    
+    readonly private int m_HashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
+    protected float m_DesiredForwardSpeed;
+    public object meleeWeapon;
+    public bool respawning;
+    public static PlayerController instance;
+
+
     protected bool IsMoveInput
     {
         get { return !Mathf.Approximately(_playerInput.MoveInput.sqrMagnitude, 0f); }
     }
     
     private void Awake()
-    {
+    {   Animator = GetComponent<Animator>();
         _attackInputWait = new WaitForSeconds(_attackInputDuration);
         _playerInput = GetComponent<PlayerInput>();
+        CharacterController = GetComponent<CharacterController>();
     }
     public void Start()
     {
-        Stats = new PlayerStats(PlayerData);
+        // Stats = new PlayerStats(PlayerData);
     }
 
     private void Update()
@@ -98,7 +102,7 @@ public class Player : MonoBehaviour
     {
         m_PreviousCurrentStateInfo = m_CurrentStateInfo;
         m_PreviousNextStateInfo = m_NextStateInfo;
-        // m_PreviousIsAnimatorTransitioning = m_IsAnimatorTransitioning;
+        m_PreviousIsAnimatorTransitioning = m_IsAnimatorTransitioning;
 
         m_CurrentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
         m_NextStateInfo = Animator.GetNextAnimatorStateInfo(0);
@@ -108,21 +112,21 @@ public class Player : MonoBehaviour
     private void TimeoutToIdle()
     {
         bool inputDetected = _playerInput.Attack;
-        // if (m_IsGrounded && !inputDetected)
-        // {
-        //     m_IdleTimer += Time.deltaTime;
-        //
-        //     if (m_IdleTimer >= idleTimeout)
-        //     {
-        //         m_IdleTimer = 0f;
-        //         m_Animator.SetTrigger(m_HashTimeoutToIdle);
-        //     }
-        // }
-        // else
-        // {
-        //     m_IdleTimer = 0f;
-        //     m_Animator.ResetTrigger(m_HashTimeoutToIdle);
-        // }
+        if (_isGrounded && !inputDetected)
+        {
+            m_IdleTimer += Time.deltaTime;
+        
+            if (m_IdleTimer >= idleTimeout)
+            {
+                m_IdleTimer = 0f;
+                Animator.SetTrigger(m_HashTimeoutToIdle);
+            }
+        }
+        else
+        {
+            m_IdleTimer = 0f;
+            Animator.ResetTrigger(m_HashTimeoutToIdle);
+        }
 
         Animator.SetBool(_hashInputDetected, inputDetected);
     }
