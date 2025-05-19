@@ -55,18 +55,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             DontDestroyOnLoad(transform.root.gameObject);
         }
-        else
-        {
-            GameObject rootGO = GameObject.FindGameObjectWithTag("Singleton");
-            if (rootGO != null)
-            {
-                transform.SetParent(rootGO.transform);
-            }
-            else if (_dontDestroy)
-            {
-                DontDestroyOnLoad(gameObject);
-            }
-        }
+      
     }
 
     private void OnApplicationQuit()
