@@ -13,7 +13,7 @@ public class AIManager : MonoBehaviour
     
     [Header("Update Intervals")]
     public float tierCheckInterval = 0.5f;
-    public int monstersPerFrameLogicUpdate = 10; // 한 번의 Update 호출에서 로직을 실행할 몬스터 수
+    public int monstersPerFrameLogicUpdate = 10;
 
     private List<MonsterAI> allMonsters = new List<MonsterAI>();
     private float nextTierCheckTime = 0f;
@@ -33,18 +33,19 @@ public class AIManager : MonoBehaviour
     
     public void RegisterMonster(MonsterAI monster)
     {
-        if (!allMonsters.Contains(monster)) allMonsters.Add(monster);
+        if (monster != null && !allMonsters.Contains(monster)) allMonsters.Add(monster);
     }
 
     public void UnregisterMonster(MonsterAI monster)
     {
-        if (allMonsters.Contains(monster)) allMonsters.Remove(monster);
+        if (monster != null && allMonsters.Contains(monster)) allMonsters.Remove(monster);
     }
     
     public void InitializeSpawnedMonster(MonsterAI monster)
     {
         if (monster == null) return;
-        monster.Initialize(playerTransform, formationManager, this); // MonsterAI의 nextIndividualLogicUpdateTime도 여기서 초기화됨
+        // MonsterAI의 Initialize 호출 (여기서 nextIndividualLogicUpdateTime 초기화됨)
+        monster.Initialize(playerTransform, formationManager, this); 
         if (!allMonsters.Contains(monster)) allMonsters.Add(monster);
         DetermineAndSetMonsterTier(monster);
     }
@@ -63,7 +64,8 @@ public class AIManager : MonoBehaviour
 
     void UpdateAllMonsterTiers()
     {
-        List<MonsterAI> currentMonstersSnapshot = new List<MonsterAI>(allMonsters); // 반복 중 변경에 안전하도록 스냅샷 사용
+        // 반복 중 컬렉션 변경에 안전하도록 스냅샷 사용 (또는 역순회)
+        List<MonsterAI> currentMonstersSnapshot = new List<MonsterAI>(allMonsters); 
         foreach (MonsterAI monster in currentMonstersSnapshot)
         {
             if (monster == null || !monster.gameObject.activeInHierarchy) continue;
@@ -79,27 +81,27 @@ public class AIManager : MonoBehaviour
         if (sqrDistanceToPlayer < tier1MaxDistanceSqr) newTier = AITier.Tier1_ActiveFormation;
         else if (sqrDistanceToPlayer < tier2MaxDistanceSqr) newTier = AITier.Tier2_Approaching;
         
-        monster.SetAITier(newTier, true); // forceUpdate를 true로 하여 내부 설정(속도, logicUpdateInterval 등)이 반영되도록
+        monster.SetAITier(newTier, true); 
     }
 
     void UpdateMonsterLogicsStaggered()
     {
         if (allMonsters.Count == 0) return;
 
-        int processedCount = 0; // 이번 프레임에 실제로 로직 업데이트한 몬스터 수
-        for (int i = 0; i < allMonsters.Count && processedCount < monstersPerFrameLogicUpdate; i++) // 전체 리스트를 순회하되, 최대 N개만 처리
+        int processedThisFrame = 0;
+        // 한 프레임에 모든 몬스터를 다 순회하되, 실제 로직은 monstersPerFrameLogicUpdate 만큼만 실행
+        for (int i = 0; i < allMonsters.Count && processedThisFrame < monstersPerFrameLogicUpdate; ++i)
         {
-            currentMonsterUpdateIndex %= allMonsters.Count; // 인덱스 순환 보장
+            currentMonsterUpdateIndex %= allMonsters.Count; // Ensure index is within bounds
 
             MonsterAI monsterToUpdate = allMonsters[currentMonsterUpdateIndex];
             if (monsterToUpdate != null && monsterToUpdate.gameObject.activeInHierarchy)
             {
-                // 해당 몬스터의 개별 업데이트 시간이 되었는지 확인
                 if (Time.time >= monsterToUpdate.nextIndividualLogicUpdateTime)
                 {
                     monsterToUpdate.ManagedUpdateLogic();
                     monsterToUpdate.nextIndividualLogicUpdateTime = Time.time + monsterToUpdate.logicUpdateInterval;
-                    processedCount++;
+                    processedThisFrame++;
                 }
             }
             currentMonsterUpdateIndex++;
