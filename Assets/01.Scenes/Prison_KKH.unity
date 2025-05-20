@@ -772,7 +772,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae6dc6fe590f4fa98774d64a67606f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerData: {fileID: 0}
+  maxForwardSpeed: 8
+  gravity: 20
+  jumpSpeed: 10
+  minTurnSpeed: 400
+  maxTurnSpeed: 1200
+  idleTimeout: 5
+  canAttack: 0
+  Animator: {fileID: 0}
+  CharacterController: {fileID: 0}
+  respawning: 0
 --- !u!114 &1245719045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,8 +797,15 @@ MonoBehaviour:
   Clip: {fileID: 7400000, guid: 2f8c3161154ca7144953c1eb1b493a3e, type: 2}
   ao: {fileID: 22100000, guid: 19a39d7b757bcd541b5efe5d2109385c, type: 2}
   VFXPrefab: {fileID: 0}
-  Index: 0
   Player: {fileID: 0}
+  Index: 0
+  SkillData:
+    Name: 
+    KeyButton: 0
+    SkillName: 
+    SkillSpeed: 0
+    CoolTime: 0
+    IsUpgraded: 0
 --- !u!1 &1291053299
 GameObject:
   m_ObjectHideFlags: 0
