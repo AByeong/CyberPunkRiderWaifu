@@ -80,7 +80,7 @@ public class MonsterSpawner : MonoBehaviour
         if (monsterAI != null)
         {
             // AIManager에 몬스터를 등록하고 초기화 (플레이어 정보 등 전달)
-            aiManager.InitializeSpawnedMonster(monsterAI);
+            aiManager.InitializeSpawnedMonster(monsterAI, monsterPool);
         }
         else
         {

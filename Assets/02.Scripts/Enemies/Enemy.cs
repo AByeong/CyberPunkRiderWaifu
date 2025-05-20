@@ -26,7 +26,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     // private DropTable _dropTable;
 
     protected GameObject _target;
-
+    public ObjectPool Pool;
     protected virtual void Awake()
     {
         _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
