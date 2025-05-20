@@ -36,49 +36,32 @@ public abstract class Enemy : MonoBehaviour
     // private DropTable _dropTable;
 
     // 디버깅
-    Damage __testDamage__;
+    protected Damage __testDamage__;
+    public GameObject Player;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
 
-        _blackboardRef = _behaviorGraphAgent.Graph.BlackboardReference;
-        
         // 디버깅
-        __testDamage__ = new Damage() { From = gameObject, DamageType = EDamageType.TODO, DamageForce = 2f, DamageValue = 2 };
-    }
-
-    // 디버깅
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            TakeDamage(__testDamage__);
-        }
+        __testDamage__ = new Damage() { From = Player, DamageType = EDamageType.TODO, DamageForce = 2f, DamageValue = 2 };
     }
 
     public void TakeDamage(Damage damage)
     {
-        if (_behaviorGraphAgent == null)
+        _blackboardRef = _behaviorGraphAgent.Graph.BlackboardReference;
+        if (_blackboardRef == null)
         {
-            Debug.LogError($"{gameObject.name} BehaviorAgent가 없습니다!!");
+            Debug.LogError($"{gameObject.name} BlackboardRef가 없습니다!!");
             return;
         }
 
         Vector3 damagedForceDir = gameObject.transform.position - damage.From.transform.position;
         _blackboardRef.SetVariableValue("DamageForce", damagedForceDir.normalized * damage.DamageForce);
         _blackboardRef.SetVariableValue("DamageValue", damage.DamageValue);
+        _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Hit);
         _blackboardRef.SetVariableValue("IsHit", true);
-    }
-
-    private void Attack(GameObject target) // TODO: 매개변수 타입을 Player 클래스로 변경 예정
-    {
-        // TODO
-    }
-
-    private void Die()
-    {
-        // TODO
+        Debug.Log("TakeDamage");
     }
 
     public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정
