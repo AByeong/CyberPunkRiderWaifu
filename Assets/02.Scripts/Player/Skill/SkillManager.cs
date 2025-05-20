@@ -6,15 +6,23 @@ using UnityEngine;
 
 public class SkillManager : Singleton<SkillManager>
 {
-    public SkillDataSO dataSO;
+    public SkillDataSO DataSO;
     private List<Skill> _availableSkills;
-    private List<Skill> _equippedSkills;
+    private List<Skill> _equippedSkills = new List<Skill>(4);
     private Dictionary<Skill, float> _skillCurrentCooldowns;
 
     private void Awake()
     {
-        
 
+    }
+    private void Start()
+    {
+        foreach (SkillData data in DataSO.SkillData)
+        {
+            Skill skill = new Skill();
+            skill.SkillData = data;
+            _availableSkills.Add(skill);
+        }
     }
     public void EquipSkill(int skillIndex, int equipIndex)
     {
@@ -31,6 +39,7 @@ public class SkillManager : Singleton<SkillManager>
         switch(key)
         {
             case KeyCode.Alpha1:
+                // 스킬 쿨타임 3초, 각 1,2,3,4번의 스킬이 3초 이상 
                 if(_skillCurrentCooldowns[_equippedSkills[0]] >= _equippedSkills[0].SkillData.CoolTime )
                 {
                     _skillCurrentCooldowns[_equippedSkills[0]] = 0.0f;

@@ -1,13 +1,11 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class Skill : MonoBehaviour
+public class Skill
 {
     //[Header("Addressable Prefab Reference")]
-    //public AssetReferenceGameObject prefabToPoolRef; // Inspectorø°º≠ æÓµÂ∑πº≠∫Ì «¡∏Æ∆’ «“¥Á
+    //public AssetReferenceGameObject prefabToPoolRef; // InspectorÏóêÏÑú Ïñ¥ÎìúÎ†àÏÑúÎ∏î ÌîÑÎ¶¨Ìåπ Ìï†Îãπ
 
     public AnimationClip Clip;
     public AnimatorOverrideController ao;
@@ -17,8 +15,6 @@ public class Skill : MonoBehaviour
     public SkillData SkillData;
 
     private bool _isActive = false;
-    private AsyncOperationHandle<AnimationClip> _clipHandle;
-    private AsyncOperationHandle<GameObject> _vfxHandle;
     private void Awake()
     {
         // AddressableAssetLoad
@@ -36,8 +32,6 @@ public class Skill : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Addressables.Release(_clipHandle);
-        Addressables.Release(_vfxHandle);
     }
     public void Init()
     {
@@ -46,16 +40,12 @@ public class Skill : MonoBehaviour
 
     public void UseSkill(Transform vfxTransform)
     {
-        Debug.Log("Using Skill");
+        Debug.Log($"Using {SkillData.SkillName}");
         Animator animator = Player.GetComponent<Animator>();
-        animator.SetTrigger($"{SkillData.SkillName}");
+        animator.SetTrigger($"{SkillData.TriggerName}");
     }
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            Player = GameObject.FindGameObjectWithTag("Player");
-            ///SkillManager.Instance.EquipSkill(KeyCode.Q, 1);
-        }
+        
     }
 }
