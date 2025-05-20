@@ -130,8 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d7189a6b0dd154eb309570f9ab0191, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minPlayerDistance: 4
-  desiredPlayerDistance: 6
+  BehaviorGraphAgent: {fileID: 4498394580510370994}
+  minPlayerDistance: 1
+  desiredPlayerDistance: 3
   tier3LookAtPlayerMaxDistance: 10
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
@@ -195,7 +196,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec07b0bfea113a54c989ad95d40b10e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
 --- !u!114 &4498394580510370994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,11 +214,20 @@ MonoBehaviour:
   - rid: 4630506815982666028
   - rid: 4630506815982666126
   - rid: 4630506815982666127
+  - rid: 1281621998399914124
   m_IsInitialised: 0
   m_IsStarted: 0
   references:
     version: 2
     RefIds:
+    - rid: 1281621998399914124
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 14380733572200834210
+          m_Value1: 12866304450710296623
+        Name: Target
+        m_Value: {fileID: 0}
     - rid: 4630506815982666026
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:

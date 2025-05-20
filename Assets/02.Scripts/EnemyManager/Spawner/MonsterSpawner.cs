@@ -89,6 +89,10 @@ public class MonsterSpawner : MonoBehaviour
             monsterPool.ReturnObject(monsterGO); // 또는 Destroy(monsterGO);
             return null;
         }
+
+        //행동 그래프 플레이어 설정
+        //monsterAI.BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target",aiManager.playerTransform.gameObject);
+        
         return monsterAI;
     }
 }

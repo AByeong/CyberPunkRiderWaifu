@@ -14,6 +14,9 @@ public partial class DieAction : Action
 
     protected override Status OnStart()
     {
+        //킬카운트 상승
+        
+        
         return Status.Running;
     }
 
@@ -24,6 +27,9 @@ public partial class DieAction : Action
 
     protected override void OnEnd()
     {
+        //풀링에 반환
+        
+        
     }
 }
 

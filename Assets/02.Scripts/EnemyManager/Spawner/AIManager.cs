@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class AIManager : MonoBehaviour
 {
     [Header("Player & Managers")]
+    public GameObject player;
     public Transform playerTransform;
     public FormationManager formationManager;
 
@@ -24,6 +25,7 @@ public class AIManager : MonoBehaviour
 
     void Awake()
     {
+        playerTransform = player.transform;
         if (playerTransform == null) Debug.LogError("Player Transform not assigned in AIManager!");
         if (formationManager == null) Debug.LogError("Formation Manager not assigned in AIManager!");
         

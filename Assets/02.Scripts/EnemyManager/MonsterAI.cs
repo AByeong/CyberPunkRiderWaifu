@@ -1,3 +1,4 @@
+using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -16,12 +17,15 @@ public enum AITier
 public class MonsterAI : MonoBehaviour
 {
     public AITier CurrentTier { get; private set; } = AITier.Tier3_Background;
+    
 
+    public BehaviorGraphAgent BehaviorGraphAgent;
+    
     private NavMeshAgent navMeshAgent;
     private Transform playerTransform;
     private FormationManager formationManager;
     private AIManager aiManager;
-
+    
     [Header("Tier 1 Behavior (Active Formation & Retreat)")]
     public float minPlayerDistance = 4.0f;
     public float desiredPlayerDistance = 6.0f;
@@ -83,6 +87,12 @@ public class MonsterAI : MonoBehaviour
         formationManager = fm;
         aiManager = am;
         nextIndividualLogicUpdateTime = Time.time + Random.Range(0, logicUpdateInterval);
+        
+        //행동 그래프 플레이어 설정
+        BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target", FindAnyObjectByType<PlayerController>());
+        //BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target",player.gameObject);
+        
+        Debug.Log("초기화 완");
     }
 
     public void SetAITier(AITier newTier, bool forceUpdate = false)
