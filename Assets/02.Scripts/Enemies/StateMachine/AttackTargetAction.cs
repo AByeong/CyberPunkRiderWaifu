@@ -5,10 +5,12 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "AttackTarget", story: "Agent attacks [Target]", category: "Action", id: "750d2ecbba0965c545c769cae58c48a2")]
+[NodeDescription(name: "AttackTarget", story: "[Agent] attacks [Target]", category: "Action", id: "750d2ecbba0965c545c769cae58c48a2")]
 public partial class AttackTargetAction : Action
 {
+    [SerializeReference] public BlackboardVariable<GameObject> Agent;
     [SerializeReference] public BlackboardVariable<GameObject> Target;
+
     private IDamageable _target;
 
     protected override Status OnStart()
