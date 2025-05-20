@@ -14,8 +14,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
    public float Timer = 1f;
    
-   [SerializeField]
-   private KillTracker _killTracker;
+   
 
 
    public PlayableDirector CinemachineDrector;

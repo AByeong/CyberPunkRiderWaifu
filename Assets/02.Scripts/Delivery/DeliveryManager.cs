@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
 
-public class DeliveryManager : MonoBehaviour
+public class DeliveryManager : Singleton<DeliveryManager>
 {
     public DeliveryMissionDataSO CurrentMissionData;
+    public KillTracker KillTracker;
     public EnemyManager EnemyManager;
     public int CurrentSector;
     public int CompleteSector;

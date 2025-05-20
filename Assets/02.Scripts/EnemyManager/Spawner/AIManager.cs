@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class AIManager : MonoBehaviour
 {
     [Header("Player & Managers")]
+    public GameObject player;
     public Transform playerTransform;
     public FormationManager formationManager;
 
@@ -24,6 +25,7 @@ public class AIManager : MonoBehaviour
 
     void Awake()
     {
+        playerTransform = player.transform;
         if (playerTransform == null) Debug.LogError("Player Transform not assigned in AIManager!");
         if (formationManager == null) Debug.LogError("Formation Manager not assigned in AIManager!");
         
@@ -41,11 +43,11 @@ public class AIManager : MonoBehaviour
         if (monster != null && allMonsters.Contains(monster)) allMonsters.Remove(monster);
     }
     
-    public void InitializeSpawnedMonster(MonsterAI monster)
+    public void InitializeSpawnedMonster(MonsterAI monster, ObjectPool pool)
     {
         if (monster == null) return;
         // MonsterAI의 Initialize 호출 (여기서 nextIndividualLogicUpdateTime 초기화됨)
-        monster.Initialize(playerTransform, formationManager, this); 
+        monster.Initialize(playerTransform, formationManager, this, pool); 
         if (!allMonsters.Contains(monster)) allMonsters.Add(monster);
         DetermineAndSetMonsterTier(monster);
     }
