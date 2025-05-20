@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NormalEnemy : Enemy
+public class NormalEnemy : Enemy, IDamageable
 {
     private EEnemyType _enemyType = EEnemyType.Normal;
     private float _aggroRange;
