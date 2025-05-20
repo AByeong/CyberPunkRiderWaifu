@@ -69,6 +69,7 @@ namespace Gamekit3D
         readonly int m_HashGrounded = Animator.StringToHash("Grounded");
         readonly int m_HashInputDetected = Animator.StringToHash("InputDetected");
         readonly int m_HashMeleeAttack = Animator.StringToHash("MeleeAttack");
+        readonly int m_HashRightAttack = Animator.StringToHash("RightAttack");
         readonly int m_HashHurt = Animator.StringToHash("Hurt");
         readonly int m_HashDeath = Animator.StringToHash("Death");
         readonly int m_HashRespawn = Animator.StringToHash("Respawn");
@@ -178,14 +179,21 @@ namespace Gamekit3D
 
             m_Animator.SetFloat(m_HashStateTime, Mathf.Repeat(m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime, 1f));
             m_Animator.ResetTrigger(m_HashMeleeAttack);
+            m_Animator.ResetTrigger(m_HashRightAttack);
 
             if (m_Input.Attack && canAttack)
+            {
                 m_Animator.SetTrigger(m_HashMeleeAttack);
+            }
 
+            if (m_Input.RightAttack && canAttack)
+            {
+                m_Animator.SetTrigger(m_HashRightAttack);
+            }
             CalculateForwardMovement();
             CalculateVerticalMovement();
 
-            // SetTargetRotation();
+            SetTargetRotation();
 
             if (IsOrientationUpdated() && IsMoveInput)
                 UpdateOrientation();
@@ -303,85 +311,85 @@ namespace Gamekit3D
         }
 
         // Called each physics step to set the rotation Ellen is aiming to have.
-        // void SetTargetRotation()
-        // {
-        //     // Create three variables, move input local to the player, flattened forward direction of the camera and a local target rotation.
-        //     Vector2 moveInput = m_Input.MoveInput;
-        //     Vector3 localMovementDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
-        //     
-        //     Vector3 forward = Quaternion.Euler(0f, cameraSettings.Current.m_XAxis.Value, 0f) * Vector3.forward;
-        //     forward.y = 0f;
-        //     forward.Normalize();
-        //
-        //     Quaternion targetRotation;
-        //     
-        //     // If the local movement direction is the opposite of forward then the target rotation should be towards the camera.
-        //     if (Mathf.Approximately(Vector3.Dot(localMovementDirection, Vector3.forward), -1.0f))
-        //     {
-        //         targetRotation = Quaternion.LookRotation(-forward);
-        //     }
-        //     else
-        //     {
-        //         // Otherwise the rotation should be the offset of the input from the camera's forward.
-        //         Quaternion cameraToInputOffset = Quaternion.FromToRotation(Vector3.forward, localMovementDirection);
-        //         targetRotation = Quaternion.LookRotation(cameraToInputOffset * forward);
-        //     }
-        //
-        //     // The desired forward direction of Ellen.
-        //     Vector3 resultingForward = targetRotation * Vector3.forward;
-        //
-        //     // If attacking try to orient to close enemies.
-        //     if (m_InAttack)
-        //     {
-        //         // Find all the enemies in the local area.
-        //         Vector3 centre = transform.position + transform.forward * 2.0f + transform.up;
-        //         Vector3 halfExtents = new Vector3(3.0f, 1.0f, 2.0f);
-        //         int layerMask = 1 << LayerMask.NameToLayer("Enemy");
-        //         int count = Physics.OverlapBoxNonAlloc(centre, halfExtents, m_OverlapResult, targetRotation, layerMask);
-        //
-        //         // Go through all the enemies in the local area...
-        //         float closestDot = 0.0f;
-        //         Vector3 closestForward = Vector3.zero;
-        //         int closest = -1;
-        //
-        //         for (int i = 0; i < count; ++i)
-        //         {
-        //             // ... and for each get a vector from the player to the enemy.
-        //             Vector3 playerToEnemy = m_OverlapResult[i].transform.position - transform.position;
-        //             playerToEnemy.y = 0;
-        //             playerToEnemy.Normalize();
-        //
-        //             // Find the dot product between the direction the player wants to go and the direction to the enemy.
-        //             // This will be larger the closer to Ellen's desired direction the direction to the enemy is.
-        //             float d = Vector3.Dot(resultingForward, playerToEnemy);
-        //
-        //             // Store the closest enemy.
-        //             if (d > k_MinEnemyDotCoeff && d > closestDot)
-        //             {
-        //                 closestForward = playerToEnemy;
-        //                 closestDot = d;
-        //                 closest = i;
-        //             }
-        //         }
-        //
-        //         // If there is a close enemy...
-        //         if (closest != -1)
-        //         {
-        //             // The desired forward is the direction to the closest enemy.
-        //             resultingForward = closestForward;
-        //             
-        //             // We also directly set the rotation, as we want snappy fight and orientation isn't updated in the UpdateOrientation function during an atatck.
-        //             transform.rotation = Quaternion.LookRotation(resultingForward);
-        //         }
-        //     }
-        //
-        //     // Find the difference between the current rotation of the player and the desired rotation of the player in radians.
-        //     float angleCurrent = Mathf.Atan2(transform.forward.x, transform.forward.z) * Mathf.Rad2Deg;
-        //     float targetAngle = Mathf.Atan2(resultingForward.x, resultingForward.z) * Mathf.Rad2Deg;
-        //
-        //     m_AngleDiff = Mathf.DeltaAngle(angleCurrent, targetAngle);
-        //     m_TargetRotation = targetRotation;
-        // }
+        void SetTargetRotation()
+        {
+            // Create three variables, move input local to the player, flattened forward direction of the camera and a local target rotation.
+            Vector2 moveInput = m_Input.MoveInput;
+            Vector3 localMovementDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
+            
+            Vector3 forward = Quaternion.Euler(0f, Camera.main.velocity.x, 0f) * Vector3.forward;
+            forward.y = 0f;
+            forward.Normalize();
+        
+            Quaternion targetRotation;
+            
+            // If the local movement direction is the opposite of forward then the target rotation should be towards the camera.
+            if (Mathf.Approximately(Vector3.Dot(localMovementDirection, Vector3.forward), -1.0f))
+            {
+                targetRotation = Quaternion.LookRotation(-forward);
+            }
+            else
+            {
+                // Otherwise the rotation should be the offset of the input from the camera's forward.
+                Quaternion cameraToInputOffset = Quaternion.FromToRotation(Vector3.forward, localMovementDirection);
+                targetRotation = Quaternion.LookRotation(cameraToInputOffset * forward);
+            }
+        
+            // The desired forward direction of Ellen.
+            Vector3 resultingForward = targetRotation * Vector3.forward;
+        
+            // If attacking try to orient to close enemies.
+            if (m_InAttack)
+            {
+                // Find all the enemies in the local area.
+                Vector3 centre = transform.position + transform.forward * 2.0f + transform.up;
+                Vector3 halfExtents = new Vector3(3.0f, 1.0f, 2.0f);
+                int layerMask = 1 << LayerMask.NameToLayer("Enemy");
+                int count = Physics.OverlapBoxNonAlloc(centre, halfExtents, m_OverlapResult, targetRotation, layerMask);
+        
+                // Go through all the enemies in the local area...
+                float closestDot = 0.0f;
+                Vector3 closestForward = Vector3.zero;
+                int closest = -1;
+        
+                for (int i = 0; i < count; ++i)
+                {
+                    // ... and for each get a vector from the player to the enemy.
+                    Vector3 playerToEnemy = m_OverlapResult[i].transform.position - transform.position;
+                    playerToEnemy.y = 0;
+                    playerToEnemy.Normalize();
+        
+                    // Find the dot product between the direction the player wants to go and the direction to the enemy.
+                    // This will be larger the closer to Ellen's desired direction the direction to the enemy is.
+                    float d = Vector3.Dot(resultingForward, playerToEnemy);
+        
+                    // Store the closest enemy.
+                    if (d > k_MinEnemyDotCoeff && d > closestDot)
+                    {
+                        closestForward = playerToEnemy;
+                        closestDot = d;
+                        closest = i;
+                    }
+                }
+        
+                // If there is a close enemy...
+                if (closest != -1)
+                {
+                    // The desired forward is the direction to the closest enemy.
+                    resultingForward = closestForward;
+                    
+                    // We also directly set the rotation, as we want snappy fight and orientation isn't updated in the UpdateOrientation function during an atatck.
+                    transform.rotation = Quaternion.LookRotation(resultingForward);
+                }
+            }
+        
+            // Find the difference between the current rotation of the player and the desired rotation of the player in radians.
+            float angleCurrent = Mathf.Atan2(transform.forward.x, transform.forward.z) * Mathf.Rad2Deg;
+            float targetAngle = Mathf.Atan2(resultingForward.x, resultingForward.z) * Mathf.Rad2Deg;
+        
+            m_AngleDiff = Mathf.DeltaAngle(angleCurrent, targetAngle);
+            m_TargetRotation = targetRotation;
+        }
 
         // Called each physics step to help determine whether Ellen can turn under player input.
         bool IsOrientationUpdated()
@@ -459,7 +467,7 @@ namespace Gamekit3D
         // Called each physics step to count up to the point where Ellen considers a random idle.
         void TimeoutToIdle()
         {
-            bool inputDetected = IsMoveInput || m_Input.Attack || m_Input.JumpInput;
+            bool inputDetected = IsMoveInput || m_Input.Attack || m_Input.JumpInput || m_Input.RightAttack;
             if (m_IsGrounded && !inputDetected)
             {
                 m_IdleTimer += Time.deltaTime;
@@ -669,4 +677,5 @@ namespace Gamekit3D
         //     m_Damageable.isInvulnerable = true;
         // }
     }
+    
 }
