@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-public class CSVManager : MonoBehaviour
+﻿using Unity.VisualScripting;
+using UnityEngine;
+public class CSVManager : Singleton<CSVManager>
 {
-    public static CSVManager instance;
-
     public void Awake()
     {
-        instance = this;
+
     }
 
     public string GetPlayerStats()
