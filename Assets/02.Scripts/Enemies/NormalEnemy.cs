@@ -1,17 +1,39 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-public class NormalEnemy : Enemy
+public class NormalEnemy : Enemy, IDamageable
 {
-    private EEnemyType _enemyType;
+    private EEnemyType _enemyType = EEnemyType.Normal;
     private float _aggroRange;
+    private Animator _animator;
+    private NavMeshAgent _navMeshAgent;
 
-    private void Patrol()   // TODO: 변경 예정
+    protected override void Awake()
     {
+        base.Awake();
 
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        if (_navMeshAgent == null)
+        {
+            Debug.LogWarning($"{gameObject.name} NavMeshAgent가 없습니다");
+        }
+
+        _animator = GetComponentInChildren<Animator>();
+        if (_animator == null)
+        {
+            Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
+        }
     }
 
-    private void ChasePlayer()  // TODO: 변경 예정
+    void Update()
     {
-
+        _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);
+        
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            TakeDamage(__testDamage__);
+            Debug.Log("Q");
+        }
     }
+
 }
