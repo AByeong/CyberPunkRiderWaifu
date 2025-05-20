@@ -52,7 +52,7 @@ namespace Gamekit3D
         // These constants are used to ensure Ellen moves and behaves properly.
         // It is advised you don't change them without fully understanding what they do in code.
         const float k_AirborneTurnSpeedProportion = 5.4f;
-        const float k_GroundedRayDistance = 1f;
+        const float k_GroundedRayDistance = 0.1f;
         const float k_JumpAbortSpeed = 10f;
         const float k_MinEnemyDotCoeff = 0.2f;
         const float k_InverseOneEighty = 1f / 180f;
@@ -556,62 +556,7 @@ namespace Gamekit3D
             m_InAttack = false;
         }
 
-        // This is called by Checkpoints to make sure Ellen respawns correctly.
-        // public void SetCheckpoint(Checkpoint checkpoint)
-        // {
-        //     if (checkpoint != null)
-        //         m_CurrentCheckpoint = checkpoint;
-        // }
-
-        // This is usually called by a state machine behaviour on the animator controller but can be called from anywhere.
-        /*public void Respawn()
-        {
-            StartCoroutine(RespawnRoutine());
-        }
-        
-        protected IEnumerator RespawnRoutine()
-        {
-            // Wait for the animator to be transitioning from the EllenDeath state.
-            while (m_CurrentStateInfo.shortNameHash != m_HashEllenDeath || !m_IsAnimatorTransitioning)
-            {
-                yield return null;
-            }
-            
-            // Wait for the screen to fade out.
-            yield return StartCoroutine(ScreenFader.FadeSceneOut());
-            while (ScreenFader.IsFading)
-            {
-                yield return null;
-            }
-
-            // Enable spawning.
-            EllenSpawn spawn = GetComponentInChildren<EllenSpawn>();
-            spawn.enabled = true;
-
-            // If there is a checkpoint, move Ellen to it.
-            if (m_CurrentCheckpoint != null)
-            {
-                transform.position = m_CurrentCheckpoint.transform.position;
-                transform.rotation = m_CurrentCheckpoint.transform.rotation;
-            }
-            else
-            {
-                Debug.LogError("There is no Checkpoint set, there should always be a checkpoint set. Did you add a checkpoint at the spawn?");
-            }
-            
-            // Set the Respawn parameter of the animator.
-            m_Animator.SetTrigger(m_HashRespawn);
-            
-            // Start the respawn graphic effects.
-            spawn.StartEffect();
-            
-            // Wait for the screen to fade in.
-            // Currently it is not important to yield here but should some changes occur that require waiting until a respawn has finished this will be required.
-            yield return StartCoroutine(ScreenFader.FadeSceneIn());
-            
-            m_Damageable.ResetDamage();
-        }*/
-
+       
         // Called by a state machine behaviour on Ellen's animator controller.
         public void RespawnFinished()
         {
@@ -620,62 +565,6 @@ namespace Gamekit3D
             //we set the damageable invincible so we can't get hurt just after being respawned (feel like a double punitive)
             // m_Damageable.isInvulnerable = false;
         }
-
-        // Called by Ellen's Damageable when she is hurt.
-        // public void OnReceiveMessage(MessageType type, object sender, object data)
-        // {
-        //     switch (type)
-        //     {
-        //         case MessageType.DAMAGED:
-        //             {
-        //                 Damageable.DamageMessage damageData = (Damageable.DamageMessage)data;
-        //                 Damaged(damageData);
-        //             }
-        //             break;
-        //         case MessageType.DEAD:
-        //             {
-        //                 Damageable.DamageMessage damageData = (Damageable.DamageMessage)data;
-        //                 Die(damageData);
-        //             }
-        //             break;
-        //     }
-        // }
-
-        // Called by OnReceiveMessage.
-        // void Damaged(Damageable.DamageMessage damageMessage)
-        // {
-        //     // Set the Hurt parameter of the animator.
-        //     m_Animator.SetTrigger(m_HashHurt);
-        //
-        //     // Find the direction of the damage.
-        //     Vector3 forward = damageMessage.damageSource - transform.position;
-        //     forward.y = 0f;
-        //
-        //     Vector3 localHurt = transform.InverseTransformDirection(forward);
-        //
-        //     // Set the HurtFromX and HurtFromY parameters of the animator based on the direction of the damage.
-        //     m_Animator.SetFloat(m_HashHurtFromX, localHurt.x);
-        //     m_Animator.SetFloat(m_HashHurtFromY, localHurt.z);
-
-            // Shake the camera.
-            // CameraShake.Shake(CameraShake.k_PlayerHitShakeAmount, CameraShake.k_PlayerHitShakeTime);
-            //
-            // // Play an audio clip of being hurt.
-            // if (hurtAudioPlayer != null)
-            // {
-            //     hurtAudioPlayer.PlayRandomClip();
-            // }
-        // }
-
-        // Called by OnReceiveMessage and by DeathVolumes in the scene.
-        // public void Die(Damageable.DamageMessage damageMessage)
-        // {
-        //     m_Animator.SetTrigger(m_HashDeath);
-        //     m_ForwardSpeed = 0f;
-        //     m_VerticalSpeed = 0f;
-        //     m_Respawning = true;
-        //     m_Damageable.isInvulnerable = true;
-        // }
     }
     
 }
