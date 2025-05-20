@@ -2,10 +2,7 @@
 using UnityEngine;
 public class CSVManager : Singleton<CSVManager>
 {
-    public void Awake()
-    {
 
-    }
 
     public string GetPlayerStats()
     {

@@ -36,7 +36,7 @@ namespace Gamekit3D
         protected float m_VerticalSpeed;               // How fast Ellen is currently moving up or down.
         protected PlayerInput m_Input;                 // Reference used to determine how Ellen should move.
         protected CharacterController m_CharCtrl;      // Reference used to actually move Ellen.
-        protected Animator m_Animator;                 // Reference used to make decisions based on Ellen's current animation and to set parameters.
+        public Animator m_Animator;                 // Reference used to make decisions based on Ellen's current animation and to set parameters.
         protected Material m_CurrentWalkingSurface;    // Reference used to make decisions about audio.
         protected Quaternion m_TargetRotation;         // What rotation Ellen is aiming to have based on input.
         protected float m_AngleDiff;                   // Angle in degrees between Ellen's current rotation and her target rotation.
