@@ -28,6 +28,7 @@ namespace Gamekit3D
         public float idleTimeout = 5f; // How long before Ellen starts considering random idles.
         public bool canAttack; // Whether or not Ellen can swing her staff.
         public bool m_InCombo; // Whether Ellen is currently in the middle of her melee combo.
+        public Animator m_Animator; // Reference used to make decisions based on Ellen's current animation and to set parameters.
         private readonly int m_HashAirborne = Animator.StringToHash("Airborne");
 
         // Parameters
@@ -62,7 +63,6 @@ namespace Gamekit3D
         private readonly int m_HashUpper = Animator.StringToHash("Upper");
 
         protected float m_AngleDiff; // Angle in degrees between Ellen's current rotation and her target rotation.
-        protected Animator m_Animator; // Reference used to make decisions based on Ellen's current animation and to set parameters.
         protected CharacterController m_CharCtrl; // Reference used to actually move Ellen.
 
 
