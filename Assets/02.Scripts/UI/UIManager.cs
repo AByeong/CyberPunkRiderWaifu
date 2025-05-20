@@ -1,10 +1,20 @@
 using System;
 using JY;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose = false;
+    
+    [Header("메인 UI")]
+    public Slider HPSlider;
+    public Slider ProgressSlider;
+    public Image[] SkillImages;
+    public Image[] ItemImages;
+    
+    
+    [Header("팝업")]
     public PopupManager PopupManager;
     public PlayerInput _playerInput;
 
