@@ -1,74 +1,71 @@
 using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
+using UnityEngine.AI;
 
-public enum EDamageType
+
+public abstract class Enemy : MonoBehaviour, IDamageable
 {
-    // TODO
-    TODO
-}
+    public EnemyDataSO EnemyData => _enemyData;
+    public int CurrentHealthPoint => _currentHealthPoint;
 
-public enum EEnemyType
-{
-    Normal,
-    Elite,
-    Boss,
+    public Animator Animator => _animator;
+    public NavMeshAgent NavMeshAgent => _navMeshAgent;
+    public BlackboardReference BlackboardRef => _blackboardRef;
 
-    Count
-}
+    [SerializeField]
+    private EnemyDataSO _enemyData;
+    private int _currentHealthPoint;
 
-public struct Damage
-{
-    public GameObject From;
-    public EDamageType DamageType;
-    public float DamageForce;
-    public int DamageValue;
-}
-
-public abstract class Enemy : MonoBehaviour
-{
-    private BehaviorGraph _behaviorGraph;
-    private BehaviorGraphAgent _behaviorGraphAgent;
-    private BlackboardReference _blackboardRef;
+    protected Animator _animator;
+    protected NavMeshAgent _navMeshAgent;
+    protected BehaviorGraphAgent _behaviorGraphAgent;
+    protected BlackboardReference _blackboardRef;
 
     // TODO
-    // private EnemyStats _stats;
     // private DropTable _dropTable;
 
-    // 디버깅
-    protected Damage __testDamage__;
     protected GameObject _target;
 
     protected virtual void Awake()
     {
         _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
+        _currentHealthPoint = _enemyData.HealthPoint;
     }
 
     private void Start()
     {
-        _target = GameObject.FindWithTag("Player");
-        _blackboardRef = _behaviorGraphAgent.Graph.BlackboardReference;
-        _blackboardRef.SetVariableValue("Target", _target);
-    } 
+        if (_behaviorGraphAgent != null)
+        {
+            _blackboardRef = _behaviorGraphAgent.BlackboardReference;
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name} BehaviorGraphAgent가 없습니다!!");
+        }
+
+        _blackboardRef.SetVariableValue("StaggerTime", _enemyData.StaggerTime);
+    }
 
     public void TakeDamage(Damage damage)
     {
-        // 디버깅
-        __testDamage__ = new Damage() { From = _target, DamageType = EDamageType.TODO, DamageForce = 2f, DamageValue = 2 };
-
-        
         if (_blackboardRef == null)
         {
             Debug.LogError($"{gameObject.name} BlackboardRef가 없습니다!!");
             return;
         }
 
-        Vector3 damagedForceDir = gameObject.transform.position - damage.From.transform.position;
-        _blackboardRef.SetVariableValue("DamageForce", damagedForceDir.normalized * damage.DamageForce);
-        _blackboardRef.SetVariableValue("DamageValue", damage.DamageValue);
+        Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
+
+        _currentHealthPoint -= damage.DamageValue;
+
         _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Hit);
         _blackboardRef.SetVariableValue("IsHit", true);
-        Debug.Log("TakeDamage");
+    }
+
+    public void MinusHealthPoint(int amount)
+    {
+        _currentHealthPoint -= amount;
     }
 
     public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정
