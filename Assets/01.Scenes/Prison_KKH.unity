@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UniqueSword
       objectReference: {fileID: 0}
+    - target: {fileID: 5421703263103371096, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -750,6 +754,7 @@ MonoBehaviour:
   maxTurnSpeed: 1200
   idleTimeout: 5
   canAttack: 1
+  m_InCombo: 0
   m_Animator: {fileID: 0}
 --- !u!114 &1012038312
 MonoBehaviour:
