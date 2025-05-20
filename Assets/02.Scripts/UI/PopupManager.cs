@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class PopupManager : MonoBehaviour
 {
-   public Stack<Popup> PopupStack = new Stack<Popup>();
 
+   public Stack<Popup> PopupStack = new Stack<Popup>();
+   public GameObject DeliveryPopup;
+   public GameObject SettingsPopup;
+   
    public void CloseLastPopup()
    {
       if(PopupStack.Count > 0)
