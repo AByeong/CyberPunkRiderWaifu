@@ -55,7 +55,7 @@ public class Skill : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             Player = GameObject.FindGameObjectWithTag("Player");
-            SkillManager.Instance.EquipSkill(KeyCode.Q, 1);
+            ///SkillManager.Instance.EquipSkill(KeyCode.Q, 1);
         }
     }
 }
