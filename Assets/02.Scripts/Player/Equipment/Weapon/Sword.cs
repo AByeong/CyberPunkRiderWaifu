@@ -1,8 +1,12 @@
 using System;
 using UnityEngine;
 
-public class Sword : MonoBehaviour
+public class Sword : MonoBehaviour, IWeapon
 {
+    public void Attack()
+    {
+        
+    }
     private void OnCollisionEnter(Collision collision)
     {
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
