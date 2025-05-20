@@ -21,7 +21,7 @@ public class EnemyManager : Singleton<EnemyManager>
    public PlayableDirector CinemachineDrector;
    
 
-   private void InitSpawn()
+   public void InitSpawn()
    {
       foreach (MonsterSpawner spawner in _normalMonsterSpawners)
       {
