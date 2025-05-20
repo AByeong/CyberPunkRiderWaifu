@@ -12,6 +12,7 @@ public partial class TakeDamageAction : Action
 
     protected override Status OnStart()
     {
+        Agent.Value.NavMeshAgent.isStopped = true;
         Agent.Value.Animator.SetFloat("HitType", (float)UnityEngine.Random.Range(1, 3));
         Agent.Value.Animator.SetTrigger("OnHit");
 
@@ -25,7 +26,7 @@ public partial class TakeDamageAction : Action
 
     protected override void OnEnd()
     {
-
+        Agent.Value.NavMeshAgent.isStopped = false;
     }
 }
 

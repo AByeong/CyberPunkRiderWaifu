@@ -20,6 +20,8 @@ public partial class AttackTargetAction : Action
         _target = Target.Value.GetComponent<IDamageable>();
         _agent = Agent.Value.GetComponent<Enemy>();
 
+        _agent.NavMeshAgent.isStopped = true;
+
         _damage.From = _agent.gameObject;
         _damage.DamageType = EDamageType.TODO;
         _damage.DamageForce = _agent.EnemyData.AttackForce;
@@ -41,6 +43,7 @@ public partial class AttackTargetAction : Action
 
     protected override void OnEnd()
     {
+        _agent.NavMeshAgent.isStopped = false;
     }
 }
 
