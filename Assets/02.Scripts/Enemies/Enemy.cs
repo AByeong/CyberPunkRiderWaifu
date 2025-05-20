@@ -28,7 +28,6 @@ public struct Damage
 public abstract class Enemy : MonoBehaviour
 {
     private BehaviorGraph _behaviorGraph;
-    private AIContoller _aiController;
     private BehaviorGraphAgent _behaviorGraphAgent;
     private BlackboardReference _blackboardRef;
 
@@ -41,7 +40,6 @@ public abstract class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        _aiController = new AIContoller(this, _behaviorGraph);
         _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
 
         _blackboardRef = _behaviorGraphAgent.Graph.BlackboardReference;
