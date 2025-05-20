@@ -87,12 +87,10 @@ public class MonsterAI : MonoBehaviour
         formationManager = fm;
         aiManager = am;
         nextIndividualLogicUpdateTime = Time.time + Random.Range(0, logicUpdateInterval);
-        
+        //행동 그래프 플레이어 설정
+        BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target", player.gameObject);
         //오브젝트 풀 설정
         Enemy.Pool = pool;
-        //행동 그래프 플레이어 설정
-        BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target", FindAnyObjectByType<PlayerController>());
-        //BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target",player.gameObject);
         
         Debug.Log("초기화 완");
     }
