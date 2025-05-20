@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NormalEnemy : Enemy
+public class NormalEnemy : Enemy, IDamageable
 {
     protected override void Awake()
     {

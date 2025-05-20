@@ -35,6 +35,7 @@ public class SkillManager : Singleton<SkillManager>
         // 기본 스킬 장착
         EquipSkill(1, 1);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //player.Instance
         _playerController = player.GetComponent<Gamekit3D.PlayerController>();
     }
 
