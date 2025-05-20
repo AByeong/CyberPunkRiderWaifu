@@ -37,19 +37,26 @@ public abstract class Enemy : MonoBehaviour
 
     // 디버깅
     protected Damage __testDamage__;
-    public GameObject Player;
+    protected GameObject _target;
 
     protected virtual void Awake()
     {
         _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
-
-        // 디버깅
-        __testDamage__ = new Damage() { From = Player, DamageType = EDamageType.TODO, DamageForce = 2f, DamageValue = 2 };
     }
+
+    private void Start()
+    {
+        _target = GameObject.FindWithTag("Player");
+        _blackboardRef = _behaviorGraphAgent.Graph.BlackboardReference;
+        _blackboardRef.SetVariableValue("Target", _target);
+    } 
 
     public void TakeDamage(Damage damage)
     {
-        _blackboardRef = _behaviorGraphAgent.Graph.BlackboardReference;
+        // 디버깅
+        __testDamage__ = new Damage() { From = _target, DamageType = EDamageType.TODO, DamageForce = 2f, DamageValue = 2 };
+
+        
         if (_blackboardRef == null)
         {
             Debug.LogError($"{gameObject.name} BlackboardRef가 없습니다!!");
