@@ -5,6 +5,5 @@ using UnityEngine;
 public class ComboTreeDataSO : ScriptableObject
 {
     public string TreeName;
-    // public List<ComboStateData> StateData;
     
 }
