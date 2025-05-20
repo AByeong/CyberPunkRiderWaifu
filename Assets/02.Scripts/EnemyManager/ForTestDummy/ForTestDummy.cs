@@ -10,8 +10,8 @@ public class ForTestDummy : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            CinemachineDrector.Play();
-            //EnemyManager.InitSpawn();
+            
+            EnemyManager.InitSpawn();
          
         }
         
