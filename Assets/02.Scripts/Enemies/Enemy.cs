@@ -59,13 +59,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         _currentHealthPoint -= damage.DamageValue;
 
+        _blackboardRef.SetVariableValue("HealthPoint", _currentHealthPoint);
         _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Hit);
         _blackboardRef.SetVariableValue("IsHit", true);
-    }
-
-    public void MinusHealthPoint(int amount)
-    {
-        _currentHealthPoint -= amount;
     }
 
     public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정
