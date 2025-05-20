@@ -29,6 +29,7 @@ namespace Gamekit3D
         public bool canAttack; // Whether or not Ellen can swing her staff.
         public bool m_InCombo; // Whether Ellen is currently in the middle of her melee combo.
         public Animator m_Animator; // Reference used to make decisions based on Ellen's current animation and to set parameters.
+
         private readonly int m_HashAirborne = Animator.StringToHash("Airborne");
 
         // Parameters
@@ -61,6 +62,7 @@ namespace Gamekit3D
         private readonly int m_HashStateTime = Animator.StringToHash("StateTime");
         private readonly int m_HashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
         private readonly int m_HashUpper = Animator.StringToHash("Upper");
+        private Stat _stat;
 
         protected float m_AngleDiff; // Angle in degrees between Ellen's current rotation and her target rotation.
         protected CharacterController m_CharCtrl; // Reference used to actually move Ellen.
@@ -134,7 +136,13 @@ namespace Gamekit3D
 
             s_Instance = this;
         }
+        private async void Start()
+        {
+            _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
 
+            if (_stat != null)
+                Debug.Log($"공격력: {_stat.GetStat(StatType.AttackPower)}");
+        }
         // Called automatically by Unity once every Physics step.
         private void Update()
         {
