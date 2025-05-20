@@ -13,6 +13,7 @@ namespace JY
         protected Vector2 _camera;
         protected bool _isJump;
         protected bool _isAttack;
+        protected bool _isRightAttack;
         protected bool _isPause;
         protected bool _isExternalInputBlocked;
 
@@ -42,6 +43,10 @@ namespace JY
             get { return _isAttack && !playerControllerInputBlocked && !_isExternalInputBlocked; }
         }
 
+        public bool RightAttack {
+            get{return _isRightAttack && !playerControllerInputBlocked && !_isExternalInputBlocked;}
+        }
+
         public bool Pause {
             get { return _isPause; }
         }
@@ -64,6 +69,14 @@ namespace JY
 
                 m_AttackWaitCoroutine = StartCoroutine(AttackWait());
             }
+            
+            if (Input.GetButtonDown("Fire2"))
+            {
+                if (m_AttackWaitCoroutine != null)
+                    StopCoroutine(m_AttackWaitCoroutine);
+
+                m_AttackWaitCoroutine = StartCoroutine(RightAttackWait());
+            }
 
             // _isPause = Input.GetButtonDown("Pause");
         }
@@ -75,6 +88,15 @@ namespace JY
             yield return m_AttackInputWait;
 
             _isAttack = false;
+        }
+        
+        IEnumerator RightAttackWait()
+        {
+            _isRightAttack = true;
+
+            yield return m_AttackInputWait;
+
+            _isRightAttack = false;
         }
 
         public bool HaveControl()
