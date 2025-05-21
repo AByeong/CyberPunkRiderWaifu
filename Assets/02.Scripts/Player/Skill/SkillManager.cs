@@ -1,17 +1,15 @@
 using System;
-using MoreMountains.Tools;
 using System.Collections.Generic;
-using UnityEngine;
 using Gamekit3D;
-
+using UnityEngine;
 [Serializable]
 public class SkillManager : Singleton<SkillManager>
 {
     public SkillDataSO DataSO;
     private List<Skill> _availableSkills = new List<Skill>();
     private List<Skill> _equippedSkills = new List<Skill>();
+    private PlayerController _playerController;
     private Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
-    private Gamekit3D.PlayerController _playerController;
 
     private void Start()
     {
@@ -23,7 +21,7 @@ public class SkillManager : Singleton<SkillManager>
 
         // 사용 가능한 스킬 초기화
         int skillIndex = 0;
-        foreach (SkillData data in DataSO.SkillData)
+        foreach(SkillData data in DataSO.SkillData)
         {
             Skill skill = new Skill();
             skill.SkillData = data;
@@ -35,14 +33,19 @@ public class SkillManager : Singleton<SkillManager>
         // 기본 스킬 장착
         EquipSkill(1, 1);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        
-        _playerController = player.GetComponent<Gamekit3D.PlayerController>();
+
+        _playerController = player.GetComponent<PlayerController>();
         ;
+    }
+
+    private void Update()
+    {
+        UpdateCooldowns(Time.deltaTime);
     }
 
     public void EquipSkill(int skillIndex, int equipIndex)
     {
-        if (skillIndex <= 0 || skillIndex > _availableSkills.Count || 
+        if (skillIndex <= 0 || skillIndex > _availableSkills.Count ||
             equipIndex <= 0 || equipIndex > 4)
         {
             Debug.LogError("잘못된 스킬 또는 장착 인덱스입니다.");
@@ -51,7 +54,7 @@ public class SkillManager : Singleton<SkillManager>
 
         Skill skillToEquip = _availableSkills[skillIndex - 1];
         _equippedSkills[equipIndex - 1] = skillToEquip;
-        
+
         // 쿨다운 초기화
         if (!_skillCurrentCooldowns.ContainsKey(skillToEquip))
         {
@@ -99,7 +102,7 @@ public class SkillManager : Singleton<SkillManager>
         if (keyNumber >= 0 && keyNumber < _equippedSkills.Count && _equippedSkills[keyNumber] != null)
         {
             Skill skillToUse = _equippedSkills[keyNumber];
-            
+
             // 쿨다운 확인
             if (_skillCurrentCooldowns[skillToUse] >= skillToUse.SkillData.CoolTime)
             {
@@ -115,32 +118,9 @@ public class SkillManager : Singleton<SkillManager>
         }
     }
 
-    private void Update()
-    {
-        UpdateCooldowns(Time.deltaTime);
-
-        // 키 입력 처리
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            UseSkill(KeyCode.Alpha1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            UseSkill(KeyCode.Alpha2);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            UseSkill(KeyCode.Alpha3);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            UseSkill(KeyCode.Alpha4);
-        }
-    }
-
     private void UpdateCooldowns(float deltaTime)
     {
-        foreach (Skill skill in _equippedSkills)
+        foreach(Skill skill in _equippedSkills)
         {
             if (skill != null && _skillCurrentCooldowns.ContainsKey(skill))
             {

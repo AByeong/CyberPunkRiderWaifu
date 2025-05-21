@@ -1,22 +1,27 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace JY
 {
 
     public class PlayerInput : MonoBehaviour
     {
+
+        private const float k_AttackInputDuration = 0.03f;
         [HideInInspector]
         public bool playerControllerInputBlocked;
+        protected Vector2 _camera;
+        protected bool _isAttack;
+        protected bool _isExternalInputBlocked;
+        protected bool _isJump;
+        protected bool _isPause;
+        protected bool _isRightAttack;
+        protected bool _isSkill1;
 
         protected Vector2 _movement;
-        protected Vector2 _camera;
-        protected bool _isJump;
-        protected bool _isAttack;
-        protected bool _isRightAttack;
-        protected bool _isPause;
-        protected bool _isExternalInputBlocked;
 
+        private WaitForSeconds m_AttackInputWait;
+        private Coroutine m_AttackWaitCoroutine;
         public Vector2 MoveInput {
             get
             {
@@ -35,33 +40,22 @@ namespace JY
             }
         }
 
-        public bool JumpInput {
-            get { return _isJump && !playerControllerInputBlocked && !_isExternalInputBlocked; }
-        }
+        public bool JumpInput => _isJump && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
-        public bool Attack {
-            get { return _isAttack && !playerControllerInputBlocked && !_isExternalInputBlocked; }
-        }
+        public bool Attack => _isAttack && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
-        public bool RightAttack {
-            get{return _isRightAttack && !playerControllerInputBlocked && !_isExternalInputBlocked;}
-        }
+        public bool RightAttack => _isRightAttack && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
-        public bool Pause {
-            get { return _isPause; }
-        }
+        public bool Pause => _isPause;
 
-        WaitForSeconds m_AttackInputWait;
-        Coroutine m_AttackWaitCoroutine;
+        public bool Skill1 => _isSkill1 && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
-        const float k_AttackInputDuration = 0.03f;
-
-        void Update()
+        private void Update()
         {
             _movement.Set(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             _camera.Set(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             _isJump = Input.GetButton("Jump");
-            
+
             if (Input.GetButtonDown("Fire1"))
             {
                 if (m_AttackWaitCoroutine != null)
@@ -69,7 +63,7 @@ namespace JY
 
                 m_AttackWaitCoroutine = StartCoroutine(AttackWait());
             }
-            
+
             if (Input.GetButtonDown("Fire2"))
             {
                 if (m_AttackWaitCoroutine != null)
@@ -77,11 +71,30 @@ namespace JY
 
                 m_AttackWaitCoroutine = StartCoroutine(RightAttackWait());
             }
+            // 키 입력 처리
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (m_AttackWaitCoroutine != null)
+                    StopCoroutine(m_AttackWaitCoroutine);
 
+                m_AttackWaitCoroutine = StartCoroutine(Skill1Wait());
+            }
+            // if (Input.GetKeyDown(KeyCode.Alpha2))
+            // {
+            //     UseSkill(KeyCode.Alpha2);
+            // }
+            // if (Input.GetKeyDown(KeyCode.Alpha3))
+            // {
+            //     UseSkill(KeyCode.Alpha3);
+            // }
+            // if (Input.GetKeyDown(KeyCode.Alpha4))
+            // {
+            //     UseSkill(KeyCode.Alpha4);
+            // }
             // _isPause = Input.GetButtonDown("Pause");
         }
 
-        IEnumerator AttackWait()
+        private IEnumerator AttackWait()
         {
             _isAttack = true;
 
@@ -89,8 +102,8 @@ namespace JY
 
             _isAttack = false;
         }
-        
-        IEnumerator RightAttackWait()
+
+        private IEnumerator RightAttackWait()
         {
             _isRightAttack = true;
 
@@ -98,7 +111,14 @@ namespace JY
 
             _isRightAttack = false;
         }
+        private IEnumerator Skill1Wait()
+        {
+            _isSkill1 = true;
 
+            yield return m_AttackInputWait;
+
+            _isSkill1 = false;
+        }
         public bool HaveControl()
         {
             return !_isExternalInputBlocked;

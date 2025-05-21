@@ -1,3 +1,4 @@
+using Gamekit3D;
 using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
