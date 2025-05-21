@@ -5,14 +5,13 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "TakeDamage", story: "[Agent] [HealthPoint] Take [DamageValue] [DamageForce]", category: "Action", id: "dd16ce5c85a8cf6de6e63cd777901454")]
+[NodeDescription(name: "TakeDamage", story: "[Agent] Play TakeDamagAnimation", category: "Action", id: "dd16ce5c85a8cf6de6e63cd777901454")]
 public partial class TakeDamageAction : Action
 {
     [SerializeReference] public BlackboardVariable<Enemy> Agent;
-
     protected override Status OnStart()
     {
-        Agent.Value.NavMeshAgent.isStopped = true;
+        Agent.Value.NavMeshAgent.enabled = false;
         Agent.Value.Animator.SetFloat("HitType", (float)UnityEngine.Random.Range(1, 3));
         Agent.Value.Animator.SetTrigger("OnHit");
 
@@ -26,7 +25,6 @@ public partial class TakeDamageAction : Action
 
     protected override void OnEnd()
     {
-        Agent.Value.NavMeshAgent.isStopped = false;
     }
 }
 

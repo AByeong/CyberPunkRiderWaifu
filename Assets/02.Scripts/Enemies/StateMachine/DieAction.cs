@@ -15,25 +15,28 @@ public partial class DieAction : Action
     private EEnemyType _enemyType;
     protected override Status OnStart()
     {
+
         //킬카운트 상승
         _enemy = Agent.Value.GetComponent<Enemy>();
         _enemyType = _enemy.EnemyData.EnemyType;
         switch (_enemyType)
         {
             case EEnemyType.Normal:
-                DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal++;
+                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
                 break;
             
             case EEnemyType.Elite:
-                DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite++;
+                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Elite);
                 break;
             
             case EEnemyType.Boss:
-                DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss++;
+                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Boss);
                 break;
             
         }
 
+        _enemy.NavMeshAgent.enabled = false;
+        _enemy.GetComponent<Collider>().enabled = false;
         
         return Status.Running;
     }
@@ -44,13 +47,7 @@ public partial class DieAction : Action
     }
 
     protected override void OnEnd()
-    {
-        //풀링에 반환
-        if (_enemyType == EEnemyType.Normal)
-        {
-            _enemy.Pool.ReturnObject(this.GameObject);
-        }
-        
+    {   
         
     }
 }

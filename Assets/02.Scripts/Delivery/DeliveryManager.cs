@@ -22,14 +22,28 @@ public class DeliveryManager : Singleton<DeliveryManager>
         }
     }
 
+    private void Start()
+    {
+        StartDelivery();
+    }
+
     public void StartDelivery()
     {
+        Debug.Log("Starting delivery");
+        UIManager.Instance.UIInit();//UI 초기화
+        
+        
+        KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        KillTracker.KillTrakerInit();//KillTracker초기화
         
     }
 
     public void LoadNextSection()
     {
-        
+        CurrentSector++;
+        KillTracker.ResetCurrentKillCount();
+        Debug.Log(CurrentSector);
+        KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
     }
 
    

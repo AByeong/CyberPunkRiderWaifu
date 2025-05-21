@@ -18,7 +18,7 @@ public class ForTestDummy : MonoBehaviour
         if (Input.GetKey(KeyCode.L))
         {
             
-            UIManager.Instance.SkillIconLoad(1);
+            UIManager.Instance.StageMainUI.SkillIconLoad(1);
          
         }
         

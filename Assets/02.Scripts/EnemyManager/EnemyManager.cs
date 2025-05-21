@@ -13,11 +13,13 @@ public class EnemyManager : Singleton<EnemyManager>
    private MonsterSpawner _bossMonsterSpawners;
 
    public float Timer = 1f;
-   
-   
 
 
-   public PlayableDirector CinemachineDrector;
+
+   public void EnemyManagerInit()
+   {
+      
+   }
    
 
    public void InitSpawn()
@@ -30,6 +32,7 @@ public class EnemyManager : Singleton<EnemyManager>
          }
       }
    }
+
 
 
    public void Spawn(int spawnerIndex)

@@ -5,12 +5,7 @@ public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose;
 
-    [Header("메인 UI")]
-    public Slider HPSlider;
-    public Slider ProgressSlider;
-    public Icon[] SkillIcons;
-    public Icon[] ItemIcons;
-    public Icon finisherIcon;
+   public StageMainUI StageMainUI;
 
     [Header("팝업")]
     public PopupManager PopupManager;
@@ -23,24 +18,38 @@ public class UIManager : Singleton<UIManager>
             if (!ESCisClose)
             {
                 PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
+                if (PopupManager.PopupStack.Count > 0)
+                {
+                    Cursor.lockState = CursorLockMode.Confined; // 커서를 화면 중앙에 고정
+                    Cursor.visible = true; // 커서 숨김
+                    GameManager.Instance.GameStop();
+                }
             }
             else
             {
                 PopupManager.CloseLastPopup();
+                
             }
         }
     }
 
 
-    private void UIInit()
+    public void UIInit()
     {
-        SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
+        Debug.Log("UI Init");
+        StageMainUI.StageMainInit();
         
+       // StageMainUI.SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
+        //StageMainUI.SkillIcons[1].CoolTime = SkillManager.Instance.EquipSkill2.SkillData.CoolTime;
+        //StageMainUI.SkillIcons[2].CoolTime = SkillManager.Instance.EquipSkill3.SkillData.CoolTime;
+        //StageMainUI.SkillIcons[3].CoolTime = SkillManager.Instance.EquipSkill4.SkillData.CoolTime;
         
-        
-        
+            
     }
 
+    
+    
+    
     public void PlayerStop()
     {
         _playerInput.playerControllerInputBlocked = false;
@@ -51,18 +60,5 @@ public class UIManager : Singleton<UIManager>
         _playerInput.playerControllerInputBlocked = true;
     }
 
-    public void SkillIconLoad(int index)
-    {
-        SkillIcons[index].StartCooltime();
-    }
-
-    public void ItemIconLoad(int index)
-    {
-        ItemIcons[index].StartCooltime();
-    }
-
-    public void FinisherIconLoad()
-    {
-        finisherIcon.StartCooltime();
-    }
+    
 }

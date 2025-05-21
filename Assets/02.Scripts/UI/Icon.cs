@@ -45,6 +45,7 @@ public class Icon : MonoBehaviour
 
     public void StartCooltime()
     {
+        Debug.Log("StartCooltime");
         Loading.fillAmount = 1;
         CoolTimeStartAction?.Invoke();
         _isLoading = true;
