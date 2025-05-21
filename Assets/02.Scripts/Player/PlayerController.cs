@@ -102,35 +102,6 @@ namespace Gamekit3D
 
         protected bool IsMoveInput => !Mathf.Approximately(m_Input.MoveInput.sqrMagnitude, 0f);
 
-        // Called automatically by Unity when the script is first added to a gameobject or is reset from the context menu.
-        // void Reset()
-        // {
-        //     meleeWeapon = GetComponentInChildren<MeleeWeapon>();
-        //
-        //     Transform footStepSource = transform.Find("FootstepSource");
-        //     if (footStepSource != null)
-        //         footstepPlayer = footStepSource.GetComponent<RandomAudioPlayer>();
-        //
-        //     Transform hurtSource = transform.Find("HurtSource");
-        //     if (hurtSource != null)
-        //         hurtAudioPlayer = hurtSource.GetComponent<RandomAudioPlayer>();
-        //
-        //     Transform landingSource = transform.Find("LandingSource");
-        //     if (landingSource != null)
-        //         landingPlayer = landingSource.GetComponent<RandomAudioPlayer>();
-        //
-        //     cameraSettings = FindObjectOfType<CameraSettings>();
-        //
-        //     if (cameraSettings != null)
-        //     {
-        //         if (cameraSettings.follow == null)
-        //             cameraSettings.follow = transform;
-        //
-        //         if (cameraSettings.lookAt == null)
-        //             cameraSettings.follow = transform.Find("HeadTarget");
-        //     }
-        // }
-
         // Called automatically by Unity when the script first exists in the scene.
         private void Awake()
         {
@@ -155,19 +126,6 @@ namespace Gamekit3D
             Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
         }
 
-        // public void ApplyEquipment(Equip equipment)
-        // {
-        //     _stat = new StatModifierDecorator(_stat, equipment.data.StatType, equipment.data.value);
-        // }
-// // 무기 효과 (+15 공격력)
-//         stats = new StatModifierDecorator(stats, StatType.AttackPower, 15);
-//
-// // 방어구 효과 (+10 방어)
-//         stats = new StatModifierDecorator(stats, StatType.Defense, 10);
-//
-// // 데미지 계산
-//         float damage = stats.CalculateDamage(5); // base damage 5
-
         private void Update()
         {
             CacheAnimatorState();
@@ -179,7 +137,7 @@ namespace Gamekit3D
             m_Animator.SetFloat(m_HashStateTime, Mathf.Repeat(m_Animator.GetCurrentAnimatorStateInfo(0).normalizedTime, 1f));
             m_Animator.ResetTrigger(m_HashMeleeAttack);
             m_Animator.ResetTrigger(m_HashRightAttack);
-
+            m_Animator.ResetTrigger(m_HashRoll);
             if (m_Input.Attack && canAttack)
             {
                 m_Animator.SetTrigger(m_HashMeleeAttack);
@@ -193,21 +151,6 @@ namespace Gamekit3D
 
             if (m_Input.Roll)
             {
-                float moveDistance = 10f;
-                float moveSpeed = 5f;
-                Vector3 targetPosition;
-                // 카메라가 바라보는 방향 (Y축 제거)
-                Vector3 camForward = Camera.main.transform.forward;
-                camForward.y = 0;
-                camForward.Normalize();
-
-                // 목표 위치 계산
-                targetPosition = transform.position + camForward * moveDistance;
-
-                Vector3 direction = (targetPosition - transform.position).normalized;
-                Vector3 move = direction * moveSpeed * Time.deltaTime;
-
-                m_CharCtrl.Move(move);
                 m_Animator.SetTrigger(m_HashRoll);
             }
             CalculateForwardMovement();
@@ -218,23 +161,14 @@ namespace Gamekit3D
             if (IsOrientationUpdated() && IsMoveInput)
                 UpdateOrientation();
 
-            PlayAudio();
 
             TimeoutToIdle();
 
             m_PreviouslyGrounded = m_IsGrounded;
         }
-
         // Called automatically by Unity after Awake whenever the script is enabled. 
         private void OnEnable()
         {
-            // SceneLinkedSMB<PlayerController>.Initialise(m_Animator, this);
-            //
-            // m_Damageable = GetComponent<Damageable>();
-            // m_Damageable.onDamageMessageReceivers.Add(this);
-            //
-            // m_Damageable.isInvulnerable = true;
-
             EquipMeleeWeapon(false);
 
             m_Renderers = GetComponentsInChildren<Renderer>();
@@ -306,12 +240,6 @@ namespace Gamekit3D
             m_Animator.SetBool(m_HashGrounded, m_IsGrounded);
         }
 
-        public void SetCanAttack(bool canAttack)
-        {
-            this.canAttack = canAttack;
-        }
-
-        // Called at the start of FixedUpdate to record the current state of the base layer of the animator.
         private void CacheAnimatorState()
         {
             m_PreviousCurrentStateInfo = m_CurrentStateInfo;
@@ -341,6 +269,7 @@ namespace Gamekit3D
             equipped |= m_NextStateInfo.shortNameHash == m_HashEllenCombo4 || m_CurrentStateInfo.shortNameHash == m_HashEllenCombo4;
             // 올려치기 공격
             equipped |= m_NextStateInfo.shortNameHash == m_HashUpper || m_CurrentStateInfo.shortNameHash == m_HashUpper;
+
 
             // 스킬 상태일 때 
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill1 || m_CurrentStateInfo.shortNameHash == m_HashSkill1;
@@ -515,58 +444,6 @@ namespace Gamekit3D
 
             transform.rotation = m_TargetRotation;
         }
-
-        // Called each physics step to check if audio should be played and if so instruct the relevant random audio player to do so.
-        private void PlayAudio()
-        {
-            // float footfallCurve = m_Animator.GetFloat(m_HashFootFall);
-            //
-            // if (footfallCurve > 0.01f && !footstepPlayer.playing && footstepPlayer.canPlay)
-            // {
-            //     footstepPlayer.playing = true;
-            //     footstepPlayer.canPlay = false;
-            //     footstepPlayer.PlayRandomClip(m_CurrentWalkingSurface, m_ForwardSpeed < 4 ? 0 : 1);
-            // }
-            // else if (footstepPlayer.playing)
-            // {
-            //     footstepPlayer.playing = false;
-            // }
-            // else if (footfallCurve < 0.01f && !footstepPlayer.canPlay)
-            // {
-            //     footstepPlayer.canPlay = true;
-            // }
-            //
-            // if (m_IsGrounded && !m_PreviouslyGrounded)
-            // {
-            //     landingPlayer.PlayRandomClip(m_CurrentWalkingSurface, bankId: m_ForwardSpeed < 4 ? 0 : 1);
-            //     emoteLandingPlayer.PlayRandomClip();
-            // }
-            //
-            // if (!m_IsGrounded && m_PreviouslyGrounded && m_VerticalSpeed > 0f)
-            // {
-            //     emoteJumpPlayer.PlayRandomClip();
-            // }
-            //
-            // if (m_CurrentStateInfo.shortNameHash == m_HashHurt && m_PreviousCurrentStateInfo.shortNameHash != m_HashHurt)
-            // {
-            //     hurtAudioPlayer.PlayRandomClip();
-            // }
-            //
-            // if (m_CurrentStateInfo.shortNameHash == m_HashEllenDeath && m_PreviousCurrentStateInfo.shortNameHash != m_HashEllenDeath)
-            // {
-            //     emoteDeathPlayer.PlayRandomClip();
-            // }
-            //
-            // if (m_CurrentStateInfo.shortNameHash == m_HashEllenCombo1 && m_PreviousCurrentStateInfo.shortNameHash != m_HashEllenCombo1 ||
-            //     m_CurrentStateInfo.shortNameHash == m_HashEllenCombo2 && m_PreviousCurrentStateInfo.shortNameHash != m_HashEllenCombo2 ||
-            //     m_CurrentStateInfo.shortNameHash == m_HashEllenCombo3 && m_PreviousCurrentStateInfo.shortNameHash != m_HashEllenCombo3 ||
-            //     m_CurrentStateInfo.shortNameHash == m_HashEllenCombo4 && m_PreviousCurrentStateInfo.shortNameHash != m_HashEllenCombo4)
-            // {
-            //     emoteAttackPlayer.PlayRandomClip();
-            // }
-        }
-
-        // Called each physics step to count up to the point where Ellen considers a random idle.
         private void TimeoutToIdle()
         {
             bool inputDetected = IsMoveInput || m_Input.Attack || m_Input.JumpInput || m_Input.RightAttack;
