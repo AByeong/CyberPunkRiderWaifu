@@ -29,10 +29,14 @@ public class KillTracker : MonoBehaviour
 {
    public KillCount CurrentKillCount;
    public KillCount MissionKillCount;
-
+   
    public void KillTrakerInit()
    {
-       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());  
+       Debug.Log("KillTraker Init");
+       MissionKillCount = DeliveryManager.Instance.CurrentMissionData.DeliverystageData[DeliveryManager.Instance.CurrentSector].TargetKillCount;
+       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());
+       
+       //지금 미션에서의 킬카운트 가져오기
    }
 
    private string KillTrackString()
@@ -47,7 +51,7 @@ public class KillTracker : MonoBehaviour
                  ((MissionKillCount.Elite > 0) ? $"엘리트 적 : {elite}/{MissionKillCount.Elite}\n" : "")+
                  ((MissionKillCount.Boss > 0) ? $"보스 : {boss}/{MissionKillCount.Boss}\n" : "");
 
-
+    Debug.Log(Message);
        return Message;
    }
    
@@ -97,6 +101,7 @@ public class KillTracker : MonoBehaviour
    {
        if (MissionKillCount.Normal == CurrentKillCount.Normal && MissionKillCount.Elite == CurrentKillCount.Elite && MissionKillCount.Boss == CurrentKillCount.Boss)
        {
+           DeliveryManager.Instance.CurrentSector++;
            return true;
        }
        else

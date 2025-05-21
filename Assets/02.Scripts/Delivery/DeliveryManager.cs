@@ -29,6 +29,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
     public void StartDelivery()
     {
+        Debug.Log("Starting delivery");
         UIManager.Instance.UIInit();//UI 초기화
         KillTracker.KillTrakerInit();//KillTracker초기화
         

@@ -11,10 +11,10 @@ public class SkillManager : Singleton<SkillManager>
     private PlayerController _playerController;
     private Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
 
-    public Skill EquipSkill1 => _equippedSkills[0];
-    public Skill EquipSkill2 => _equippedSkills[1];
-    public Skill EquipSkill3 => _equippedSkills[2];    
-    public Skill EquipSkill4 => _equippedSkills[3];
+//    public Skill EquipSkill1 => _equippedSkills[0];
+    //public Skill EquipSkill2 => _equippedSkills[1];
+   // public Skill EquipSkill3 => _equippedSkills[2];    
+   // public Skill EquipSkill4 => _equippedSkills[3];
     
     
     private void Start()

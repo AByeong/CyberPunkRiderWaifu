@@ -18,10 +18,17 @@ public class UIManager : Singleton<UIManager>
             if (!ESCisClose)
             {
                 PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
+                if (PopupManager.PopupStack.Count > 0)
+                {
+                    Cursor.lockState = CursorLockMode.Confined; // 커서를 화면 중앙에 고정
+                    Cursor.visible = true; // 커서 숨김
+                }
             }
             else
             {
                 PopupManager.CloseLastPopup();
+                Cursor.lockState = CursorLockMode.Locked; // 커서를 화면 중앙에 고정
+                Cursor.visible = false; // 커서 숨김
             }
         }
     }
@@ -29,10 +36,12 @@ public class UIManager : Singleton<UIManager>
 
     public void UIInit()
     {
-        StageMainUI.SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
-        StageMainUI.SkillIcons[1].CoolTime = SkillManager.Instance.EquipSkill2.SkillData.CoolTime;
-        StageMainUI.SkillIcons[2].CoolTime = SkillManager.Instance.EquipSkill3.SkillData.CoolTime;
-        StageMainUI.SkillIcons[3].CoolTime = SkillManager.Instance.EquipSkill4.SkillData.CoolTime;
+        Debug.Log("UI Init");
+       // StageMainUI.SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
+        //StageMainUI.SkillIcons[1].CoolTime = SkillManager.Instance.EquipSkill2.SkillData.CoolTime;
+        //StageMainUI.SkillIcons[2].CoolTime = SkillManager.Instance.EquipSkill3.SkillData.CoolTime;
+        //StageMainUI.SkillIcons[3].CoolTime = SkillManager.Instance.EquipSkill4.SkillData.CoolTime;
+        
             
     }
 

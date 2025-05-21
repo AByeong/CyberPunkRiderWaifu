@@ -48,7 +48,7 @@ public class ObjectPool : MonoBehaviour
 
         isLoadingPrefab = true;
         // ***** 수정된 부분: AssetAddress 대신 RuntimeKey 사용 *****
-        Debug.Log($"ObjectPool: Loading prefab from Addressable RuntimeKey: '{prefabToPoolRef.RuntimeKey}'", this);
+//        Debug.Log($"ObjectPool: Loading prefab from Addressable RuntimeKey: '{prefabToPoolRef.RuntimeKey}'", this);
 
         AsyncOperationHandle<GameObject> handle = prefabToPoolRef.LoadAssetAsync<GameObject>();
         

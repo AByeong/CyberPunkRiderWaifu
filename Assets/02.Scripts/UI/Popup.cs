@@ -9,7 +9,7 @@ public abstract class Popup : MonoBehaviour
         
         UIManager.Instance.PopupManager.PopupStack.Push(this); 
         this.gameObject.SetActive(true);
-        Debug.Log("Base Popup Opened."); // 기본 팝업 열림 로그 (선택 사항)
+        
     }
 
     // 팝업이 닫힐 때 호출될 추상/가상 메서드를 추가합니다.
