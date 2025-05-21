@@ -12,6 +12,12 @@ public class StageMainUI : MonoBehaviour
     public Icon finisherIcon;
 
     public TextMeshProUGUI KillTrackingText;
+
+    public void StageMainInit()
+    {
+        Debug.Log("MainUI Init");
+        ProgressSlider.value = 0;
+    }
     
     public void SkillIconLoad(int index)
     {
@@ -31,6 +37,9 @@ public class StageMainUI : MonoBehaviour
     public void RefreshKillTrackingText(string message)
     {
         KillTrackingText.text = message;
+        ProgressSlider.value = (float)DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total)/(float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
+        Debug.Log(ProgressSlider.value);
+        
     }
     
 }

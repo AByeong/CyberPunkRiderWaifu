@@ -33,7 +33,7 @@ public class KillTracker : MonoBehaviour
    public void KillTrakerInit()
    {
        Debug.Log("KillTraker Init");
-       MissionKillCount = DeliveryManager.Instance.CurrentMissionData.DeliverystageData[DeliveryManager.Instance.CurrentSector].TargetKillCount;
+       
        UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());
        
        //지금 미션에서의 킬카운트 가져오기
@@ -41,9 +41,9 @@ public class KillTracker : MonoBehaviour
 
    private string KillTrackString()
    {
-       int normal = GetKillCount(EnemyType.Normal);
-       int elite = GetKillCount(EnemyType.Elite);
-       int boss = GetKillCount(EnemyType.Boss);
+       int normal = GetCurrentKillCount(EnemyType.Normal);
+       int elite = GetCurrentKillCount(EnemyType.Elite);
+       int boss = GetCurrentKillCount(EnemyType.Boss);
        string Message = "";
 
 
@@ -54,30 +54,47 @@ public class KillTracker : MonoBehaviour
     Debug.Log(Message);
        return Message;
    }
-   
+
+   public void ResetCurrentKillCount()
+   {
+       CurrentKillCount.Normal = 0;
+       CurrentKillCount.Elite = 0;
+       CurrentKillCount.Boss = 0;
+   }
    public void IncreaseKillCount(EnemyType type)
    {
        switch (type)
        {
            case EnemyType.Normal:
+               if(GetCurrentKillCount(EnemyType.Normal)!=GetMissionKillCount(EnemyType.Normal))
                 CurrentKillCount.Normal++;
                break;
            
            case EnemyType.Elite: 
+               if(GetCurrentKillCount(EnemyType.Elite) != GetMissionKillCount(EnemyType.Elite))
                 CurrentKillCount.Elite++;
                break;
            
            case EnemyType.Boss:
+               if(GetCurrentKillCount(EnemyType.Boss) != GetMissionKillCount(EnemyType.Boss))
                 CurrentKillCount.Boss++;
                break;
            
        }
 
-       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());
+       if (IsMissionCompleted())
+       {
+           Debug.Log("Mission Completed");
+           DeliveryManager.Instance.LoadNextSection();
+           
+       }
+       
 
+       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());
+       
    }
 
-   public int GetKillCount(EnemyType type)
+   public int GetCurrentKillCount(EnemyType type)
    {
        switch (type)
        {
@@ -96,12 +113,31 @@ public class KillTracker : MonoBehaviour
 
        return -1;
    }
+   
+   public int GetMissionKillCount(EnemyType type)
+   {
+       switch (type)
+       {
+           case EnemyType.Normal:
+               return MissionKillCount.Normal;
+           
+           case EnemyType.Elite:
+               return MissionKillCount.Elite;
+           
+           case EnemyType.Boss:
+               return MissionKillCount.Boss;
+           
+           case EnemyType.Total:
+               return (MissionKillCount.Normal + MissionKillCount.Elite + MissionKillCount.Boss);
+       }
+
+       return -1;
+   }
 
    public bool IsMissionCompleted()
    {
        if (MissionKillCount.Normal == CurrentKillCount.Normal && MissionKillCount.Elite == CurrentKillCount.Elite && MissionKillCount.Boss == CurrentKillCount.Boss)
        {
-           DeliveryManager.Instance.CurrentSector++;
            return true;
        }
        else

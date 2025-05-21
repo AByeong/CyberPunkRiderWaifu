@@ -18,14 +18,10 @@ public class DeliveryPopup : Popup
     // 팝업이 닫힐 때 DeliveryPopup 고유의 로직을 수행하기 위해 OnPopupClosed를 오버라이드합니다.
     protected override void OnPopupClosed() 
     {
-
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.PlayerReplay(); // 닫힐 때 플레이어 다시 움직이게
-        }
         
+        UIManager.Instance.PlayerReplay(); // 닫힐 때 플레이어 다시 움직이게
         UIManager.Instance.ESCisClose = false;
-         base.OnPopupClosed(); 
+        base.OnPopupClosed();
     }
     
 }

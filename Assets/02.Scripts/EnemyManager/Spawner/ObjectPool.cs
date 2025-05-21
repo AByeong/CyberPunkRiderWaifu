@@ -60,14 +60,14 @@ public class ObjectPool : MonoBehaviour
         {
             loadedPrefab = handle.Result;
             // ***** 수정된 부분: AssetAddress 대신 RuntimeKey 사용 *****
-            Debug.Log($"ObjectPool: Prefab '{loadedPrefab.name}' loaded successfully from Addressable RuntimeKey: '{prefabToPoolRef.RuntimeKey}'", this);
+//            Debug.Log($"ObjectPool: Prefab '{loadedPrefab.name}' loaded successfully from Addressable RuntimeKey: '{prefabToPoolRef.RuntimeKey}'", this);
             InitializePool();
             isPoolReady = true;
         }
         else
         {
             // ***** 수정된 부분: AssetAddress 대신 RuntimeKey 사용 *****
-            Debug.LogError($"ObjectPool: Failed to load prefab from Addressable RuntimeKey: '{prefabToPoolRef.RuntimeKey}' - Exception: {handle.OperationException}", this);
+         //   Debug.LogError($"ObjectPool: Failed to load prefab from Addressable RuntimeKey: '{prefabToPoolRef.RuntimeKey}' - Exception: {handle.OperationException}", this);
             isPoolReady = false;
             // AssetReference 자체를 통해 로드된 경우, OnDestroy에서 ReleaseAsset()으로 처리됩니다.
             // 개별 핸들을 명시적으로 해제할 필요는 일반적으로 없습니다.

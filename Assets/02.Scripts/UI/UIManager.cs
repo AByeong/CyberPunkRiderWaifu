@@ -22,13 +22,13 @@ public class UIManager : Singleton<UIManager>
                 {
                     Cursor.lockState = CursorLockMode.Confined; // 커서를 화면 중앙에 고정
                     Cursor.visible = true; // 커서 숨김
+                    GameManager.Instance.GameStop();
                 }
             }
             else
             {
                 PopupManager.CloseLastPopup();
-                Cursor.lockState = CursorLockMode.Locked; // 커서를 화면 중앙에 고정
-                Cursor.visible = false; // 커서 숨김
+                
             }
         }
     }
@@ -37,6 +37,8 @@ public class UIManager : Singleton<UIManager>
     public void UIInit()
     {
         Debug.Log("UI Init");
+        StageMainUI.StageMainInit();
+        
        // StageMainUI.SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
         //StageMainUI.SkillIcons[1].CoolTime = SkillManager.Instance.EquipSkill2.SkillData.CoolTime;
         //StageMainUI.SkillIcons[2].CoolTime = SkillManager.Instance.EquipSkill3.SkillData.CoolTime;
@@ -45,6 +47,9 @@ public class UIManager : Singleton<UIManager>
             
     }
 
+    
+    
+    
     public void PlayerStop()
     {
         _playerInput.playerControllerInputBlocked = false;

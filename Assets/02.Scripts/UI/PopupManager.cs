@@ -12,6 +12,7 @@ public class PopupManager : MonoBehaviour
    {
       if(PopupStack.Count > 0)
       PopupStack.Pop().ClosePopup();
+      
    }
 
    public void CloseAllPopups()
@@ -21,8 +22,8 @@ public class PopupManager : MonoBehaviour
          Popup popupToClose = PopupStack.Pop(); // 스택에서 제거
          if (popupToClose != null)
          {
-            popupToClose.ClosePopup(); // 팝업 닫기 (비활성화 등)
-            // 필요하다면 popupToClose.OnPoppedFromManager(); 등 호출
+            popupToClose.ClosePopup(); // 팝업 닫기
+            
          }
       }
    }
