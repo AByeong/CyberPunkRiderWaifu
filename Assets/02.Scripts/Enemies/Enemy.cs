@@ -2,39 +2,39 @@ using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
-
-
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
-    public EnemyDataSO EnemyData => _enemyData;
-    public int CurrentHealthPoint => _currentHealthPoint;
-
-    public Animator Animator => _animator;
-    public NavMeshAgent NavMeshAgent => _navMeshAgent;
-    public BlackboardReference BlackboardRef => _blackboardRef;
 
     [SerializeField]
     private EnemyDataSO _enemyData;
-    private int _currentHealthPoint;
+    public ObjectPool Pool;
 
     protected Animator _animator;
-    protected NavMeshAgent _navMeshAgent;
     protected BehaviorGraphAgent _behaviorGraphAgent;
     protected BlackboardReference _blackboardRef;
+    protected NavMeshAgent _navMeshAgent;
 
+    private IStatsProvider _stat;
     // TODO
     // private DropTable _dropTable;
 
     protected GameObject _target;
-    public ObjectPool Pool;
+    public EnemyDataSO EnemyData => _enemyData;
+    public int CurrentHealthPoint { get; private set; }
+
+    public Animator Animator => _animator;
+    public NavMeshAgent NavMeshAgent => _navMeshAgent;
+    public BlackboardReference BlackboardRef => _blackboardRef;
     protected virtual void Awake()
     {
         _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
-        _currentHealthPoint = _enemyData.HealthPoint;
+        CurrentHealthPoint = _enemyData.HealthPoint;
     }
 
-    private void Start()
+    private async void Start()
     {
+        _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
+
         if (_behaviorGraphAgent != null)
         {
             _blackboardRef = _behaviorGraphAgent.BlackboardReference;
@@ -45,6 +45,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
 
         _blackboardRef.SetVariableValue("StaggerTime", _enemyData.StaggerTime);
+
+        _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
     }
 
     public void TakeDamage(Damage damage)
@@ -57,9 +59,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
 
-        _currentHealthPoint -= damage.DamageValue;
+        CurrentHealthPoint -= damage.DamageValue;
 
-        _blackboardRef.SetVariableValue("HealthPoint", _currentHealthPoint);
+        _blackboardRef.SetVariableValue("HealthPoint", CurrentHealthPoint);
         _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Hit);
         _blackboardRef.SetVariableValue("IsHit", true);
     }
