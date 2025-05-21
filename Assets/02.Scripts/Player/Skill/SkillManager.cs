@@ -41,7 +41,6 @@ public class SkillManager : Singleton<SkillManager>
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         _playerController = player.GetComponent<PlayerController>();
-        ;
     }
 
     private void Update()
