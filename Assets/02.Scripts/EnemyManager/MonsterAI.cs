@@ -116,12 +116,12 @@ public class MonsterAI : MonoBehaviour
         switch (CurrentTier)
         {
             case AITier.Tier1_ActiveFormation:
-                navMeshAgent.enabled = true; navMeshAgent.isStopped = false;
+                // navMeshAgent.enabled = true; navMeshAgent.isStopped = false;
                 navMeshAgent.speed = 3.5f; navMeshAgent.acceleration = 8f; navMeshAgent.autoRepath = true;
                 logicUpdateInterval = 0.1f;
                 break;
             case AITier.Tier2_Approaching:
-                navMeshAgent.enabled = true; navMeshAgent.isStopped = false;
+                // navMeshAgent.enabled = true; navMeshAgent.isStopped = false;
                 navMeshAgent.speed = 2.8f; navMeshAgent.acceleration = 5f;
                 navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance; navMeshAgent.autoRepath = true;
                 logicUpdateInterval = 0.3f;
@@ -181,8 +181,8 @@ public class MonsterAI : MonoBehaviour
 
     void UpdateTier1Behavior()
     {
-        if (!navMeshAgent.enabled) navMeshAgent.enabled = true;
-        if (navMeshAgent.isStopped) navMeshAgent.isStopped = false;
+        // if (!navMeshAgent.enabled) navMeshAgent.enabled = true;
+        // if (navMeshAgent.isStopped) navMeshAgent.isStopped = false;
 
         float sqrDistToPlayer = (playerTransform.position - transform.position).sqrMagnitude;
         float minPlayerDistSqr = minPlayerDistance * minPlayerDistance;
@@ -251,8 +251,8 @@ public class MonsterAI : MonoBehaviour
 
     void UpdateTier2Behavior()
     {
-        if (!navMeshAgent.enabled) navMeshAgent.enabled = true;
-        if (navMeshAgent.isStopped) navMeshAgent.isStopped = false;
+        // if (!navMeshAgent.enabled) navMeshAgent.enabled = true;
+        // if (navMeshAgent.isStopped) navMeshAgent.isStopped = false;
         navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
         if (navMeshAgent.destination != playerTransform.position)
             navMeshAgent.SetDestination(playerTransform.position);

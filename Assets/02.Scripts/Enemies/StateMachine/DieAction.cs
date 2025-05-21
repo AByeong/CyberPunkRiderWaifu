@@ -15,6 +15,7 @@ public partial class DieAction : Action
     private EEnemyType _enemyType;
     protected override Status OnStart()
     {
+
         //킬카운트 상승
         _enemy = Agent.Value.GetComponent<Enemy>();
         _enemyType = _enemy.EnemyData.EnemyType;
@@ -34,6 +35,8 @@ public partial class DieAction : Action
             
         }
 
+        _enemy.NavMeshAgent.enabled = false;
+        _enemy.GetComponent<Collider>().enabled = false;
         
         return Status.Running;
     }
@@ -44,13 +47,7 @@ public partial class DieAction : Action
     }
 
     protected override void OnEnd()
-    {
-        //풀링에 반환
-        if (_enemyType == EEnemyType.Normal)
-        {
-            _enemy.Pool.ReturnObject(this.GameObject);
-        }
-        
+    {   
         
     }
 }

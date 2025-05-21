@@ -5,16 +5,18 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "TakeDamage", story: "[Agent] Play TakeDamagAnimation", category: "Action", id: "dd16ce5c85a8cf6de6e63cd777901454")]
-public partial class TakeDamageAction : Action
+[NodeDescription(name: "RenturnToPool", story: "[Agent] Return to Pool", category: "Action", id: "4a79ff8a142653e6bd74b77a86fabb29")]
+public partial class RenturnToPoolAction : Action
 {
     [SerializeReference] public BlackboardVariable<Enemy> Agent;
+
     protected override Status OnStart()
     {
-        Agent.Value.NavMeshAgent.enabled = false;
-        Agent.Value.Animator.SetFloat("HitType", (float)UnityEngine.Random.Range(1, 3));
-        Agent.Value.Animator.SetTrigger("OnHit");
-
+        //풀링에 반환
+        if (Agent.Value.EnemyData.EnemyType == EEnemyType.Normal)
+        {
+            Agent.Value.Pool.ReturnObject(this.GameObject);
+        }
         return Status.Running;
     }
 

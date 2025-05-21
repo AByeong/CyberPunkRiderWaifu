@@ -5,16 +5,14 @@ using Action = Unity.Behavior.Action;
 using Unity.Properties;
 
 [Serializable, GeneratePropertyBag]
-[NodeDescription(name: "TakeDamage", story: "[Agent] Play TakeDamagAnimation", category: "Action", id: "dd16ce5c85a8cf6de6e63cd777901454")]
-public partial class TakeDamageAction : Action
+[NodeDescription(name: "NavMeshON", story: "Switch [Agent] NavMesh On", category: "Action", id: "52e673bbd63e4231b427b794fce93c4d")]
+public partial class NavMeshOnAction : Action
 {
     [SerializeReference] public BlackboardVariable<Enemy> Agent;
+
     protected override Status OnStart()
     {
-        Agent.Value.NavMeshAgent.enabled = false;
-        Agent.Value.Animator.SetFloat("HitType", (float)UnityEngine.Random.Range(1, 3));
-        Agent.Value.Animator.SetTrigger("OnHit");
-
+        Agent.Value.NavMeshAgent.enabled = true;
         return Status.Running;
     }
 

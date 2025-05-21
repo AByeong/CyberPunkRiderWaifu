@@ -60,6 +60,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
 
         CurrentHealthPoint -= damage.DamageValue;
+        Debug.Log("Enemy Hit!");
 
         _blackboardRef.SetVariableValue("HealthPoint", CurrentHealthPoint);
         _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Hit);
