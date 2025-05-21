@@ -33,6 +33,14 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    private void InventoryPopup()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            
+        }
+    }
+
 
     public void UIInit()
     {
