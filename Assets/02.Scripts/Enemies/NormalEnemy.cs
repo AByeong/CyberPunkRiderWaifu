@@ -3,11 +3,6 @@ using UnityEngine.AI;
 
 public class NormalEnemy : Enemy, IDamageable
 {
-    private EEnemyType _enemyType = EEnemyType.Normal;
-    private float _aggroRange;
-    private Animator _animator;
-    private NavMeshAgent _navMeshAgent;
-
     protected override void Awake()
     {
         base.Awake();
@@ -28,12 +23,6 @@ public class NormalEnemy : Enemy, IDamageable
     void Update()
     {
         _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);
-        
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            TakeDamage(__testDamage__);
-            Debug.Log("Q");
-        }
     }
 
 }

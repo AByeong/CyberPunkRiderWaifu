@@ -1,5 +1,6 @@
 using JY;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Gamekit3D
 {
@@ -20,15 +21,16 @@ namespace Gamekit3D
         private const float k_GroundDeceleration = 25f;
         protected static PlayerController s_Instance;
 
-        public float maxForwardSpeed = 8f; // How fast Ellen can run.
-        public float gravity = 20f; // How fast Ellen accelerates downwards when airborne.
-        public float jumpSpeed = 10f; // How fast Ellen takes off when jumping.
-        public float minTurnSpeed = 400f; // How fast Ellen turns when moving at maximum speed.
-        public float maxTurnSpeed = 1200f; // How fast Ellen turns when stationary.
-        public float idleTimeout = 5f; // How long before Ellen starts considering random idles.
-        public bool canAttack; // Whether or not Ellen can swing her staff.
-        public bool m_InCombo; // Whether Ellen is currently in the middle of her melee combo.
-        public Animator m_Animator; // Reference used to make decisions based on Ellen's current animation and to set parameters.
+        public float maxForwardSpeed = 8f;
+        public float gravity = 20f;
+        public float jumpSpeed = 10f;
+        public float minTurnSpeed = 400f;
+        public float maxTurnSpeed = 1200f;
+        public float idleTimeout = 5f;
+        public bool canAttack;
+        public bool m_InCombo;
+        public Animator m_Animator;
+
         private readonly int m_HashAirborne = Animator.StringToHash("Airborne");
 
         // Parameters
@@ -43,6 +45,7 @@ namespace Gamekit3D
         private readonly int m_HashEllenCombo2 = Animator.StringToHash("EllenCombo2");
         private readonly int m_HashEllenCombo3 = Animator.StringToHash("EllenCombo3");
         private readonly int m_HashEllenCombo4 = Animator.StringToHash("EllenCombo4");
+
         private readonly int m_HashEllenDeath = Animator.StringToHash("EllenDeath");
         private readonly int m_HashFootFall = Animator.StringToHash("FootFall");
         private readonly int m_HashForwardSpeed = Animator.StringToHash("ForwardSpeed");
@@ -51,24 +54,28 @@ namespace Gamekit3D
         private readonly int m_HashHurtFromX = Animator.StringToHash("HurtFromX");
         private readonly int m_HashHurtFromY = Animator.StringToHash("HurtFromY");
         private readonly int m_HashInputDetected = Animator.StringToHash("InputDetected");
-        private readonly int m_HashLanding = Animator.StringToHash("Landing"); // Also a parameter.
+        private readonly int m_HashLanding = Animator.StringToHash("Landing");
 
         // States
         private readonly int m_HashLocomotion = Animator.StringToHash("Locomotion");
         private readonly int m_HashMeleeAttack = Animator.StringToHash("MeleeAttack");
         private readonly int m_HashRespawn = Animator.StringToHash("Respawn");
         private readonly int m_HashRightAttack = Animator.StringToHash("RightAttack");
+        private readonly int m_HashSkill1 = Animator.StringToHash("Skill1");
+        private readonly int m_HashSkill2 = Animator.StringToHash("Skill2");
+        private readonly int m_HashSkill3 = Animator.StringToHash("Skill3");
         private readonly int m_HashStateTime = Animator.StringToHash("StateTime");
         private readonly int m_HashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
         private readonly int m_HashUpper = Animator.StringToHash("Upper");
+        private IStatsProvider _stat;
 
         protected float m_AngleDiff; // Angle in degrees between Ellen's current rotation and her target rotation.
         protected CharacterController m_CharCtrl; // Reference used to actually move Ellen.
 
 
-        protected AnimatorStateInfo m_CurrentStateInfo; // Information about the base layer of the animator cached.
-        protected Material m_CurrentWalkingSurface; // Reference used to make decisions about audio.
-        protected float m_DesiredForwardSpeed; // How fast Ellen aims be going along the ground based on input.
+        protected AnimatorStateInfo m_CurrentStateInfo;
+        protected Material m_CurrentWalkingSurface;
+        protected float m_DesiredForwardSpeed;
         protected float m_ForwardSpeed; // How fast Ellen is currently going along the ground.
         protected float m_IdleTimer; // Used to count up to Ellen considering a random idle.
         protected bool m_InAttack; // Whether Ellen is currently in the middle of a melee attack.
@@ -134,8 +141,29 @@ namespace Gamekit3D
 
             s_Instance = this;
         }
+        private async void Start()
+        {
+            _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
 
-        // Called automatically by Unity once every Physics step.
+            if (_stat != null)
+            {
+                Debug.Log($"공격력: {_stat.GetStat(StatType.AttackPower)}");
+            }
+            _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 15);
+
+            Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
+        }
+
+
+// // 무기 효과 (+15 공격력)
+//         stats = new StatModifierDecorator(stats, StatType.AttackPower, 15);
+//
+// // 방어구 효과 (+10 방어)
+//         stats = new StatModifierDecorator(stats, StatType.Defense, 10);
+//
+// // 데미지 계산
+//         float damage = stats.CalculateDamage(5); // base damage 5
+
         private void Update()
         {
             CacheAnimatorState();
@@ -281,11 +309,20 @@ namespace Gamekit3D
         // Called after the animator state has been cached to determine whether or not the staff should be active or not.
         private bool IsWeaponEquiped()
         {
+            // 지금 실행중인 애니메이션 이름을 참조해서 트루를 반환함, 스킬 사용 중일 때 참이 자동으로 되게 할거임
             bool equipped = m_NextStateInfo.shortNameHash == m_HashEllenCombo1 || m_CurrentStateInfo.shortNameHash == m_HashEllenCombo1;
             equipped |= m_NextStateInfo.shortNameHash == m_HashEllenCombo2 || m_CurrentStateInfo.shortNameHash == m_HashEllenCombo2;
             equipped |= m_NextStateInfo.shortNameHash == m_HashEllenCombo3 || m_CurrentStateInfo.shortNameHash == m_HashEllenCombo3;
             equipped |= m_NextStateInfo.shortNameHash == m_HashEllenCombo4 || m_CurrentStateInfo.shortNameHash == m_HashEllenCombo4;
+            // 올려치기 공격
             equipped |= m_NextStateInfo.shortNameHash == m_HashUpper || m_CurrentStateInfo.shortNameHash == m_HashUpper;
+
+            // 스킬 상태일 때 
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill1 || m_CurrentStateInfo.shortNameHash == m_HashSkill1;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill2 || m_CurrentStateInfo.shortNameHash == m_HashSkill2;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill3 || m_CurrentStateInfo.shortNameHash == m_HashSkill3;
+            // equipped |= m_NextStateInfo.shortNameHash == m_HashSkill4 || m_CurrentStateInfo.shortNameHash == m_HashSkill4;
+
             return equipped;
         }
 
@@ -546,6 +583,16 @@ namespace Gamekit3D
 
             //we set the damageable invincible so we can't get hurt just after being respawned (feel like a double punitive)
             // m_Damageable.isInvulnerable = false;
+        }
+        public void UseSkill(KeyCode keyCode)
+        {
+            switch (keyCode)
+            {
+                case KeyCode.Alpha1:
+                    m_Animator.SetTrigger(m_HashSkill1);
+                    break;
+            }
+
         }
     }
 

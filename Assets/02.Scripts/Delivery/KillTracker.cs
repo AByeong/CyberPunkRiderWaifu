@@ -22,7 +22,7 @@ public enum EnemyType
 
 public class KillTracker : MonoBehaviour
 {
-   public KillCount KillCount;
+   public KillCount CurrentKillCount;
    public KillCount MissionKillCount;
 
    public void IncreaseKillCount(EnemyType type)
@@ -30,15 +30,15 @@ public class KillTracker : MonoBehaviour
        switch (type)
        {
            case EnemyType.Normal:
-                KillCount.Normal++;
+                CurrentKillCount.Normal++;
                break;
            
            case EnemyType.Elite: 
-                KillCount.Elite++;
+                CurrentKillCount.Elite++;
                break;
            
            case EnemyType.Boss:
-                KillCount.Boss++;
+                CurrentKillCount.Boss++;
                break;
            
        }
@@ -50,16 +50,16 @@ public class KillTracker : MonoBehaviour
        switch (type)
        {
            case EnemyType.Normal:
-               return KillCount.Normal;
+               return CurrentKillCount.Normal;
            
            case EnemyType.Elite:
-               return KillCount.Elite;
+               return CurrentKillCount.Elite;
            
            case EnemyType.Boss:
-               return KillCount.Boss;
+               return CurrentKillCount.Boss;
            
            case EnemyType.Total:
-               return (KillCount.Normal + KillCount.Elite + KillCount.Boss);
+               return (CurrentKillCount.Normal + CurrentKillCount.Elite + CurrentKillCount.Boss);
        }
 
        return -1;
@@ -67,7 +67,7 @@ public class KillTracker : MonoBehaviour
 
    public bool IsMissionCompleted()
    {
-       if (MissionKillCount.Normal == KillCount.Normal && MissionKillCount.Elite == KillCount.Elite && MissionKillCount.Boss == KillCount.Boss)
+       if (MissionKillCount.Normal == CurrentKillCount.Normal && MissionKillCount.Elite == CurrentKillCount.Elite && MissionKillCount.Boss == CurrentKillCount.Boss)
        {
            return true;
        }

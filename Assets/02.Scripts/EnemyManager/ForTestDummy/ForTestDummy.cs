@@ -8,10 +8,17 @@ public class ForTestDummy : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.H))
         {
             
             EnemyManager.InitSpawn();
+         
+        }
+        
+        if (Input.GetKey(KeyCode.L))
+        {
+            
+            UIManager.Instance.SkillIconLoad(1);
          
         }
         
