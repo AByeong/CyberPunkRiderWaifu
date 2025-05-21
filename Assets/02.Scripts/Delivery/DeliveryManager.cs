@@ -24,6 +24,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
     public void StartDelivery()
     {
+        UIManager.Instance.UIInit();//UI 초기화
         
     }
 

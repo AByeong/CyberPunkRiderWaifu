@@ -32,13 +32,13 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    private void UIInit()
+    public void UIInit()
     {
         SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
-        
-        
-        
-        
+        SkillIcons[1].CoolTime = SkillManager.Instance.EquipSkill2.SkillData.CoolTime;
+        SkillIcons[2].CoolTime = SkillManager.Instance.EquipSkill3.SkillData.CoolTime;
+        SkillIcons[3].CoolTime = SkillManager.Instance.EquipSkill4.SkillData.CoolTime;
+            
     }
 
     public void PlayerStop()

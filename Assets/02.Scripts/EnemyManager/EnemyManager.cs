@@ -13,10 +13,13 @@ public class EnemyManager : Singleton<EnemyManager>
    private MonsterSpawner _bossMonsterSpawners;
 
    public float Timer = 1f;
-   
-   
 
 
+
+   public void EnemyManagerInit()
+   {
+      
+   }
    
 
    public void InitSpawn()
