@@ -11,7 +11,7 @@ public class SkillManager : Singleton<SkillManager>
     private List<Skill> _availableSkills = new List<Skill>();
     private List<Skill> _equippedSkills = new List<Skill>();
     private Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
-    private Gamekit3D.PlayerController _playerController;
+    private PlayerController _playerController;
 
     private void Start()
     {
@@ -36,8 +36,7 @@ public class SkillManager : Singleton<SkillManager>
         EquipSkill(1, 1);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         
-        _playerController = player.GetComponent<Gamekit3D.PlayerController>();
-        ;
+        _playerController = player.GetComponent<PlayerController>();
     }
 
     public void EquipSkill(int skillIndex, int equipIndex)
