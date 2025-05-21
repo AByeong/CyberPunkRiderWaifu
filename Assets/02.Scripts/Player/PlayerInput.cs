@@ -16,6 +16,7 @@ namespace JY
         protected bool _isJump;
         protected bool _isPause;
         protected bool _isRightAttack;
+        protected bool _isRoll;
         protected bool _isSkill1;
 
         protected Vector2 _movement;
@@ -46,6 +47,7 @@ namespace JY
 
         public bool RightAttack => _isRightAttack && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
+        public bool Roll => _isRoll && !playerControllerInputBlocked && !_isExternalInputBlocked;
         public bool Pause => _isPause;
 
         public bool Skill1 => _isSkill1 && !playerControllerInputBlocked && !_isExternalInputBlocked;
@@ -71,6 +73,16 @@ namespace JY
 
                 m_AttackWaitCoroutine = StartCoroutine(RightAttackWait());
             }
+
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                Debug.Log("Left Shift Pressed");
+                if (m_AttackWaitCoroutine != null)
+                    StopCoroutine(m_AttackWaitCoroutine);
+
+                m_AttackWaitCoroutine = StartCoroutine(RollWait());
+            }
+
             // 키 입력 처리
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -119,6 +131,16 @@ namespace JY
 
             _isSkill1 = false;
         }
+
+        private IEnumerator RollWait()
+        {
+            _isRoll = true;
+
+            yield return m_AttackInputWait;
+
+            _isRoll = false;
+        }
+
         public bool HaveControl()
         {
             return !_isExternalInputBlocked;
