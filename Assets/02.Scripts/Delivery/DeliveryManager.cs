@@ -22,9 +22,15 @@ public class DeliveryManager : Singleton<DeliveryManager>
         }
     }
 
+    private void Start()
+    {
+        StartDelivery();
+    }
+
     public void StartDelivery()
     {
         UIManager.Instance.UIInit();//UI 초기화
+        KillTracker.KillTrakerInit();//KillTracker초기화
         
     }
 

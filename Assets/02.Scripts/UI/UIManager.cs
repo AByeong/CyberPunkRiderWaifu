@@ -5,12 +5,7 @@ public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose;
 
-    [Header("메인 UI")]
-    public Slider HPSlider;
-    public Slider ProgressSlider;
-    public Icon[] SkillIcons;
-    public Icon[] ItemIcons;
-    public Icon finisherIcon;
+   public StageMainUI StageMainUI;
 
     [Header("팝업")]
     public PopupManager PopupManager;
@@ -34,10 +29,10 @@ public class UIManager : Singleton<UIManager>
 
     public void UIInit()
     {
-        SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
-        SkillIcons[1].CoolTime = SkillManager.Instance.EquipSkill2.SkillData.CoolTime;
-        SkillIcons[2].CoolTime = SkillManager.Instance.EquipSkill3.SkillData.CoolTime;
-        SkillIcons[3].CoolTime = SkillManager.Instance.EquipSkill4.SkillData.CoolTime;
+        StageMainUI.SkillIcons[0].CoolTime = SkillManager.Instance.EquipSkill1.SkillData.CoolTime;
+        StageMainUI.SkillIcons[1].CoolTime = SkillManager.Instance.EquipSkill2.SkillData.CoolTime;
+        StageMainUI.SkillIcons[2].CoolTime = SkillManager.Instance.EquipSkill3.SkillData.CoolTime;
+        StageMainUI.SkillIcons[3].CoolTime = SkillManager.Instance.EquipSkill4.SkillData.CoolTime;
             
     }
 
@@ -51,18 +46,5 @@ public class UIManager : Singleton<UIManager>
         _playerInput.playerControllerInputBlocked = true;
     }
 
-    public void SkillIconLoad(int index)
-    {
-        SkillIcons[index].StartCooltime();
-    }
-
-    public void ItemIconLoad(int index)
-    {
-        ItemIcons[index].StartCooltime();
-    }
-
-    public void FinisherIconLoad()
-    {
-        finisherIcon.StartCooltime();
-    }
+    
 }

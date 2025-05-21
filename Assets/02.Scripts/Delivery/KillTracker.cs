@@ -22,11 +22,35 @@ public enum EnemyType
     Count
 }
 
+
+
+
 public class KillTracker : MonoBehaviour
 {
    public KillCount CurrentKillCount;
    public KillCount MissionKillCount;
 
+   public void KillTrakerInit()
+   {
+       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());  
+   }
+
+   private string KillTrackString()
+   {
+       int normal = GetKillCount(EnemyType.Normal);
+       int elite = GetKillCount(EnemyType.Elite);
+       int boss = GetKillCount(EnemyType.Boss);
+       string Message = "";
+
+
+       Message = ((MissionKillCount.Normal > 0) ? $"일반 적 : {normal}/{MissionKillCount.Normal}\n" : "")+
+                 ((MissionKillCount.Elite > 0) ? $"엘리트 적 : {elite}/{MissionKillCount.Elite}\n" : "")+
+                 ((MissionKillCount.Boss > 0) ? $"보스 : {boss}/{MissionKillCount.Boss}\n" : "");
+
+
+       return Message;
+   }
+   
    public void IncreaseKillCount(EnemyType type)
    {
        switch (type)
@@ -44,7 +68,9 @@ public class KillTracker : MonoBehaviour
                break;
            
        }
-       
+
+       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());
+
    }
 
    public int GetKillCount(EnemyType type)
