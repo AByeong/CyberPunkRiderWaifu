@@ -13,6 +13,7 @@ public class UIManager : Singleton<UIManager>
 
     private void Update()
     {
+        InventoryPopup();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!ESCisClose)
@@ -37,7 +38,18 @@ public class UIManager : Singleton<UIManager>
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            
+            Debug.Log($"Count :  {PopupManager.PopupStack.Count}");
+            PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
+            if (PopupManager.PopupStack.Count > 0)
+            {
+                Cursor.lockState = CursorLockMode.Confined; // 커서를 화면 중앙에 고정
+                Cursor.visible = true; // 커서 숨김
+                _playerInput.ReleaseControl();
+            }
+            else
+            {
+                PopupManager.CloseLastPopup();
+            }
         }
     }
 

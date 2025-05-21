@@ -1,19 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 public enum EquipmentType { Weapon, Armor, Head, Boots }
 
 [CreateAssetMenu(fileName = "EquipmentData", menuName = "Scriptable Objects/EquipmentData")]
 public class EquipmentData : ScriptableObject
 {
-    public string equipmentName;
-    public EquipmentType slot;
+    public string EquipmentName;
+    public EquipmentType EquipmentType;
     
-    public int maxHealth;
-    public int attackPower;
-    public int defense;
-    public float speed;
-    public float attackSpeed;
-    public float critChance;
-    public float critDamage;
-
-    public GameObject modelPrefab;
+    public int MaxHealth;
+    public int AttackPower;
+    public int Defense;
+    public float Speed;
+    public float AttackSpeed;
+    public float CritChance;
+    public float CritDamage;
+    public GameObject ModelPrefab;
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class SkillManager : Singleton<SkillManager>
 {
-    public SkillDataSO DataSO;
+    public SkillDataList DataList;
     private List<Skill> _availableSkills = new List<Skill>();
     private List<Skill> _equippedSkills = new List<Skill>();
     private PlayerController _playerController;
@@ -27,7 +27,7 @@ public class SkillManager : Singleton<SkillManager>
 
         // 사용 가능한 스킬 초기화
         int skillIndex = 0;
-        foreach(SkillData data in DataSO.SkillData)
+        foreach(SkillData data in DataList.SkillData)
         {
             Skill skill = new Skill();
             skill.SkillData = data;

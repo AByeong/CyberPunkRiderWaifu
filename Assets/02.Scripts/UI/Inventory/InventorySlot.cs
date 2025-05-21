@@ -3,65 +3,31 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public Item currentItem;
-    public Image Icon;
-    public Image DragImage;
-    private Canvas _parentCanvas;
-
+    public GameObject ItemPrefab;
+    public UI_Item UI_Item;
+    public Item item;
+    public bool HasItem;
+    
     private void Start()
     {
-        _parentCanvas = GetComponentInParent<Canvas>();
-        if (currentItem != null)
+        if (HasItem)
         {
-            Icon.sprite = currentItem.Icon;
-            DragImage.sprite = currentItem.Icon;
+            GameObject newitem = Instantiate(ItemPrefab, transform);
+            UI_Item = newitem.GetComponent<UI_Item>();
+            UI_Item.Init(item, gameObject);
         }
     }
 
-    public void AddItem(Item newItem)
+    public void OnDrop(PointerEventData eventData)
     {
-        currentItem = newItem;
-        Icon.sprite = newItem.Icon;
-        Icon.enabled = true;
-    }
-
-    public void ClearSlot()
-    {
-        currentItem = null;
-        Icon.sprite = null;
-        Icon.enabled = false;
-    }
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        Debug.Log("Begin");
-        if (currentItem == null) return;
-        
-        DragImage.sprite = Icon.sprite;
-        DragImage.enabled = true;
-        DragImage.transform.SetAsLastSibling();
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        Debug.Log("Drag");
-        if (DragImage != null)
+        Debug.Log(eventData.pointerDrag.name + " dropped");
+        if (eventData.pointerDrag.TryGetComponent(out UI_Item))
         {
-            Vector2 pos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                _parentCanvas.transform as RectTransform,
-                eventData.position,
-                _parentCanvas.worldCamera,
-                out pos);
-            DragImage.rectTransform.anchoredPosition = pos;
+            UI_Item.RemoveSlotItem();
+            UI_Item.SetItem(gameObject);
+            UI_Item.SetPosition();
         }
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        Debug.Log("End");
-        DragImage.enabled = false;
     }
 }
