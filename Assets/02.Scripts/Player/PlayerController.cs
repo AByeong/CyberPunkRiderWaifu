@@ -29,6 +29,10 @@ namespace Gamekit3D
         public bool m_InCombo;
         [FormerlySerializedAs("m_Animator")]
         public Animator _animator;
+        [Header("Dash")]
+        public float DashDistance = 5.0f;
+        public float DashCooldown;
+        public float DashDuration = 0.2f;
         private readonly int m_HashAirborne = Animator.StringToHash("Airborne");
 
         // Parameters
@@ -67,7 +71,10 @@ namespace Gamekit3D
         private readonly int m_HashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
         private readonly int m_HashUpper = Animator.StringToHash("Upper");
         protected CharacterController _characterController;
+        private float _dashCooldownTimer;
+        private float _dashTime;
         protected PlayerInput _input;
+        private bool _isDashing;
         protected bool _isGrounded = true;
         private IStatsProvider _stat;
 
@@ -91,9 +98,7 @@ namespace Gamekit3D
         protected bool m_Respawning;
         protected Quaternion m_TargetRotation;
         protected float m_VerticalSpeed;
-
         protected bool IsMoveInput => !Mathf.Approximately(_input.MoveInput.sqrMagnitude, 0f);
-
         private void Awake()
         {
             _input = GetComponent<PlayerInput>();
@@ -126,6 +131,8 @@ namespace Gamekit3D
             _animator.ResetTrigger(m_HashMeleeAttack);
             _animator.ResetTrigger(m_HashRightAttack);
             _animator.ResetTrigger(m_HashRoll);
+
+
             if (_input.Attack && canAttack)
             {
 
@@ -138,9 +145,27 @@ namespace Gamekit3D
                 _animator.SetTrigger(m_HashRightAttack);
             }
 
-            if (_input.Roll)
+            _dashCooldownTimer -= Time.deltaTime;
+
+            if (_input.Roll && _dashCooldownTimer <= 0f && !_isDashing)
             {
-                _animator.SetTrigger(m_HashRoll);
+                _dashCooldownTimer = DashCooldown;
+                Dash();
+            }
+
+            // 대시 중일 때 매 프레임 이동
+            if (_isDashing)
+            {
+                float dashSpeed = DashDistance / DashDuration;
+                Vector3 dashDirection = transform.forward;
+                Vector3 dashMove = dashDirection * dashSpeed * Time.deltaTime;
+                _characterController.Move(dashMove);
+
+                _dashTime += Time.deltaTime;
+                if (_dashTime >= DashDuration)
+                {
+                    _isDashing = false;
+                }
             }
             CalculateForwardMovement();
             CalculateVerticalMovement();
@@ -203,6 +228,12 @@ namespace Gamekit3D
                 _animator.SetFloat(m_HashAirborneVerticalSpeed, m_VerticalSpeed);
 
             _animator.SetBool(m_HashGrounded, _isGrounded);
+        }
+        public void Dash()
+        {
+            _animator.SetTrigger(m_HashRoll);
+            _isDashing = true;
+            _dashTime = 0f;
         }
 
 
