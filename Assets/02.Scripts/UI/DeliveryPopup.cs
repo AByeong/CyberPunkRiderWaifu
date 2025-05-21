@@ -1,9 +1,16 @@
 using UnityEngine;
-using System; // Action은 더 이상 직접적으로 필요 없을 수 있습니다.
+using System;
+using UnityEngine.UI;
 
 public class DeliveryPopup : Popup
 {
-    
+    public AnswerPopup EscapeButton;
+
+    private void Start()
+    {
+        EscapeButton.SetupPopup("정말로 나갈 거에요?", "나갈래요", "남아 있을래요.", () => Debug.Log("나간다잉"));
+    }
+
     override public void OpenPopup()
     {
         // DeliveryPopup이 열릴 때 고유하게 수행할 로직
