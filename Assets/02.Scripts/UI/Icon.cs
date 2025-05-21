@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class Icon : MonoBehaviour
 {
     [SerializeField]
@@ -15,42 +14,39 @@ public class Icon : MonoBehaviour
     public float CoolTime;
     public Sprite IconImageSprite;
     public Color FrameColor;
-    
-    private bool _isLoading = false;
-    
-    public Action CoolTimeStartAction;
+
+    private bool _isLoading;
     public Action CoolTimeEndAction;
+
+    public Action CoolTimeStartAction;
 
     private void Awake()
     {
-        foreach (var frame in ColorChangeable)
+        foreach(Image frame in ColorChangeable)
         {
             frame.color = FrameColor;
-            
+
         }
         IconImage.sprite = IconImageSprite;
         Loading.fillAmount = 0;
     }
+
+    private void Update()
+    {
+        if (!_isLoading) return;
+        Loading.fillAmount -= Time.deltaTime / CoolTime;
+
+        if (Loading.fillAmount <= 0)
+        {
+            _isLoading = false;
+            CoolTimeEndAction?.Invoke();
+        }
+    }
+
     public void StartCooltime()
     {
         Loading.fillAmount = 1;
         CoolTimeStartAction?.Invoke();
         _isLoading = true;
     }
-
-    private void Update()
-    {
-        if(!_isLoading) return;
-        else
-        {
-            Loading.fillAmount -= Time.deltaTime / CoolTime;
-
-            if (Loading.fillAmount <= 0)
-            {
-                _isLoading = false;
-                CoolTimeEndAction?.Invoke();
-            }
-        }
-    }
-
 }

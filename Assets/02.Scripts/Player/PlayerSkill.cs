@@ -14,7 +14,6 @@ public class PlayerSkill : MonoBehaviour
 
     private void Update()
     {
-
         if (_input.Skill1)
         {
             Debug.Log("1 입력받음");
