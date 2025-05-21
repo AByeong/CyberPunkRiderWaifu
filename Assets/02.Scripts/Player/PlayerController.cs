@@ -461,6 +461,9 @@ namespace Gamekit3D
                 case KeyCode.Alpha1:
                     _animator.SetTrigger(m_HashSkill1);
                     break;
+                case KeyCode.Alpha2:
+                    _animator.SetTrigger(m_HashSkill2);
+                    break;
             }
 
         }
