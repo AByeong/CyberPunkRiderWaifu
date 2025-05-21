@@ -21,15 +21,15 @@ public partial class DieAction : Action
         switch (_enemyType)
         {
             case EEnemyType.Normal:
-                DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal++;
+                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
                 break;
             
             case EEnemyType.Elite:
-                DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite++;
+                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Elite);
                 break;
             
             case EEnemyType.Boss:
-                DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss++;
+                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Boss);
                 break;
             
         }

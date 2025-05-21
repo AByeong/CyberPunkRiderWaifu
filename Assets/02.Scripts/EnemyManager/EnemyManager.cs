@@ -17,7 +17,6 @@ public class EnemyManager : Singleton<EnemyManager>
    
 
 
-   public PlayableDirector CinemachineDrector;
    
 
    public void InitSpawn()
