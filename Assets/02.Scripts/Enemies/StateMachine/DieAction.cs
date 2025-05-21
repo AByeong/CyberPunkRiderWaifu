@@ -37,6 +37,8 @@ public partial class DieAction : Action
 
         _enemy.NavMeshAgent.enabled = false;
         _enemy.GetComponent<Collider>().enabled = false;
+
+        
         
         return Status.Running;
     }

@@ -35,17 +35,35 @@ public class DeliveryManager : Singleton<DeliveryManager>
         
         KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
         KillTracker.KillTrakerInit();//KillTracker초기화
-        
+
+        CompleteSector = CurrentMissionData.DeliverystageData.Count;
+
     }
 
     public void LoadNextSection()
     {
-        CurrentSector++;
-        KillTracker.ResetCurrentKillCount();
-        Debug.Log(CurrentSector);
-        KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        if (CurrentSector == CompleteSector)
+        {
+            DeliveryComplete();
+        }
+        else
+        {
+
+            CurrentSector++;
+            KillTracker.ResetCurrentKillCount();
+            Debug.Log(CurrentSector);
+            KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        }
     }
 
+    private void DeliveryComplete()
+    {
+        Debug.Log("Delivery complete");
+        foreach (GameObject reward in CurrentMissionData.Reward.DeliveryRewards)
+        {
+            Debug.Log(reward.name);
+        }
+    }
    
     
     public void ChangeSectorName(int sector)

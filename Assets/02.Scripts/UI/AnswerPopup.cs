@@ -25,16 +25,15 @@ public class AnswerPopup : Popup
     
     override public void OpenPopup()
     {
-        NegativeButton.onClick.AddListener(() => OnPopupClosed());
         PositiveButton.onClick.AddListener(() => {
             ApproveAction?.Invoke(); // ApproveAction이 할당되어 있다면 실행
-            OnPopupClosed(); // 동작 실행 후 팝업 닫기
+
         });
 
         base.OpenPopup();
     }
 
-    protected override void OnPopupClosed()
+    override public void ClosePopup()
     {
         // 리스너를 제거하여 중복 구독을 방지
         NegativeButton.onClick.RemoveAllListeners();
@@ -42,6 +41,6 @@ public class AnswerPopup : Popup
 
         ApproveAction = null; 
 
-        base.OnPopupClosed();
+        base.ClosePopup();
     }
 }
