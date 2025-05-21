@@ -2,6 +2,7 @@ using UnityEngine;
 
 public interface IEquipable
 {
-    void Equip();
-    void Unequip();
+    string Name { get; }
+    void Equip(GameObject player);
+    void Unequip(GameObject player);
 }
