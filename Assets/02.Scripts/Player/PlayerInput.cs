@@ -26,8 +26,8 @@ namespace JY
         public Vector2 MoveInput {
             get
             {
-                if (playerControllerInputBlocked || _isExternalInputBlocked)
-                    return Vector2.zero;
+                // if (playerControllerInputBlocked || _isExternalInputBlocked)
+                //     return Vector2.zero;
                 return _movement;
             }
         }
