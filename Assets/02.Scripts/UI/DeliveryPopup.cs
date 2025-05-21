@@ -4,11 +4,15 @@ using UnityEngine.UI;
 
 public class DeliveryPopup : Popup
 {
-    public AnswerPopup EscapeButton;
+    public Button EscapeButton;
 
     private void Start()
     {
-        EscapeButton.SetupPopup("정말로 나갈 거에요?", "나갈래요", "남아 있을래요.", () => Debug.Log("나간다잉"));
+        EscapeButton.onClick.AddListener(() => {
+            UIManager.Instance.PopupManager.ShowAnswerPopup(
+                "정말로 그만두실 건가요?", "나갈래여", "여기 있을래요", () => Debug.Log("*****나갑니다.*******")
+            );
+        });
     }
 
     override public void OpenPopup()

@@ -42,6 +42,8 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
     public void LoadNextSection()
     {
+        CurrentSector++;
+        
         if (CurrentSector == CompleteSector)
         {
             DeliveryComplete();
@@ -49,7 +51,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
         else
         {
 
-            CurrentSector++;
+            
             KillTracker.ResetCurrentKillCount();
             Debug.Log(CurrentSector);
             KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
@@ -58,11 +60,31 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
     private void DeliveryComplete()
     {
-        Debug.Log("Delivery complete");
+        
+        
         foreach (GameObject reward in CurrentMissionData.Reward.DeliveryRewards)
         {
             Debug.Log(reward.name);
         }
+
+        
+        
+        Cursor.lockState = CursorLockMode.Confined; 
+        Cursor.visible = true; 
+        UIManager.Instance.ESCisClose = true;
+        
+        
+        UIManager.Instance.PopupManager.ShowAnswerPopup("축하합니다!", "우와 감사해요", "개꿀", () =>
+        {
+            UIManager.Instance.ESCisClose = false;
+            GameManager.Instance.GameReplay();
+            Debug.Log("클리어");
+            UIManager.Instance.ESCisClose = false;
+            UIManager.Instance.PopupManager.AnswerPopup.ClosePopup();
+        },null,1);
+        
+        
+        GameManager.Instance.GameStop();
     }
    
     
