@@ -11,6 +11,7 @@ public class SkillManager : Singleton<SkillManager>
     private PlayerController _playerController;
     private Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
 
+    public Skill EquipSkill1 => _equippedSkills[0];
     private void Start()
     {
         // 빈 슬롯으로 _equippedSkills 초기화
