@@ -61,6 +61,7 @@ namespace Gamekit3D
         private readonly int m_HashMeleeAttack = Animator.StringToHash("MeleeAttack");
         private readonly int m_HashRespawn = Animator.StringToHash("Respawn");
         private readonly int m_HashRightAttack = Animator.StringToHash("RightAttack");
+        private readonly int m_HashRoll = Animator.StringToHash("Roll");
         private readonly int m_HashSkill1 = Animator.StringToHash("Skill1");
         private readonly int m_HashSkill2 = Animator.StringToHash("Skill2");
         private readonly int m_HashSkill3 = Animator.StringToHash("Skill3");
@@ -149,7 +150,7 @@ namespace Gamekit3D
             {
                 Debug.Log($"공격력: {_stat.GetStat(StatType.AttackPower)}");
             }
-            _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 15);
+            _stat = new StatModifierDecorator(_stat, StatType.AttackPower, -15);
 
             Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
         }
@@ -190,7 +191,28 @@ namespace Gamekit3D
 
             if (m_Input.RightAttack && canAttack)
             {
+
                 m_Animator.SetTrigger(m_HashRightAttack);
+            }
+
+            if (m_Input.Roll)
+            {
+                float moveDistance = 10f;
+                float moveSpeed = 5f;
+                Vector3 targetPosition;
+                // 카메라가 바라보는 방향 (Y축 제거)
+                Vector3 camForward = Camera.main.transform.forward;
+                camForward.y = 0;
+                camForward.Normalize();
+
+                // 목표 위치 계산
+                targetPosition = transform.position + camForward * moveDistance;
+
+                Vector3 direction = (targetPosition - transform.position).normalized;
+                Vector3 move = direction * moveSpeed * Time.deltaTime;
+
+                m_CharCtrl.Move(move);
+                m_Animator.SetTrigger(m_HashRoll);
             }
             CalculateForwardMovement();
             CalculateVerticalMovement();
@@ -329,6 +351,9 @@ namespace Gamekit3D
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill2 || m_CurrentStateInfo.shortNameHash == m_HashSkill2;
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill3 || m_CurrentStateInfo.shortNameHash == m_HashSkill3;
             // equipped |= m_NextStateInfo.shortNameHash == m_HashSkill4 || m_CurrentStateInfo.shortNameHash == m_HashSkill4;
+
+            // 구르기 중일 때
+            equipped |= m_NextStateInfo.shortNameHash == m_HashRoll || m_CurrentStateInfo.shortNameHash == m_HashRoll;
 
             return equipped;
         }
