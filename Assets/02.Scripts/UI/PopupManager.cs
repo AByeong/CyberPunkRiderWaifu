@@ -14,8 +14,10 @@ public class PopupManager : MonoBehaviour
    
    public void CloseLastPopup()
    {
-      if(PopupStack.Count > 0)
-      PopupStack.Pop().ClosePopup();
+      if (PopupStack.Count > 0)
+      {
+         PopupStack.Pop().ClosePopup();
+      }
       
    }
 
