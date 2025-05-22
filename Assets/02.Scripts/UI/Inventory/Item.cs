@@ -1,7 +1,7 @@
+using System;
 using UnityEngine;
-
-public enum ItemType {Equipment, Consumable, Etc}
-[System.Serializable]
+public enum ItemType { Equipment, Chip, Etc }
+[Serializable]
 public class Item
 {
     public string ItemName;
