@@ -13,10 +13,11 @@ public partial class RenturnToPoolAction : Action
     protected override Status OnStart()
     {
         //풀링에 반환
-        if (Agent.Value.EnemyData.EnemyType == EEnemyType.Normal)
-        {
+        
             Agent.Value.Pool.ReturnObject(this.GameObject);
-        }
+        
+        
+        
         return Status.Running;
     }
 

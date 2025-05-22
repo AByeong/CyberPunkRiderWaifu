@@ -50,11 +50,15 @@ public class DeliveryManager : Singleton<DeliveryManager>
         }
         else
         {
-
             
             KillTracker.ResetCurrentKillCount();
             Debug.Log(CurrentSector);
             KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        }
+
+        if (CurrentSector == CompleteSector - 1)
+        {
+            CinemachineManager.Instance.BossAppear();
         }
     }
 

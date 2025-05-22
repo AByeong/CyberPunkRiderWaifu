@@ -40,7 +40,7 @@ public class EnemyManager : Singleton<EnemyManager>
       }
    }
 
-
+   
 
    public void Spawn(int spawnerIndex)
    {
