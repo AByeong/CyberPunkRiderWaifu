@@ -19,7 +19,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             UI_Item.Init(item, gameObject);
         }
     }
+    public void SetItem(Item newItem)
+    {
+        item = newItem;
+        HasItem = true;
 
+        if (UI_Item == null)
+        {
+            GameObject newUI = Instantiate(ItemPrefab, transform);
+            UI_Item = newUI.GetComponent<UI_Item>();
+        }
+
+        UI_Item.Init(newItem, gameObject);
+    }
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log(eventData.pointerDrag.name + " dropped");
