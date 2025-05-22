@@ -97,7 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -149,9 +149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1215b2acef8ed9b4fb41f1c0d4dc59a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventorySlotPrefab: {fileID: 1524566710524572218, guid: cb81a110b5f2b5b4181a1af19f334524, type: 3}
-  SlotParent: {fileID: 7356737163468870719}
-  SlotCount: 36
 --- !u!1 &3082802819833460415
 GameObject:
   m_ObjectHideFlags: 0
@@ -3538,6 +3535,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Inventoryslot
       objectReference: {fileID: 0}
+    - target: {fileID: 6709730292519940951, guid: cb81a110b5f2b5b4181a1af19f334524, type: 3}
+      propertyPath: HasItem
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709730292519940951, guid: cb81a110b5f2b5b4181a1af19f334524, type: 3}
+      propertyPath: item.Icon
+      value: 
+      objectReference: {fileID: 21300000, guid: e441463d4d15cca42bd4eea54fb9e434, type: 3}
+    - target: {fileID: 6709730292519940951, guid: cb81a110b5f2b5b4181a1af19f334524, type: 3}
+      propertyPath: item.ItemName
+      value: asdasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 6709730292519940951, guid: cb81a110b5f2b5b4181a1af19f334524, type: 3}
+      propertyPath: item.EquipmentData
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e785665f48296847bdbbd27f34e3d6b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
