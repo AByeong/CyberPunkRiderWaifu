@@ -1,8 +1,9 @@
-using System.Collections.Generic;
 using Gamekit3D;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
 public class EquipmentSlot : MonoBehaviour, IDropHandler
 {
     public Image Icon;
@@ -11,21 +12,20 @@ public class EquipmentSlot : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null) return;
-
-        if (!eventData.pointerDrag.TryGetComponent<UI_Item>(out UI_Item uiItem)) return;
-
+        if (!eventData.pointerDrag.TryGetComponent<UI_Item>(out var uiItem)) return;
+        
         Item draggedItem = uiItem.MyItem;
 
         if (draggedItem == null || draggedItem.ItemType != ItemType.Equipment) return;
-
-        EquipmentType equipType = draggedItem.EquipmentData.EquipmentType;
+        
+        var equipType = draggedItem.EquipmentData.EquipmentType;
+        
         if (_equipmentType != equipType) return;
-
         EquipItem(draggedItem);
-
+        
         uiItem.SetItem(gameObject);
         uiItem.SetPosition();
-
+        
         //InventorySlot originSlot = eventData.pointerDrag?.GetComponent<InventorySlot>();
 
     }
@@ -38,25 +38,31 @@ public class EquipmentSlot : MonoBehaviour, IDropHandler
             return;
         }
         PlayerController playerController = GameManager.Instance.player;
-
-        if (EquippedItem != null)
+        
+        if (EquippedItem != null && 
+            EquippedItem.EquipmentData != null && 
+            EquippedItem.EquipmentData.Stats != null)
         {
-            foreach(KeyValuePair<StatType, float> stat in EquippedItem.EquipmentData.Stats)
+            Debug.Log("RemoveEquipment");
+            foreach(var stat in EquippedItem.EquipmentData.Stats)
             {
                 playerController.RemoveEquipment(stat.Key, stat.Value);
             }
         }
-
+        Debug.Log("Item Equip Start");
+        
         EquippedItem = item;
         if (Icon != null)
             Icon.sprite = item.Icon;
-
+        Debug.Log("Item Equip End");
+        
         // Player에게 Prefab 붙여주기 및 스탯 적용
-        foreach(KeyValuePair<StatType, float> stat in EquippedItem.EquipmentData.Stats)
+        foreach(var stat in EquippedItem.EquipmentData.Stats)
         {
-            playerController.ApplyEquipment(stat.Key, stat.Value);
+            playerController.ApplyEquipment(stat.Key, stat.Value);    
             Debug.Log($"[장착 완료] {stat.Key.ToString()} : {stat.Value}");
         }
+        Debug.Log("Item Stat added");
 
     }
 }
