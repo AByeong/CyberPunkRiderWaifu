@@ -738,8 +738,8 @@ MonoBehaviour:
   player: {fileID: 1029618044}
   playerTransform: {fileID: 1029618045}
   formationManager: {fileID: 803641383}
-  tier1MaxDistance: 50
-  tier2MaxDistance: 80
+  tier1MaxDistance: 10
+  tier2MaxDistance: 60
   tierCheckInterval: 0.5
   monstersPerFrameLogicUpdate: 10
 --- !u!114 &803641383
@@ -773,8 +773,8 @@ MonoBehaviour:
   _dontDestroy: 1
   _normalMonsterSpawners:
   - {fileID: 1382732998}
+  _eliteMonsterSpawners:
   - {fileID: 146778256}
-  _eliteMonsterSpawners: []
   _bossMonsterSpawners: {fileID: 0}
   Timer: 1
 --- !u!4 &803641385
@@ -907,6 +907,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 49885439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1010052820 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 7448360459939322366, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
+  m_PrefabInstance: {fileID: 1608359396}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1029618044 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2921213963416402505, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
@@ -2614,6 +2619,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5637839264626966794, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
+      propertyPath: 'attackColliders.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1010052820}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2693,7 +2702,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2533778901137035927, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: m_Name
-      value: Normal_Spawner (1)
+      value: Elite_Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 2693689125859332094, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: aiManager
@@ -2702,6 +2711,10 @@ PrefabInstance:
     - target: {fileID: 2693689125859332094, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: numberOfMonstersToSpawn
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6429505371611374344, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
+      propertyPath: prefabToPoolRef.m_AssetGUID
+      value: f1741bf7431abbd48af1fa227078051c
       objectReference: {fileID: 0}
     - target: {fileID: 7249002844801296321, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: m_LocalPosition.x

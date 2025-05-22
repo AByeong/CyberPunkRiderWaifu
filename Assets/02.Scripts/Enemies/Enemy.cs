@@ -29,6 +29,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
         CurrentHealthPoint = _enemyData.HealthPoint;
+        
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        if (_navMeshAgent == null)
+        {
+            Debug.LogWarning($"{gameObject.name} NavMeshAgent가 없습니다");
+        }
+
+        _animator = GetComponentInChildren<Animator>();
+        if (_animator == null)
+        {
+            Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
+        }
     }
 
     private async void Start()
