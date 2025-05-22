@@ -1,4 +1,3 @@
-using System;
 using JY;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -118,15 +117,6 @@ namespace Gamekit3D
 
             Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
         }
-
-        public void ApplyEquipment(StatType statType, float value)
-        {
-            _stat = new StatModifierDecorator(_stat, statType, value);
-        }
-        public void RemoveEquipment(StatType statType, float value)
-        {
-            _stat = new StatModifierDecorator(_stat, statType, -value);
-        }
 // // 무기 효과 (+15 공격력)
 //         stats = new StatModifierDecorator(stats, StatType.AttackPower, 15);
 //
@@ -152,7 +142,6 @@ namespace Gamekit3D
 
             if (_input.Attack && canAttack)
             {
-
                 _animator.SetTrigger(m_HashMeleeAttack);
             }
 
@@ -246,6 +235,15 @@ namespace Gamekit3D
 
             _animator.SetBool(m_HashGrounded, _isGrounded);
         }
+
+        public void ApplyEquipment(StatType statType, float value)
+        {
+            _stat = new StatModifierDecorator(_stat, statType, value);
+        }
+        public void RemoveEquipment(StatType statType, float value)
+        {
+            _stat = new StatModifierDecorator(_stat, statType, -value);
+        }
         public void Dash()
         {
             _animator.SetTrigger(m_HashRoll);
@@ -264,7 +262,7 @@ namespace Gamekit3D
             m_NextStateInfo = _animator.GetNextAnimatorStateInfo(0);
             m_IsAnimatorTransitioning = _animator.IsInTransition(0);
         }
-        // Called after the animator state has been cached to determine whether this script should block user input.
+
         private void UpdateInputBlocking()
         {
             bool inputBlocked = m_CurrentStateInfo.tagHash == m_HashBlockInput && !m_IsAnimatorTransitioning;
@@ -272,7 +270,7 @@ namespace Gamekit3D
             _input.playerControllerInputBlocked = inputBlocked;
         }
 
-        // Called after the animator state has been cached to determine whether or not the staff should be active or not.
+
         private bool IsWeaponEquiped()
         {
             // 지금 실행중인 애니메이션 이름을 참조해서 트루를 반환함, 스킬 사용 중일 때 참이 자동으로 되게 할거임
@@ -307,24 +305,20 @@ namespace Gamekit3D
                 _animator.ResetTrigger(m_HashMeleeAttack);
         }
 
-        // Called each physics step.
+
         private void CalculateForwardMovement()
         {
-            // Cache the move input and cap it's magnitude at 1.
+
             Vector2 moveInput = _input.MoveInput;
             if (moveInput.sqrMagnitude > 1f)
                 moveInput.Normalize();
 
-            // Calculate the speed intended by input.
             m_DesiredForwardSpeed = moveInput.magnitude * MaxForwardSpeed;
 
-            // Determine change to speed based on whether there is currently any move input.
             float acceleration = IsMoveInput ? k_GroundAcceleration : k_GroundDeceleration;
 
-            // Adjust the forward speed towards the desired speed.
             m_ForwardSpeed = Mathf.MoveTowards(m_ForwardSpeed, m_DesiredForwardSpeed, acceleration * Time.deltaTime);
 
-            // Set the animator parameter to control what animation is being played.
             _animator.SetFloat(m_HashForwardSpeed, m_ForwardSpeed);
         }
 
@@ -515,14 +509,21 @@ namespace Gamekit3D
             }
 
         }
-
-        [Serializable]
-        public class EffectInfo
+        public void TakeDamage(Damage damage)
         {
-            public GameObject Effect;
-            public Transform StartPositionRotation;
-            public float DestroyAfter = 10;
-            public bool UseLocalPosition = true;
+            // Set the Hurt parameter of the animator.
+            _animator.SetTrigger(m_HashHurt);
+
+            // Find the direction of the damage.
+            Vector3 forward = damage.From.transform.position - transform.position;
+            forward.y = 0f;
+
+            Vector3 localHurt = transform.InverseTransformDirection(forward);
+
+            // Set the HurtFromX and HurtFromY parameters of the animator based on the direction of the damage.
+            _animator.SetFloat(m_HashHurtFromX, localHurt.x);
+            _animator.SetFloat(m_HashHurtFromY, localHurt.z);
+
         }
     }
 

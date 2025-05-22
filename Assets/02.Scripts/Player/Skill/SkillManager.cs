@@ -6,17 +6,20 @@ using UnityEngine;
 public class SkillManager : Singleton<SkillManager>
 {
     public SkillDataList DataList;
+
+    public List<UI_Skill> AvailableSkills;
+    public List<UI_Skill> EquippedSkills;
     private List<Skill> _availableSkills = new List<Skill>();
     private List<Skill> _equippedSkills = new List<Skill>();
     private PlayerController _playerController;
     private Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
 
-//    public Skill EquipSkill1 => _equippedSkills[0];
-    //public Skill EquipSkill2 => _equippedSkills[1];
-   // public Skill EquipSkill3 => _equippedSkills[2];    
-   // public Skill EquipSkill4 => _equippedSkills[3];
-    
-    
+    // public Skill EquipSkill1 => _equippedSkills[0];
+    // public Skill EquipSkill2 => _equippedSkills[1];
+    // public Skill EquipSkill3 => _equippedSkills[2];
+    // public Skill EquipSkill4 => _equippedSkills[3];
+
+
     private void Start()
     {
         // 빈 슬롯으로 _equippedSkills 초기화
@@ -34,6 +37,7 @@ public class SkillManager : Singleton<SkillManager>
             skill.Index = skillIndex;
             skillIndex++;
             _availableSkills.Add(skill);
+            AvailableSkills[skillIndex].SetSkill(skill);
         }
 
         // 기본 스킬 장착
@@ -59,7 +63,7 @@ public class SkillManager : Singleton<SkillManager>
 
         Skill skillToEquip = _availableSkills[skillIndex - 1];
         _equippedSkills[equipIndex - 1] = skillToEquip;
-
+        EquippedSkills[equipIndex - 1].SetSkill(skillToEquip);
         // 쿨다운 초기화
         if (!_skillCurrentCooldowns.ContainsKey(skillToEquip))
         {
