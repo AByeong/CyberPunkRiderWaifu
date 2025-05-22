@@ -2,27 +2,32 @@ using System;
 using System.Collections.Generic;
 using Gamekit3D;
 using UnityEngine;
+using UnityEngine.UI;
 [Serializable]
 public class SkillManager : Singleton<SkillManager>
 {
     public SkillDataList DataList;
+
+    public List<UI_Skill> AvailableSkills;
+    public List<UI_Skill> EquippedSkills;
     private List<Skill> _availableSkills = new List<Skill>();
     private List<Skill> _equippedSkills = new List<Skill>();
     private PlayerController _playerController;
     private Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
 
-//    public Skill EquipSkill1 => _equippedSkills[0];
-    //public Skill EquipSkill2 => _equippedSkills[1];
-   // public Skill EquipSkill3 => _equippedSkills[2];    
-   // public Skill EquipSkill4 => _equippedSkills[3];
-    
-    
+    public Skill EquipSkill1 => _equippedSkills[0];
+    public Skill EquipSkill2 => _equippedSkills[1];
+    public Skill EquipSkill3 => _equippedSkills[2];
+    public Skill EquipSkill4 => _equippedSkills[3];
+
+
     private void Start()
     {
         // 빈 슬롯으로 _equippedSkills 초기화
         for (int i = 0; i < 4; i++)
         {
             _equippedSkills.Add(null);
+            EquippedSkills[i].GetComponent<Button>().interactable = false;
         }
 
         // 사용 가능한 스킬 초기화
@@ -32,12 +37,13 @@ public class SkillManager : Singleton<SkillManager>
             Skill skill = new Skill();
             skill.SkillData = data;
             skill.Index = skillIndex;
+            AvailableSkills[skillIndex].SetSkill(skill);
             skillIndex++;
             _availableSkills.Add(skill);
         }
 
         // 기본 스킬 장착
-        EquipSkill(1, 1);
+        // EquipSkill(1, 1);
         GameObject player = GameObject.FindGameObjectWithTag("Player");
 
         _playerController = player.GetComponent<PlayerController>();
@@ -48,28 +54,44 @@ public class SkillManager : Singleton<SkillManager>
         UpdateCooldowns(Time.deltaTime);
     }
 
-    public void EquipSkill(int skillIndex, int equipIndex)
+    public void EquipSkill(int skillIndex)
     {
-        if (skillIndex <= 0 || skillIndex > _availableSkills.Count ||
-            equipIndex <= 0 || equipIndex > 4)
+        if (skillIndex <= 0 || skillIndex > _availableSkills.Count)
         {
-            Debug.LogError("잘못된 스킬 또는 장착 인덱스입니다.");
+            Debug.LogError("잘못된 스킬 인덱스입니다.");
             return;
         }
 
         Skill skillToEquip = _availableSkills[skillIndex - 1];
-        _equippedSkills[equipIndex - 1] = skillToEquip;
+        // 비어있는 슬롯 찾기
+        for (int i = 0; i < _equippedSkills.Count; i++)
+        {
+            if (_equippedSkills[i] == null)
+            {
+                _equippedSkills[i] = skillToEquip;
+                EquippedSkills[i].SetSkill(skillToEquip);
+                EquippedSkills[i].GetComponent<Button>().interactable = true;
 
-        // 쿨다운 초기화
-        if (!_skillCurrentCooldowns.ContainsKey(skillToEquip))
-        {
-            _skillCurrentCooldowns.Add(skillToEquip, skillToEquip.SkillData.CoolTime);
+                AvailableSkills[skillToEquip.Index].GetComponent<Button>().interactable = false;
+
+                // 쿨다운 초기화
+                if (!_skillCurrentCooldowns.ContainsKey(skillToEquip))
+                {
+                    _skillCurrentCooldowns.Add(skillToEquip, skillToEquip.SkillData.CoolTime);
+                }
+                else
+                {
+                    _skillCurrentCooldowns[skillToEquip] = skillToEquip.SkillData.CoolTime;
+                }
+
+                return; // 장착했으므로 함수 종료
+            }
         }
-        else
-        {
-            _skillCurrentCooldowns[skillToEquip] = skillToEquip.SkillData.CoolTime;
-        }
+
+        // 비어있는 슬롯이 없음
+        Debug.Log("장착 가능한 빈 슬롯이 없습니다.");
     }
+
 
     public void UnequipSkill(int equipIndex)
     {
@@ -78,7 +100,10 @@ public class SkillManager : Singleton<SkillManager>
             Debug.LogError("잘못된 장착 인덱스입니다.");
             return;
         }
-
+        Skill skillToUnequip = _equippedSkills[equipIndex - 1];
+        AvailableSkills[skillToUnequip.Index].GetComponent<Button>().interactable = true;
+        EquippedSkills[equipIndex - 1].RemoveSkill();
+        EquippedSkills[equipIndex - 1].GetComponent<Button>().interactable = false;
         _equippedSkills[equipIndex - 1] = null;
     }
 

@@ -10,6 +10,7 @@ public class PlayerSkill : MonoBehaviour
     {
         _input = GetComponent<PlayerInput>();
         _player = GetComponent<PlayerController>();
+
     }
 
     private void Update()
@@ -18,6 +19,7 @@ public class PlayerSkill : MonoBehaviour
         {
             Debug.Log("1 입력받음");
             SkillManager.Instance.UseSkill(KeyCode.Alpha1);
+
             _player.UseSkill(KeyCode.Alpha1);
             UIManager.Instance.StageMainUI.SkillIconLoad(0);
         }
@@ -26,6 +28,18 @@ public class PlayerSkill : MonoBehaviour
         {
             Debug.Log("2 입력받음");
             SkillManager.Instance.UseSkill(KeyCode.Alpha2);
+            _player.UseSkill(KeyCode.Alpha2);
+        }
+        if (_input.Skill3)
+        {
+            Debug.Log("3 입력받음");
+            SkillManager.Instance.UseSkill(KeyCode.Alpha3);
+            _player.UseSkill(KeyCode.Alpha2);
+        }
+        if (_input.Skill4)
+        {
+            Debug.Log("4 입력받음");
+            SkillManager.Instance.UseSkill(KeyCode.Alpha4);
             _player.UseSkill(KeyCode.Alpha2);
         }
     }

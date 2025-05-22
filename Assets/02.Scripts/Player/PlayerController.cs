@@ -1,4 +1,3 @@
-using System;
 using JY;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -67,8 +66,17 @@ namespace Gamekit3D
         private readonly int m_HashSkill1 = Animator.StringToHash("Skill1");
         private readonly int m_HashSkill2 = Animator.StringToHash("Skill2");
         private readonly int m_HashSkill3 = Animator.StringToHash("Skill3");
+        private readonly int m_HashSkill4 = Animator.StringToHash("Skill4");
+        private readonly int m_HashSkill5 = Animator.StringToHash("Skill5");
+        private readonly int m_HashSkill6 = Animator.StringToHash("Skill6");
+        private readonly int m_HashSkill7 = Animator.StringToHash("Skill7");
+        private readonly int m_HashSkill8 = Animator.StringToHash("Skill8");
         private readonly int m_HashStateTime = Animator.StringToHash("StateTime");
         private readonly int m_HashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
+        private readonly int m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquipSkill1.SkillData.TriggerName);
+        private readonly int m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquipSkill2.SkillData.TriggerName);
+        private readonly int m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquipSkill3.SkillData.TriggerName);
+        private readonly int m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquipSkill4.SkillData.TriggerName);
         private readonly int m_HashUpper = Animator.StringToHash("Upper");
         protected CharacterController _characterController;
         private float _dashCooldownTimer;
@@ -117,15 +125,7 @@ namespace Gamekit3D
             _stat = new StatModifierDecorator(_stat, StatType.AttackPower, -15);
 
             Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
-        }
 
-        public void ApplyEquipment(StatType statType, float value)
-        {
-            _stat = new StatModifierDecorator(_stat, statType, value);
-        }
-        public void RemoveEquipment(StatType statType, float value)
-        {
-            _stat = new StatModifierDecorator(_stat, statType, -value);
         }
 // // 무기 효과 (+15 공격력)
 //         stats = new StatModifierDecorator(stats, StatType.AttackPower, 15);
@@ -152,13 +152,11 @@ namespace Gamekit3D
 
             if (_input.Attack && canAttack)
             {
-
                 _animator.SetTrigger(m_HashMeleeAttack);
             }
 
             if (_input.RightAttack && canAttack)
             {
-
                 _animator.SetTrigger(m_HashRightAttack);
             }
 
@@ -190,7 +188,9 @@ namespace Gamekit3D
             SetTargetRotation();
 
             if (IsOrientationUpdated() && IsMoveInput)
+            {
                 UpdateOrientation();
+            }
 
 
             TimeoutToIdle();
@@ -246,6 +246,15 @@ namespace Gamekit3D
 
             _animator.SetBool(m_HashGrounded, _isGrounded);
         }
+
+        public void ApplyEquipment(StatType statType, float value)
+        {
+            _stat = new StatModifierDecorator(_stat, statType, value);
+        }
+        public void RemoveEquipment(StatType statType, float value)
+        {
+            _stat = new StatModifierDecorator(_stat, statType, -value);
+        }
         public void Dash()
         {
             _animator.SetTrigger(m_HashRoll);
@@ -264,7 +273,7 @@ namespace Gamekit3D
             m_NextStateInfo = _animator.GetNextAnimatorStateInfo(0);
             m_IsAnimatorTransitioning = _animator.IsInTransition(0);
         }
-        // Called after the animator state has been cached to determine whether this script should block user input.
+
         private void UpdateInputBlocking()
         {
             bool inputBlocked = m_CurrentStateInfo.tagHash == m_HashBlockInput && !m_IsAnimatorTransitioning;
@@ -272,7 +281,7 @@ namespace Gamekit3D
             _input.playerControllerInputBlocked = inputBlocked;
         }
 
-        // Called after the animator state has been cached to determine whether or not the staff should be active or not.
+
         private bool IsWeaponEquiped()
         {
             // 지금 실행중인 애니메이션 이름을 참조해서 트루를 반환함, 스킬 사용 중일 때 참이 자동으로 되게 할거임
@@ -288,7 +297,11 @@ namespace Gamekit3D
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill1 || m_CurrentStateInfo.shortNameHash == m_HashSkill1;
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill2 || m_CurrentStateInfo.shortNameHash == m_HashSkill2;
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill3 || m_CurrentStateInfo.shortNameHash == m_HashSkill3;
-            // equipped |= m_NextStateInfo.shortNameHash == m_HashSkill4 || m_CurrentStateInfo.shortNameHash == m_HashSkill4;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill4 || m_CurrentStateInfo.shortNameHash == m_HashSkill4;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill5 || m_CurrentStateInfo.shortNameHash == m_HashSkill5;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill6 || m_CurrentStateInfo.shortNameHash == m_HashSkill6;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill7 || m_CurrentStateInfo.shortNameHash == m_HashSkill7;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill8 || m_CurrentStateInfo.shortNameHash == m_HashSkill8;
 
             // 구르기 중일 때
             equipped |= m_NextStateInfo.shortNameHash == m_HashRoll || m_CurrentStateInfo.shortNameHash == m_HashRoll;
@@ -307,24 +320,20 @@ namespace Gamekit3D
                 _animator.ResetTrigger(m_HashMeleeAttack);
         }
 
-        // Called each physics step.
+
         private void CalculateForwardMovement()
         {
-            // Cache the move input and cap it's magnitude at 1.
+
             Vector2 moveInput = _input.MoveInput;
             if (moveInput.sqrMagnitude > 1f)
                 moveInput.Normalize();
 
-            // Calculate the speed intended by input.
             m_DesiredForwardSpeed = moveInput.magnitude * MaxForwardSpeed;
 
-            // Determine change to speed based on whether there is currently any move input.
             float acceleration = IsMoveInput ? k_GroundAcceleration : k_GroundDeceleration;
 
-            // Adjust the forward speed towards the desired speed.
             m_ForwardSpeed = Mathf.MoveTowards(m_ForwardSpeed, m_DesiredForwardSpeed, acceleration * Time.deltaTime);
 
-            // Set the animator parameter to control what animation is being played.
             _animator.SetFloat(m_HashForwardSpeed, m_ForwardSpeed);
         }
 
@@ -507,22 +516,35 @@ namespace Gamekit3D
             switch (keyCode)
             {
                 case KeyCode.Alpha1:
-                    _animator.SetTrigger(m_HashSkill1);
+                    _animator.SetTrigger(m_HashTriggerSkill1);
                     break;
                 case KeyCode.Alpha2:
-                    _animator.SetTrigger(m_HashSkill2);
+                    _animator.SetTrigger(m_HashTriggerSkill2);
+                    break;
+                case KeyCode.Alpha3:
+                    _animator.SetTrigger(m_HashTriggerSkill3);
+                    break;
+                case KeyCode.Alpha4:
+                    _animator.SetTrigger(m_HashTriggerSkill4);
                     break;
             }
 
         }
-
-        [Serializable]
-        public class EffectInfo
+        public void TakeDamage(Damage damage)
         {
-            public GameObject Effect;
-            public Transform StartPositionRotation;
-            public float DestroyAfter = 10;
-            public bool UseLocalPosition = true;
+            // Set the Hurt parameter of the animator.
+            _animator.SetTrigger(m_HashHurt);
+
+            // Find the direction of the damage.
+            Vector3 forward = damage.From.transform.position - transform.position;
+            forward.y = 0f;
+
+            Vector3 localHurt = transform.InverseTransformDirection(forward);
+
+            // Set the HurtFromX and HurtFromY parameters of the animator based on the direction of the damage.
+            _animator.SetFloat(m_HashHurtFromX, localHurt.x);
+            _animator.SetFloat(m_HashHurtFromY, localHurt.z);
+
         }
     }
 
