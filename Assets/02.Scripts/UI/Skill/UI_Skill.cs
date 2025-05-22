@@ -4,7 +4,7 @@ public class UI_Skill : MonoBehaviour
 {
     private Image _icon;
     private Skill _skill;
-    private void Start()
+    private void Awake()
     {
         _icon = GetComponent<Image>();
     }
@@ -12,6 +12,7 @@ public class UI_Skill : MonoBehaviour
     public void SetSkill(Skill skillToEquip)
     {
         _skill = skillToEquip;
+        Debug.Log(_icon);
         _icon.sprite = _skill.SkillData.Icon;
     }
 

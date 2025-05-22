@@ -11,4 +11,5 @@ public class Item
 
     public string EquipmentDataId;
     public EquipmentData EquipmentData;
+    public ChipData ChipData;
 }

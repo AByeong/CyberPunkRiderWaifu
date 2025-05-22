@@ -125,6 +125,7 @@ namespace Gamekit3D
             _stat = new StatModifierDecorator(_stat, StatType.AttackPower, -15);
 
             Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
+
         }
 // // 무기 효과 (+15 공격력)
 //         stats = new StatModifierDecorator(stats, StatType.AttackPower, 15);
