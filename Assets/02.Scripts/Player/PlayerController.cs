@@ -66,8 +66,17 @@ namespace Gamekit3D
         private readonly int m_HashSkill1 = Animator.StringToHash("Skill1");
         private readonly int m_HashSkill2 = Animator.StringToHash("Skill2");
         private readonly int m_HashSkill3 = Animator.StringToHash("Skill3");
+        private readonly int m_HashSkill4 = Animator.StringToHash("Skill4");
+        private readonly int m_HashSkill5 = Animator.StringToHash("Skill5");
+        private readonly int m_HashSkill6 = Animator.StringToHash("Skill6");
+        private readonly int m_HashSkill7 = Animator.StringToHash("Skill7");
+        private readonly int m_HashSkill8 = Animator.StringToHash("Skill8");
         private readonly int m_HashStateTime = Animator.StringToHash("StateTime");
         private readonly int m_HashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
+        private readonly int m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquipSkill1.SkillData.TriggerName);
+        private readonly int m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquipSkill2.SkillData.TriggerName);
+        private readonly int m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquipSkill3.SkillData.TriggerName);
+        private readonly int m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquipSkill4.SkillData.TriggerName);
         private readonly int m_HashUpper = Animator.StringToHash("Upper");
         protected CharacterController _characterController;
         private float _dashCooldownTimer;
@@ -147,7 +156,6 @@ namespace Gamekit3D
 
             if (_input.RightAttack && canAttack)
             {
-
                 _animator.SetTrigger(m_HashRightAttack);
             }
 
@@ -179,7 +187,9 @@ namespace Gamekit3D
             SetTargetRotation();
 
             if (IsOrientationUpdated() && IsMoveInput)
+            {
                 UpdateOrientation();
+            }
 
 
             TimeoutToIdle();
@@ -286,7 +296,11 @@ namespace Gamekit3D
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill1 || m_CurrentStateInfo.shortNameHash == m_HashSkill1;
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill2 || m_CurrentStateInfo.shortNameHash == m_HashSkill2;
             equipped |= m_NextStateInfo.shortNameHash == m_HashSkill3 || m_CurrentStateInfo.shortNameHash == m_HashSkill3;
-            // equipped |= m_NextStateInfo.shortNameHash == m_HashSkill4 || m_CurrentStateInfo.shortNameHash == m_HashSkill4;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill4 || m_CurrentStateInfo.shortNameHash == m_HashSkill4;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill5 || m_CurrentStateInfo.shortNameHash == m_HashSkill5;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill6 || m_CurrentStateInfo.shortNameHash == m_HashSkill6;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill7 || m_CurrentStateInfo.shortNameHash == m_HashSkill7;
+            equipped |= m_NextStateInfo.shortNameHash == m_HashSkill8 || m_CurrentStateInfo.shortNameHash == m_HashSkill8;
 
             // 구르기 중일 때
             equipped |= m_NextStateInfo.shortNameHash == m_HashRoll || m_CurrentStateInfo.shortNameHash == m_HashRoll;
@@ -501,10 +515,16 @@ namespace Gamekit3D
             switch (keyCode)
             {
                 case KeyCode.Alpha1:
-                    _animator.SetTrigger(m_HashSkill1);
+                    _animator.SetTrigger(m_HashTriggerSkill1);
                     break;
                 case KeyCode.Alpha2:
-                    _animator.SetTrigger(m_HashSkill2);
+                    _animator.SetTrigger(m_HashTriggerSkill2);
+                    break;
+                case KeyCode.Alpha3:
+                    _animator.SetTrigger(m_HashTriggerSkill3);
+                    break;
+                case KeyCode.Alpha4:
+                    _animator.SetTrigger(m_HashTriggerSkill4);
                     break;
             }
 

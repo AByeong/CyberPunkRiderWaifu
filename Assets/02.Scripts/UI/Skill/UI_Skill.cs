@@ -12,5 +12,12 @@ public class UI_Skill : MonoBehaviour
     public void SetSkill(Skill skillToEquip)
     {
         _skill = skillToEquip;
+        _icon.sprite = _skill.SkillData.Icon;
+    }
+
+    public void RemoveSkill()
+    {
+        _skill = null;
+        _icon.sprite = null;
     }
 }

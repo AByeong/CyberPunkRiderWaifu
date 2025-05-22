@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 [Serializable]
 public class SkillData
 {
@@ -9,4 +10,6 @@ public class SkillData
     public bool IsUpgraded;
     public bool IsGroundSkill;
     public float SkillRange = 1f;
+
+    public Sprite Icon;
 }
