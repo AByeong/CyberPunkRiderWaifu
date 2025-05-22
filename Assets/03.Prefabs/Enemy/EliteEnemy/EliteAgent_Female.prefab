@@ -17,8 +17,8 @@ GameObject:
   - component: {fileID: 5252955424619335002}
   - component: {fileID: 3564118245039200704}
   - component: {fileID: 8621727571898490721}
-  - component: {fileID: 4498394580510370994}
   - component: {fileID: 3184633984302917899}
+  - component: {fileID: 8669644209295390855}
   m_Layer: 3
   m_Name: EliteAgent_Female
   m_TagString: Untagged
@@ -130,7 +130,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTier: 2
-  BehaviorGraphAgent: {fileID: 4498394580510370994}
   Enemy: {fileID: 8621727571898490721}
   Tier1_Speed: 3.5
   minPlayerDistance: 0.3
@@ -216,70 +215,6 @@ MonoBehaviour:
   Pool: {fileID: 0}
   _attackType: 0
   EliteAnimator: {fileID: 3184633984302917899}
---- !u!114 &4498394580510370994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3016843131154389009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Graph: {fileID: 4770526755948362411, guid: d28848975e3aa7348a6fe7087b0fb786, type: 2}
-  m_BlackboardVariableOverridesList:
-  - rid: 4630506815982666026
-  - rid: 4630506815982666028
-  - rid: 4630506815982666126
-  - rid: 4630506815982666127
-  - rid: 1281621998399914124
-  m_IsInitialised: 0
-  m_IsStarted: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 1281621998399914124
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 14380733572200834210
-          m_Value1: 12866304450710296623
-        Name: Target
-        m_Value: {fileID: 0}
-    - rid: 4630506815982666026
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 3016843131154389009}
-    - rid: 4630506815982666028
-      type: {class: 'BlackboardVariable`1[[UnityEngine.Animator, UnityEngine.AnimationModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 3668994166808452547
-          m_Value1: 10163688837707839339
-        Name: AgentAnimator
-        m_Value: {fileID: 3184633984302917899}
-    - rid: 4630506815982666126
-      type: {class: 'BlackboardVariable`1[[System.Int32, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 15365842724496971815
-          m_Value1: 17647626291216489917
-        Name: HealthPoint
-        m_Value: 30
-    - rid: 4630506815982666127
-      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 4957053894139553847
-          m_Value1: 6684829160616274639
-        Name: AttackDistance
-        m_Value: 10
 --- !u!95 &3184633984302917899
 Animator:
   serializedVersion: 7
@@ -302,6 +237,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8669644209295390855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3016843131154389009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068fb2bbdc17ae8468e5161e545a1382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8326864227532834307
 PrefabInstance:
   m_ObjectHideFlags: 0
