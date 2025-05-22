@@ -10,7 +10,8 @@ public enum EGirdType
     Exit,
     Path,
     Pattern,
-    Border
+    Border,
+    CornerBorder
 
     // 0: 비활성 그리드
     // 1: 활성 그리드
@@ -18,11 +19,14 @@ public enum EGirdType
     // 3: 출구
     // 4: 길
     // 5: 패턴
+    // 6: 경계
+    // 7: 경계 코너
 }
 
 public class GridGeneration : MonoBehaviour
 {
     public GameObject FencePrefab;
+    public GameObject FenceCornerPrefab;
     public GameObject FenceDoorPrefab;
     public GameObject PathPrefab;
     public GameObject[] PropPrefabs;
@@ -95,6 +99,8 @@ public class GridGeneration : MonoBehaviour
         }
         RemoveFarActivateCells();
         DetectBoundary();
+
+    
         GenerateRandomPatterns();
         BuildMap();
     }
@@ -122,16 +128,132 @@ public class GridGeneration : MonoBehaviour
 
     void DetectBoundary()
     {
+        // 임시로 경계 셀을 저장할 리스트 (반복문 내에서 grid를 직접 수정하면 문제 발생 가능)
+        List<Vector2Int> potentialBorderCells = new List<Vector2Int>();
+
+        // 첫 번째 순회: Blank에 인접한 모든 Activate 셀을 잠재적 경계 셀로 식별
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (grid[x, y] == (int)EGirdType.Activate && HasEmptyNeighbor(x, y))
                 {
-                    grid[x, y] = (int)EGirdType.Border;
+                    potentialBorderCells.Add(new Vector2Int(x, y));
                 }
             }
         }
+
+        // 두 번째 순회: 잠재적 경계 셀을 Border 또는 CornerBorder로 최종 할당
+        foreach (var cell in potentialBorderCells)
+        {
+            // 입구, 출구, 길은 Border/CornerBorder로 덮어쓰지 않음
+            if (grid[cell.x, cell.y] != (int)EGirdType.Enrty &&
+                grid[cell.x, cell.y] != (int)EGirdType.Exit &&
+                grid[cell.x, cell.y] != (int)EGirdType.Path)
+            {
+                grid[cell.x, cell.y] = (int)EGirdType.Border;
+            }
+        }
+
+        foreach (var cell in potentialBorderCells)
+        {
+            if (IsCornerBorder(cell.x, cell.y))
+            {
+                grid[cell.x, cell.y] = (int)EGirdType.CornerBorder;
+            }
+        }
+    }
+
+    private int GetGridValueSafe(int x, int y)
+    {
+        if (x < 0 || x >= width || y < 0 || y >= height)
+        {
+            return (int)EGirdType.Blank;
+        }
+        return grid[x, y];
+    }
+
+    bool IsCornerBorder(int x, int y)
+    {   
+        // bool borderNorth =  (grid[x, y + 1] == (int)EGirdType.Border || grid[x, y + 1] == (int)EGirdType.CornerBorder || grid[x, y + 1] == (int)EGirdType.Enrty || grid[x, y + 1] == (int)EGirdType.Exit);
+        // bool borderSouth =  (grid[x, y - 1] == (int)EGirdType.Border || grid[x, y - 1] == (int)EGirdType.CornerBorder || grid[x, y - 1] == (int)EGirdType.Enrty || grid[x, y - 1] == (int)EGirdType.Exit);
+        // bool borderEast =   (grid[x + 1, y] == (int)EGirdType.Border || grid[x + 1, y] == (int)EGirdType.CornerBorder || grid[x + 1, y] == (int)EGirdType.Enrty || grid[x + 1, y] == (int)EGirdType.Exit);
+        // bool borderWest =   (grid[x - 1, y] == (int)EGirdType.Border || grid[x - 1, y] == (int)EGirdType.CornerBorder || grid[x - 1, y] == (int)EGirdType.Enrty || grid[x - 1, y] == (int)EGirdType.Exit);
+        
+        // if (borderNorth && borderWest) // 북서 코너 (맵의 안쪽은 남동쪽)
+        // {
+        //     return true; // 0도 회전 (기본 방향)
+        // }
+        // else if (borderNorth && borderEast) // 북동 코너 (맵의 안쪽은 남서쪽)
+        // {
+        //     return true; // 90도 회전
+        // }
+        // else if (borderSouth && borderEast) // 남동 코너 (맵의 안쪽은 북서쪽)
+        // {
+        //     return true; // 180도 회전
+        // }
+        // else if (borderSouth && borderWest) // 남서 코너 (맵의 안쪽은 북동쪽)
+        // {
+        //     return true; // 270도 회전
+        // }
+
+        // return false;
+
+
+        // 이 함수는 EGirdType.Border (값 6)인 셀에 대해 호출됩니다.
+        // 이 셀이 Border 라인의 코너를 형성하는지 확인해야 합니다.
+        // 코너는 두 개의 인접한 (수직/수평) Border 이웃을 가질 때 형성됩니다.
+
+        Vector2Int[] cardinalDirections = new Vector2Int[]
+        {
+            new Vector2Int(0, 1),  // 북 (North)
+            new Vector2Int(0, -1), // 남 (South)
+            new Vector2Int(1, 0),  // 동 (East)
+            new Vector2Int(-1, 0)  // 서 (West)
+        };
+
+        List<Vector2Int> borderCardinalNeighbors = new List<Vector2Int>();
+
+        foreach (var dir in cardinalDirections)
+        {
+            int nx = x + dir.x;
+            int ny = y + dir.y;
+
+            // 이웃 셀이 그리드 범위 내에 있고, Border 또는 CornerBorder 타입인지 확인
+            // (이미 CornerBorder로 분류된 셀도 Border 라인의 일부로 간주)
+            int neighborType = GetGridValueSafe(nx, ny);
+            if (neighborType == (int)EGirdType.Border || neighborType == (int)EGirdType.CornerBorder || neighborType == (int)EGirdType.Enrty || neighborType == (int)EGirdType.Exit)
+            {
+                borderCardinalNeighbors.Add(new Vector2Int(nx, ny));
+            }
+        }
+
+        
+        // 코너 셀은 일반적으로 정확히 두 개의 수직/수평 Border 이웃을 가집니다.
+        if (borderCardinalNeighbors.Count != 2)
+        {
+            return false;
+        }
+
+        // 이제 이 두 이웃이 서로 수직인지 확인합니다.
+        Vector2Int n1 = borderCardinalNeighbors[0];
+        Vector2Int n2 = borderCardinalNeighbors[1];
+
+        // 현재 셀 (x, y)를 기준으로 이웃들의 상대적 위치를 계산합니다.
+        int relX1 = n1.x - x;
+        int relY1 = n1.y - y;
+        int relX2 = n2.x - x;
+        int relY2 = n2.y - y;
+
+        // 두 이웃이 수직인 경우는 다음과 같습니다:
+        // 하나는 수평 방향 (relY=0, relX!=0)이고 다른 하나는 수직 방향 (relX=0, relY!=0)일 때.
+        bool isPerpendicular = ( (relX1 != 0 && relY1 == 0 && relX2 == 0 && relY2 != 0) ||
+                                 (relX1 == 0 && relY1 != 0 && relX2 != 0 && relY2 == 0) );
+        if (!isPerpendicular)
+        {
+            Debug.LogWarning($"{x}, {y}: {isPerpendicular} == {relX1}|{relY1}|{relX2}|{relY2}");            
+        }
+        return isPerpendicular;
     }
 
     bool HasEmptyNeighbor(int x, int y)
@@ -351,7 +473,7 @@ public class GridGeneration : MonoBehaviour
             for (int y = maskMargin; y < height - maskMargin; y++)
             {
                 // 현재 셀이 Activate 타입이고, 이미 Border가 아닌 경우에만 검사
-                if (grid[x, y] == (int)EGirdType.Activate)
+                if (grid[x, y] == (int)EGirdType.Activate || grid[x, y] == (int)EGirdType.Border || grid[x, y] == (int)EGirdType.CornerBorder)
                 {
                     bool isNearPath = false;
                     foreach (var pathCell in currentPathAndDoorCells)
@@ -414,6 +536,14 @@ public class GridGeneration : MonoBehaviour
                             GameObject fence = Instantiate(FencePrefab, transform);
                             fence.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
                             fence.transform.rotation = GetFenceRotation(i, j);
+                            break;
+                        }
+
+                    case (int)EGirdType.CornerBorder:
+                        {
+                            GameObject fenceCorenr = Instantiate(FenceCornerPrefab, transform);
+                            fenceCorenr.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                            fenceCorenr.transform.rotation = GetCornerFenceRotation(i, j);
                             break;
                         }
 
@@ -484,6 +614,33 @@ public class GridGeneration : MonoBehaviour
         // 만약 어떤 이유로 Blank 이웃을 찾지 못한다면 기본 회전을 반환
         Debug.LogWarning($"Border cell at ({x}, {y}) has no cardinal Blank neighbor. Defaulting to identity rotation.");
         return Quaternion.Euler(-90, 0, 0); // 기본 회전 (0,0,0)
+    }
+
+    Quaternion GetCornerFenceRotation(int x, int y)
+    {
+        bool borderNorth =  (grid[x, y + 1] == (int)EGirdType.Border || grid[x, y + 1] == (int)EGirdType.CornerBorder || grid[x, y + 1] == (int)EGirdType.Enrty || grid[x, y + 1] == (int)EGirdType.Exit);
+        bool borderSouth =  (grid[x, y - 1] == (int)EGirdType.Border || grid[x, y - 1] == (int)EGirdType.CornerBorder || grid[x, y - 1] == (int)EGirdType.Enrty || grid[x, y - 1] == (int)EGirdType.Exit);
+        bool borderEast =   (grid[x + 1, y] == (int)EGirdType.Border || grid[x + 1, y] == (int)EGirdType.CornerBorder || grid[x + 1, y] == (int)EGirdType.Enrty || grid[x + 1, y] == (int)EGirdType.Exit);
+        bool borderWest =   (grid[x - 1, y] == (int)EGirdType.Border || grid[x - 1, y] == (int)EGirdType.CornerBorder || grid[x - 1, y] == (int)EGirdType.Enrty || grid[x - 1, y] == (int)EGirdType.Exit);
+        
+        if (borderNorth && borderWest) // 북서 코너 (맵의 안쪽은 남동쪽)
+        {
+            return Quaternion.Euler(-90, 0, 0); // 0도 회전 (기본 방향)
+        }
+        else if (borderNorth && borderEast) // 북동 코너 (맵의 안쪽은 남서쪽)
+        {
+            return Quaternion.Euler(-90, 90, 0); // 90도 회전
+        }
+        else if (borderSouth && borderEast) // 남동 코너 (맵의 안쪽은 북서쪽)
+        {
+            return Quaternion.Euler(-90, 180, 0); // 180도 회전
+        }
+        else if (borderSouth && borderWest) // 남서 코너 (맵의 안쪽은 북동쪽)
+        {
+            return Quaternion.Euler(-90, 270, 0); // 270도 회전
+        }
+
+        return Quaternion.Euler(0, 0, 0);
     }
     
     Quaternion GetFenceDoorRotation(int x, int y)
