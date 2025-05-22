@@ -46,6 +46,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     
     public void ClearSlot()
     {
+        Debug.Log($"슬롯 비우기: {slotType} 슬롯에서 {(item != null ? item.ItemName : "없음")} 제거");
+        
         item = null;
         HasItem = false;
 
@@ -129,8 +131,17 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         if (HasItem && item != null)
         {
             Debug.Log($"아이템 교환 시도: {item.ItemName} <-> {droppedItem.ItemName}");
+            Debug.Log($"현재 슬롯: {slotType}, 이전 슬롯: {previousSlot.slotType}");
             
-            // 현재 슬롯의 아이템이 이전 슬롯에 들어갈 수 있는지 확인
+            // 인벤토리 간 교환은 항상 허용
+            if (slotType == SlotType.Inventory && previousSlot.slotType == SlotType.Inventory)
+            {
+                Debug.Log("인벤토리 간 교환 -> 허용");
+                SwapItems(droppedItem, droppedUIItem, previousSlot, playerController);
+                return;
+            }
+            
+            // 기타 경우에는 검증 필요
             if (!CanItemGoToSlot(item, previousSlot))
             {
                 Debug.Log("아이템 교환 불가: 현재 아이템이 이전 슬롯에 들어갈 수 없습니다.");
@@ -154,6 +165,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         // 인벤토리 슬롯은 모든 아이템 수용 가능
         if (targetSlot.slotType == SlotType.Inventory)
         {
+            Debug.Log($"인벤토리 슬롯 검증: {targetItem.ItemName} -> 수용 가능");
             return true;
         }
         
@@ -161,10 +173,18 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         if (targetSlot.slotType == SlotType.Equipment)
         {
             if (targetItem.ItemType != ItemType.Equipment)
+            {
+                Debug.Log($"장비 슬롯 검증: {targetItem.ItemName}은 장비가 아니므로 불가");
                 return false;
+            }
                 
             if (targetItem.EquipmentData == null || targetItem.EquipmentData.EquipmentType != targetSlot.equipmentType)
+            {
+                Debug.Log($"장비 슬롯 검증: {targetItem.ItemName}의 타입이 맞지 않음");
                 return false;
+            }
+            
+            Debug.Log($"장비 슬롯 검증: {targetItem.ItemName} -> 수용 가능");
         }
         
         return true;
