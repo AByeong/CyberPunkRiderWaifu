@@ -8,6 +8,7 @@ public class PopupManager : MonoBehaviour
    public Stack<Popup> PopupStack = new Stack<Popup>();
    public GameObject DeliveryPopup;
    public GameObject SettingsPopup;
+   public GameObject InventoryPopup;
    
    public AnswerPopup AnswerPopup;
    

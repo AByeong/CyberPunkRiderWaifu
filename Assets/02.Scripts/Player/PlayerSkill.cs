@@ -21,5 +21,12 @@ public class PlayerSkill : MonoBehaviour
             _player.UseSkill(KeyCode.Alpha1);
             UIManager.Instance.StageMainUI.SkillIconLoad(0);
         }
+
+        if (_input.Skill2)
+        {
+            Debug.Log("2 입력받음");
+            SkillManager.Instance.UseSkill(KeyCode.Alpha2);
+            _player.UseSkill(KeyCode.Alpha2);
+        }
     }
 }
