@@ -1,4 +1,4 @@
-using Unity.Behavior;
+using Unity.Behavior; // BehaviorGraphAgent를 위해 필요
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,46 +9,39 @@ public enum AITier
     Tier3_Background
 }
 
-
-// AITier enum은 파일 상단 또는 별도 파일에 정의되어 있다고 가정
-// public enum AITier { Tier1_ActiveFormation, Tier2_Approaching, Tier3_Background }
-
 [RequireComponent(typeof(NavMeshAgent))]
 public class MonsterAI : MonoBehaviour
 {
-    public AITier CurrentTier { get; private set; } = AITier.Tier3_Background;
+    [Header("Runtime Status")] // 인스펙터에서 구분을 위한 헤더
+    public AITier CurrentTier = AITier.Tier3_Background;
     
-
     public BehaviorGraphAgent BehaviorGraphAgent;
     public Enemy Enemy;
     private NavMeshAgent navMeshAgent;
     private Transform playerTransform;
     private FormationManager formationManager;
     private AIManager aiManager;
-    
+
     [Header("Tier 1 Behavior (Active Formation & Retreat)")]
+    public float Tier1_Speed = 3.5f;
     public float minPlayerDistance = 4.0f;
     public float desiredPlayerDistance = 6.0f;
     private const float Tier1_SlotReachedThreshold = 1.5f;
-    private const float Tier1_LookAtPlayerSpeed = 5f; // 플레이어 바라보기 속도는 유지
+    private const float Tier1_LookAtPlayerSpeed = 5f; 
     private bool isRetreating = false;
     private Vector3? currentFormationSlot = null;
 
     [Header("Tier 2 Behavior (Approaching)")]
+    public float Tier2_Speed = 7f;
     private const float Tier2_ApproachStoppingDistance = 8f;
-    private const float Tier2_LookAtPlayerSpeed = 4f; // 플레이어 바라보기 속도는 유지
+    private const float Tier2_LookAtPlayerSpeed = 4f;
 
     [Header("Tier 3 Behavior")]
-    private const float Tier3_LookAtPlayerSpeed = 3f; // 플레이어 바라보기 속도는 유지
+    private const float Tier3_LookAtPlayerSpeed = 3f;
     public float tier3LookAtPlayerMaxDistance = 10f;
     private float tier3LookAtPlayerMaxDistanceSqr;
 
-    // 색상 관련 필드 제거 (GPU Instancing을 위해 머티리얼 공유)
-    // public Color tier1Color = Color.red;
-    // public Color tier2Color = Color.yellow;
-    // public Color tier3Color = Color.blue;
-    // public Color defaultColor = Color.gray;
-    private Renderer monsterRenderer; // Renderer 참조는 여전히 유용할 수 있음 (예: 활성화/비활성화)
+    private Renderer monsterRenderer;
 
     [Header("Performance")]
     public float logicUpdateInterval = 0.2f;
@@ -57,15 +50,14 @@ public class MonsterAI : MonoBehaviour
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.updateRotation = false; // 수동 회전(플레이어 바라보기 등)을 위해 필요
+        navMeshAgent.updateRotation = false; 
 
-        monsterRenderer = GetComponentInChildren<Renderer>(); // Renderer 컴포넌트 가져오기
+        monsterRenderer = GetComponentInChildren<Renderer>(); 
         if (monsterRenderer == null)
         {
             Debug.LogWarning("MonsterAI: Renderer component not found on " + gameObject.name, this.gameObject);
         }
-        // Awake에서 monsterRenderer.material.color 설정하는 부분 제거
-
+        
         tier3LookAtPlayerMaxDistanceSqr = tier3LookAtPlayerMaxDistance * tier3LookAtPlayerMaxDistance;
     }
 
@@ -87,12 +79,21 @@ public class MonsterAI : MonoBehaviour
         formationManager = fm;
         aiManager = am;
         nextIndividualLogicUpdateTime = Time.time + Random.Range(0, logicUpdateInterval);
-        //행동 그래프 플레이어 설정
-        BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target", player.gameObject);
-        //오브젝트 풀 설정
-        Enemy.Pool = pool;
         
-        Debug.Log("초기화 완");
+        if (BehaviorGraphAgent != null && BehaviorGraphAgent.BlackboardReference != null && player != null)
+        {
+            BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target", player.gameObject);
+        }
+        else
+        {
+            // Debug.LogWarning("BehaviorGraphAgent, BlackboardReference, or Player is null. Cannot set Target.", this.gameObject);
+        }
+        
+        if (Enemy != null)
+        {
+            Enemy.Pool = pool;
+        }
+        // Debug.Log(gameObject.name + " 초기화 완");
     }
 
     public void SetAITier(AITier newTier, bool forceUpdate = false)
@@ -111,19 +112,19 @@ public class MonsterAI : MonoBehaviour
         }
         isRetreating = false;
 
-        // AI Tier에 따른 색상 변경 로직 제거 (GPU Instancing을 위해)
-
         switch (CurrentTier)
         {
             case AITier.Tier1_ActiveFormation:
-                // navMeshAgent.enabled = true; navMeshAgent.isStopped = false;
-                navMeshAgent.speed = 3.5f; navMeshAgent.acceleration = 8f; navMeshAgent.autoRepath = true;
+                navMeshAgent.speed = Tier1_Speed; // Tier1_Speed 사용
+                navMeshAgent.acceleration = 8f; 
+                navMeshAgent.autoRepath = true;
                 logicUpdateInterval = 0.1f;
                 break;
             case AITier.Tier2_Approaching:
-                // navMeshAgent.enabled = true; navMeshAgent.isStopped = false;
-                navMeshAgent.speed = 2.8f; navMeshAgent.acceleration = 5f;
-                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance; navMeshAgent.autoRepath = true;
+                navMeshAgent.speed = Tier2_Speed; // Tier2_Speed 사용
+                navMeshAgent.acceleration = 5f;
+                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance; 
+                navMeshAgent.autoRepath = true;
                 logicUpdateInterval = 0.3f;
                 break;
             case AITier.Tier3_Background:
@@ -173,7 +174,7 @@ public class MonsterAI : MonoBehaviour
                 case AITier.Tier1_ActiveFormation: currentLookSpeed = Tier1_LookAtPlayerSpeed; break;
                 case AITier.Tier2_Approaching: currentLookSpeed = Tier2_LookAtPlayerSpeed; break;
                 case AITier.Tier3_Background: currentLookSpeed = Tier3_LookAtPlayerSpeed; break;
-                default: currentLookSpeed = Tier1_LookAtPlayerSpeed; break;
+                default: currentLookSpeed = Tier1_LookAtPlayerSpeed; break; // 기본값 설정
             }
             ExecuteLookAtPlayerLogic(currentLookSpeed);
         }
@@ -181,8 +182,7 @@ public class MonsterAI : MonoBehaviour
 
     void UpdateTier1Behavior()
     {
-        // if (!navMeshAgent.enabled) navMeshAgent.enabled = true;
-        // if (navMeshAgent.isStopped) navMeshAgent.isStopped = false;
+        if (playerTransform == null) return; // playerTransform null 체크 추가
 
         float sqrDistToPlayer = (playerTransform.position - transform.position).sqrMagnitude;
         float minPlayerDistSqr = minPlayerDistance * minPlayerDistance;
@@ -199,31 +199,37 @@ public class MonsterAI : MonoBehaviour
             NavMeshHit hit;
             if (NavMesh.SamplePosition(retreatTargetPos, out hit, 3.0f, NavMesh.AllAreas))
             {
-                navMeshAgent.SetDestination(hit.position);
-                navMeshAgent.stoppingDistance = 0.2f;
+                if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+                {
+                    navMeshAgent.SetDestination(hit.position);
+                    navMeshAgent.stoppingDistance = 0.2f;
+                }
             }
             else
             {
                 Vector3 emergencyRetreatPos = transform.position + directionFromPlayer * 2.0f;
                 if (NavMesh.SamplePosition(emergencyRetreatPos, out hit, 1.0f, NavMesh.AllAreas))
-                    navMeshAgent.SetDestination(hit.position);
+                {
+                     if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+                        navMeshAgent.SetDestination(hit.position);
+                }
             }
 
             float desiredDistSqr = desiredPlayerDistance * desiredPlayerDistance;
-            // 후퇴 종료 조건 단순화 또는 이전 로직 유지
-            if (sqrDistToPlayer > desiredDistSqr * 0.9f) // 충분히 멀어졌다고 판단
+            if (sqrDistToPlayer > desiredDistSqr * 0.9f) 
             {
-                 // 그리고 NavMeshAgent가 현재 경로를 거의 완료했는지 확인 (선택적)
-                if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.5f)
+                if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.5f)
                 {
                     isRetreating = false;
-                    navMeshAgent.ResetPath(); // 다음 행동을 위해 경로 초기화
+                    navMeshAgent.ResetPath(); 
                 }
             }
             return;
         }
 
-        navMeshAgent.stoppingDistance = Tier1_SlotReachedThreshold * 0.8f;
+        if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+            navMeshAgent.stoppingDistance = Tier1_SlotReachedThreshold * 0.8f;
+
         bool needsNewSlot = !currentFormationSlot.HasValue;
         if (currentFormationSlot.HasValue && formationManager != null && formationManager.IsSlotStale(currentFormationSlot.Value, this))
         {
@@ -236,26 +242,34 @@ public class MonsterAI : MonoBehaviour
 
         if (currentFormationSlot.HasValue)
         {
-            if (navMeshAgent.destination != currentFormationSlot.Value)
+            if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && navMeshAgent.destination != currentFormationSlot.Value)
                 navMeshAgent.SetDestination(currentFormationSlot.Value);
-            if (Vector3.Distance(transform.position, currentFormationSlot.Value) < Tier1_SlotReachedThreshold)
-            { /* 공격 로직 */ }
+            
+            // 공격 로직은 주석 처리된 상태로 유지
+            // if (Vector3.Distance(transform.position, currentFormationSlot.Value) < Tier1_SlotReachedThreshold)
+            // { /* 공격 로직 */ }
         }
-        else
+        else // 슬롯이 없을 경우 플레이어에게 직접 이동
         {
-            navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
-            if (navMeshAgent.destination != playerTransform.position)
-                navMeshAgent.SetDestination(playerTransform.position);
+            if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+            {
+                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance; // Tier1이지만 슬롯 없으면 Tier2처럼 접근
+                if (navMeshAgent.destination != playerTransform.position)
+                    navMeshAgent.SetDestination(playerTransform.position);
+            }
         }
     }
 
     void UpdateTier2Behavior()
     {
-        // if (!navMeshAgent.enabled) navMeshAgent.enabled = true;
-        // if (navMeshAgent.isStopped) navMeshAgent.isStopped = false;
-        navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
-        if (navMeshAgent.destination != playerTransform.position)
-            navMeshAgent.SetDestination(playerTransform.position);
+        if (playerTransform == null) return; // playerTransform null 체크 추가
+
+        if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+        {
+            navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
+            if (navMeshAgent.destination != playerTransform.position)
+                navMeshAgent.SetDestination(playerTransform.position);
+        }
     }
 
     void UpdateTier3Behavior()

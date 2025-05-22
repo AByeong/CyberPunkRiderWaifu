@@ -11,6 +11,21 @@ public abstract class Popup : MonoBehaviour
         
         this.gameObject.SetActive(true);
         
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true; 
+        
+        
+        
+        Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
+        if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
+        {
+            string popuplist = "";
+            foreach (var popup in UIManager.Instance.PopupManager.PopupStack)
+            {
+                popuplist += popup.name + ", ";
+            }
+            Debug.Log(popuplist);
+        }
     }
 
     // 팝업이 닫힐 때 호출될 추상/가상 메서드를 추가합니다.
@@ -24,13 +39,15 @@ public abstract class Popup : MonoBehaviour
 
     virtual public void ClosePopup()
     {
-
+        
+        
         if (UIManager.Instance.PopupManager.PopupStack.Count == 0)
         {
             OnPopupClosed();
-        } 
+        }
         
         gameObject.SetActive(false);
-       
+        //Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
+
     }
 }

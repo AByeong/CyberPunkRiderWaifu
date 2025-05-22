@@ -31,6 +31,13 @@ public class EnemyManager : Singleton<EnemyManager>
             spawner.StartSpawning();
          }
       }
+      foreach (MonsterSpawner spawner in _eliteMonsterSpawners)
+      {
+         if (spawner.InitSpawn)
+         {
+            spawner.StartSpawning();
+         }
+      }
    }
 
 

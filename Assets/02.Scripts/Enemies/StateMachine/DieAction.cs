@@ -9,9 +9,10 @@ using Unity.Properties;
 public partial class DieAction : Action
 {
     [SerializeReference] public BlackboardVariable<GameObject> Agent;
+
+    private Animator _animator;
     private Enemy _enemy;
     private EEnemyType _enemyType;
-    
     protected override Status OnStart()
     {
 
@@ -23,20 +24,22 @@ public partial class DieAction : Action
             case EEnemyType.Normal:
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
                 break;
-
+            
             case EEnemyType.Elite:
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Elite);
                 break;
-
+            
             case EEnemyType.Boss:
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Boss);
                 break;
-
+            
         }
 
-        _enemy.NavMeshAgent.isStopped = true;
+        _enemy.NavMeshAgent.enabled = false;
         _enemy.GetComponent<Collider>().enabled = false;
 
+        
+        
         return Status.Running;
     }
 

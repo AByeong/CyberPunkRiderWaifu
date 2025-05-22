@@ -1,5 +1,6 @@
 using JY;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
@@ -9,10 +10,11 @@ public class UIManager : Singleton<UIManager>
 
     [Header("팝업")]
     public PopupManager PopupManager;
-    public PlayerInput _playerInput;
+    [FormerlySerializedAs("_playerInput")] public PlayerInput PlayerInput;
 
     private void Update()
     {
+        InventoryPopup();
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!ESCisClose)
@@ -20,8 +22,7 @@ public class UIManager : Singleton<UIManager>
                 PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
                 if (PopupManager.PopupStack.Count > 0)
                 {
-                    Cursor.lockState = CursorLockMode.Confined; // 커서를 화면 중앙에 고정
-                    Cursor.visible = true; // 커서 숨김
+                    
                     GameManager.Instance.GameStop();
                 }
             }
@@ -29,6 +30,26 @@ public class UIManager : Singleton<UIManager>
             {
                 PopupManager.CloseLastPopup();
                 
+            }
+        }
+    }
+
+    private void InventoryPopup()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            
+            
+            
+            
+            if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
+            {
+                
+                PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
+            }
+            else
+            {
+                PopupManager.CloseLastPopup();
             }
         }
     }
@@ -52,12 +73,12 @@ public class UIManager : Singleton<UIManager>
     
     public void PlayerStop()
     {
-        _playerInput.playerControllerInputBlocked = false;
+        PlayerInput.playerControllerInputBlocked = false;
     }
 
     public void PlayerReplay()
     {
-        _playerInput.playerControllerInputBlocked = true;
+        PlayerInput.playerControllerInputBlocked = true;
     }
 
     
