@@ -32,15 +32,7 @@ public class EliteEnemy : Enemy, IDamageable
     private NavMeshAgent _navMeshAgent;
     private Animator _animator; // 일반적인 이동 애니메이션 등을 위한 Animator
 
-    public void Running()
-    {
-        EliteAnimator.SetBool("Running", true);
-    }
-
-    public void NotRunning()
-    {
-        EliteAnimator.SetBool("Running", false);
-    }
+   
     protected override void Awake()
     {
        
