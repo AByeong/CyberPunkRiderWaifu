@@ -34,11 +34,11 @@ public class StageMainUI : MonoBehaviour
         finisherIcon.StartCooltime();
     }
 
-    public void RefreshKillTrackingText(string message)
+    public void RefreshKillTracking(string message)
     {
         KillTrackingText.text = message;
         ProgressSlider.value = (float)DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total)/(float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
-        Debug.Log(ProgressSlider.value);
+        finisherIcon.StackChange(DeliveryManager.Instance.KillTracker.TotalKillCount);
         
     }
     

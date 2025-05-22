@@ -29,12 +29,12 @@ public class KillTracker : MonoBehaviour
 {
    public KillCount CurrentKillCount;
    public KillCount MissionKillCount;
-   
+   public int TotalKillCount = 0;
    public void KillTrakerInit()
    {
        Debug.Log("KillTraker Init");
        
-       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());
+       UIManager.Instance.StageMainUI.RefreshKillTracking(KillTrackString());
        
        //지금 미션에서의 킬카운트 가져오기
    }
@@ -88,10 +88,20 @@ public class KillTracker : MonoBehaviour
            DeliveryManager.Instance.LoadNextSection();
            
        }
-       
 
-       UIManager.Instance.StageMainUI.RefreshKillTrackingText(KillTrackString());
+       IncreaseTotalKillCount();
+       UIManager.Instance.StageMainUI.RefreshKillTracking(KillTrackString());
        
+   }
+
+
+   public void ResetTotalKillCount()
+   {
+       TotalKillCount = 0;
+   }
+   private void IncreaseTotalKillCount()
+   {
+       TotalKillCount++;
    }
 
    public int GetCurrentKillCount(EnemyType type)

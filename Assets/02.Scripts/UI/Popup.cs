@@ -10,7 +10,7 @@ public abstract class Popup : MonoBehaviour
         UIManager.Instance.PopupManager.PopupStack.Push(this); 
         
         this.gameObject.SetActive(true);
-        
+        Debug.Log(UIManager.Instance.PopupManager.PopupStack.Count);
     }
 
     // 팝업이 닫힐 때 호출될 추상/가상 메서드를 추가합니다.
@@ -25,10 +25,11 @@ public abstract class Popup : MonoBehaviour
     virtual public void ClosePopup()
     {
 
+        Debug.Log(UIManager.Instance.PopupManager.PopupStack.Count);
         if (UIManager.Instance.PopupManager.PopupStack.Count == 0)
         {
             OnPopupClosed();
-        } 
+        }
         
         gameObject.SetActive(false);
        

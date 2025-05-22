@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class PopupManager : MonoBehaviour
    public GameObject SettingsPopup;
    public GameObject InventoryPopup;
    
+   public AnswerPopup AnswerPopup;
+   
    public void CloseLastPopup()
    {
       if(PopupStack.Count > 0)
@@ -16,6 +19,13 @@ public class PopupManager : MonoBehaviour
       
    }
 
+   public void ShowAnswerPopup(string answerMessage, string positiveButtonText, string negativeButtonText, Action onApprove, Action onCancel=null,int numberofbuttons = 2)
+   {
+      AnswerPopup.SetupPopup(answerMessage, positiveButtonText, negativeButtonText, onApprove,onCancel,numberofbuttons);
+      AnswerPopup.OpenPopup();
+      
+   }
+   
    public void CloseAllPopups()
    {
       while (PopupStack.Count > 0)
