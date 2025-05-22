@@ -8,18 +8,21 @@ public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDr
     private Canvas _canvas;
     public Item MyItem;
     public GameObject InventorySlot;
+    public GameObject OriginalSlot;
     private void Start()
     {
         
         _rectTransform = GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
 
-      
+
     }
 
     public void Init(Item item, GameObject inventorySlot)
     {
         MyItem = item;
+        OriginalSlot = inventorySlot;
+        InventorySlot = inventorySlot;
         inventorySlot.GetComponent<InventorySlot>().item = item;
         GetComponent<Image>().sprite = item.Icon;
         SetItem(inventorySlot);
@@ -52,15 +55,6 @@ public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDr
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Debug.Log($"{eventData.pointerEnter.name} : Enter");
-        // Debug.Log($"{eventData.pointerDrag.name} : Drag");
-        // if (eventData.pointerEnter?.GetComponent<InventorySlot>() != null)
-        // {
-        //     InventorySlot = eventData.pointerEnter;
-        // }
-        // transform.SetParent(InventorySlot.transform);
-        // _rectTransform.anchoredPosition = Vector2.zero;
-        //
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
