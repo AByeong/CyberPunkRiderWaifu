@@ -15,7 +15,6 @@ public class MonsterAI : MonoBehaviour
     [Header("Runtime Status")] // 인스펙터에서 구분을 위한 헤더
     public AITier CurrentTier = AITier.Tier3_Background;
     
-    public BehaviorGraphAgent BehaviorGraphAgent;
     public Enemy Enemy;
     private NavMeshAgent navMeshAgent;
     private Transform playerTransform;
@@ -79,16 +78,9 @@ public class MonsterAI : MonoBehaviour
         formationManager = fm;
         aiManager = am;
         nextIndividualLogicUpdateTime = Time.time + Random.Range(0, logicUpdateInterval);
-        
-        if (BehaviorGraphAgent != null && BehaviorGraphAgent.BlackboardReference != null && player != null)
-        {
-            BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target", player.gameObject);
-        }
-        else
-        {
-            // Debug.LogWarning("BehaviorGraphAgent, BlackboardReference, or Player is null. Cannot set Target.", this.gameObject);
-        }
-        
+
+        Enemy.Target = player.gameObject;
+
         if (Enemy != null)
         {
             Enemy.Pool = pool;
