@@ -27,7 +27,7 @@ public partial class AttackTargetAction : Action
             _target.TakeDamage(_damage);
         }
 
-        Agent.Value.NavMeshAgent.enabled = false;
+        Agent.Value.NavMeshAgent.isStopped = true;
 
         
 

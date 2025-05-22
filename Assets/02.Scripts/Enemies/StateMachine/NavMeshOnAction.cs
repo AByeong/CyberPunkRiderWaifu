@@ -12,7 +12,7 @@ public partial class NavMeshOnAction : Action
 
     protected override Status OnStart()
     {
-        Agent.Value.NavMeshAgent.enabled = true;
+        Agent.Value.NavMeshAgent.isStopped = false;
         return Status.Running;
     }
 

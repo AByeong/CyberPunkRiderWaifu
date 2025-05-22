@@ -45,8 +45,17 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         }
 
         _blackboardRef.SetVariableValue("StaggerTime", _enemyData.StaggerTime);
+        _blackboardRef.SetVariableValue("AttackCoolDown", _enemyData.AttackCoolDown);
+        _blackboardRef.SetVariableValue("AttackDistance", _enemyData.AttackDistance);
+        Initialize();
 
         _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
+    }
+
+    public virtual void Initialize()
+    {
+        _blackboardRef.SetVariableValue("HealthPoint", _enemyData.HealthPoint);
+        _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Idle);
     }
 
     public void TakeDamage(Damage damage)
@@ -62,6 +71,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         CurrentHealthPoint -= damage.DamageValue;
         Debug.Log("Enemy Hit!");
 
+        _blackboardRef.SetVariableValue("DamageValue", damage.DamageValue);
         _blackboardRef.SetVariableValue("HealthPoint", CurrentHealthPoint);
         _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Hit);
         _blackboardRef.SetVariableValue("IsHit", true);
