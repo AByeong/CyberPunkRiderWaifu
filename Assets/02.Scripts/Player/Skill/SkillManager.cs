@@ -140,7 +140,7 @@ public class SkillManager : Singleton<SkillManager>
                 Debug.Log($"{keyNumber + 1}번 스킬 발동");
                 _skillCurrentCooldowns[skillToUse] = 0.0f;
                 Debug.Log($"Using {skillToUse.SkillData.TriggerName}");
-                _playerController._animator.SetTrigger(skillToUse.SkillData.TriggerName);
+                // _playerController._animator.SetTrigger(skillToUse.SkillData.TriggerName);
                 return true;
             }
             Debug.Log($"{keyNumber + 1}번 스킬 쿨다운 중: {_skillCurrentCooldowns[skillToUse]}/{skillToUse.SkillData.CoolTime}");
