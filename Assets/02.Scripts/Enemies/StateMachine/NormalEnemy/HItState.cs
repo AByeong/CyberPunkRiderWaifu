@@ -113,6 +113,8 @@ public class HItState : BaseNormalEnemyState
     public override void OnEnter()
     {
 
+        Owner.gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+        
         targetMaterialName = Owner.MaterialName;
         
         
@@ -330,6 +332,7 @@ public class HItState : BaseNormalEnemyState
 
     public override void OnExit()
     {
+        Owner.gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
         Debug.Log($"[HitState] OnExit: Called for {Owner?.gameObject.name}");
         base.OnExit();
         _airSequence?.Kill();
