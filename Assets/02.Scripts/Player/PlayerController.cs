@@ -1,7 +1,6 @@
 using JY;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Debug = UnityEngine.Debug;
 
 namespace Gamekit3D
 {
@@ -73,10 +72,6 @@ namespace Gamekit3D
         private readonly int m_HashSkill8 = Animator.StringToHash("Skill8");
         private readonly int m_HashStateTime = Animator.StringToHash("StateTime");
         private readonly int m_HashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
-        private readonly int m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquipSkill1.SkillData.TriggerName);
-        private readonly int m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquipSkill2.SkillData.TriggerName);
-        private readonly int m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquipSkill3.SkillData.TriggerName);
-        private readonly int m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquipSkill4.SkillData.TriggerName);
         private readonly int m_HashUpper = Animator.StringToHash("Upper");
         protected CharacterController _characterController;
         private float _dashCooldownTimer;
@@ -92,6 +87,10 @@ namespace Gamekit3D
         protected AnimatorStateInfo m_CurrentStateInfo;
         protected float m_DesiredForwardSpeed;
         protected float m_ForwardSpeed;
+        private int m_HashTriggerSkill1;
+        private int m_HashTriggerSkill2;
+        private int m_HashTriggerSkill3;
+        private int m_HashTriggerSkill4;
         protected float m_IdleTimer;
         protected bool m_InAttack;
         protected bool m_IsAnimatorTransitioning;
@@ -117,14 +116,6 @@ namespace Gamekit3D
         private async void Start()
         {
             _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
-
-            if (_stat != null)
-            {
-                Debug.Log($"공격력: {_stat.GetStat(StatType.AttackPower)}");
-            }
-            _stat = new StatModifierDecorator(_stat, StatType.AttackPower, -15);
-
-            Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
 
         }
 // // 무기 효과 (+15 공격력)
@@ -511,20 +502,24 @@ namespace Gamekit3D
             //we set the damageable invincible so we can't get hurt just after being respawned (feel like a double punitive)
             // m_Damageable.isInvulnerable = false;
         }
-        public void UseSkill(KeyCode keyCode)
+        public void UseSkill(int skillNumber)
         {
-            switch (keyCode)
+            switch (skillNumber)
             {
-                case KeyCode.Alpha1:
+                case 0:
+                    m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill1);
                     break;
-                case KeyCode.Alpha2:
+                case 1:
+                    m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill2);
                     break;
-                case KeyCode.Alpha3:
+                case 2:
+                    m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill3);
                     break;
-                case KeyCode.Alpha4:
+                case 3:
+                    m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill4);
                     break;
             }

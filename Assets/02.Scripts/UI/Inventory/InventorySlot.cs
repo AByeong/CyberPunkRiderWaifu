@@ -98,12 +98,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             GameObject newUI = Instantiate(ItemPrefab, transform);
             UI_Item = newUI.GetComponent<UI_Item>();
+            item = newItem;
         }
 
         UI_Item.Init(item, gameObject);
     }
 
-    protected virtual void ClearSlot()
+    public virtual void ClearSlot()
     {
         item = null;
         HasItem = false;
