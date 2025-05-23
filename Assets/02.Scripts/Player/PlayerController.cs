@@ -1,7 +1,6 @@
 using JY;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Debug = UnityEngine.Debug;
 
 namespace Gamekit3D
 {
@@ -117,14 +116,6 @@ namespace Gamekit3D
         private async void Start()
         {
             _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
-
-            if (_stat != null)
-            {
-                Debug.Log($"공격력: {_stat.GetStat(StatType.AttackPower)}");
-            }
-            _stat = new StatModifierDecorator(_stat, StatType.AttackPower, -15);
-
-            Debug.Log($"추가된 공격력: {_stat.GetStat(StatType.AttackPower)}");
 
         }
 // // 무기 효과 (+15 공격력)
@@ -397,18 +388,18 @@ namespace Gamekit3D
             }
             else
             {
-                
+
                 if (moveDirection != Vector3.zero)
                 {
                     targetRotation = Quaternion.LookRotation(moveDirection);
                 }
                 else
                 {
-                    
-                    targetRotation = Quaternion.identity; 
+
+                    targetRotation = Quaternion.identity;
                 }
-                    //targetRotation = (Quaternion.LookRotation(moveDirection).Equals(Vector3.zero)) ? Quaternion.identity : Quaternion.LookRotation(moveDirection);
-                
+                //targetRotation = (Quaternion.LookRotation(moveDirection).Equals(Vector3.zero)) ? Quaternion.identity : Quaternion.LookRotation(moveDirection);
+
             }
 
             Vector3 resultingForward = targetRotation * Vector3.forward;
@@ -527,19 +518,19 @@ namespace Gamekit3D
             switch (skillNumber)
             {
                 case 0:
-                    m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkill[0].SkillData.TriggerName);
+                    // m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill1);
                     break;
                 case 1:
-                    m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkill[1].SkillData.TriggerName);
+                    // m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill2);
                     break;
                 case 2:
-                    m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkill[2].SkillData.TriggerName);
+                    // m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill3);
                     break;
                 case 3:
-                    m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkill[3].SkillData.TriggerName);
+                    // m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill4);
                     break;
             }

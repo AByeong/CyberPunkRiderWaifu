@@ -35,19 +35,18 @@ public abstract class Popup : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; // 커서를 화면 중앙에 고정
         Cursor.visible = false; // 커서 숨김
         GameManager.Instance.GameReplay();
+        UIManager.Instance.ESCisClose = false;
     }
 
     virtual public void ClosePopup()
     {
         
         
-        if (UIManager.Instance.PopupManager.PopupStack.Count == 0)
-        {
-            OnPopupClosed();
-        }
+        
         
         
         Debug.Log($"닫는순간 현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
+        
         if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
         {
             string popuplist = "";
@@ -58,6 +57,10 @@ public abstract class Popup : MonoBehaviour
             Debug.Log(popuplist);
         }
         
+        if (UIManager.Instance.PopupManager.PopupStack.Count == 0)
+        {
+            OnPopupClosed();
+        }
         
         gameObject.SetActive(false);
     }
