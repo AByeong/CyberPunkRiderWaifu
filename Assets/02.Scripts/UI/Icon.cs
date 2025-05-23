@@ -13,8 +13,8 @@ public class Icon : MonoBehaviour
     
     [SerializeField]
     private Image[] ColorChangeable;
-    [SerializeField]
-    private Image IconImage;
+
+    public Image IconImage;
     [SerializeField]
     private Image Loading;
 

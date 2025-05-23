@@ -1,7 +1,9 @@
 using RobustFSM.Base;
+using UnityEngine;
 
 public class NormalStateMachine : MonoFSM<NormalEnemy>
 {
+    
     public override void AddStates()
     {
         AddState<IdleState>();
