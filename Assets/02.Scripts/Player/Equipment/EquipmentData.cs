@@ -5,15 +5,17 @@ public enum EquipmentType { Weapon, Armor, Head, Boots }
 [CreateAssetMenu(fileName = "EquipmentData", menuName = "Scriptable Objects/EquipmentData")]
 public class EquipmentData : ScriptableObject
 {
+    public string Id;
     public string EquipmentName;
     public EquipmentType EquipmentType;
-    
-    public int MaxHealth;
-    public int AttackPower;
-    public int Defense;
-    public float Speed;
-    public float AttackSpeed;
-    public float CritChance;
-    public float CritDamage;
     public GameObject ModelPrefab;
+    
+    public Dictionary<StatType, float> Stats = new Dictionary<StatType, float>();
+    // public float MaxHealth;
+    // public float AttackPower;
+    // public float Defense;
+    // public float Speed;
+    // public float AttackSpeed;
+    // public float CritChance;
+    // public float CritDamage;
 }

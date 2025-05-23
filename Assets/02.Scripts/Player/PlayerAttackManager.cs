@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class PlayerAttackManager : Singleton<PlayerAttackManager>
 {
     [Header("Attack Colliders")]
@@ -11,13 +10,18 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
     [Tooltip("Automatically disable colliders on Awake if any are enabled.")]
     [SerializeField]
     private bool disableOnAwake = true;
-
+    private StretchColliderOnly _stretchColliderOnly;
     private void Awake()
     {
         if (disableOnAwake)
         {
             DisableAllColliders();
         }
+    }
+
+    private void Start()
+    {
+        _stretchColliderOnly = GetComponentInChildren<StretchColliderOnly>();
     }
 
     public void EnableAttackColliders()
@@ -28,10 +32,11 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
     public void DisableAttackColliders()
     {
         SetColliders(false);
+        _stretchColliderOnly.StretchDown(1);
     }
     private void SetColliders(bool enabled)
     {
-        foreach (var col in attackColliders)
+        foreach(Collider col in attackColliders)
         {
             if (col != null)
             {

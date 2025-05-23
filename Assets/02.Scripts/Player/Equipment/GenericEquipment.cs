@@ -15,7 +15,7 @@ public class GenericEquipment : IEquipable
     public void Equip()
     {
         PlayerController playerController = GameManager.Instance.player;
-        playerController.ApplyEquipment(StatType.MaxHealth, data.MaxHealth);
+        //playerController.ApplyEquipment(StatType.MaxHealth, data.MaxHealth);
 
         Debug.Log($"장착: {data.EquipmentName}");
     }

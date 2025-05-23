@@ -19,19 +19,17 @@ namespace JY
         protected bool _isRoll;
         protected bool _isSkill1;
         protected bool _isSkill2;
+        protected bool _isSkill3;
+        protected bool _isSkill4;
 
         protected Vector2 _movement;
 
         private WaitForSeconds m_AttackInputWait;
         private Coroutine m_AttackWaitCoroutine;
-        public Vector2 MoveInput {
-            get
-            {
-                // if (playerControllerInputBlocked || _isExternalInputBlocked)
-                //     return Vector2.zero;
-                return _movement;
-            }
-        }
+        public Vector2 MoveInput =>
+            // if (playerControllerInputBlocked || _isExternalInputBlocked)
+            //     return Vector2.zero;
+            _movement;
 
         public Vector2 CameraInput {
             get
@@ -54,6 +52,11 @@ namespace JY
         public bool Skill1 => _isSkill1 && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
         public bool Skill2 => _isSkill2 && !playerControllerInputBlocked && !_isExternalInputBlocked;
+
+        public bool Skill3 => _isSkill3 && !playerControllerInputBlocked && !_isExternalInputBlocked;
+
+        public bool Skill4 => _isSkill4 && !playerControllerInputBlocked && !_isExternalInputBlocked;
+
         private void Update()
         {
             _movement.Set(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -100,15 +103,21 @@ namespace JY
 
                 m_AttackWaitCoroutine = StartCoroutine(Skill2Wait());
             }
-            // if (Input.GetKeyDown(KeyCode.Alpha3))
-            // {
-            //     UseSkill(KeyCode.Alpha3);
-            // }
-            // if (Input.GetKeyDown(KeyCode.Alpha4))
-            // {
-            //     UseSkill(KeyCode.Alpha4);
-            // }
-            // _isPause = Input.GetButtonDown("Pause");
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                if (m_AttackWaitCoroutine != null)
+                    StopCoroutine(m_AttackWaitCoroutine);
+
+                m_AttackWaitCoroutine = StartCoroutine(Skill3Wait());
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                if (m_AttackWaitCoroutine != null)
+                    StopCoroutine(m_AttackWaitCoroutine);
+
+                m_AttackWaitCoroutine = StartCoroutine(Skill4Wait());
+            }
+            _isPause = Input.GetButtonDown("Pause");
         }
 
         private IEnumerator AttackWait()
@@ -143,6 +152,22 @@ namespace JY
             yield return m_AttackInputWait;
 
             _isSkill2 = false;
+        }
+        private IEnumerator Skill3Wait()
+        {
+            _isSkill3 = true;
+
+            yield return m_AttackInputWait;
+
+            _isSkill3 = false;
+        }
+        private IEnumerator Skill4Wait()
+        {
+            _isSkill4 = true;
+
+            yield return m_AttackInputWait;
+
+            _isSkill4 = false;
         }
         private IEnumerator RollWait()
         {
