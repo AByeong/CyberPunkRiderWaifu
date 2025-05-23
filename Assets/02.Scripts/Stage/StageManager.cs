@@ -6,10 +6,19 @@ public class StageManager : Singleton<MonoBehaviour>
 {
     public List<GridGeneration> SubStageList;
     public List<NavMeshSurface> NavmeshSurfaceList;
+    public GameObject Player;
+
+    private bool _isClear = false;
+    private int _currentStageIndex;
+    private int _previousStageIndex;
+    private int _nextStageIndex;
 
     private void Start()
     {
         StageInitialize();
+        _currentStageIndex = 0;
+        _nextStageIndex = SubStageList.Count - 1;
+        MovePlayerToStartPosition(_currentStageIndex);
     }
 
     // 디버깅
@@ -19,6 +28,13 @@ public class StageManager : Singleton<MonoBehaviour>
         {
             StageInitialize();
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            _isClear = true;
+            MoveNextStage();
+        }
+        _isClear = false;
     }
     // 디버깅
 
@@ -59,5 +75,30 @@ public class StageManager : Singleton<MonoBehaviour>
         subStage.Generate();
 
         NavmeshSurfaceList[stageIndex].UpdateNavMesh(NavmeshSurfaceList[stageIndex].navMeshData);
+    }
+
+    private void MovePlayerToStartPosition(int stageIndex)
+    {
+        Vector3 startPosition = SubStageList[stageIndex].transform.worldToLocalMatrix * SubStageList[stageIndex].GetStartPos();
+        CharacterController playerController = Player.GetComponent<CharacterController>();
+        playerController.enabled = false;
+        Player.transform.position = startPosition;
+        playerController.enabled = true;
+    }
+
+    public void MoveNextStage()
+    {
+        if (_isClear)
+        {
+            MovePlayerToStartPosition(_nextStageIndex);
+
+            // TODO: 함수로 따로 뺴기
+            _previousStageIndex = _currentStageIndex;
+            _currentStageIndex = _nextStageIndex;
+            _nextStageIndex = _previousStageIndex;
+
+            GenerateSubStage(_nextStageIndex);
+        }
+
     }
 }
