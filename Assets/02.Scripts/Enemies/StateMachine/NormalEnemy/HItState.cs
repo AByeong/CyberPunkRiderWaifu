@@ -17,6 +17,7 @@ public class HItState : BaseNormalEnemyState
     private float _knockbackTime = 0f;        // 넉백 실행 시간
     private float _knockbackAirbonCoeff = 0f; // 공중 피격시 넉백 강도
 
+    
 
     public override void OnEnter()
     {
@@ -25,6 +26,8 @@ public class HItState : BaseNormalEnemyState
         Owner.IsHit = false;
         Owner.NavMeshAgent.enabled = false;
 
+        
+        
         Vector3 direction = (Owner.transform.position - Owner.Target.transform.position).normalized;
         direction.y = 0;
         _knockbackDir = direction;
@@ -50,6 +53,9 @@ public class HItState : BaseNormalEnemyState
         {
             Owner.Animator.SetFloat("HitType", Random.Range(1, 3));
             Owner.Animator.SetTrigger("OnHit");
+            
+            
+            
         }
     }
     

@@ -32,6 +32,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public Animator Animator => _animator;
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
 
+    public ParticleSystem HitParticle;
+    
     protected virtual void Awake()
     {
         CurrentHealthPoint = _enemyData.HealthPoint;
@@ -65,6 +67,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         IsInAir = false;
     }
 
+    public void PlayHitParticle()
+    {
+        
+    }
+    
+    
+    
     public void TakeDamage(Damage damage)
     {
         IsHit = true;

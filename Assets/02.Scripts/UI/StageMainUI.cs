@@ -20,17 +20,27 @@ public class StageMainUI : MonoBehaviour
             SkillIconSet(s);
         }
         ProgressSlider.value = 0;
+
+        for (int i = 0; i < ItemIcons.Length; i++)
+        {
+            SkillIconSet(i);
+        }
     }
 
     private void SkillIconSet(int index)
     {
 
-        // SkillIcons[index].RestrictCondition = SkillManager.Instance.EquippedSkills[index].SkillData.CoolTime;
-        // SkillIcons[index].IconImageSprite = SkillManager.Instance.EquippedSkills[index].SkillData.Icon;
+        for (int i = 0; i < SkillIcons.Length; i++)
+        {
+            SkillIcons[i].RestrictCondition = SkillManager.Instance.EquippedSkills[i].SkillData.CoolTime;
+            SkillIcons[i].IconImage.sprite = SkillManager.Instance.EquippedSkills[i].SkillData.Icon;
+        }
+        
     }
 
     public void SkillIconLoad(int index)
     {
+        Debug.Log(SkillManager.Instance.EquippedSkills[index].SkillData.SkillName);
         SkillIcons[index].StartCooltime();
     }
 
