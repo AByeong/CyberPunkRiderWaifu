@@ -120,6 +120,19 @@ public class GridGeneration : MonoBehaviour
 
     public void DestroyMap()
     {
+        for (int i = 0; i < NormalSpawnerCount; i++)
+        {
+            EnemyManager.Instance.RemoveNormalSpwner();
+        }
+        for (int i = 0; i < Elite0SpanwerCount + Elite1SpanwerCount; i++)
+        {
+            EnemyManager.Instance.RemoveEliteSpawner();
+        }
+        for (int i = 0; i < BossSpawnerCount; i++)
+        {
+            EnemyManager.Instance.RemoveBossSpawner();
+        }
+
         foreach (Transform child in gameObject.transform)
         {
             child.position = new Vector3(9999, 9999, 9999);
