@@ -5,10 +5,15 @@ public class InventoryPopup : Popup
 {
     override public void OpenPopup()
     {
+        UIManager.Instance.PlayerInput.ReleaseControl();
+        UIManager.Instance.ESCisClose = true;
         base.OpenPopup();
     }
-    protected override void OnPopupClosed() 
+    override public void ClosePopup() 
     {
-        base.OpenPopup();
+        UIManager.Instance.PlayerInput.GainControl();
+        
+        UIManager.Instance.ESCisClose = false;
+        base.ClosePopup();
     }
 }

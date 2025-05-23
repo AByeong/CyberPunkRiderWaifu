@@ -3,28 +3,23 @@ using UnityEngine;
 public class SkillManager : Singleton<SkillManager>
 {
     public SkillDataList DataList;
-
-    [SerializeField]
-    private List<Skill> equippedSkills;
+    public List<Skill> Skills;
+    public List<Skill> EquippedSkills;
+    public List<bool> EquippedSkillsBool;
+    // private List<Skill> equippedSkills;
     public Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
-    public List<Skill> EquippedSkills => equippedSkills;
-
     private void Awake()
     {
-        // equippedSkills 리스트를 4개 슬롯으로 초기화
-        if (equippedSkills == null)
-            equippedSkills = new List<Skill>();
-
-        equippedSkills.Clear();
-
-        // 4개의 null 슬롯 추가
+        base.Awake();
+        // 완전히 초기화
+        EquippedSkills = new List<Skill>();
+        EquippedSkillsBool = new List<bool>();
         for (int i = 0; i < 4; i++)
         {
-            equippedSkills.Add(null);
+            EquippedSkills.Add(null);
+            EquippedSkillsBool.Add(false);
         }
     }
-
-
     private void Update()
     {
         UpdateSkillCooldowns(Time.deltaTime);
@@ -32,7 +27,7 @@ public class SkillManager : Singleton<SkillManager>
 
     private void UpdateSkillCooldowns(float deltaTime)
     {
-        foreach(Skill skill in equippedSkills)
+        foreach(Skill skill in EquippedSkills)
         {
             skill?.UpdateCooldown(deltaTime);
         }
@@ -49,9 +44,9 @@ public class SkillManager : Singleton<SkillManager>
             _ => -1
         };
 
-        if (keyNumber >= 0 && keyNumber < equippedSkills.Count && equippedSkills[keyNumber] != null)
+        if (keyNumber >= 0 && keyNumber < EquippedSkills.Count && EquippedSkills[keyNumber] != null)
         {
-            Skill skillToUse = equippedSkills[keyNumber];
+            Skill skillToUse = EquippedSkills[keyNumber];
             if (skillToUse.CanUse())
             {
                 skillToUse.Use();

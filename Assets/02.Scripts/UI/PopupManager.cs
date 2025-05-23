@@ -14,13 +14,16 @@ public class PopupManager : MonoBehaviour
    
    public void CloseLastPopup()
    {
-      if(PopupStack.Count > 0)
-      PopupStack.Pop().ClosePopup();
+      if (PopupStack.Count > 0)
+      {
+         PopupStack.Pop().ClosePopup();
+      }
       
    }
 
    public void ShowAnswerPopup(string answerMessage, string positiveButtonText, string negativeButtonText, Action onApprove, Action onCancel=null,int numberofbuttons = 2)
    {
+      Debug.Log("팝업 열림");
       AnswerPopup.SetupPopup(answerMessage, positiveButtonText, negativeButtonText, onApprove,onCancel,numberofbuttons);
       AnswerPopup.OpenPopup();
       

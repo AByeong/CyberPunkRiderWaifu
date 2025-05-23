@@ -9,7 +9,7 @@ public class SkillData
     public float CoolTime;
     public bool IsUpgraded;
     public bool IsGroundSkill;
-    public float SkillRange = 1f;
+    public float SkillRange;
 
     public Sprite Icon;
 }

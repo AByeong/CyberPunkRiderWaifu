@@ -9,6 +9,8 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public int CurrentSector;
     public int CompleteSector;
     
+    
+    
     private void Awake()
     {
         if (CurrentMissionData == null)
@@ -40,6 +42,12 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
     }
 
+    public void CompleteCurrentSection()
+    {
+        //현재는 바로 바뀌지만 나중에는 완료와 전환 사이에 넣을 수 있다.
+        LoadNextSection();
+    }
+
     public void LoadNextSection()
     {
         CurrentSector++;
@@ -50,11 +58,15 @@ public class DeliveryManager : Singleton<DeliveryManager>
         }
         else
         {
-
             
             KillTracker.ResetCurrentKillCount();
             Debug.Log(CurrentSector);
             KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        }
+
+        if (CurrentSector == CompleteSector - 1)
+        {
+            CinemachineManager.Instance.BossAppear();
         }
     }
 
@@ -76,11 +88,14 @@ public class DeliveryManager : Singleton<DeliveryManager>
         
         UIManager.Instance.PopupManager.ShowAnswerPopup("축하합니다!", "우와 감사해요", "개꿀", () =>
         {
+            
             UIManager.Instance.ESCisClose = false;
             GameManager.Instance.GameReplay();
             Debug.Log("클리어");
             UIManager.Instance.ESCisClose = false;
-            UIManager.Instance.PopupManager.AnswerPopup.ClosePopup();
+            UIManager.Instance.PopupManager.CloseAllPopups();
+            UIManager.Instance.PopupManager.CloseLastPopup();
+            
         },null,1);
         
         
@@ -91,17 +106,9 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public void ChangeSectorName(int sector)
     {
         CurrentSector = sector;
-
-        if (CurrentSector == CompleteSector)
-        {
-            ComplteDelivery();
-        }
     }
 
-    private void ComplteDelivery()
-    {
-        
-    }
+    
 
 
     public void RunFromDelivery()

@@ -12,16 +12,16 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 4; i++)
-        {
-            SkillManager.Instance.EquippedSkills[i] = null;
-            EquippedSkills[i].GetComponent<Button>().interactable = false;
-        }
-
+        Debug.Log(SkillManager.Instance.DataList.SkillData);
         for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
         {
             Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
             AvailableSkills[i].SetSkill(skill);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            EquippedSkills[i].GetComponent<Button>().interactable = false;
         }
     }
 
@@ -32,30 +32,29 @@ public class SkillUIManager : MonoBehaviour
 
     public void EquipSkill(int skillIndex)
     {
+
         Skill skillToEquip = AvailableSkills[skillIndex].Skill;
-        // Debug.Log(skillToEquip);
+
         for (int i = 0; i < SkillManager.Instance.EquippedSkills.Count; i++)
         {
-            // null 체크 수정
-            if (SkillManager.Instance.EquippedSkills[i] == null)
-            {
-                // Debug.Log("asddddddddddddddddddddddddddddddddddddddddddd");
-                SkillManager.Instance.EquippedSkills[i] = skillToEquip;
+            Skill slot = SkillManager.Instance.EquippedSkills[i];
 
+            if (!SkillManager.Instance.EquippedSkillsBool[i]) // 빈 슬롯을 찾았을 때
+            {
+                Debug.Log($"Found empty slot at index {i}!");
+
+                // 여기서 실제 장착 로직
+                SkillManager.Instance.EquippedSkills[i] = skillToEquip;
                 EquippedSkills[i].SetSkill(skillToEquip);
                 EquippedSkills[i].GetComponent<Button>().interactable = true;
                 AvailableSkills[skillIndex].GetComponent<Button>().interactable = false;
-
-                if (!SkillManager.Instance._skillCurrentCooldowns.ContainsKey(skillToEquip))
-                    SkillManager.Instance._skillCurrentCooldowns.Add(skillToEquip, skillToEquip.SkillData.CoolTime);
-                else
-                    SkillManager.Instance._skillCurrentCooldowns[skillToEquip] = skillToEquip.SkillData.CoolTime;
+                SkillManager.Instance.EquippedSkillsBool[i] = true;
 
                 return;
             }
         }
 
-        Debug.Log("No empty slot to equip skill.");
+        Debug.Log("No empty slot found.");
     }
 
     public void UnequipSkill(int equipIndex)
@@ -65,6 +64,7 @@ public class SkillUIManager : MonoBehaviour
         EquippedSkills[equipIndex].RemoveSkill();
         EquippedSkills[equipIndex].GetComponent<Button>().interactable = false;
         SkillManager.Instance.EquippedSkills[equipIndex] = null;
+        SkillManager.Instance.EquippedSkillsBool[equipIndex] = false;
     }
 
     private void UpdateCooldowns(float deltaTime)

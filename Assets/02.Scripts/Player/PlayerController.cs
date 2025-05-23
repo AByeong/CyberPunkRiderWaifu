@@ -388,7 +388,18 @@ namespace Gamekit3D
             }
             else
             {
-                targetRotation = Quaternion.LookRotation(moveDirection);
+
+                if (moveDirection != Vector3.zero)
+                {
+                    targetRotation = Quaternion.LookRotation(moveDirection);
+                }
+                else
+                {
+
+                    targetRotation = Quaternion.identity;
+                }
+                //targetRotation = (Quaternion.LookRotation(moveDirection).Equals(Vector3.zero)) ? Quaternion.identity : Quaternion.LookRotation(moveDirection);
+
             }
 
             Vector3 resultingForward = targetRotation * Vector3.forward;
@@ -507,19 +518,19 @@ namespace Gamekit3D
             switch (skillNumber)
             {
                 case 0:
-                    m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
+                    // m_HashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill1);
                     break;
                 case 1:
-                    m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
+                    // m_HashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill2);
                     break;
                 case 2:
-                    m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
+                    // m_HashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill3);
                     break;
                 case 3:
-                    m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
+                    // m_HashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
                     _animator.SetTrigger(m_HashTriggerSkill4);
                     break;
             }

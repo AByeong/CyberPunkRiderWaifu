@@ -22,6 +22,7 @@ public class AnswerPopup : Popup
         PositiveText.text = positiveButtonText;
         NegativeText.text = negativeButtonText;
         ApproveAction = onApprove;
+        
         if (onCancel == null)
         {
             NegativeButton.onClick.AddListener(() => ClosePopup());
@@ -58,11 +59,8 @@ public class AnswerPopup : Popup
 
     override public void ClosePopup()
     {
-        // 리스너를 제거하여 중복 구독을 방지
-        NegativeButton.onClick.RemoveAllListeners();
-        PositiveButton.onClick.RemoveAllListeners();
-
-        ApproveAction = null; 
+        
+        
         
 
         base.ClosePopup();

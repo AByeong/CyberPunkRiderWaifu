@@ -5,7 +5,7 @@ public class PlayerHit : MonoBehaviour
 {
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Debug.Log($"{hit.gameObject.name}");
+      //  Debug.Log($"{hit.gameObject.name}");
         IDamageable damageable = hit.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
