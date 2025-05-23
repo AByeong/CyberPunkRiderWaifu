@@ -60,10 +60,10 @@ public class AnswerPopup : Popup
     override public void ClosePopup()
     {
         // 리스너를 제거하여 중복 구독을 방지
-        NegativeButton.onClick.RemoveAllListeners();
-        PositiveButton.onClick.RemoveAllListeners();
+        //NegativeButton.onClick.RemoveAllListeners();
+        //PositiveButton.onClick.RemoveAllListeners();
 
-        ApproveAction = null; 
+        //ApproveAction = null; 
         
         
 

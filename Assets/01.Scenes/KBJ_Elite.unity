@@ -2409,7 +2409,7 @@ PrefabInstance:
       objectReference: {fileID: 803641382}
     - target: {fileID: 2693689125859332094, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6429505371611374344, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: prefabToPoolRef.m_AssetGUID
@@ -3011,6 +3011,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroy: 1
   DataList: {fileID: 11400000, guid: 7805bd61e9f270b4eb17e30abd47baaf, type: 2}
+  AvailableSkills: []
+  EquippedSkills: []
 --- !u!1 &1319125024
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,7 +3201,7 @@ PrefabInstance:
       objectReference: {fileID: 803641382}
     - target: {fileID: 2693689125859332094, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 3
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7249002844801296321, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4697,7 +4699,7 @@ PrefabInstance:
       objectReference: {fileID: 803641382}
     - target: {fileID: 2693689125859332094, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6429505371611374344, guid: bbd835231607414428bcdf477cf1c80a, type: 3}
       propertyPath: prefabToPoolRef.m_AssetGUID
@@ -5576,20 +5578,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 1441419544}
     m_Modifications:
     - target: {fileID: 205400213985078342, guid: ecbbc26122ff47c439c7e18cc87c2481, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2499492999508581543}
-    - target: {fileID: 2377683293404351133, guid: ecbbc26122ff47c439c7e18cc87c2481, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4028430582792127050, guid: ecbbc26122ff47c439c7e18cc87c2481, type: 3}
       propertyPath: m_Name
       value: DeliveryPopup
-      objectReference: {fileID: 0}
-    - target: {fileID: 4028430582792127050, guid: ecbbc26122ff47c439c7e18cc87c2481, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8314043040407474510, guid: ecbbc26122ff47c439c7e18cc87c2481, type: 3}
       propertyPath: m_Pivot.x
