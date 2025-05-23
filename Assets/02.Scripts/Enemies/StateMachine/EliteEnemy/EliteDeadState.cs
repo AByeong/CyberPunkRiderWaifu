@@ -9,8 +9,10 @@ public class EliteDeadState : EliteBaseState
         base.OnEnter();
 
         Owner.NavMeshAgent.enabled = false;
-        Owner.Animator.SetFloat("DeadType", Random.Range(0, 3));
-        Owner.Animator.SetTrigger("OnDead");
+        // Owner.Animator.SetFloat("DeadType", Random.Range(0, 3));
+        // Owner.Animator.SetTrigger("OnDead");
+        Owner.Animator.SetFloat("DownType", Random.Range(0, 3));
+        Owner.Animator.SetTrigger("OnDown");
         Owner.GetComponent<Collider>().enabled = false;
 
         switch (Owner.EnemyData.EnemyType)
