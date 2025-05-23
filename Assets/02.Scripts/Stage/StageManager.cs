@@ -15,6 +15,8 @@ public class StageManager : Singleton<MonoBehaviour>
 
     private void Start()
     {
+        DeliveryManager.Instance.OnCompleteSector += CompleteSector;
+
         StageInitialize();
         _currentStageIndex = 0;
         _nextStageIndex = SubStageList.Count - 1;
@@ -90,6 +92,7 @@ public class StageManager : Singleton<MonoBehaviour>
     {
         if (_isClear)
         {
+            _isClear = false;
             MovePlayerToStartPosition(_nextStageIndex);
 
             // TODO: 함수로 따로 뺴기
@@ -101,4 +104,10 @@ public class StageManager : Singleton<MonoBehaviour>
         }
 
     }
+
+    public void CompleteSector()
+    {
+        Debug.LogWarning($"{gameObject.name}: 섹터 클리어!");
+    }
+
 }
