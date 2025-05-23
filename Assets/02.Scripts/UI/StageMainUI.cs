@@ -26,8 +26,8 @@ public class StageMainUI : MonoBehaviour
     private void SkillIconSet(int index)
     {
 
-        SkillIcons[index].RestrictCondition = SkillManager.Instance.EquippedSkill[index].SkillData.CoolTime;
-        SkillIcons[index].IconImageSprite = SkillManager.Instance.EquippedSkill[index].SkillData.Icon;
+        SkillIcons[index].RestrictCondition = SkillManager.Instance.EquippedSkills[index].SkillData.CoolTime;
+        SkillIcons[index].IconImageSprite = SkillManager.Instance.EquippedSkills[index].SkillData.Icon;
     }
     
     public void SkillIconLoad(int index)
