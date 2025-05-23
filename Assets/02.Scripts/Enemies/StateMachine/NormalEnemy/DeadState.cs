@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DeadState : BaseNormalEnemyState
@@ -17,6 +18,12 @@ public class DeadState : BaseNormalEnemyState
         {
             case EEnemyType.Normal:
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
+                var dropPlan = new Dictionary<DropItemType, int>
+                {
+                    
+                    { DropItemType.Gold, 1 }
+                };
+                ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
                 break;
 
             case EEnemyType.Elite:
