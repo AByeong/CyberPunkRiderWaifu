@@ -12,16 +12,15 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < 4; i++)
-        {
-            SkillManager.Instance.EquippedSkills[i] = null;
-            EquippedSkills[i].GetComponent<Button>().interactable = false;
-        }
-
         for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
         {
             Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
             AvailableSkills[i].SetSkill(skill);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            EquippedSkills[i].GetComponent<Button>().interactable = false;
         }
     }
 
@@ -33,15 +32,11 @@ public class SkillUIManager : MonoBehaviour
     public void EquipSkill(int skillIndex)
     {
         Skill skillToEquip = AvailableSkills[skillIndex].Skill;
-        // Debug.Log(skillToEquip);
         for (int i = 0; i < SkillManager.Instance.EquippedSkills.Count; i++)
         {
-            // null 체크 수정
             if (SkillManager.Instance.EquippedSkills[i] == null)
             {
-                // Debug.Log("asddddddddddddddddddddddddddddddddddddddddddd");
                 SkillManager.Instance.EquippedSkills[i] = skillToEquip;
-
                 EquippedSkills[i].SetSkill(skillToEquip);
                 EquippedSkills[i].GetComponent<Button>().interactable = true;
                 AvailableSkills[skillIndex].GetComponent<Button>().interactable = false;
@@ -51,11 +46,12 @@ public class SkillUIManager : MonoBehaviour
                 else
                     SkillManager.Instance._skillCurrentCooldowns[skillToEquip] = skillToEquip.SkillData.CoolTime;
 
+                Debug.Log($"Added 1 to slot {i}");
                 return;
             }
         }
 
-        Debug.Log("No empty slot to equip skill.");
+        Debug.Log("No empty slot found.");
     }
 
     public void UnequipSkill(int equipIndex)
