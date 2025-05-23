@@ -12,24 +12,32 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(SkillManager.Instance.DataList.SkillData);
-        for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
-        {
-            Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
-            AvailableSkills[i].SetSkill(skill);
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            EquippedSkills[i].GetComponent<Button>().interactable = false;
-        }
+        // Debug.Log(SkillManager.Instance.DataList.SkillData);
+        //
+        // // 1단계: 모두 초기화 및 활성화
+        // for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
+        // {
+        //     Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
+        //     if (SkillManager.Instance.EquippedSkills.Contains(skill))
+        //     {
+        //         AvailableSkills[i].SetSkill(skill, true);
+        //     }
+        //     AvailableSkills[i].SetSkill(skill, true);
+        // }
+        //
+        // // 2단계: 장착된 스킬만 버튼 비활성화
+        // foreach(Skill equipped in SkillManager.Instance.EquippedSkills)
+        // {
+        //     if (equipped != null)
+        //     {
+        //         AvailableSkills[equipped.Index].Button.interactable = false;
+        //     }
+        // }
     }
-
     private void Update()
     {
         UpdateCooldowns(Time.deltaTime);
     }
-
     public void EquipSkill(int skillIndex)
     {
 
@@ -45,8 +53,8 @@ public class SkillUIManager : MonoBehaviour
 
                 // 여기서 실제 장착 로직
                 SkillManager.Instance.EquippedSkills[i] = skillToEquip;
-                EquippedSkills[i].SetSkill(skillToEquip);
-                EquippedSkills[i].GetComponent<Button>().interactable = true;
+                EquippedSkills[i].SetSkill(skillToEquip, true);
+
                 AvailableSkills[skillIndex].GetComponent<Button>().interactable = false;
                 SkillManager.Instance.EquippedSkillsBool[i] = true;
 
@@ -62,7 +70,7 @@ public class SkillUIManager : MonoBehaviour
         Skill skillToUnequip = SkillManager.Instance.EquippedSkills[equipIndex];
         AvailableSkills[skillToUnequip.Index].GetComponent<Button>().interactable = true;
         EquippedSkills[equipIndex].RemoveSkill();
-        EquippedSkills[equipIndex].GetComponent<Button>().interactable = false;
+        // EquippedSkills[equipIndex].GetComponent<Button>().interactable = false;
         SkillManager.Instance.EquippedSkills[equipIndex] = null;
         SkillManager.Instance.EquippedSkillsBool[equipIndex] = false;
     }

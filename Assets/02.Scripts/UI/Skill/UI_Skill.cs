@@ -3,8 +3,7 @@ using UnityEngine.UI;
 public class UI_Skill : MonoBehaviour
 {
 
-    public float SkillRange;
-    public float SKillCoolDownTime;
+    public Button Button;
     private Image _icon;
     public Skill Skill { get; private set; }
 
@@ -13,11 +12,11 @@ public class UI_Skill : MonoBehaviour
         _icon = GetComponent<Image>();
     }
 
-    public void SetSkill(Skill skillToEquip)
+    public void SetSkill(Skill skillToEquip, bool isActive)
     {
+        if (skillToEquip == null) return;
+        Button.interactable = isActive;
         Skill = skillToEquip;
-        SkillRange = skillToEquip.SkillData.SkillRange;
-        SKillCoolDownTime = skillToEquip.SkillData.CoolTime;
         _icon.sprite = Skill.SkillData.Icon;
     }
 
