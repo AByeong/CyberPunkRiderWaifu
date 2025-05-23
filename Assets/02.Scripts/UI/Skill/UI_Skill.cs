@@ -4,8 +4,9 @@ public class UI_Skill : MonoBehaviour
 {
     public float _skillCooldown;
     public float _skillRange;
+
     private Image _icon;
-    private Skill _skill;
+    public Skill Skill { get; private set; }
 
     private void Awake()
     {
@@ -14,16 +15,16 @@ public class UI_Skill : MonoBehaviour
 
     public void SetSkill(Skill skillToEquip)
     {
-        _skill = skillToEquip;
-        Debug.Log(_icon);
-        _icon.sprite = _skill.SkillData.Icon;
-        _skillRange = _skill.SkillData.SkillRange;
-        _skillCooldown = _skill.SkillData.CoolTime;
+        Skill = skillToEquip;
+
+        _icon.sprite = Skill.SkillData.Icon;
+        _skillRange = Skill.SkillData.SkillRange;
+        _skillCooldown = Skill.SkillData.CoolTime;
     }
 
     public void RemoveSkill()
     {
-        _skill = null;
+        Skill = null;
         _icon.sprite = null;
     }
 }

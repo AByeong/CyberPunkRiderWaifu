@@ -1074,25 +1074,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 1291053299}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2194c657fce69cc4abc51bddf8f0fd25, type: 3}
+  m_Script: {fileID: 11500000, guid: 84c1932b0c0725240837fc8d443d8434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroy: 1
   DataList: {fileID: 11400000, guid: 7805bd61e9f270b4eb17e30abd47baaf, type: 2}
-  AvailableSkills:
-  - {fileID: 3209116057938116497}
-  - {fileID: 2678038883563922895}
-  - {fileID: 1578194169730318075}
-  - {fileID: 2218872618682368780}
-  - {fileID: 8963213422174639360}
-  - {fileID: 2122775385847969310}
-  - {fileID: 6584961219019531202}
-  - {fileID: 9177184246795164726}
-  EquippedSkills:
-  - {fileID: 1896644488}
-  - {fileID: 375943756}
-  - {fileID: 1144032318}
-  - {fileID: 1041781948}
+  equippedSkills:
+  - Index: 0
+    SkillData:
+      SkillName: 
+      TriggerName: 
+      SkillSpeed: 0
+      CoolTime: 0
+      IsUpgraded: 0
+      IsGroundSkill: 0
+      SkillRange: 1
+      Icon: {fileID: 0}
+  - Index: 0
+    SkillData:
+      SkillName: 
+      TriggerName: 
+      SkillSpeed: 0
+      CoolTime: 0
+      IsUpgraded: 0
+      IsGroundSkill: 0
+      SkillRange: 1
+      Icon: {fileID: 0}
+  - Index: 0
+    SkillData:
+      SkillName: 
+      TriggerName: 
+      SkillSpeed: 0
+      CoolTime: 0
+      IsUpgraded: 0
+      IsGroundSkill: 0
+      SkillRange: 1
+      Icon: {fileID: 0}
+  - Index: 0
+    SkillData:
+      SkillName: 
+      TriggerName: 
+      SkillSpeed: 0
+      CoolTime: 0
+      IsUpgraded: 0
+      IsGroundSkill: 0
+      SkillRange: 1
+      Icon: {fileID: 0}
 --- !u!1 &1317131671
 GameObject:
   m_ObjectHideFlags: 0
@@ -2175,7 +2202,7 @@ GameObject:
   - component: {fileID: 1684804996558124405}
   - component: {fileID: 271865174179998658}
   - component: {fileID: 6383865211151390604}
-  - component: {fileID: 1024203426939833417}
+  - component: {fileID: 6383865211151390605}
   m_Layer: 5
   m_Name: SkillPopup
   m_TagString: Untagged
@@ -2227,14 +2254,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: UnequipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2400,14 +2427,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2527,18 +2554,6 @@ RectTransform:
   m_AnchoredPosition: {x: 106, y: 436}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1024203426939833417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 94380135816459794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c5f37ade36f920498a3b7e34097548b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1048930334059423426
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3582,14 +3597,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3638,14 +3653,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 7
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3980,14 +3995,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4107,14 +4122,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: UnequipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4405,14 +4420,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 8
+          m_IntArgument: 7
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4637,6 +4652,32 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6383865211151390605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 94380135816459794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2194c657fce69cc4abc51bddf8f0fd25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AvailableSkills:
+  - {fileID: 3209116057938116497}
+  - {fileID: 2678038883563922895}
+  - {fileID: 1578194169730318075}
+  - {fileID: 2218872618682368780}
+  - {fileID: 8963213422174639360}
+  - {fileID: 2122775385847969310}
+  - {fileID: 6584961219019531202}
+  - {fileID: 9177184246795164726}
+  EquippedSkills:
+  - {fileID: 1896644488}
+  - {fileID: 375943756}
+  - {fileID: 1144032318}
+  - {fileID: 1041781948}
 --- !u!114 &6440211241285460379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4681,14 +4722,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4987,14 +5028,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 6
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5073,14 +5114,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: UnequipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5175,14 +5216,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: EquipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5370,14 +5411,14 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1291053302}
-        m_TargetAssemblyTypeName: SkillManager, Assembly-CSharp
+      - m_Target: {fileID: 6383865211151390605}
+        m_TargetAssemblyTypeName: SkillUIManager, Assembly-CSharp
         m_MethodName: UnequipSkill
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
