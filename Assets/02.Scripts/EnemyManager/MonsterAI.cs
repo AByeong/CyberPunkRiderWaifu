@@ -14,7 +14,7 @@ public class MonsterAI : MonoBehaviour
 {
     [Header("Runtime Status")] // 인스펙터에서 구분을 위한 헤더
     public AITier CurrentTier = AITier.Tier3_Background;
-    
+
     public BehaviorGraphAgent BehaviorGraphAgent;
     public Enemy Enemy;
     private NavMeshAgent navMeshAgent;
@@ -27,7 +27,7 @@ public class MonsterAI : MonoBehaviour
     public float minPlayerDistance = 4.0f;
     public float desiredPlayerDistance = 6.0f;
     private const float Tier1_SlotReachedThreshold = 1.5f;
-    private const float Tier1_LookAtPlayerSpeed = 5f; 
+    private const float Tier1_LookAtPlayerSpeed = 5f;
     private bool isRetreating = false;
     private Vector3? currentFormationSlot = null;
 
@@ -38,8 +38,8 @@ public class MonsterAI : MonoBehaviour
 
     [Header("Tier 3 Behavior")]
     private const float Tier3_LookAtPlayerSpeed = 3f;
-    public float tier3LookAtPlayerMaxDistance = 10f;
-    private float tier3LookAtPlayerMaxDistanceSqr;
+    // public float tier3LookAtPlayerMaxDistance = 10f; // 삭제: 항상 바라보도록 변경
+    // private float tier3LookAtPlayerMaxDistanceSqr; // 삭제
 
     private Renderer monsterRenderer;
 
@@ -50,15 +50,15 @@ public class MonsterAI : MonoBehaviour
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.updateRotation = false; 
+        navMeshAgent.updateRotation = false;
 
-        monsterRenderer = GetComponentInChildren<Renderer>(); 
+        monsterRenderer = GetComponentInChildren<Renderer>();
         if (monsterRenderer == null)
         {
             Debug.LogWarning("MonsterAI: Renderer component not found on " + gameObject.name, this.gameObject);
         }
-        
-        tier3LookAtPlayerMaxDistanceSqr = tier3LookAtPlayerMaxDistance * tier3LookAtPlayerMaxDistance;
+
+        // tier3LookAtPlayerMaxDistanceSqr = tier3LookAtPlayerMaxDistance * tier3LookAtPlayerMaxDistance; // 삭제
     }
 
     void OnDisable()
@@ -79,7 +79,7 @@ public class MonsterAI : MonoBehaviour
         formationManager = fm;
         aiManager = am;
         nextIndividualLogicUpdateTime = Time.time + Random.Range(0, logicUpdateInterval);
-        
+
         if (BehaviorGraphAgent != null && BehaviorGraphAgent.BlackboardReference != null && player != null)
         {
             BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target", player.gameObject);
@@ -88,7 +88,7 @@ public class MonsterAI : MonoBehaviour
         {
             // Debug.LogWarning("BehaviorGraphAgent, BlackboardReference, or Player is null. Cannot set Target.", this.gameObject);
         }
-        
+
         if (Enemy != null)
         {
             Enemy.Pool = pool;
@@ -115,15 +115,15 @@ public class MonsterAI : MonoBehaviour
         switch (CurrentTier)
         {
             case AITier.Tier1_ActiveFormation:
-                navMeshAgent.speed = Tier1_Speed; // Tier1_Speed 사용
-                navMeshAgent.acceleration = 8f; 
+                navMeshAgent.speed = Tier1_Speed;
+                navMeshAgent.acceleration = 8f;
                 navMeshAgent.autoRepath = true;
                 logicUpdateInterval = 0.1f;
                 break;
             case AITier.Tier2_Approaching:
-                navMeshAgent.speed = Tier2_Speed; // Tier2_Speed 사용
+                navMeshAgent.speed = Tier2_Speed;
                 navMeshAgent.acceleration = 5f;
-                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance; 
+                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
                 navMeshAgent.autoRepath = true;
                 logicUpdateInterval = 0.3f;
                 break;
@@ -138,8 +138,8 @@ public class MonsterAI : MonoBehaviour
     {
         if (playerTransform == null) return;
         Vector3 directionToPlayer = playerTransform.position - transform.position;
-        directionToPlayer.y = 0;
-        if (directionToPlayer.sqrMagnitude > 0.001f)
+        directionToPlayer.y = 0; // 수평으로만 회전하도록 y축 영향 제거
+        if (directionToPlayer.sqrMagnitude > 0.001f) // 매우 가까울 때 LookRotation 오류 방지
         {
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lookSpeed * Time.deltaTime);
@@ -157,32 +157,21 @@ public class MonsterAI : MonoBehaviour
             case AITier.Tier3_Background: UpdateTier3Behavior(); break;
         }
 
-        bool shouldLook = true;
-        if (CurrentTier == AITier.Tier3_Background)
+        // 항상 플레이어를 바라보도록 수정
+        float currentLookSpeed;
+        switch (CurrentTier)
         {
-            if (playerTransform == null || (playerTransform.position - transform.position).sqrMagnitude > tier3LookAtPlayerMaxDistanceSqr)
-            {
-                shouldLook = false;
-            }
+            case AITier.Tier1_ActiveFormation: currentLookSpeed = Tier1_LookAtPlayerSpeed; break;
+            case AITier.Tier2_Approaching: currentLookSpeed = Tier2_LookAtPlayerSpeed; break;
+            case AITier.Tier3_Background: currentLookSpeed = Tier3_LookAtPlayerSpeed; break;
+            default: currentLookSpeed = Tier1_LookAtPlayerSpeed; break; // 기본값 설정
         }
-
-        if (shouldLook)
-        {
-            float currentLookSpeed;
-            switch (CurrentTier)
-            {
-                case AITier.Tier1_ActiveFormation: currentLookSpeed = Tier1_LookAtPlayerSpeed; break;
-                case AITier.Tier2_Approaching: currentLookSpeed = Tier2_LookAtPlayerSpeed; break;
-                case AITier.Tier3_Background: currentLookSpeed = Tier3_LookAtPlayerSpeed; break;
-                default: currentLookSpeed = Tier1_LookAtPlayerSpeed; break; // 기본값 설정
-            }
-            ExecuteLookAtPlayerLogic(currentLookSpeed);
-        }
+        ExecuteLookAtPlayerLogic(currentLookSpeed);
     }
 
     void UpdateTier1Behavior()
     {
-        if (playerTransform == null) return; // playerTransform null 체크 추가
+        if (playerTransform == null) return;
 
         float sqrDistToPlayer = (playerTransform.position - transform.position).sqrMagnitude;
         float minPlayerDistSqr = minPlayerDistance * minPlayerDistance;
@@ -216,12 +205,12 @@ public class MonsterAI : MonoBehaviour
             }
 
             float desiredDistSqr = desiredPlayerDistance * desiredPlayerDistance;
-            if (sqrDistToPlayer > desiredDistSqr * 0.9f) 
+            if (sqrDistToPlayer > desiredDistSqr * 0.9f)
             {
                 if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.5f)
                 {
                     isRetreating = false;
-                    navMeshAgent.ResetPath(); 
+                    navMeshAgent.ResetPath();
                 }
             }
             return;
@@ -244,16 +233,15 @@ public class MonsterAI : MonoBehaviour
         {
             if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && navMeshAgent.destination != currentFormationSlot.Value)
                 navMeshAgent.SetDestination(currentFormationSlot.Value);
-            
-            // 공격 로직은 주석 처리된 상태로 유지
+
             // if (Vector3.Distance(transform.position, currentFormationSlot.Value) < Tier1_SlotReachedThreshold)
             // { /* 공격 로직 */ }
         }
-        else // 슬롯이 없을 경우 플레이어에게 직접 이동
+        else
         {
             if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
             {
-                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance; // Tier1이지만 슬롯 없으면 Tier2처럼 접근
+                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
                 if (navMeshAgent.destination != playerTransform.position)
                     navMeshAgent.SetDestination(playerTransform.position);
             }
@@ -262,7 +250,7 @@ public class MonsterAI : MonoBehaviour
 
     void UpdateTier2Behavior()
     {
-        if (playerTransform == null) return; // playerTransform null 체크 추가
+        if (playerTransform == null) return;
 
         if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
         {

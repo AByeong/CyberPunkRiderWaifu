@@ -9,6 +9,8 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public int CurrentSector;
     public int CompleteSector;
     
+    
+    
     private void Awake()
     {
         if (CurrentMissionData == null)
@@ -38,6 +40,12 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
         CompleteSector = CurrentMissionData.DeliverystageData.Count;
 
+    }
+
+    public void CompleteCurrentSection()
+    {
+        //현재는 바로 바뀌지만 나중에는 완료와 전환 사이에 넣을 수 있다.
+        LoadNextSection();
     }
 
     public void LoadNextSection()
@@ -95,17 +103,9 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public void ChangeSectorName(int sector)
     {
         CurrentSector = sector;
-
-        if (CurrentSector == CompleteSector)
-        {
-            ComplteDelivery();
-        }
     }
 
-    private void ComplteDelivery()
-    {
-        
-    }
+    
 
 
     public void RunFromDelivery()

@@ -388,7 +388,9 @@ namespace Gamekit3D
             }
             else
             {
-                targetRotation = Quaternion.LookRotation(moveDirection);
+                
+                    targetRotation = (Quaternion.LookRotation(moveDirection).Equals(Vector3.zero)) ? Quaternion.identity : Quaternion.LookRotation(moveDirection);
+                
             }
 
             Vector3 resultingForward = targetRotation * Vector3.forward;

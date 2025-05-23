@@ -13,7 +13,7 @@ public partial class AttackTypeAction : Action
 
     protected override Status OnStart()
     {
-        AttackPattern.Value.AttackType = Random.Range(0, 2);
+        AttackPattern.Value.AttackType = Random.Range(0, AttackPattern.Value.AttackTypeNumber);
         Debug.Log("엘리트의 공격 패턴은" + AttackPattern.Value.AttackType + "입니다.");
         return Status.Running;
     }

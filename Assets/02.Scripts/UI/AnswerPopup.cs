@@ -22,6 +22,7 @@ public class AnswerPopup : Popup
         PositiveText.text = positiveButtonText;
         NegativeText.text = negativeButtonText;
         ApproveAction = onApprove;
+        
         if (onCancel == null)
         {
             NegativeButton.onClick.AddListener(() => ClosePopup());
@@ -63,6 +64,7 @@ public class AnswerPopup : Popup
         PositiveButton.onClick.RemoveAllListeners();
 
         ApproveAction = null; 
+        
         
 
         base.ClosePopup();

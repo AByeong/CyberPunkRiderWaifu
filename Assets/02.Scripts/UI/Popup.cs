@@ -47,7 +47,7 @@ public abstract class Popup : MonoBehaviour
         }
         
         gameObject.SetActive(false);
-        //Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
+        Debug.Log($"닫는순간 현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
 
     }
 }
