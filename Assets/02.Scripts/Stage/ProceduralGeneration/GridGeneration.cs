@@ -1,4 +1,3 @@
-using System.Text;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -11,7 +10,8 @@ public enum EGirdType
     Path,
     Pattern,
     Border,
-    CornerBorder
+    CornerBorder,
+    Spawner
 
     // 0: 비활성 그리드
     // 1: 활성 그리드
@@ -23,15 +23,24 @@ public enum EGirdType
     // 7: 경계 코너
 }
 
+public enum SpawnerType
+{
+    Normal,
+    Elite0,
+    Elite1,
+    Boss
+}
+
 public class GridGeneration : MonoBehaviour
 {
     public GameObject FencePrefab;
     public GameObject FenceCornerPrefab;
     public GameObject FenceDoorPrefab;
     public GameObject PathPrefab;
+    public MonsterSpawner[] SpawnerPrefabs;
     public GameObject[] PropPrefabs;
 
-    public float PositionOffset;
+    public float PositionOffset; // 에셋 크기
 
 
     public int width = 20;
@@ -42,9 +51,20 @@ public class GridGeneration : MonoBehaviour
     public int pathProximityRadius = 5; // 경로에서 일정 거리 이상 떨어진 Activate 셀을 제거할 기준 거리
     public float PatternDensity = 0.1f;
 
+    public int NormalSpawnerCount;
+    public int Elite0SpanwerCount;
+    public int Elite1SpanwerCount;
+    public int BossSpawnerCount;
+    private int _normalSpawnerCreated = 0;
+    private int _elite0SpawnerCreated = 0;
+    private int _elite1SpawnerCreated = 0;
+    private int _bossSpawnerCreated = 0;
+
     private int[,] grid;
     private List<Vector2Int> entries = new List<Vector2Int>();
     private List<Vector2Int> exits = new List<Vector2Int>();
+
+    private int _totalSpawnerCount;
 
 
     // 1. NxM크기의 2차원 배열 생성
@@ -56,20 +76,6 @@ public class GridGeneration : MonoBehaviour
     // 7. 빈 공간 너비에 따른 랜덤패턴 생성
     // 8. 패턴들 구현
 
-    private void Start()
-    {
-        Generate();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Backslash))
-        {
-            DestroyMap();
-            Generate();
-        }
-    }
-
     public void Generate()
     {
         grid = new int[width, height];
@@ -80,6 +86,12 @@ public class GridGeneration : MonoBehaviour
                 grid[x, y] = (int)EGirdType.Activate;
             }
         }
+
+        _totalSpawnerCount = NormalSpawnerCount + Elite0SpanwerCount + Elite1SpanwerCount + BossSpawnerCount;
+        _normalSpawnerCreated = 0;
+        _elite0SpawnerCreated = 0;
+        _elite1SpawnerCreated = 0;
+        _bossSpawnerCreated = 0;
 
         entries.Clear();
         exits.Clear();
@@ -100,11 +112,20 @@ public class GridGeneration : MonoBehaviour
         RemoveFarActivateCells();
         DetectBoundary();
 
-    
+        GenerateRandomSpawner();
         GenerateRandomPatterns();
         BuildMap();
     }
 
+
+    public void DestroyMap()
+    {
+        foreach (Transform child in gameObject.transform)
+        {
+            child.position = new Vector3(9999, 9999, 9999);
+            Destroy(child.gameObject);
+        }
+    }
 
     void MaskOuterEmptySpaces()
     {
@@ -174,12 +195,12 @@ public class GridGeneration : MonoBehaviour
     }
 
     bool IsCornerBorder(int x, int y)
-    {   
+    {
         // bool borderNorth =  (grid[x, y + 1] == (int)EGirdType.Border || grid[x, y + 1] == (int)EGirdType.CornerBorder || grid[x, y + 1] == (int)EGirdType.Enrty || grid[x, y + 1] == (int)EGirdType.Exit);
         // bool borderSouth =  (grid[x, y - 1] == (int)EGirdType.Border || grid[x, y - 1] == (int)EGirdType.CornerBorder || grid[x, y - 1] == (int)EGirdType.Enrty || grid[x, y - 1] == (int)EGirdType.Exit);
         // bool borderEast =   (grid[x + 1, y] == (int)EGirdType.Border || grid[x + 1, y] == (int)EGirdType.CornerBorder || grid[x + 1, y] == (int)EGirdType.Enrty || grid[x + 1, y] == (int)EGirdType.Exit);
         // bool borderWest =   (grid[x - 1, y] == (int)EGirdType.Border || grid[x - 1, y] == (int)EGirdType.CornerBorder || grid[x - 1, y] == (int)EGirdType.Enrty || grid[x - 1, y] == (int)EGirdType.Exit);
-        
+
         // if (borderNorth && borderWest) // 북서 코너 (맵의 안쪽은 남동쪽)
         // {
         //     return true; // 0도 회전 (기본 방향)
@@ -228,7 +249,7 @@ public class GridGeneration : MonoBehaviour
             }
         }
 
-        
+
         // 코너 셀은 일반적으로 정확히 두 개의 수직/수평 Border 이웃을 가집니다.
         if (borderCardinalNeighbors.Count != 2)
         {
@@ -247,12 +268,8 @@ public class GridGeneration : MonoBehaviour
 
         // 두 이웃이 수직인 경우는 다음과 같습니다:
         // 하나는 수평 방향 (relY=0, relX!=0)이고 다른 하나는 수직 방향 (relX=0, relY!=0)일 때.
-        bool isPerpendicular = ( (relX1 != 0 && relY1 == 0 && relX2 == 0 && relY2 != 0) ||
-                                 (relX1 == 0 && relY1 != 0 && relX2 != 0 && relY2 == 0) );
-        if (!isPerpendicular)
-        {
-            Debug.LogWarning($"{x}, {y}: {isPerpendicular} == {relX1}|{relY1}|{relX2}|{relY2}");            
-        }
+        bool isPerpendicular = ((relX1 != 0 && relY1 == 0 && relX2 == 0 && relY2 != 0) ||
+                                 (relX1 == 0 && relY1 != 0 && relX2 != 0 && relY2 == 0));
         return isPerpendicular;
     }
 
@@ -449,7 +466,7 @@ public class GridGeneration : MonoBehaviour
         return path;
     }
 
-    void RemoveFarActivateCells()
+    private void RemoveFarActivateCells()
     {
         // 경로, 입구, 출구 셀들을 빠르게 찾기 위한 리스트
         List<Vector2Int> currentPathAndDoorCells = new List<Vector2Int>();
@@ -501,7 +518,25 @@ public class GridGeneration : MonoBehaviour
         }
     }
 
-    void GenerateRandomPatterns()
+    private void GenerateRandomSpawner()
+    {
+        while (_totalSpawnerCount > 0)
+        {
+            for (int x = 1; x < width - 1; x++)
+            {
+                for (int y = 1; y < height - 1; y++)
+                {
+                    if (grid[x, y] == (int)EGirdType.Activate && Random.value < PatternDensity)
+                    {
+                        grid[x, y] = (int)EGirdType.Spawner;
+                        --_totalSpawnerCount;
+                    }
+                }
+            }
+        }
+    }
+
+    private void GenerateRandomPatterns()
     {
         for (int x = 1; x < width - 1; x++)
         {
@@ -512,14 +547,6 @@ public class GridGeneration : MonoBehaviour
                     grid[x, y] = (int)EGirdType.Pattern;
                 }
             }
-        }
-    }
-
-    private void DestroyMap()
-    {
-        foreach (Transform child in gameObject.transform)
-        {
-            Destroy(child.gameObject);
         }
     }
 
@@ -570,6 +597,34 @@ public class GridGeneration : MonoBehaviour
                             break;
                         }
 
+                    case (int)EGirdType.Spawner:
+                        {
+                            var result = GetNextSpawnerPrefab();
+                            if (result.HasValue)
+                            {
+                                var (prefab, type) = result.Value;
+                                MonsterSpawner spawner = Instantiate(prefab, transform);
+                                spawner.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+
+                                switch (type)
+                                {
+                                    case SpawnerType.Normal:
+                                        EnemyManager.Instance.AddNormalSpwner(spawner);
+                                        break;
+                                    case SpawnerType.Elite0:
+                                        EnemyManager.Instance.AddEliteSpawner(spawner);
+                                        break;
+                                    case SpawnerType.Elite1:
+                                        EnemyManager.Instance.AddEliteSpawner(spawner);
+                                        break;
+                                    case SpawnerType.Boss:
+                                        EnemyManager.Instance.AddBossSpawner(spawner);
+                                        break;
+                                }
+                            }
+                            break;
+                        }
+
                     case (int)EGirdType.Pattern:
                         {
 
@@ -582,7 +637,33 @@ public class GridGeneration : MonoBehaviour
         }
     }
 
-    Quaternion GetFenceRotation(int x, int y)
+    private (MonsterSpawner prefab, SpawnerType type)? GetNextSpawnerPrefab()
+    {
+        if (_normalSpawnerCreated < NormalSpawnerCount)
+        {
+            _normalSpawnerCreated++;
+            return (SpawnerPrefabs[0], SpawnerType.Normal);
+        }
+        else if (_elite0SpawnerCreated < Elite0SpanwerCount)
+        {
+            _elite0SpawnerCreated++;
+            return (SpawnerPrefabs[1], SpawnerType.Elite0);
+        }
+        else if (_elite1SpawnerCreated < Elite1SpanwerCount)
+        {
+            _elite1SpawnerCreated++;
+            return (SpawnerPrefabs[2], SpawnerType.Elite1);
+        }
+        else if (_bossSpawnerCreated < BossSpawnerCount)
+        {
+            _bossSpawnerCreated++;
+            return (SpawnerPrefabs[3], SpawnerType.Boss);
+        }
+
+        return null;
+    }
+
+    private Quaternion GetFenceRotation(int x, int y)
     {
         // +X 방향 (오른쪽)을 바라보려면 Y축 90도 회전
         // -X 방향 (왼쪽)을 바라보려면 Y축 -90도 회전
@@ -616,13 +697,13 @@ public class GridGeneration : MonoBehaviour
         return Quaternion.Euler(-90, 0, 0); // 기본 회전 (0,0,0)
     }
 
-    Quaternion GetCornerFenceRotation(int x, int y)
+    private Quaternion GetCornerFenceRotation(int x, int y)
     {
-        bool borderNorth =  (grid[x, y + 1] == (int)EGirdType.Border || grid[x, y + 1] == (int)EGirdType.CornerBorder || grid[x, y + 1] == (int)EGirdType.Enrty || grid[x, y + 1] == (int)EGirdType.Exit);
-        bool borderSouth =  (grid[x, y - 1] == (int)EGirdType.Border || grid[x, y - 1] == (int)EGirdType.CornerBorder || grid[x, y - 1] == (int)EGirdType.Enrty || grid[x, y - 1] == (int)EGirdType.Exit);
-        bool borderEast =   (grid[x + 1, y] == (int)EGirdType.Border || grid[x + 1, y] == (int)EGirdType.CornerBorder || grid[x + 1, y] == (int)EGirdType.Enrty || grid[x + 1, y] == (int)EGirdType.Exit);
-        bool borderWest =   (grid[x - 1, y] == (int)EGirdType.Border || grid[x - 1, y] == (int)EGirdType.CornerBorder || grid[x - 1, y] == (int)EGirdType.Enrty || grid[x - 1, y] == (int)EGirdType.Exit);
-        
+        bool borderNorth = (grid[x, y + 1] == (int)EGirdType.Border || grid[x, y + 1] == (int)EGirdType.CornerBorder || grid[x, y + 1] == (int)EGirdType.Enrty || grid[x, y + 1] == (int)EGirdType.Exit);
+        bool borderSouth = (grid[x, y - 1] == (int)EGirdType.Border || grid[x, y - 1] == (int)EGirdType.CornerBorder || grid[x, y - 1] == (int)EGirdType.Enrty || grid[x, y - 1] == (int)EGirdType.Exit);
+        bool borderEast = (grid[x + 1, y] == (int)EGirdType.Border || grid[x + 1, y] == (int)EGirdType.CornerBorder || grid[x + 1, y] == (int)EGirdType.Enrty || grid[x + 1, y] == (int)EGirdType.Exit);
+        bool borderWest = (grid[x - 1, y] == (int)EGirdType.Border || grid[x - 1, y] == (int)EGirdType.CornerBorder || grid[x - 1, y] == (int)EGirdType.Enrty || grid[x - 1, y] == (int)EGirdType.Exit);
+
         if (borderNorth && borderWest) // 북서 코너 (맵의 안쪽은 남동쪽)
         {
             return Quaternion.Euler(-90, 0, 0); // 0도 회전 (기본 방향)
@@ -642,8 +723,8 @@ public class GridGeneration : MonoBehaviour
 
         return Quaternion.Euler(0, 0, 0);
     }
-    
-    Quaternion GetFenceDoorRotation(int x, int y)
+
+    private Quaternion GetFenceDoorRotation(int x, int y)
     {
         // +X 방향 (오른쪽)을 바라보려면 Y축 90도 회전
         // -X 방향 (왼쪽)을 바라보려면 Y축 -90도 회전
@@ -676,4 +757,22 @@ public class GridGeneration : MonoBehaviour
         Debug.LogWarning($"Border cell at ({x}, {y}) has no cardinal Blank neighbor. Defaulting to identity rotation.");
         return Quaternion.Euler(0, 0, 0); // 기본 회전 (0,0,0)
     }
+
+    public Vector3 GetStartPos()
+    {
+        Vector3 startPosition = Vector3.zero;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                if (grid[i, j] == (int)EGirdType.Enrty)
+                {
+                    startPosition = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                    return startPosition;
+                }
+            }
+        }
+        return startPosition;
+    }
+
 }

@@ -10,7 +10,7 @@ public class MonsterSpawner : MonoBehaviour
 {
     [Header("Dependencies")]
     public ObjectPool monsterPool;     // Inspector에서 할당
-    public AIManager aiManager;         // Inspector에서 할당
+    private AIManager aiManager;         // Inspector에서 할당
 
     [Header("Spawning Settings")]
     public int numberOfMonstersToSpawn = 50;
@@ -19,12 +19,14 @@ public class MonsterSpawner : MonoBehaviour
     public bool InitSpawn = true;
     void Start()
     {
+        aiManager = FindAnyObjectByType<AIManager>();
+
         if (monsterPool == null || aiManager == null)
-        {
-            Debug.LogError("MonsterPool or AIManager not assigned in MonsterSpawner!");
-            this.enabled = false; // 스크립트 비활성화
-            return;
-        }
+            {
+                Debug.LogError("MonsterPool or AIManager not assigned in MonsterSpawner!");
+                this.enabled = false; // 스크립트 비활성화
+                return;
+            }
 
         if (spawnPoint == null)
         {
@@ -91,9 +93,6 @@ public class MonsterSpawner : MonoBehaviour
             return null;
         }
 
-        //행동 그래프 플레이어 설정
-        //monsterAI.BehaviorGraphAgent.BlackboardReference.SetVariableValue("Target",aiManager.playerTransform.gameObject);
-        
         return monsterAI;
     }
 }
