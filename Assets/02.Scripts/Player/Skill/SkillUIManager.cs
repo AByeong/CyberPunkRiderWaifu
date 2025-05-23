@@ -12,6 +12,7 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log(SkillManager.Instance.DataList.SkillData);
         for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
         {
             Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
@@ -31,18 +32,14 @@ public class SkillUIManager : MonoBehaviour
 
     public void EquipSkill(int skillIndex)
     {
-        Debug.Log("=== EquipSkill Debug Start ===");
-        Debug.Log($"skillIndex parameter: {skillIndex}");
 
         Skill skillToEquip = AvailableSkills[skillIndex].Skill;
-        Debug.Log($"Skill to equip: {skillToEquip?.SkillData?.SkillName ?? "NULL"}, Index: {skillToEquip?.Index ?? -1}");
 
         for (int i = 0; i < SkillManager.Instance.EquippedSkills.Count; i++)
         {
             Skill slot = SkillManager.Instance.EquippedSkills[i];
-            Debug.Log($"Slot {i}: {(slot == null ? "Empty (null)" : $"Occupied - {slot.SkillData?.SkillName}")}");
 
-            if (slot == null) // 빈 슬롯을 찾았을 때
+            if (!SkillManager.Instance.EquippedSkillsBool[i]) // 빈 슬롯을 찾았을 때
             {
                 Debug.Log($"Found empty slot at index {i}!");
 
@@ -51,8 +48,8 @@ public class SkillUIManager : MonoBehaviour
                 EquippedSkills[i].SetSkill(skillToEquip);
                 EquippedSkills[i].GetComponent<Button>().interactable = true;
                 AvailableSkills[skillIndex].GetComponent<Button>().interactable = false;
+                SkillManager.Instance.EquippedSkillsBool[i] = true;
 
-                Debug.Log($"Successfully equipped skill to slot {i}");
                 return;
             }
         }
@@ -67,6 +64,7 @@ public class SkillUIManager : MonoBehaviour
         EquippedSkills[equipIndex].RemoveSkill();
         EquippedSkills[equipIndex].GetComponent<Button>().interactable = false;
         SkillManager.Instance.EquippedSkills[equipIndex] = null;
+        SkillManager.Instance.EquippedSkillsBool[equipIndex] = false;
     }
 
     private void UpdateCooldowns(float deltaTime)

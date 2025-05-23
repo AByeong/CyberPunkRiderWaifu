@@ -1,46 +1,25 @@
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 public class SkillManager : Singleton<SkillManager>
 {
     public SkillDataList DataList;
-
-    [SerializeField]
-    [ItemCanBeNull]
-    private List<Skill> equippedSkills;
+    public List<Skill> Skills;
+    public List<Skill> EquippedSkills;
+    public List<bool> EquippedSkillsBool;
+    // private List<Skill> equippedSkills;
     public Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
-    public List<Skill> EquippedSkills => equippedSkills;
-
     private void Awake()
     {
+        base.Awake();
         // 완전히 초기화
-        equippedSkills = new List<Skill>();
-
-        // 4개의 null 슬롯 추가
+        EquippedSkills = new List<Skill>();
+        EquippedSkillsBool = new List<bool>();
         for (int i = 0; i < 4; i++)
         {
-            equippedSkills.Add(null);
+            EquippedSkills.Add(null);
+            EquippedSkillsBool.Add(false);
         }
-
-        Debug.Log($"SkillManager Awake: Initialized with {equippedSkills.Count} empty slots");
     }
-    // private void Start()
-    // {
-    //     Debug.Log("=== SkillManager Start Debug ===");
-    //     Debug.Log($"EquippedSkills count: {equippedSkills.Count}");
-    //
-    //     for (int i = 0; i < equippedSkills.Count; i++)
-    //     {
-    //         if (equippedSkills[i] == null)
-    //         {
-    //             Debug.Log($"Start - Slot {i}: NULL");
-    //         }
-    //         else
-    //         {
-    //             Debug.Log($"Start - Slot {i}: {equippedSkills[i].SkillData?.SkillName} (Index: {equippedSkills[i].Index}) - Hash: {equippedSkills[i].GetHashCode()}");
-    //         }
-    //     }
-    // }
     private void Update()
     {
         UpdateSkillCooldowns(Time.deltaTime);
@@ -48,7 +27,7 @@ public class SkillManager : Singleton<SkillManager>
 
     private void UpdateSkillCooldowns(float deltaTime)
     {
-        foreach(Skill skill in equippedSkills)
+        foreach(Skill skill in EquippedSkills)
         {
             skill?.UpdateCooldown(deltaTime);
         }
@@ -65,9 +44,9 @@ public class SkillManager : Singleton<SkillManager>
             _ => -1
         };
 
-        if (keyNumber >= 0 && keyNumber < equippedSkills.Count && equippedSkills[keyNumber] != null)
+        if (keyNumber >= 0 && keyNumber < EquippedSkills.Count && EquippedSkills[keyNumber] != null)
         {
-            Skill skillToUse = equippedSkills[keyNumber];
+            Skill skillToUse = EquippedSkills[keyNumber];
             if (skillToUse.CanUse())
             {
                 skillToUse.Use();
