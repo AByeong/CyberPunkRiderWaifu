@@ -88,11 +88,14 @@ public class DeliveryManager : Singleton<DeliveryManager>
         
         UIManager.Instance.PopupManager.ShowAnswerPopup("축하합니다!", "우와 감사해요", "개꿀", () =>
         {
+            
             UIManager.Instance.ESCisClose = false;
             GameManager.Instance.GameReplay();
             Debug.Log("클리어");
             UIManager.Instance.ESCisClose = false;
-            UIManager.Instance.PopupManager.AnswerPopup.ClosePopup();
+            UIManager.Instance.PopupManager.CloseAllPopups();
+            UIManager.Instance.PopupManager.CloseLastPopup();
+            
         },null,1);
         
         
