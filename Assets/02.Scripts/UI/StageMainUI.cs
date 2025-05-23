@@ -16,7 +16,18 @@ public class StageMainUI : MonoBehaviour
     public void StageMainInit()
     {
         Debug.Log("MainUI Init");
+        for (int s = 0; s < SkillIcons.Length; s++)
+        {
+            SkillIconSet(s);
+        }
         ProgressSlider.value = 0;
+    }
+
+    private void SkillIconSet(int index)
+    {
+
+        SkillIcons[index].RestrictCondition = SkillManager.Instance.EquippedSkill[index].SkillData.CoolTime;
+        SkillIcons[index].IconImageSprite = SkillManager.Instance.EquippedSkill[index].SkillData.Icon;
     }
     
     public void SkillIconLoad(int index)
