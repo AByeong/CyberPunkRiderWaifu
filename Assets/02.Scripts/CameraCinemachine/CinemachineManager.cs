@@ -24,7 +24,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Director[1].Play();
-            PlayerCamera.gameObject.SetActive(false);
+            //PlayerCamera.gameObject.SetActive(false);
         }
     }
 
