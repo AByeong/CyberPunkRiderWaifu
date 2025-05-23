@@ -12,10 +12,10 @@ public class HItState : BaseNormalEnemyState
     private float _hangTime = 0.15f;     // 공중 체류시간
     private float _fallTime = 0.5f;      // 떨어지는 시간
 
-    private Vector3 _knockbackDir;
-    private float _knockbackDistance = 1.2f;
-    private float _knockbackTime = 0.1f;
-    private float _knockbackAirbonCoeff = 1.5f;
+    private Vector3 _knockbackDir;            // 넉백 방향
+    private float _knockbackDistance = 0;     // 넉백 거리
+    private float _knockbackTime = 0f;        // 넉백 실행 시간
+    private float _knockbackAirbonCoeff = 0f; // 공중 피격시 넉백 강도
 
 
     public override void OnEnter()

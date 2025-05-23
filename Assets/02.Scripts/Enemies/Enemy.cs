@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions.Must;
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
 
@@ -59,6 +60,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public virtual void Initialize()
     {
         CurrentHealthPoint = EnemyData.HealthPoint;
+        NavMeshAgent.enabled = true;
         IsHit = false;
         IsInAir = false;
     }

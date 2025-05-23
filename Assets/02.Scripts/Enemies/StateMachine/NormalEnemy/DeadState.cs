@@ -9,7 +9,8 @@ public class DeadState : BaseNormalEnemyState
         base.OnEnter();
 
         Owner.NavMeshAgent.enabled = false;
-        Owner.Animator.SetTrigger("OnDown");
+        Owner.Animator.SetFloat("DeadType", Random.Range(0, 3));
+        Owner.Animator.SetTrigger("OnDead");
         Owner.GetComponent<Collider>().enabled = false;
 
         switch (Owner.EnemyData.EnemyType)
