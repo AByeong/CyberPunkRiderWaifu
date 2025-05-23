@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
@@ -23,6 +24,13 @@ public partial class DieAction : Action
         {
             case EEnemyType.Normal:
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
+                // var dropPlan = new Dictionary<DropItemType, int>
+                // {
+                //     { DropItemType.Equipment, 2 },
+                //     { DropItemType.Chip, 1 },
+                //     { DropItemType.Gold, 3 }
+                // };
+                // ItemDropManager.Instance.DropItems(dropPlan, _enemy.transform.position, _enemy.transform.forward);
                 break;
             
             case EEnemyType.Elite:

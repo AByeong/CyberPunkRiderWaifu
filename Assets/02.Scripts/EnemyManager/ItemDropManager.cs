@@ -20,31 +20,40 @@ public class ItemDropManager : Singleton<ItemDropManager>
     public GameObject GoldVFX;
 
     // Enemy에서 DropItemType 리스트를 넘기면 처리
-    public void DropItems(List<DropItemType> dropTypes, Vector3 origin, Vector3 forward)
+    public void DropItems(Dictionary<DropItemType, int> dropPlan, Vector3 origin, Vector3 forward)
     {
-        int dropCount = Random.Range(1, 4); // 1~3개 랜덤
-        StartCoroutine(DropItemsCoroutine(dropTypes, dropCount, origin, forward));
+        StartCoroutine(DropItemsCoroutine(dropPlan, origin, forward));
     }
 
-    private IEnumerator DropItemsCoroutine(List<DropItemType> dropTypes, int count, Vector3 origin, Vector3 forward)
+    private IEnumerator DropItemsCoroutine(Dictionary<DropItemType, int> dropPlan, Vector3 origin, Vector3 forward)
     {
-        for (int i = 0; i < count; i++)
+        foreach (var kvp in dropPlan)
         {
-            // 드랍할 타입 랜덤 선택
-            DropItemType type = dropTypes[Random.Range(0, dropTypes.Count)];
-            DropGrade grade = GetRandomGrade();
-            GameObject vfx = GetVFXByTypeAndGrade(type, grade);
-
-            // 퍼지는 위치 계산
-            Vector3 randomDir = (Quaternion.Euler(0, Random.Range(-30f, 30f), 0) * forward).normalized;
-            Vector3 spawnPos = origin + randomDir * Random.Range(0.5f, 1.5f) + Vector3.up * 0.5f;
-
-            if (vfx != null)
+            DropItemType type = kvp.Key;
+            int count = kvp.Value;
+            for (int i = 0; i < count; i++)
             {
-                GameObject fx = Instantiate(vfx, origin, Quaternion.identity);
-                fx.transform.DOJump(spawnPos, 0.7f, 1, 0.4f).SetEase(Ease.OutQuad);
+                GameObject vfx = null;
+                if (type == DropItemType.Equipment)
+                {
+                    DropGrade grade = GetRandomGrade();
+                    vfx = GetVFXByTypeAndGrade(type, grade);
+                }
+                else
+                {
+                    vfx = GetVFXByTypeAndGrade(type, DropGrade.Normal); // 등급 무시, 단일 VFX
+                }
+
+                Vector3 randomDir = (Quaternion.Euler(0, Random.Range(-30f, 30f), 0) * forward).normalized;
+                Vector3 spawnPos = origin + randomDir * Random.Range(0.5f, 1.5f) + Vector3.up * 0.5f;
+
+                if (vfx != null)
+                {
+                    GameObject fx = Instantiate(vfx, origin, Quaternion.identity);
+                    fx.transform.DOJump(spawnPos, 0.7f, 1, 0.4f).SetEase(Ease.OutQuad);
+                }
+                yield return new WaitForSeconds(0.3f);
             }
-            yield return new WaitForSeconds(0.3f);
         }
     }
 
