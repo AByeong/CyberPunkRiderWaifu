@@ -10,15 +10,15 @@ public class SkillManager : Singleton<SkillManager>
 
     public List<UI_Skill> AvailableSkills;
     public List<UI_Skill> EquippedSkills;
-    private List<Skill> _availableSkills = new List<Skill>();
     private List<Skill> _equippedSkills = new List<Skill>();
     private PlayerController _playerController;
     private Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
 
-    public Skill EquipSkill1 => _equippedSkills[0];
-    public Skill EquipSkill2 => _equippedSkills[1];
-    public Skill EquipSkill3 => _equippedSkills[2];
-    public Skill EquipSkill4 => _equippedSkills[3];
+    public List<Skill> EquippedSkill { get; } = new List<Skill>();
+    // public Skill EquipSkill1 => _equippedSkills[0];
+    // public Skill EquipSkill2 => _equippedSkills[1];
+    // public Skill EquipSkill3 => _equippedSkills[2];
+    // public Skill EquipSkill4 => _equippedSkills[3];
 
 
     private void Start()
@@ -39,7 +39,7 @@ public class SkillManager : Singleton<SkillManager>
             skill.Index = skillIndex;
             AvailableSkills[skillIndex].SetSkill(skill);
             skillIndex++;
-            _availableSkills.Add(skill);
+            EquippedSkill.Add(skill);
         }
 
         // 기본 스킬 장착
@@ -56,13 +56,13 @@ public class SkillManager : Singleton<SkillManager>
 
     public void EquipSkill(int skillIndex)
     {
-        if (skillIndex <= 0 || skillIndex > _availableSkills.Count)
+        if (skillIndex <= 0 || skillIndex > EquippedSkill.Count)
         {
             Debug.LogError("잘못된 스킬 인덱스입니다.");
             return;
         }
 
-        Skill skillToEquip = _availableSkills[skillIndex - 1];
+        Skill skillToEquip = EquippedSkill[skillIndex - 1];
         // 비어있는 슬롯 찾기
         for (int i = 0; i < _equippedSkills.Count; i++)
         {
@@ -107,9 +107,10 @@ public class SkillManager : Singleton<SkillManager>
         _equippedSkills[equipIndex - 1] = null;
     }
 
-    public void UseSkill(KeyCode key)
+    public bool UseSkill(KeyCode key, out int keyNumber)
     {
-        int keyNumber = 0;
+        keyNumber = -1;
+
         switch (key)
         {
             case KeyCode.Alpha1:
@@ -125,28 +126,29 @@ public class SkillManager : Singleton<SkillManager>
                 keyNumber = 3;
                 break;
             default:
-                return;
+                return false; // 잘못된 키
         }
 
-        // 해당 슬롯에 스킬이 장착되어 있는지 확인
+        // 슬롯 범위 확인 및 스킬 존재 여부 확인
         if (keyNumber >= 0 && keyNumber < _equippedSkills.Count && _equippedSkills[keyNumber] != null)
         {
             Skill skillToUse = _equippedSkills[keyNumber];
 
-            // 쿨다운 확인
+            // 쿨타임 체크
             if (_skillCurrentCooldowns[skillToUse] >= skillToUse.SkillData.CoolTime)
             {
                 Debug.Log($"{keyNumber + 1}번 스킬 발동");
                 _skillCurrentCooldowns[skillToUse] = 0.0f;
-                Debug.Log($"Using {_equippedSkills[keyNumber].SkillData.TriggerName}");
-                _playerController._animator.SetTrigger($"{_equippedSkills[keyNumber].SkillData.TriggerName}");
+                Debug.Log($"Using {skillToUse.SkillData.TriggerName}");
+                _playerController._animator.SetTrigger(skillToUse.SkillData.TriggerName);
+                return true;
             }
-            else
-            {
-                Debug.Log($"{keyNumber + 1}번 스킬 쿨다운 중: {_skillCurrentCooldowns[skillToUse]}/{skillToUse.SkillData.CoolTime}");
-            }
+            Debug.Log($"{keyNumber + 1}번 스킬 쿨다운 중: {_skillCurrentCooldowns[skillToUse]}/{skillToUse.SkillData.CoolTime}");
         }
+
+        return false; // 스킬 없음 또는 쿨다운 중
     }
+
 
     private void UpdateCooldowns(float deltaTime)
     {
