@@ -10,6 +10,7 @@ public class MonsterSpawner : MonoBehaviour
 {
     [Header("Dependencies")]
     public ObjectPool monsterPool;     // Inspector에서 할당
+    [SerializeField]
     private AIManager aiManager;         // Inspector에서 할당
 
     [Header("Spawning Settings")]
