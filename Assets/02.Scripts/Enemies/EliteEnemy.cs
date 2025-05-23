@@ -30,8 +30,8 @@ public class EliteEnemy : Enemy, IDamageable
 
     public Animator EliteAnimator; // 인스펙터에서 할당하거나 Awake에서 찾아야 함
     
-    private NavMeshAgent _navMeshAgent;
-    private Animator _animator; // 일반적인 이동 애니메이션 등을 위한 Animator
+    // private NavMeshAgent _navMeshAgent;
+    // private Animator _animator; // 일반적인 이동 애니메이션 등을 위한 Animator
 
    
     protected override void Awake()
@@ -49,17 +49,17 @@ public class EliteEnemy : Enemy, IDamageable
 
         base.Awake(); // Enemy 클래스의 Awake 실행
 
-        _navMeshAgent = GetComponent<NavMeshAgent>();
-        if (_navMeshAgent == null)
-        {
-            Debug.LogWarning($"{gameObject.name} NavMeshAgent가 없습니다");
-        }
+        // _navMeshAgent = GetComponent<NavMeshAgent>();
+        // if (_navMeshAgent == null)
+        // {
+        //     Debug.LogWarning($"{gameObject.name} NavMeshAgent가 없습니다");
+        // }
 
-        _animator = GetComponentInChildren<Animator>(); // 일반 애니메이션(속도 등)을 위한 Animator
-        if (_animator == null)
-        {
-            Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
-        }
+        // _animator = GetComponentInChildren<Animator>(); // 일반 애니메이션(속도 등)을 위한 Animator
+        // if (_animator == null)
+        // {
+        //     Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
+        // }
         
     }
 

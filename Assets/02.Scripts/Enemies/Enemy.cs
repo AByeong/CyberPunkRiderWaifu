@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Assertions.Must;
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
 
@@ -9,27 +10,32 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     private EnemyDataSO _enemyData;
     public ObjectPool Pool;
 
+    public const float GRAVITY = 9.8f;
+
+    public bool IsHit { get; set; }
+    public bool IsInAir { get; set; }
+    public int TakedDamageValue { get; private set; }
+    public Vector3 VerticalVelocity = new Vector3();
+
     protected Animator _animator;
-    protected BehaviorGraphAgent _behaviorGraphAgent;
-    protected BlackboardReference _blackboardRef;
     protected NavMeshAgent _navMeshAgent;
+    protected CharacterController _characterController;
 
     private IStatsProvider _stat;
     // TODO
     // private DropTable _dropTable;
 
-    protected GameObject _target;
+    public GameObject Target { get; set; }
     public EnemyDataSO EnemyData => _enemyData;
     public int CurrentHealthPoint { get; private set; }
 
     public Animator Animator => _animator;
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
-    public BlackboardReference BlackboardRef => _blackboardRef;
+
     protected virtual void Awake()
     {
-        _behaviorGraphAgent = GetComponent<BehaviorGraphAgent>();
         CurrentHealthPoint = _enemyData.HealthPoint;
-        
+
         _navMeshAgent = GetComponent<NavMeshAgent>();
         if (_navMeshAgent == null)
         {
@@ -46,37 +52,26 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     private async void Start()
     {
         _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
-
-        if (_behaviorGraphAgent != null)
-        {
-            _blackboardRef = _behaviorGraphAgent.BlackboardReference;
-        }
-        else
-        {
-            Debug.LogWarning($"{gameObject.name} BehaviorGraphAgent가 없습니다!!");
-        }
-
-        _blackboardRef.SetVariableValue("StaggerTime", _enemyData.StaggerTime);
+        Initialize();
 
         _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
     }
 
+    public virtual void Initialize()
+    {
+        CurrentHealthPoint = EnemyData.HealthPoint;
+        NavMeshAgent.enabled = true;
+        IsHit = false;
+        IsInAir = false;
+    }
+
     public void TakeDamage(Damage damage)
     {
-        if (_blackboardRef == null)
-        {
-            Debug.LogError($"{gameObject.name} BlackboardRef가 없습니다!!");
-            return;
-        }
+        IsHit = true;
+        CurrentHealthPoint -= damage.DamageValue;
+        TakedDamageValue = damage.DamageValue;
 
         Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
-
-        CurrentHealthPoint -= damage.DamageValue;
-        Debug.Log("Enemy Hit!");
-
-        _blackboardRef.SetVariableValue("HealthPoint", CurrentHealthPoint);
-        _blackboardRef.SetVariableValue("EEnemyState", EEnemyState.Hit);
-        _blackboardRef.SetVariableValue("IsHit", true);
     }
 
     public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정

@@ -10,4 +10,6 @@ public class EnemyDataSO : ScriptableObject
     public float AttackDistance;
     public float AttackForce;
     public float StaggerTime;
+    public float DownTime;
+    public int InAirThreshold;
 }

@@ -72,6 +72,7 @@ public class MonsterSpawner : MonoBehaviour
             return null;
         }
 
+        monsterGO.GetComponent<Enemy>().Initialize();
         monsterGO.transform.position = position;
         monsterGO.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0); // 랜덤 Y축 회전
         monsterGO.SetActive(true);
