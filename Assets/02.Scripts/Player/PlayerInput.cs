@@ -117,7 +117,7 @@ namespace JY
 
                 m_AttackWaitCoroutine = StartCoroutine(Skill4Wait());
             }
-            _isPause = Input.GetButtonDown("Pause");
+            _isPause = Input.GetKeyDown(KeyCode.Escape);
         }
 
         private IEnumerator AttackWait()
