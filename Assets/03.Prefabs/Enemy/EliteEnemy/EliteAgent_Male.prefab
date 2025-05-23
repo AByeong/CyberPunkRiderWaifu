@@ -229,9 +229,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb4097539f236d4a9e8bc285ad11873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaterialName: Paperman
   _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
+  HitParticle: {fileID: 0}
   _attackType: 0
   AttackTypeNumber: 3
   EliteAnimator: {fileID: 3184633984302917899}
@@ -757,6 +759,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EliteMan@Soccer Pass
       objectReference: {fileID: 0}
+    - target: {fileID: 1016043845016997108, guid: 25a621e976920eb4baf09ab4f25bea58, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 74fa65a63c324c542b310436858c0812, type: 2}
     - target: {fileID: 1330755669629619180, guid: 25a621e976920eb4baf09ab4f25bea58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000000010244541

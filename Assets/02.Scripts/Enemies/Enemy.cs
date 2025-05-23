@@ -5,7 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.Assertions.Must;
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
-
+    public string MaterialName;
     [SerializeField]
     private EnemyDataSO _enemyData;
     public ObjectPool Pool;
