@@ -12,27 +12,27 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
-        // Debug.Log(SkillManager.Instance.DataList.SkillData);
-        //
-        // // 1단계: 모두 초기화 및 활성화
-        // for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
-        // {
-        //     Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
-        //     if (SkillManager.Instance.EquippedSkills.Contains(skill))
-        //     {
-        //         AvailableSkills[i].SetSkill(skill, true);
-        //     }
-        //     AvailableSkills[i].SetSkill(skill, true);
-        // }
-        //
-        // // 2단계: 장착된 스킬만 버튼 비활성화
-        // foreach(Skill equipped in SkillManager.Instance.EquippedSkills)
-        // {
-        //     if (equipped != null)
-        //     {
-        //         AvailableSkills[equipped.Index].Button.interactable = false;
-        //     }
-        // }
+        Debug.Log(SkillManager.Instance.DataList.SkillData);
+
+        // 1단계: 모두 초기화 및 활성화
+        for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
+        {
+            Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
+            if (SkillManager.Instance.EquippedSkills.Contains(skill))
+            {
+                AvailableSkills[i].SetSkill(skill, true);
+            }
+            AvailableSkills[i].SetSkill(skill, true);
+        }
+
+        // 2단계: 장착된 스킬만 버튼 비활성화
+        foreach(Skill equipped in SkillManager.Instance.EquippedSkills)
+        {
+            if (equipped != null)
+            {
+                AvailableSkills[equipped.Index].Button.interactable = false;
+            }
+        }
     }
     private void Update()
     {

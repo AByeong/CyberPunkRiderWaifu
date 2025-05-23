@@ -1,9 +1,8 @@
-﻿using System;
-public class UI_EquipSkill : UI_Skill
+﻿public class UI_EquipSkill : UI_Skill
 {
     // public Item[] slot;
     public int Index;
-    private void OnEnable()
+    private void Start()
     {
         if (SkillManager.Instance.EquippedSkills[Index] != null)
         {

@@ -24,5 +24,6 @@ public class UI_Skill : MonoBehaviour
     {
         Skill = null;
         _icon.sprite = null;
+        Button.interactable = false;
     }
 }
