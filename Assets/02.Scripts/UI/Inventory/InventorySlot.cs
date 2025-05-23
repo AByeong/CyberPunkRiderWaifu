@@ -23,29 +23,53 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         if (HasItem)
         {
             GameObject newitem = Instantiate(ItemPrefab, transform);
+
             UI_Item = newitem.GetComponent<UI_Item>();
+            SetItem(UI_Item.MyItem);
             UI_Item.Init(item, gameObject);
         }
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public virtual void OnDrop(PointerEventData eventData)
     {
-        if (eventData.pointerDrag == null) return;
-        if (!eventData.pointerDrag.TryGetComponent<UI_Item>(out UI_Item droppedUIItem)) return;
+        if (eventData.pointerDrag == null)
+        {
+            Debug.Log("OnDrop 중단: pointerDrag가 null입니다.");
+            return;
+        }
+
+        if (!eventData.pointerDrag.TryGetComponent(out UI_Item droppedUIItem))
+        {
+            Debug.Log("OnDrop 중단: pointerDrag에서 UI_Item 컴포넌트를 가져오지 못했습니다.");
+            return;
+        }
 
         Item droppedItem = droppedUIItem.MyItem;
-        if (droppedItem == null) return;
+        if (droppedItem == null)
+        {
+            Debug.Log("OnDrop 중단: 드롭된 아이템이 null입니다.");
+            return;
+        }
 
         // 드래그된 아이템의 이전 슬롯 가져오기
         GameObject previousSlotObject = droppedUIItem.InventorySlot;
-        if (previousSlotObject == null) return;
+        if (previousSlotObject == null)
+        {
+            Debug.Log("OnDrop 중단: 드래그된 아이템의 이전 슬롯 오브젝트가 null입니다.");
+            return;
+        }
 
         InventorySlot previousSlot = previousSlotObject.GetComponent<InventorySlot>();
-        if (previousSlot == null) return;
+        if (previousSlot == null)
+        {
+            Debug.Log("OnDrop 중단: 이전 슬롯에서 InventorySlot 컴포넌트를 가져오지 못했습니다.");
+            return;
+        }
 
         // 같은 슬롯에 드롭한 경우 무시
         if (previousSlot == this)
         {
+            Debug.Log("OnDrop 중단: 같은 슬롯에 드롭되었습니다.");
             droppedUIItem.SetPosition();
             return;
         }
@@ -61,8 +85,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         }
 
         // 아이템 이동/교환 처리
+        Debug.Log("드롭 처리: 아이템 이동 또는 교환을 진행합니다.");
         ProcessItemDrop(droppedItem, droppedUIItem, previousSlot);
     }
+
     public virtual void SetItem(Item newItem)
     {
         item = newItem;
@@ -72,6 +98,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             GameObject newUI = Instantiate(ItemPrefab, transform);
             UI_Item = newUI.GetComponent<UI_Item>();
+            item = newItem;
         }
 
         UI_Item.Init(newItem, gameObject);
@@ -82,11 +109,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         item = null;
         HasItem = false;
 
-        if (UI_Item != null)
-        {
-            Destroy(UI_Item.gameObject);
-            UI_Item = null;
-        }
     }
 
     private bool CanDropItemToThisSlot(Item droppedItem)
@@ -181,7 +203,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
         // 2. UI 연결 해제
         droppedUIItem.RemoveSlotItem();
-        currentUIItem.RemoveSlotItem();
 
         // 3. 슬롯 데이터 초기화
         item = null;
@@ -199,6 +220,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         UI_Item = droppedUIItem;
         droppedUIItem.SetItem(gameObject);
         droppedUIItem.SetPosition();
+        SetItem(UI_Item.MyItem);
 
         // 현재 아이템을 이전 슬롯에
         previousSlot.item = currentItem;
@@ -235,7 +257,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         UI_Item = droppedUIItem;
         droppedUIItem.SetItem(gameObject);
         droppedUIItem.SetPosition();
-
+        SetItem(item);
         // 5. 장비 장착 처리 (현재 슬롯이 장비 슬롯인 경우)
         EquipIfNeeded(droppedItem, this, playerController);
 
