@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class StageMainUI : MonoBehaviour
 {
     [Header("메인 UI")]
@@ -29,7 +28,7 @@ public class StageMainUI : MonoBehaviour
         SkillIcons[index].RestrictCondition = SkillManager.Instance.EquippedSkills[index].SkillData.CoolTime;
         SkillIcons[index].IconImageSprite = SkillManager.Instance.EquippedSkills[index].SkillData.Icon;
     }
-    
+
     public void SkillIconLoad(int index)
     {
         SkillIcons[index].StartCooltime();
@@ -48,9 +47,8 @@ public class StageMainUI : MonoBehaviour
     public void RefreshKillTracking(string message)
     {
         KillTrackingText.text = message;
-        ProgressSlider.value = (float)DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total)/(float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
+        ProgressSlider.value = DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total) / (float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
         finisherIcon.StackChange(DeliveryManager.Instance.KillTracker.TotalKillCount);
-        
+
     }
-    
 }

@@ -1,22 +1,18 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 public class SkillManager : Singleton<SkillManager>
 {
     public SkillDataList DataList;
 
     [SerializeField]
-    private List<Skill> equippedSkills;
+    [ItemCanBeNull]
+    private List<Skill> equippedSkills = new List<Skill>();
     public Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
     public List<Skill> EquippedSkills => equippedSkills;
 
     private void Awake()
     {
-        // equippedSkills 리스트를 4개 슬롯으로 초기화
-        if (equippedSkills == null)
-            equippedSkills = new List<Skill>();
-
-        equippedSkills.Clear();
-
         // 4개의 null 슬롯 추가
         for (int i = 0; i < 4; i++)
         {
