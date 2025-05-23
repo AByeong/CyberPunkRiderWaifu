@@ -236,8 +236,11 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Summoning
+    m_ConditionEvent: OnAttack
     m_EventTreshold: 0
+  - m_ConditionMode: 6
+    m_ConditionEvent: AttackType
+    m_EventTreshold: 2
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1346714381184549799}
   m_Solo: 0
@@ -327,12 +330,6 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: Summoning
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -360,7 +357,7 @@ AnimatorStateMachine:
     m_Position: {x: 510, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8852379542105521962}
-    m_Position: {x: 70, y: 420, z: 0}
+    m_Position: {x: 80, y: 460, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3737194660726244827}
     m_Position: {x: 380, y: 10, z: 0}
@@ -372,10 +369,10 @@ AnimatorStateMachine:
     m_Position: {x: 240, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8844061280510036341}
-    m_Position: {x: 340, y: 710, z: 0}
+    m_Position: {x: 380, y: 730, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1346714381184549799}
-    m_Position: {x: -50, y: 740, z: 0}
+    m_Position: {x: 70, y: 800, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 1196932876220760343}

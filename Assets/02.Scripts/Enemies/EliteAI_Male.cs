@@ -20,7 +20,7 @@ public class EliteAI_Male : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(SummonTime);
-            EliteAnimator.SetTrigger("Summoning");
+
             
         }
         

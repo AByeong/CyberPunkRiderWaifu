@@ -85,7 +85,7 @@ public class KillTracker : MonoBehaviour
        if (IsMissionCompleted())
        {
            Debug.Log("Mission Completed");
-           DeliveryManager.Instance.LoadNextSection();
+           DeliveryManager.Instance.CompleteCurrentSection();
            
        }
 
