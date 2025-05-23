@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 public class UI_Skill : MonoBehaviour
 {
-    public float _skillCooldown;
-    public float _skillRange;
 
+    public float SkillRange;
+    public float SKillCoolDownTime;
     private Image _icon;
     public Skill Skill { get; private set; }
 
@@ -16,10 +16,9 @@ public class UI_Skill : MonoBehaviour
     public void SetSkill(Skill skillToEquip)
     {
         Skill = skillToEquip;
-
+        SkillRange = skillToEquip.SkillData.SkillRange;
+        SKillCoolDownTime = skillToEquip.SkillData.CoolTime;
         _icon.sprite = Skill.SkillData.Icon;
-        _skillRange = Skill.SkillData.SkillRange;
-        _skillCooldown = Skill.SkillData.CoolTime;
     }
 
     public void RemoveSkill()

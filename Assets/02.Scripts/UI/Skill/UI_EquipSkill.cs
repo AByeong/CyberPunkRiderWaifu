@@ -1,25 +1,18 @@
-﻿using UnityEngine;
-
-namespace _02.Scripts.UI.Skill
+﻿public class UI_EquipSkill : UI_Skill
 {
-    public class UI_EquipSkill : UI_Skill
+    // public Item[] slot;
+    public int Index;
+    public void SetChipOption(Item item)
     {
-        public Item[] slot;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= item.ChipData.ReduceCooldown;
+        SkillManager.Instance.EquippedSkill1.SkillData.SkillRange *= item.ChipData.SkillRange;
 
-        public void SetChipOption(Item item)
-        {
-            _skillCooldown *= item.ChipData.ReduceCooldown;
-            _skillRange *= item.ChipData.SkillRange;
+    }
 
-            Debug.Log(_skillRange + "칩 할당됨!!");
-        }
+    public void ClearChipOption(Item item)
+    {
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= item.ChipData.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= item.ChipData.SkillRange;
 
-        public void ClearChipOption(Item item)
-        {
-            _skillCooldown *= item.ChipData.ReduceCooldown;
-            _skillRange *= item.ChipData.SkillRange;
-
-            Debug.Log(_skillRange + "칩 할당됨!!");
-        }
     }
 }

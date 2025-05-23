@@ -6,8 +6,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; // 커서를 화면 중앙에 고정
-        Cursor.visible = false; // 커서 숨김
+        // Cursor.lockState = CursorLockMode.Locked; // 커서를 화면 중앙에 고정
+        // Cursor.visible = false; // 커서 숨김
     }
     public void GameStop()
     {

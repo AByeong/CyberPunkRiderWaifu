@@ -6,8 +6,13 @@ public class SkillManager : Singleton<SkillManager>
     public List<Skill> Skills;
     public List<Skill> EquippedSkills;
     public List<bool> EquippedSkillsBool;
-    // private List<Skill> equippedSkills;
+
     public Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
+
+    public Skill EquippedSkill1 => EquippedSkills[0];
+    public Skill EquippedSkill2 => EquippedSkills[1];
+    public Skill EquippedSkill3 => EquippedSkills[2];
+    public Skill EquippedSkill4 => EquippedSkills[3];
     private void Awake()
     {
         base.Awake();
