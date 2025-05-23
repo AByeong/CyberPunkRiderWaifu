@@ -15,7 +15,7 @@ public class EnemyManager : Singleton<EnemyManager>
    protected override void Awake()
    {
       base.Awake();
-      //EnemyManagerInit();
+      EnemyManagerInit();
     }
 
    public void EnemyManagerInit()

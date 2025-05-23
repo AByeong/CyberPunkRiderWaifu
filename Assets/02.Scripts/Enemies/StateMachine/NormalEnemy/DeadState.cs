@@ -42,6 +42,8 @@ public class DeadState : BaseNormalEnemyState
         _deadTimer += Time.deltaTime;
         if (_deadTimer >= 3f)
         {
+            Owner.NavMeshAgent.ResetPath();
+            Owner.NavMeshAgent.velocity = Vector3.zero;
             Owner.Pool.ReturnObject(Owner.gameObject);
         }
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
@@ -20,6 +21,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected Animator _animator;
     protected NavMeshAgent _navMeshAgent;
     protected CharacterController _characterController;
+    protected Collider _collider;
 
     private IStatsProvider _stat;
     // TODO
@@ -33,7 +35,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
 
     public ParticleSystem HitParticle;
-    
+
     protected virtual void Awake()
     {
         CurrentHealthPoint = _enemyData.HealthPoint;
@@ -49,20 +51,22 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
         }
+
+        CurrentHealthPoint = EnemyData.HealthPoint;
+        IsHit = false;
+        IsInAir = false;
     }
 
     private async void Start()
     {
         _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
-        Initialize();
-
         _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
     }
 
     public virtual void Initialize()
     {
+        // NavMeshAgent.enabled = true;
         CurrentHealthPoint = EnemyData.HealthPoint;
-        NavMeshAgent.enabled = true;
         IsHit = false;
         IsInAir = false;
     }
