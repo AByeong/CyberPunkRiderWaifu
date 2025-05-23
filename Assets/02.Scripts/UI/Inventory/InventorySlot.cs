@@ -98,17 +98,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             GameObject newUI = Instantiate(ItemPrefab, transform);
             UI_Item = newUI.GetComponent<UI_Item>();
-            item = newItem;
         }
 
-        UI_Item.Init(newItem, gameObject);
+        UI_Item.Init(item, gameObject);
     }
 
-    public void ClearSlot()
+    protected virtual void ClearSlot()
     {
         item = null;
         HasItem = false;
-
+        UI_Item = null;
     }
 
     private bool CanDropItemToThisSlot(Item droppedItem)
@@ -205,14 +204,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         droppedUIItem.RemoveSlotItem();
 
         // 3. 슬롯 데이터 초기화
-        item = null;
-        HasItem = false;
-        UI_Item = null;
+        ClearSlot();
 
-        previousSlot.item = null;
-        previousSlot.HasItem = false;
-        previousSlot.UI_Item = null;
-
+        previousSlot.ClearSlot();
         // 4. 아이템 재배치
         // 드롭된 아이템을 현재 슬롯에
         item = droppedItem;
@@ -247,10 +241,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         droppedUIItem.RemoveSlotItem();
 
         // 3. 이전 슬롯 초기화
-        previousSlot.item = null;
-        previousSlot.HasItem = false;
-        previousSlot.UI_Item = null;
-
+        previousSlot.ClearSlot();
         // 4. 현재 슬롯에 아이템 설정
         item = droppedItem;
         HasItem = true;
