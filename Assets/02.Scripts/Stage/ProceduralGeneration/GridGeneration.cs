@@ -1,4 +1,3 @@
-using System.Text;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -56,20 +55,6 @@ public class GridGeneration : MonoBehaviour
     // 7. 빈 공간 너비에 따른 랜덤패턴 생성
     // 8. 패턴들 구현
 
-    private void Start()
-    {
-        Generate();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Backslash))
-        {
-            DestroyMap();
-            Generate();
-        }
-    }
-
     public void Generate()
     {
         grid = new int[width, height];
@@ -105,6 +90,15 @@ public class GridGeneration : MonoBehaviour
         BuildMap();
     }
 
+
+    public void DestroyMap()
+    {
+        foreach (Transform child in gameObject.transform)
+        {
+            child.position = new Vector3(9999, 9999, 9999);
+            Destroy(child.gameObject);
+        }
+    }
 
     void MaskOuterEmptySpaces()
     {
@@ -249,10 +243,6 @@ public class GridGeneration : MonoBehaviour
         // 하나는 수평 방향 (relY=0, relX!=0)이고 다른 하나는 수직 방향 (relX=0, relY!=0)일 때.
         bool isPerpendicular = ( (relX1 != 0 && relY1 == 0 && relX2 == 0 && relY2 != 0) ||
                                  (relX1 == 0 && relY1 != 0 && relX2 != 0 && relY2 == 0) );
-        if (!isPerpendicular)
-        {
-            Debug.LogWarning($"{x}, {y}: {isPerpendicular} == {relX1}|{relY1}|{relX2}|{relY2}");            
-        }
         return isPerpendicular;
     }
 
@@ -512,14 +502,6 @@ public class GridGeneration : MonoBehaviour
                     grid[x, y] = (int)EGirdType.Pattern;
                 }
             }
-        }
-    }
-
-    private void DestroyMap()
-    {
-        foreach (Transform child in gameObject.transform)
-        {
-            Destroy(child.gameObject);
         }
     }
 
