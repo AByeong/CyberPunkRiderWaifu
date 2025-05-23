@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DeadState : BaseNormalEnemyState
@@ -16,7 +17,13 @@ public class DeadState : BaseNormalEnemyState
         switch (Owner.EnemyData.EnemyType)
         {
             case EEnemyType.Normal:
-                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
+                //DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
+                // 예시: 장비 2개, 칩 1개, 골드 3개 드랍
+                var dropPlan = new Dictionary<DropItemType, int>
+                {
+                    { DropItemType.Equipment, 3 },
+                };
+                ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
                 break;
 
             case EEnemyType.Elite:
