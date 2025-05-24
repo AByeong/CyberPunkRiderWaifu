@@ -1,5 +1,4 @@
-﻿using Gamekit3D;
-using JY;
+﻿using JY;
 using UnityEngine;
 public class PlayerSkill : MonoBehaviour
 {
