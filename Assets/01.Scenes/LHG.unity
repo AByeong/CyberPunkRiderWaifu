@@ -3253,7 +3253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroy: 1
-  Director: {fileID: 1274195635}
+  Director:
+  - {fileID: 1274195635}
   PlayerCamera: {fileID: 1818427125}
 --- !u!1 &812612046
 GameObject:
@@ -4567,8 +4568,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroy: 1
-  _normalMonsterSpawners: []
-  _eliteMonsterSpawners: []
   _bossMonsterSpawners: {fileID: 0}
   Timer: 1
 --- !u!1 &2053189430
@@ -4780,13 +4779,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 747061108332892193, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 40.4
+      objectReference: {fileID: 0}
     - target: {fileID: 1525435272508644698, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_Name
       value: PrisonStage
       objectReference: {fileID: 0}
     - target: {fileID: 2968336311662441726, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -66
+      value: -1031
       objectReference: {fileID: 0}
     - target: {fileID: 2968336311662441726, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4824,6 +4827,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3498550705451868440, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 40.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6487504360425486867, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 82014b5d1ffa2b74f964bb610c6ed0c9, type: 2}
+    - target: {fileID: 6979312363474438954, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: m_NavMeshData
+      value: 
+      objectReference: {fileID: 23800000, guid: 0b26ce1b0b1a9844182f09ff2e959082, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

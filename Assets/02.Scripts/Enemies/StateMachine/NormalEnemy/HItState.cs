@@ -112,46 +112,46 @@ public class HItState : BaseNormalEnemyState
 
     public override void OnEnter()
     {
+        base.OnEnter();
 
         Owner.gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
         
         targetMaterialName = Owner.MaterialName;
         
         
-        Debug.Log($"[HitState] OnEnter: Called for {Owner?.gameObject.name}");
-        _airSequence?.Kill();
-        base.OnEnter();
+        // Debug.Log($"[HitState] OnEnter: Called for {Owner?.gameObject.name}");
+        // _airSequence?.Kill();
 
-        CacheRenderersAndInitialColors();
+        // CacheRenderersAndInitialColors();
 
-        Debug.Log("[HitState] OnEnter: Attempting to start hit flash effect.");
-        if (_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0) // _targetedRenderers로 조건 변경
-        {
-            if (_hitFlashCoroutine != null)
-            {
-                Debug.Log("[HitState] OnEnter: Stopping existing HitFlashCoroutine.");
-                StopCoroutine(_hitFlashCoroutine);
-            }
+        // Debug.Log("[HitState] OnEnter: Attempting to start hit flash effect.");
+        // if (_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0) // _targetedRenderers로 조건 변경
+        // {
+        //     if (_hitFlashCoroutine != null)
+        //     {
+        //         Debug.Log("[HitState] OnEnter: Stopping existing HitFlashCoroutine.");
+        //         StopCoroutine(_hitFlashCoroutine);
+        //     }
 
-            float currentFlashDuration = hitFlashEffectDuration; // 인스펙터에서 설정한 값을 기본으로 사용
-            if (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0)
-            {
-                // StaggerTime이 효과 지속시간보다 짧으면 StaggerTime을 따르고, 아니면 설정된 효과 지속시간 사용
-                currentFlashDuration = Mathf.Min(Owner.EnemyData.StaggerTime, hitFlashEffectDuration);
-                 Debug.Log($"[HitState] OnEnter: Flash duration will be {currentFlashDuration} (Min of StaggerTime and hitFlashEffectDuration).");
-            }
-            else
-            {
-                 Debug.Log($"[HitState] OnEnter: Using hitFlashEffectDuration = {currentFlashDuration}");
-            }
+        //     float currentFlashDuration = hitFlashEffectDuration; // 인스펙터에서 설정한 값을 기본으로 사용
+        //     if (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0)
+        //     {
+        //         // StaggerTime이 효과 지속시간보다 짧으면 StaggerTime을 따르고, 아니면 설정된 효과 지속시간 사용
+        //         currentFlashDuration = Mathf.Min(Owner.EnemyData.StaggerTime, hitFlashEffectDuration);
+        //          Debug.Log($"[HitState] OnEnter: Flash duration will be {currentFlashDuration} (Min of StaggerTime and hitFlashEffectDuration).");
+        //     }
+        //     else
+        //     {
+        //          Debug.Log($"[HitState] OnEnter: Using hitFlashEffectDuration = {currentFlashDuration}");
+        //     }
 
-            if(currentFlashDuration <= 0) Debug.LogWarning($"[HitState] OnEnter: currentFlashDuration ({currentFlashDuration}) is zero or negative.");
-            _hitFlashCoroutine = StartCoroutine(HitFlashMainColorCoroutine(currentFlashDuration));
-        }
-        else
-        {
-            Debug.LogWarning($"[HitState] OnEnter: No targeted renderers to apply hit flash effect. Check targetMaterialName ('{targetMaterialName}') and mainColorPropertyName ('{mainColorPropertyName}').");
-        }
+        //     if(currentFlashDuration <= 0) Debug.LogWarning($"[HitState] OnEnter: currentFlashDuration ({currentFlashDuration}) is zero or negative.");
+        //     _hitFlashCoroutine = StartCoroutine(HitFlashMainColorCoroutine(currentFlashDuration));
+        // }
+        // else
+        // {
+        //     Debug.LogWarning($"[HitState] OnEnter: No targeted renderers to apply hit flash effect. Check targetMaterialName ('{targetMaterialName}') and mainColorPropertyName ('{mainColorPropertyName}').");
+        // }
 
         Owner.IsHit = false;
         if (Owner.NavMeshAgent != null && Owner.NavMeshAgent.isOnNavMesh)
@@ -188,76 +188,76 @@ public class HItState : BaseNormalEnemyState
         }
     }
 
-    private IEnumerator HitFlashMainColorCoroutine(float duration)
-    {
-        Debug.Log($"[HitState] HitFlashMainColorCoroutine: Started. Duration: {duration}. Target Highlight V: {highlightVValue}");
-        ApplyMainColorHSVModification(highlightVValue);
-        Debug.Log("[HitState] HitFlashMainColorCoroutine: Highlight V value applied.");
+    // private IEnumerator HitFlashMainColorCoroutine(float duration)
+    // {
+    //     Debug.Log($"[HitState] HitFlashMainColorCoroutine: Started. Duration: {duration}. Target Highlight V: {highlightVValue}");
+    //     ApplyMainColorHSVModification(highlightVValue);
+    //     Debug.Log("[HitState] HitFlashMainColorCoroutine: Highlight V value applied.");
 
-        if (duration > 0) {
-            yield return new WaitForSeconds(duration);
-            Debug.Log("[HitState] HitFlashMainColorCoroutine: Wait finished.");
-        }
+    //     if (duration > 0) {
+    //         yield return new WaitForSeconds(duration);
+    //         Debug.Log("[HitState] HitFlashMainColorCoroutine: Wait finished.");
+    //     }
 
-        Debug.Log($"[HitState] HitFlashMainColorCoroutine: Setting Normal V value ({normalVValue}).");
-        ApplyMainColorHSVModification(normalVValue);
-        Debug.Log("[HitState] HitFlashMainColorCoroutine: Normal V value applied.");
+    //     Debug.Log($"[HitState] HitFlashMainColorCoroutine: Setting Normal V value ({normalVValue}).");
+    //     ApplyMainColorHSVModification(normalVValue);
+    //     Debug.Log("[HitState] HitFlashMainColorCoroutine: Normal V value applied.");
 
-        _hitFlashCoroutine = null;
-        Debug.Log("[HitState] HitFlashMainColorCoroutine: Coroutine finished.");
-    }
+    //     _hitFlashCoroutine = null;
+    //     Debug.Log("[HitState] HitFlashMainColorCoroutine: Coroutine finished.");
+    // }
 
-    private void ApplyMainColorHSVModification(float targetV)
-    {
-        Debug.Log($"[HitState] ApplyMainColorHSVModification: Called with targetV: {targetV} for property '{mainColorPropertyName}'. Processing {_targetedRenderers?.Count} targeted renderers.");
-        if (_targetedRenderers == null || _propertyBlock == null || _initialRendererColors == null) return;
+    // private void ApplyMainColorHSVModification(float targetV)
+    // {
+    //     Debug.Log($"[HitState] ApplyMainColorHSVModification: Called with targetV: {targetV} for property '{mainColorPropertyName}'. Processing {_targetedRenderers?.Count} targeted renderers.");
+    //     if (_targetedRenderers == null || _propertyBlock == null || _initialRendererColors == null) return;
 
-        int appliedCount = 0;
-        foreach (Renderer rend in _targetedRenderers) // _targetedRenderers 사용
-        {
-            if (rend != null) // rend가 null이 아니고, _initialRendererColors에 있는지 확인 (Cache 로직에서 이미 필터링됨)
-            {
-                if (_initialRendererColors.TryGetValue(rend, out Color initialColor))
-                {
-                    float H, S, V_original;
-                    Color.RGBToHSV(initialColor, out H, out S, out V_original);
+    //     int appliedCount = 0;
+    //     foreach (Renderer rend in _targetedRenderers) // _targetedRenderers 사용
+    //     {
+    //         if (rend != null) // rend가 null이 아니고, _initialRendererColors에 있는지 확인 (Cache 로직에서 이미 필터링됨)
+    //         {
+    //             if (_initialRendererColors.TryGetValue(rend, out Color initialColor))
+    //             {
+    //                 float H, S, V_original;
+    //                 Color.RGBToHSV(initialColor, out H, out S, out V_original);
 
-                    Color newRGBColor = Color.HSVToRGB(H, S, Mathf.Clamp01(targetV));
-                    newRGBColor.a = initialColor.a;
+    //                 Color newRGBColor = Color.HSVToRGB(H, S, Mathf.Clamp01(targetV));
+    //                 newRGBColor.a = initialColor.a;
 
-                    rend.GetPropertyBlock(_propertyBlock);
-                    _propertyBlock.SetColor(mainColorPropertyName, newRGBColor);
-                    rend.SetPropertyBlock(_propertyBlock);
-                    appliedCount++;
-                    if(appliedCount==1) Debug.Log($"[HitState] ApplyMainColorHSVModification: Applied to '{rend.gameObject.name}'. InitialColor: {initialColor} (H:{H:F2} S:{S:F2} V:{V_original:F2}), TargetV: {targetV}, NewRGB: {newRGBColor}");
-                }
-            }
-        }
-        Debug.Log($"[HitState] ApplyMainColorHSVModification: Finished. Applied to {appliedCount} renderers.");
-    }
+    //                 rend.GetPropertyBlock(_propertyBlock);
+    //                 _propertyBlock.SetColor(mainColorPropertyName, newRGBColor);
+    //                 rend.SetPropertyBlock(_propertyBlock);
+    //                 appliedCount++;
+    //                 if(appliedCount==1) Debug.Log($"[HitState] ApplyMainColorHSVModification: Applied to '{rend.gameObject.name}'. InitialColor: {initialColor} (H:{H:F2} S:{S:F2} V:{V_original:F2}), TargetV: {targetV}, NewRGB: {newRGBColor}");
+    //             }
+    //         }
+    //     }
+    //     Debug.Log($"[HitState] ApplyMainColorHSVModification: Finished. Applied to {appliedCount} renderers.");
+    // }
 
-    private void ApplyOriginalColors()
-    {
-        Debug.Log($"[HitState] ApplyOriginalColors: Reverting to initial colors for property '{mainColorPropertyName}'. Processing {_targetedRenderers?.Count} targeted renderers.");
-        if (_targetedRenderers == null || _propertyBlock == null || _initialRendererColors == null) return;
+    // private void ApplyOriginalColors()
+    // {
+    //     Debug.Log($"[HitState] ApplyOriginalColors: Reverting to initial colors for property '{mainColorPropertyName}'. Processing {_targetedRenderers?.Count} targeted renderers.");
+    //     if (_targetedRenderers == null || _propertyBlock == null || _initialRendererColors == null) return;
 
-        int revertedCount = 0;
-        foreach (Renderer rend in _targetedRenderers) // _targetedRenderers 사용
-        {
-            if (rend != null)
-            {
-                if (_initialRendererColors.TryGetValue(rend, out Color originalColor))
-                {
-                    rend.GetPropertyBlock(_propertyBlock);
-                    _propertyBlock.SetColor(mainColorPropertyName, originalColor);
-                    rend.SetPropertyBlock(_propertyBlock);
-                    revertedCount++;
-                    if(revertedCount==1) Debug.Log($"[HitState] ApplyOriginalColors: Reverted '{rend.gameObject.name}' to {originalColor}.");
-                }
-            }
-        }
-        Debug.Log($"[HitState] ApplyOriginalColors: Finished. Reverted {revertedCount} renderers.");
-    }
+    //     int revertedCount = 0;
+    //     foreach (Renderer rend in _targetedRenderers) // _targetedRenderers 사용
+    //     {
+    //         if (rend != null)
+    //         {
+    //             if (_initialRendererColors.TryGetValue(rend, out Color originalColor))
+    //             {
+    //                 rend.GetPropertyBlock(_propertyBlock);
+    //                 _propertyBlock.SetColor(mainColorPropertyName, originalColor);
+    //                 rend.SetPropertyBlock(_propertyBlock);
+    //                 revertedCount++;
+    //                 if(revertedCount==1) Debug.Log($"[HitState] ApplyOriginalColors: Reverted '{rend.gameObject.name}' to {originalColor}.");
+    //             }
+    //         }
+    //     }
+    //     Debug.Log($"[HitState] ApplyOriginalColors: Finished. Reverted {revertedCount} renderers.");
+    // }
 
     private void PlayAirborneKnockbackSequence(float toY, Vector3 knockbackDir)
     {
@@ -332,20 +332,20 @@ public class HItState : BaseNormalEnemyState
 
     public override void OnExit()
     {
-        Owner.gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
-        Debug.Log($"[HitState] OnExit: Called for {Owner?.gameObject.name}");
-        base.OnExit();
-        _airSequence?.Kill();
-        _hitTimer = 0f;
+        // Owner.gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
+        // Debug.Log($"[HitState] OnExit: Called for {Owner?.gameObject.name}");
+        // base.OnExit();
+        // _airSequence?.Kill();
+        // _hitTimer = 0f;
 
-        if (_hitFlashCoroutine != null)
-        {
-            Debug.Log("[HitState] OnExit: Stopping active HitFlashCoroutine.");
-            StopCoroutine(_hitFlashCoroutine);
-            _hitFlashCoroutine = null;
-        }
-        Debug.Log("[HitState] OnExit: Reverting all targeted materials to their initial original colors.");
-        ApplyOriginalColors();
+        // if (_hitFlashCoroutine != null)
+        // {
+        //     Debug.Log("[HitState] OnExit: Stopping active HitFlashCoroutine.");
+        //     StopCoroutine(_hitFlashCoroutine);
+        //     _hitFlashCoroutine = null;
+        // }
+        // Debug.Log("[HitState] OnExit: Reverting all targeted materials to their initial original colors.");
+        // ApplyOriginalColors();
 
 
         if (Owner.NavMeshAgent != null && !Owner.NavMeshAgent.enabled)
