@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public class UI_Skill : MonoBehaviour
 {
 
@@ -12,7 +13,7 @@ public class UI_Skill : MonoBehaviour
         _icon = GetComponent<Image>();
     }
 
-    public void SetSkill(Skill skillToEquip, bool isActive)
+    public virtual void SetSkill(Skill skillToEquip, bool isActive)
     {
         if (skillToEquip == null) return;
         Button.interactable = isActive;
@@ -20,7 +21,7 @@ public class UI_Skill : MonoBehaviour
         _icon.sprite = Skill.SkillData.Icon;
     }
 
-    public void RemoveSkill()
+    public virtual void RemoveSkill()
     {
         Skill = null;
         _icon.sprite = null;
