@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 [Serializable]
 public class Skill
 {
@@ -20,6 +21,6 @@ public class Skill
     public void Use()
     {
         _cooldownTimer = 0f;
-        // 실제 스킬 실행 로직 (이펙트, 애니메이션 등)
+        Debug.Log(SkillData.CoolTime);
     }
 }

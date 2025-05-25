@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Gamekit3D;
+using JY;
 using UnityEngine;
 using UnityEngine.EventSystems;
 public enum SlotType // 인스펙터에서 설정
