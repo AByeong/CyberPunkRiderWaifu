@@ -2,6 +2,7 @@ using System.Collections.Generic;
 // NUnit.Framework는 일반적으로 유닛 테스트용이므로 MonoBehaviour 스크립트에서는 제거해도 괜찮습니다.
 // using NUnit.Framework; 
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class EliteAI_Female : MonoBehaviour
 {
@@ -34,7 +35,6 @@ public class EliteAI_Female : MonoBehaviour
             }
         }
         
-        DrawGizmosSelected();
     }
 
     public void StampStep()
@@ -63,11 +63,33 @@ public class EliteAI_Female : MonoBehaviour
         Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
     }
 
-    public void StepAttack()
+
+
+    public GameObject StompVFX;
+    public void StompAttack()
     {
-        // 이 함수는 아직 구현되지 않았습니다.
+        StompVFX.SetActive(true);
+        StompVFX.GetComponent<ParticleSystem>().Play();
     }
 
+    public GameObject TornadoVFX;
+
+    public void TornadoAttack()
+    {
+        TornadoVFX.SetActive(true);
+        TornadoVFX.GetComponent<VisualEffect>().Play();
+        TornadoVFX.GetComponent<ParticleSystem>().Play();
+    }
+
+
+    public void TornadoAttackEnd()
+    {
+        TornadoVFX.SetActive(false);
+        TornadoVFX.GetComponent<VisualEffect>().Stop();
+        TornadoVFX.GetComponent<ParticleSystem>().Stop();
+    }
+    
+    
     public void Running()
     {
         if (!isCoolingDown)
@@ -85,29 +107,6 @@ public class EliteAI_Female : MonoBehaviour
         currentCooldownTime = runCooldownDuration;
     }
 
-#if UNITY_EDITOR // 유니티 에디터에서만 실행되도록 전처리기 지시문 사용
-    private void DrawGizmosSelected()
-    {
-        // 기즈모 색상 설정 (예: 노란색, 반투명)
-        Gizmos.color = new Color(1f, 0.92f, 0.016f, 0.3f); // Yellow with alpha
 
-        // StampStep에서 사용하는 OverlapSphere의 범위를 그립니다.
-        // 현재 StampStep은 transform.position을 중심으로 사용합니다.
-        // 만약 StampPosition Transform을 중심으로 하고 싶다면 아래의 첫 번째 인자를 StampPosition.position으로 변경하세요.
-        Vector3 gizmoCenter = transform.position;
-
-        // StampPosition 변수가 할당되어 있고, 이를 사용하고 싶다면 아래 주석을 해제하고 위 gizmoCenter 정의를 주석 처리하세요.
-        // if (StampPosition != null)
-        // {
-        //     gizmoCenter = StampPosition.position;
-        // }
-
-        Gizmos.DrawSphere(gizmoCenter, StampRange);
-
-        // 와이어 프레임으로 그리고 싶다면 DrawWireSphere 사용
-        // Gizmos.color = Color.yellow;
-        // Gizmos.DrawWireSphere(gizmoCenter, StampRange);
-    }
-#endif
 }
 

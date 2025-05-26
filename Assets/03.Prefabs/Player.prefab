@@ -1683,6 +1683,61 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4279812521713740246}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2079514602976170448
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1736943744710588056}
+  - component: {fileID: 3261747998812755691}
+  m_Layer: 0
+  m_Name: DrakkarTrail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1736943744710588056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079514602976170448}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7036503, y: -0, z: -0, w: 0.71054643}
+  m_LocalPosition: {x: 0, y: 0.371, z: -0.027}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3401306641066527042}
+  m_LocalEulerAnglesHint: {x: -89.441, y: 0, z: 0}
+--- !u!114 &3261747998812755691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079514602976170448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3351d65a5e49c64d9002bba88ce89a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Length: 1.1369017
+  Steps: 10
+  StepTime: 1
+  EndingSpeed: 7
+  Bounds: 1
+  Interpolation: 4
+  Edges: 0
+  Edge1: 0.5
+  Edge2: 0.666666
+  TrailMaterial: {fileID: 2100000, guid: fb75af29024c0364aa28f929807fc95d, type: 2}
+  Layer: 0
 --- !u!1 &2110670741998308933
 GameObject:
   m_ObjectHideFlags: 0
@@ -2723,6 +2778,7 @@ GameObject:
   - component: {fileID: 5637839264626966794}
   - component: {fileID: 5888996659395836914}
   - component: {fileID: 3295075478172944198}
+  - component: {fileID: 6816744060663186235}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2863,6 +2919,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05bd48d53652b847a2a22ff67430f35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hitAnimationCoolTime: 1
+  _isKnockedBackable: 1
+  _knockbackTimer: 0
 --- !u!114 &3295075478172944198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2876,6 +2935,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stretchColliderOnly: {fileID: 0}
+--- !u!114 &6816744060663186235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921213963416402505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a7fa2396a451cd4ea2d2d0afee243c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Drakkar: {fileID: 3261747998812755691}
 --- !u!1 &2989521625858347405
 GameObject:
   m_ObjectHideFlags: 0
@@ -5947,7 +6019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2843514423102319108
 Transform:
   m_ObjectHideFlags: 0
@@ -7295,7 +7367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 239808274899621860, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.118
       objectReference: {fileID: 0}
     - target: {fileID: 239808274899621860, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7303,7 +7375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 239808274899621860, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.08
       objectReference: {fileID: 0}
     - target: {fileID: 239808274899621860, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7347,6 +7419,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 239808274899621860, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2843514423102319108}
+    - targetCorrespondingSourceObject: {fileID: 239808274899621860, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1736943744710588056}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 583261190468603230, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}
       insertIndex: -1
