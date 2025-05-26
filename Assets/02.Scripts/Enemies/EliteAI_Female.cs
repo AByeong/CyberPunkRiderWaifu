@@ -47,7 +47,7 @@ public class EliteAI_Female : MonoBehaviour
 
         foreach (Collider hitCollider in detectedColliders)
         {
-            //if (hitCollider.gameObject == gameObject) continue;
+            if (hitCollider.tag == "Elite") continue;
 
             IDamageable damageable = hitCollider.GetComponent<IDamageable>();
             if (damageable != null)
@@ -63,6 +63,25 @@ public class EliteAI_Female : MonoBehaviour
         Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
     }
 
+public TrailRenderer EyeTrail;
+
+public void EyeTurnOn()
+{
+    EyeTrail.gameObject.SetActive(true);
+}
+
+public void EyeTurnOff()
+{
+    EyeTrail.gameObject.SetActive(false);
+}
+
+
+public GameObject KingStompVFX;
+public void KingStompAttack()
+{
+    KingStompVFX.SetActive(true);
+    KingStompVFX.GetComponent<ParticleSystem>().Play();
+}
 
 
     public GameObject StompVFX;
