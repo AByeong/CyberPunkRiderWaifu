@@ -30,9 +30,9 @@ public class UI_EquipSkill : UI_Skill
         base.SetSkill(skillToEquip, isActive);
         foreach(ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
+            if (chipSlot != null)
             {
-                SetChipOption(chipSlot.UI_Item.MyItem);
+                //SetChipOption(chipSlot.Items[1].Item);
             }
         }
     }
@@ -42,10 +42,10 @@ public class UI_EquipSkill : UI_Skill
         base.RemoveSkill();
         foreach(ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
-            {
-                ClearChipOption(chipSlot.UI_Item.MyItem);
-            }
+            // if (chipSlot.UI_Item != null)
+            // {
+            //     ClearChipOption(chipSlot.UI_Item.MyItem);
+            // }
         }
     }
 }

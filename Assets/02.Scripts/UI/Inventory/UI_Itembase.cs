@@ -1,25 +1,30 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHandler, IBeginDragHandler
+
+public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDragHandler, IBeginDragHandler
 {
-    public Item MyItem;
+    public Item Item;
     public GameObject InventorySlot;
     public GameObject OriginalSlot;
-    private Canvas _canvas;
+    protected RectTransform _rectTransform;
     private Transform _originalParent;
 
     // 드래그 시작 시 원래 위치 저장
-    private Vector2 _originalPosition;
-    private RectTransform _rectTransform;
+    private Vector2 _originalPosition; 
     private bool _wasDroppedOnValidSlot;
-
+    
+    private Canvas _canvas;
+    
+    public virtual void Init(Item item, GameObject inventorySlot)
+    {
+        
+    }
     private void Start()
     {
         _rectTransform = GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
     }
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         // 드래그 시작 시 원래 위치와 부모 저장
@@ -29,16 +34,18 @@ public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHan
 
         transform.SetParent(_canvas.transform);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
-
-        Debug.Log($"드래그 시작: {MyItem.ItemName}");
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
     }
-
-    public void OnEndDrag(PointerEventData eventData)
+    public void SetItem(GameObject slot)
+    {
+        InventorySlot = slot;
+        InventorySlot.GetComponent<InventorySlot>().Item = Item;
+    }
+    public virtual void OnEndDrag(PointerEventData eventData)
     {
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
@@ -52,7 +59,7 @@ public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHan
 
             if (targetSlot != null)
             {
-                Debug.Log($"유효한 슬롯에 드롭: {targetSlot.slotType}");
+                Debug.Log($"유효한 슬롯에 드롭: {targetSlot.SlotType}");
                 _wasDroppedOnValidSlot = true;
                 // InventorySlot의 OnDrop이 처리할 것임
                 return;
@@ -60,7 +67,6 @@ public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHan
         }
 
         // 유효하지 않은 곳에 드롭된 경우 원래 위치로 복귀
-        Debug.Log($"유효하지 않은 곳에 드롭됨. 원래 위치로 복귀: {MyItem.ItemName}");
         ReturnToOriginalPosition();
     }
 
@@ -69,37 +75,26 @@ public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHan
         // 툴팁이나 기타 UI 표시 가능
     }
 
-    public void Init(Item item, GameObject inventorySlot)
+    public void RemoveSlotItem()
     {
-        MyItem = item;
-        OriginalSlot = inventorySlot;
-        InventorySlot = inventorySlot;
-        inventorySlot.GetComponent<InventorySlot>().item = item;
-        if (item != null &&item.Icon != null)
-        {
-            GetComponent<Image>().sprite = item.Icon;
-        }
-        SetItem(inventorySlot);
+        if (InventorySlot == null) return;
+        InventorySlot.GetComponent<InventorySlot>().Item = null;
     }
-
     public void SetPosition()
     {
         transform.SetParent(InventorySlot.transform);
         _rectTransform.anchoredPosition = Vector2.zero;
     }
-
-    public void SetItem(GameObject slot)
+    
+    private void ReturnToOriginalPosition()
     {
-        InventorySlot = slot;
-        InventorySlot.GetComponent<InventorySlot>().item = MyItem;
-    }
+        // 원래 부모로 돌아가기
+        transform.SetParent(_originalParent);
 
-    public void RemoveSlotItem()
-    {
-        if (InventorySlot == null) return;
-        InventorySlot.GetComponent<InventorySlot>().item = null;
+        // 원래 위치로 돌아가기
+        _rectTransform.anchoredPosition = _originalPosition;
     }
-
+    
     private InventorySlot GetInventorySlotFromGameObject(GameObject obj)
     {
         // 현재 오브젝트에서 InventorySlot 확인
@@ -117,15 +112,5 @@ public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHan
 
         return null;
     }
-
-    private void ReturnToOriginalPosition()
-    {
-        // 원래 부모로 돌아가기
-        transform.SetParent(_originalParent);
-
-        // 원래 위치로 돌아가기
-        _rectTransform.anchoredPosition = _originalPosition;
-
-        Debug.Log($"원래 위치로 복귀 완료: {MyItem.ItemName}");
-    }
 }
+

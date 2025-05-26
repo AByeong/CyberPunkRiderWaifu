@@ -48,7 +48,7 @@ public class InventoryManager : Singleton<InventoryManager>
             {
                 dataList.Add(new ItemData
                 {
-                    itemId = _inventorySlots[i].item.Id,
+                    itemId = _inventorySlots[i].Item.Id,
                     slotIndex = i
                 });
             }

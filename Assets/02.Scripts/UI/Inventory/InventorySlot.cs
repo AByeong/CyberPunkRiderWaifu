@@ -10,24 +10,29 @@ public enum SlotType // 인스펙터에서 설정
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public GameObject ItemPrefab;
+    public SlotType SlotType;
     // public UI_Item UI_Item;
-    public Itembase[] Items;
+    public UI_Itembase[] Items;
+
+    public Item Item;
     // public Item item;
     public bool HasItem;
 
-    public SlotType slotType;
     public EquipmentType equipmentType; // SlotType이 Equipment일 경우 사용
 
     private void Start()
     {
         if (HasItem)
         {
-            GameObject newitem = Instantiate(ItemPrefab, transform);
-
-            UI_Item = newitem.GetComponent<UI_Item>();
-            SetItem(UI_Item.MyItem);
-            UI_Item.Init(item, gameObject);
+            switch(SlotType)
+            {
+                case SlotType.Equipment:
+                {
+                    Items[0].gameObject.SetActive(true);
+                    Items[0].Init(Item, this.gameObject);
+                    break;
+                }
+            }
         }
     }
 
@@ -39,13 +44,13 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             return;
         }
 
-        if (!eventData.pointerDrag.TryGetComponent(out UI_Item droppedUIItem))
+        if (!eventData.pointerDrag.TryGetComponent(out UI_Itembase droppedUIItem))
         {
             Debug.Log("OnDrop 중단: pointerDrag에서 UI_Item 컴포넌트를 가져오지 못했습니다.");
             return;
         }
 
-        Item droppedItem = droppedUIItem.MyItem;
+        Item droppedItem = droppedUIItem.Item;
         if (droppedItem == null)
         {
             Debug.Log("OnDrop 중단: 드롭된 아이템이 null입니다.");
@@ -75,12 +80,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             return;
         }
 
-        Debug.Log($"드롭 시도: {droppedItem.ItemName} ({droppedItem.ItemType}) -> {slotType} 슬롯");
 
         // 드롭 가능 여부 검증
         if (!CanDropItemToThisSlot(droppedItem))
         {
-            Debug.Log($"드롭 불가: {droppedItem.ItemName}을(를) {slotType} 슬롯에 드롭할 수 없습니다.");
+            Debug.Log($"드롭 불가: {droppedItem.ItemName}을(를) {SlotType} 슬롯에 드롭할 수 없습니다.");
             droppedUIItem.SetPosition();
             return;
         }
@@ -92,66 +96,64 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public virtual void SetItem(Item newItem)
     {
-        item = newItem;
-        HasItem = true;
-
-        if (UI_Item == null)
-        {
-            GameObject newUI = Instantiate(ItemPrefab, transform);
-            UI_Item = newUI.GetComponent<UI_Item>();
-            item = newItem;
-        }
-
-        UI_Item.Init(item, gameObject);
+        // item = newItem;
+        // HasItem = true;
+        //
+        // if (UI_Item == null)
+        // {
+        //     GameObject newUI = Instantiate(ItemPrefab, transform);
+        //     UI_Item = newUI.GetComponent<UI_Item>();
+        //     item = newItem;
+        // }
+        //
+        // UI_Item.Init(item, gameObject);
     }
 
     public virtual void ClearSlot()
     {
-        item = null;
-        HasItem = false;
-        UI_Item = null;
+        // item = null;
+        // HasItem = false;
+        // UI_Item = null;
     }
 
     private bool CanDropItemToThisSlot(Item droppedItem)
     {
         // 인벤토리 슬롯은 모든 아이템 수용 가능
-        if (slotType == SlotType.Inventory)
+        if (SlotType == SlotType.Inventory)
         {
             return true;
         }
 
         // 장비 슬롯은 장비 아이템만 수용 가능
-        if (slotType == SlotType.Equipment)
+        if (SlotType == SlotType.Equipment)
         {
             // 장비 아이템이 아니면 드롭 불가
-            if (droppedItem.ItemType != ItemType.Equipment)
-            {
-                Debug.Log("장비 슬롯에는 장비 아이템만 드롭 가능합니다.");
-                return false;
-            }
-
-            // 장비 타입이 맞지 않으면 드롭 불가
-            if (droppedItem.EquipmentData == null || droppedItem.EquipmentData.EquipmentType != equipmentType)
-            {
-                Debug.Log($"장비 타입 불일치: 필요 타입 {equipmentType}, 아이템 타입 {droppedItem.EquipmentData?.EquipmentType}");
-                return false;
-            }
+            // if (droppedItem.SlotType != ItemType.Equipment)
+            // {
+            //     Debug.Log("장비 슬롯에는 장비 아이템만 드롭 가능합니다.");
+            //     return false;
+            // }
+            //
+            // // 장비 타입이 맞지 않으면 드롭 불가
+            // if (droppedItem.EquipmentData == null || droppedItem.EquipmentData.EquipmentType != equipmentType)
+            // {
+            //     Debug.Log($"장비 타입 불일치: 필요 타입 {equipmentType}, 아이템 타입 {droppedItem.EquipmentData?.EquipmentType}");
+            //     return false;
+            // }
         }
 
         return true;
     }
 
-    private void ProcessItemDrop(Item droppedItem, UI_Item droppedUIItem, InventorySlot previousSlot)
+    private void ProcessItemDrop(Item droppedItem, UI_Itembase droppedUIItem, InventorySlot previousSlot)
     {
         PlayerController playerController = GameManager.Instance.player;
 
         // 현재 슬롯에 아이템이 있는 경우 (교환)
-        if (HasItem && item != null)
+        if (HasItem && Item != null)
         {
-            Debug.Log($"아이템 교환 시도: {item.ItemName} <-> {droppedItem.ItemName}");
-
             // 현재 슬롯의 아이템이 이전 슬롯에 들어갈 수 있는지 확인
-            if (!CanItemGoToSlot(item, previousSlot))
+            if (!CanItemGoToSlot(Item, previousSlot))
             {
                 Debug.Log("아이템 교환 불가: 현재 아이템이 이전 슬롯에 들어갈 수 없습니다.");
                 droppedUIItem.SetPosition();
@@ -172,116 +174,60 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     private bool CanItemGoToSlot(Item targetItem, InventorySlot targetSlot)
     {
         // 인벤토리 슬롯은 모든 아이템 수용 가능
-        if (targetSlot.slotType == SlotType.Inventory)
+        if (targetSlot.SlotType == SlotType.Inventory)
         {
             return true;
         }
 
         // 장비 슬롯 검증
-        if (targetSlot.slotType == SlotType.Equipment)
+        if (targetSlot.SlotType == SlotType.Equipment)
         {
-            if (targetItem.ItemType != ItemType.Equipment)
-                return false;
-
-            if (targetItem.EquipmentData == null || targetItem.EquipmentData.EquipmentType != targetSlot.equipmentType)
-                return false;
+            // if (targetItem.ItemType != ItemType.Equipment)
+            //     return false;
+            //
+            // if (targetItem.EquipmentData == null || targetItem.EquipmentData.EquipmentType != targetSlot.equipmentType)
+            //     return false;
         }
 
         return true;
     }
 
-    private void SwapItems(Item droppedItem, UI_Item droppedUIItem, InventorySlot previousSlot, PlayerController playerController)
+    private void SwapItems(Item droppedItem, UI_Itembase droppedUIItem, InventorySlot previousSlot, PlayerController playerController)
     {
-        // 현재 슬롯의 아이템과 UI 임시 저장
-        Item currentItem = item;
-        UI_Item currentUIItem = UI_Item;
-
-        Debug.Log($"아이템 교환 실행: {currentItem.ItemName} <-> {droppedItem.ItemName}");
-
-        // 1. 장비 해제 처리 (이동 전)
-        UnequipIfNeeded(droppedItem, previousSlot, playerController);
-        UnequipIfNeeded(currentItem, this, playerController);
-
-        // 2. UI 연결 해제
-        droppedUIItem.RemoveSlotItem();
-
-        // 3. 슬롯 데이터 초기화
-        ClearSlot();
-
-        previousSlot.ClearSlot();
-        // 4. 아이템 재배치
-        // 드롭된 아이템을 현재 슬롯에
-        item = droppedItem;
-        HasItem = true;
-        UI_Item = droppedUIItem;
-        droppedUIItem.SetItem(gameObject);
-        droppedUIItem.SetPosition();
-        SetItem(UI_Item.MyItem);
-
-        // 현재 아이템을 이전 슬롯에
-        previousSlot.item = currentItem;
-        previousSlot.HasItem = true;
-        previousSlot.UI_Item = currentUIItem;
-        currentUIItem.SetItem(previousSlot.gameObject);
-        currentUIItem.SetPosition();
-
-        // 5. 장비 장착 처리 (이동 후)
-        EquipIfNeeded(droppedItem, this, playerController);
-        EquipIfNeeded(currentItem, previousSlot, playerController);
-
-        Debug.Log("아이템 교환 완료");
+       
     }
 
-    private void MoveItemToEmptySlot(Item droppedItem, UI_Item droppedUIItem, InventorySlot previousSlot, PlayerController playerController)
+    private void MoveItemToEmptySlot(Item droppedItem, UI_Itembase droppedUIItem, InventorySlot previousSlot, PlayerController playerController)
     {
-        Debug.Log($"아이템 이동 실행: {droppedItem.ItemName} -> {slotType} 슬롯");
-
-        // 1. 장비 해제 처리 (이전 슬롯이 장비 슬롯인 경우)
-        UnequipIfNeeded(droppedItem, previousSlot, playerController);
-
-        // 2. UI 연결 해제
-        droppedUIItem.RemoveSlotItem();
-
-        // 3. 이전 슬롯 초기화
-        previousSlot.ClearSlot();
-        // 4. 현재 슬롯에 아이템 설정
-        item = droppedItem;
-        HasItem = true;
-        UI_Item = droppedUIItem;
-        droppedUIItem.SetItem(gameObject);
-        droppedUIItem.SetPosition();
-        SetItem(item);
-        // 5. 장비 장착 처리 (현재 슬롯이 장비 슬롯인 경우)
-        EquipIfNeeded(droppedItem, this, playerController);
-
-        Debug.Log("아이템 이동 완료");
+        
     }
 
     private void EquipIfNeeded(Item equipItem, InventorySlot slot, PlayerController playerController)
     {
-        if (slot.slotType == SlotType.Equipment &&
-            equipItem.ItemType == ItemType.Equipment &&
-            equipItem.EquipmentData != null)
-        {
-            foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
-            {
-                playerController.ApplyEquipment(stat.Key, stat.Value);
-                Debug.Log($"[장착 완료] {equipItem.ItemName} - {stat.Key} : +{stat.Value}");
-            }
-        }
+        // if (slot.SlotType == SlotType.Equipment &&
+        //     equipItem.ItemType == ItemType.Equipment &&
+        //     equipItem.EquipmentData != null)
+        // {
+        //     foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
+        //     {
+        //         playerController.ApplyEquipment(stat.Key, stat.Value);
+        //         Debug.Log($"[장착 완료] {equipItem.ItemName} - {stat.Key} : +{stat.Value}");
+        //     }
+        // }
     }
 
     private void UnequipIfNeeded(Item equipItem, InventorySlot slot, PlayerController playerController)
     {
-        if (slot.slotType == SlotType.Equipment &&
-            equipItem.ItemType == ItemType.Equipment &&
-            equipItem.EquipmentData != null)
-        {
-            foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
-            {
-                playerController.RemoveEquipment(stat.Key, stat.Value);
-                Debug.Log($"[장비 해제] {equipItem.ItemName} - {stat.Key} : -{stat.Value}");
-            }
-        }
+    //     if (slot.SlotType == SlotType.Equipment &&
+    //         equipItem.ItemType == ItemType.Equipment &&
+    //         equipItem.EquipmentData != null)
+    //     {
+    //         foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
+    //         {
+    //             playerController.RemoveEquipment(stat.Key, stat.Value);
+    //             Debug.Log($"[장비 해제] {equipItem.ItemName} - {stat.Key} : -{stat.Value}");
+    //         }
+    //     }
+    // }
     }
 }

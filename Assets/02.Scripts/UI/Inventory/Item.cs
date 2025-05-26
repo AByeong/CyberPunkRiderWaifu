@@ -7,4 +7,7 @@ public class Item
     public string Id;
     public string ItemName;
     public Sprite Icon;
+
+    public ItemType Type;
 }
+                                
