@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHandler, IBeginDragHandler
+public class UI_ItemChipcs : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHandler, IBeginDragHandler
 {
     public Item MyItem;
     public GameObject InventorySlot;

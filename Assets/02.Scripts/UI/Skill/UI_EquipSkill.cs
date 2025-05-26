@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 public class UI_EquipSkill : UI_Skill
 {
     public ChipSlot[] ChipSlots;
@@ -11,38 +10,42 @@ public class UI_EquipSkill : UI_Skill
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void SetChipOption(Item item)
+    public void SetChipOption(ItemChip item)
     {
-        Debug.Log(item.ChipData.ReduceCooldown);
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= item.ChipData.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= item.ChipData.SkillRange;
+        Debug.Log(item.Data.ReduceCooldown);
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= item.Data.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= item.Data.SkillRange;
 
     }
 
-    public void ClearChipOption(Item item)
+    public void ClearChipOption(ItemChip item)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= item.ChipData.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= item.ChipData.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= item.Data.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= item.Data.SkillRange;
 
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)
     {
         base.SetSkill(skillToEquip, isActive);
-        foreach (ChipSlot chipSlot in ChipSlots)
+        foreach(ChipSlot chipSlot in ChipSlots)
+        {
             if (chipSlot.UI_Item != null)
             {
                 SetChipOption(chipSlot.UI_Item.MyItem);
             }
+        }
     }
 
     public override void RemoveSkill()
     {
         base.RemoveSkill();
-        foreach (ChipSlot chipSlot in ChipSlots)
+        foreach(ChipSlot chipSlot in ChipSlots)
+        {
             if (chipSlot.UI_Item != null)
             {
                 ClearChipOption(chipSlot.UI_Item.MyItem);
             }
+        }
     }
 }

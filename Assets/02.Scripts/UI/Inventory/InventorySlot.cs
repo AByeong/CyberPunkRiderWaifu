@@ -11,8 +11,9 @@ public enum SlotType // 인스펙터에서 설정
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public GameObject ItemPrefab;
-    public UI_Item UI_Item;
-    public Item item;
+    // public UI_Item UI_Item;
+    public Itembase[] Items;
+    // public Item item;
     public bool HasItem;
 
     public SlotType slotType;
