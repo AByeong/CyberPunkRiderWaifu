@@ -35,21 +35,7 @@ public class StageManager : Singleton<StageManager>
         GameObject startPoint = SubStageList[_currentStageIndex].GetStartEntry();
         MovePlayerToStartPosition(startPoint);
     }
-
-    // 디버깅
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Backslash))
-        {
-            StageInitialize();
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            _isClear = true;
-        }
-    }
-    // 디버깅
+    
 
     public void StageInitialize()
     {
