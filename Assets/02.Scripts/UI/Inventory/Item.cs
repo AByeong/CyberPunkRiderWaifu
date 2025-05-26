@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 public enum ItemType { Equipment, Chip, Etc }
+
 [Serializable]
 public class Item
 {

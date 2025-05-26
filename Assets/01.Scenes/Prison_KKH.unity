@@ -302,11 +302,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c07e873af8ba41bcbc259dd7f2d9d0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item:
-    Id: 
-    ItemName: 
-    Icon: {fileID: 0}
-    Type: 0
   InventorySlot: {fileID: 0}
   OriginalSlot: {fileID: 0}
 --- !u!1001 &308324644
@@ -415,6 +410,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1804238449509700185, guid: d4244964505083340aabf9e9e277be3a, type: 3}
   m_PrefabInstance: {fileID: 308324644}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &308324646 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4234608596720059704, guid: d4244964505083340aabf9e9e277be3a, type: 3}
+  m_PrefabInstance: {fileID: 308324644}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b9fa19b5ffc6144b87528ed33719508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178,11 +1184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cb805ef82ae4a1d8ed6d49c819846f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Item:
-    Id: 
-    ItemName: 
-    Icon: {fileID: 0}
-    Type: 0
   InventorySlot: {fileID: 0}
   OriginalSlot: {fileID: 0}
 --- !u!1001 &1655364308
@@ -1846,6 +1847,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4062018888685298662, guid: dbb6d5b3762eb94488d674214a5cf96a, type: 3}
+      propertyPath: Items_UI.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4062018888685298662, guid: dbb6d5b3762eb94488d674214a5cf96a, type: 3}
+      propertyPath: 'Items_UI.Array.data[0]'
+      value: 
+      objectReference: {fileID: 308324646}
+    - target: {fileID: 4062018888685298662, guid: dbb6d5b3762eb94488d674214a5cf96a, type: 3}
+      propertyPath: 'Items_UI.Array.data[1]'
+      value: 
+      objectReference: {fileID: 276344635}
+    - target: {fileID: 4062018888685298662, guid: dbb6d5b3762eb94488d674214a5cf96a, type: 3}
+      propertyPath: 'Items_UI.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1637974668}
     - target: {fileID: 4865655304806598106, guid: dbb6d5b3762eb94488d674214a5cf96a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

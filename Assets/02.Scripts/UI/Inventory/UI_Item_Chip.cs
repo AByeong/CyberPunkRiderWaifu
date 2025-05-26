@@ -14,9 +14,7 @@ public class UI_Item_Chip : UI_Itembase
 
     public override void Init(Item item, GameObject inventorySlot)
     {
-        base.SetItem(item); // Data도 여기서 설정됨
-        InventorySlot = inventorySlot;
-        OriginalSlot = inventorySlot;
+        base.Init(item, inventorySlot);
     }
     public override void SetItem(Item item)
     {

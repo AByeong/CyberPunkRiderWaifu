@@ -11,31 +11,31 @@ public enum SlotType // 인스펙터에서 설정
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public SlotType SlotType;
-    // public UI_Item UI_Item;
-    public UI_Itembase[] Items;
+    public UI_Itembase[] Items_UI;
 
     public Item Item;
-    // public Item item;
     public bool HasItem;
 
     public EquipmentType equipmentType; // SlotType이 Equipment일 경우 사용
 
+    
+   
     private void Start()
     {
         if (HasItem)
         {
-            switch(SlotType)
-            {
-                case SlotType.Equipment:
-                {
-                    Items[0].gameObject.SetActive(true);
-                    Items[0].Init(Item, this.gameObject);
-                    break;
-                }
-            }
+            AllItemHide();
+            Items_UI[(int)Item.Type].Show(Item);
         }
     }
 
+    private void AllItemHide()
+    {
+        foreach (UI_Itembase UI_Item in Items_UI)
+        {
+            
+        }
+    }
     public virtual void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag == null)
@@ -50,7 +50,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             return;
         }
 
-        Item droppedItem = droppedUIItem.Item;
+        Item droppedItem = new Item();
         if (droppedItem == null)
         {
             Debug.Log("OnDrop 중단: 드롭된 아이템이 null입니다.");

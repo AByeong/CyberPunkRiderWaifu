@@ -15,11 +15,20 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
     
     private Canvas _canvas;
 
-    public Item Item;
+    // 현재 아이템 데이터 (각 하위 클래스에서 override)
+    protected virtual Item CurrentItem { get; set; }
     
     public virtual void Init(Item item, GameObject inventorySlot)
     {
-        
+        CurrentItem = item;
+        InventorySlot = inventorySlot;
+        OriginalSlot = inventorySlot;
+        //UpdateVisual();
+    }
+    public virtual void Show(Item item)
+    {
+        gameObject.SetActive(true);       // UI 활성화
+        Init(item, transform.parent.gameObject); // Item 초기화
     }
     private void Start()
     {
@@ -43,7 +52,7 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
     }
     public virtual void SetItem(Item item)
     {
-        Item = item;
+       // Item = item;
 
         // 기본 아이콘 변경 등 UI 갱신
         if (item != null && item.Icon != null)
@@ -80,8 +89,8 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
                 if (targetUIItem != null)
                 {
                     // 데이터만 교환
-                    Item temp = this.Item;
-                    this.SetItem(targetUIItem.Item);
+                    Item temp = CurrentItem;
+                    this.SetItem(targetUIItem.CurrentItem);
                     targetUIItem.SetItem(temp);
 
                     Debug.Log("아이템 데이터 스왑 완료");
@@ -106,7 +115,7 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
 
         // 데이터 제거
         InventorySlot.GetComponent<InventorySlot>().Item = null;
-        Item = null;
+        CurrentItem = null;
 
         // UI 초기화
         Image image = GetComponent<Image>();
@@ -150,5 +159,7 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
 
         return null;
     }
+
+
 }
 
