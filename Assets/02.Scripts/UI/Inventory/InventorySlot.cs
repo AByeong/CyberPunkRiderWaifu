@@ -130,9 +130,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             }
 
             // 장비 타입이 맞지 않으면 드롭 불가
-            if (droppedItem.EquipmentData == null || droppedItem.EquipmentData.EquipmentType != equipmentType)
+            if (droppedItem.Data == null || ((EquipmentData)droppedItem.Data).EquipmentType != equipmentType)
             {
-                Debug.Log($"장비 타입 불일치: 필요 타입 {equipmentType}, 아이템 타입 {droppedItem.EquipmentData?.EquipmentType}");
+                Debug.Log($"장비 타입 불일치: 필요 타입 {equipmentType}, 아이템 타입 {((EquipmentData)droppedItem.Data)?.EquipmentType}");
                 return false;
             }
         }
@@ -179,10 +179,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         // 장비 슬롯 검증
         if (targetSlot.slotType == SlotType.Equipment)
         {
+            
             if (targetItem.ItemType != ItemType.Equipment)
                 return false;
 
-            if (targetItem.EquipmentData == null || targetItem.EquipmentData.EquipmentType != targetSlot.equipmentType)
+            if (((EquipmentData)targetItem.Data) == null || ((EquipmentData)targetItem.Data).EquipmentType != targetSlot.equipmentType)
                 return false;
         }
 
@@ -260,9 +261,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         if (slot.slotType == SlotType.Equipment &&
             equipItem.ItemType == ItemType.Equipment &&
-            equipItem.EquipmentData != null)
+            ((EquipmentData)equipItem.Data) != null)
         {
-            foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
+            foreach(KeyValuePair<StatType, float> stat in ((EquipmentData)equipItem.Data).Stats)
             {
                 playerController.ApplyEquipment(stat.Key, stat.Value);
                 Debug.Log($"[장착 완료] {equipItem.ItemName} - {stat.Key} : +{stat.Value}");
@@ -274,9 +275,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         if (slot.slotType == SlotType.Equipment &&
             equipItem.ItemType == ItemType.Equipment &&
-            equipItem.EquipmentData != null)
+            ((EquipmentData)equipItem.Data) != null)
         {
-            foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
+            foreach(KeyValuePair<StatType, float> stat in ((EquipmentData)equipItem.Data).Stats)
             {
                 playerController.RemoveEquipment(stat.Key, stat.Value);
                 Debug.Log($"[장비 해제] {equipItem.ItemName} - {stat.Key} : -{stat.Value}");

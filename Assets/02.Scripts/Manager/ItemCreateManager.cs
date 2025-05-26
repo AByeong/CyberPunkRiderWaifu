@@ -117,7 +117,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
         }
 
         data.Stats = stat;
-        item.EquipmentData = data;
+        item.Data = data;
 
         return item;
     }
@@ -141,7 +141,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
         item.ItemName = $"Chip_{_chipIndex++}";
         item.Icon = ChipSprite;
         item.ItemType = ItemType.Chip;
-        item.ChipData = new ChipData
+        item.Data = new ChipData
         {
             SkillRange = 1.0f,
             ReduceCooldown = 0.2f
