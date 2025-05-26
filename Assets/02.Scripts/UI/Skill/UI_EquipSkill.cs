@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-public class UI_EquipSkill : UI_Skill
+﻿public class UI_EquipSkill : UI_Skill
 {
     public ChipSlot[] ChipSlots;
     public int Index;
@@ -10,18 +9,17 @@ public class UI_EquipSkill : UI_Skill
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void SetChipOption(ItemChip item)
+    public void SetChipOption(ChipData chipData)
     {
-        Debug.Log(item.Data.ReduceCooldown);
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= item.Data.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= item.Data.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipData.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipData.SkillRange;
 
     }
 
-    public void ClearChipOption(ItemChip item)
+    public void ClearChipOption(ChipData chipData)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= item.Data.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= item.Data.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipData.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipData.SkillRange;
 
     }
 

@@ -1,9 +1,9 @@
 ﻿public class EquipmentSlot : InventorySlot
 {
-    public  EquipmentType equipmentType;
-    public override void SetItem(Item newItem)
+    public EquipmentType equipmentType;
+    public override void SetData(Item newItem)
     {
-        base.SetItem(newItem);
+        base.SetData(newItem);
     }
 
     public override void ClearSlot()

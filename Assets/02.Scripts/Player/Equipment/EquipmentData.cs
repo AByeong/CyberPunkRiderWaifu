@@ -3,7 +3,7 @@ using UnityEngine;
 public enum EquipmentType { Weapon, Armor, Head, Boots }
 
 [CreateAssetMenu(fileName = "EquipmentData", menuName = "Scriptable Objects/EquipmentData")]
-public class EquipmentData : ScriptableObject
+public class EquipmentData : DataData
 {
     public string Id;
     public string EquipmentName;

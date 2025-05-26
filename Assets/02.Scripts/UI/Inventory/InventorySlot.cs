@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using JY;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +7,7 @@ public enum SlotType // 인스펙터에서 설정
     Equipment // 장비 슬롯
 }
 
-public class InventorySlot : MonoBehaviour, IDropHandler
+public class InventorySlot : MonoBehaviour, IDropHandler, IDragHandler, IPointerEnterHandler, IEndDragHandler, IBeginDragHandler
 {
     public SlotType SlotType;
     public UI_Itembase[] Items_UI;
@@ -18,95 +17,63 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public EquipmentType equipmentType; // SlotType이 Equipment일 경우 사용
 
-    
-   
+    private Canvas _canvas;
+    private CanvasGroup _canvasGroup;
+    private RectTransform _rectTransform;
+
     private void Start()
     {
+        _canvas = GetComponentInParent<Canvas>();
+        _rectTransform = GetComponent<RectTransform>();
+        _canvasGroup = GetComponent<CanvasGroup>();
+
+        AllItemHide();
         if (HasItem)
         {
-            AllItemHide();
             Items_UI[(int)Item.Type].Show(Item);
         }
+    }
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        _canvasGroup.interactable = false;
+        transform.SetParent(_canvas.transform, false);
+    }
+    public void OnDrag(PointerEventData eventData)
+    {
+        _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
+    }
+    public virtual void OnDrop(PointerEventData eventData)
+    {
+        Debug.Log(eventData.pointerDrag.name + " " + gameObject.name);
+        Debug.Log(eventData.pointerDrag.GetComponent<InventorySlot>().Item.name);
+
+        Item droppedItem = eventData.pointerDrag.GetComponent<InventorySlot>().Item;
+        // Item droppedItem = new Item(); // 박제
+
+        // 아이템 이동/교환 처리
+        Debug.Log("드롭 처리: 아이템 이동 또는 교환을 진행합니다.");
+        SetData(droppedItem);
+    }
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        _canvasGroup.blocksRaycasts = true;
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // throw new NotImplementedException();
     }
 
     private void AllItemHide()
     {
-        foreach (UI_Itembase UI_Item in Items_UI)
+        foreach(UI_Itembase UI_Item in Items_UI)
         {
-            
+            UI_Item.gameObject.SetActive(false);
         }
     }
-    public virtual void OnDrop(PointerEventData eventData)
+
+    public virtual void SetData(Item newItem)
     {
-        if (eventData.pointerDrag == null)
-        {
-            Debug.Log("OnDrop 중단: pointerDrag가 null입니다.");
-            return;
-        }
-
-        if (!eventData.pointerDrag.TryGetComponent(out UI_Itembase droppedUIItem))
-        {
-            Debug.Log("OnDrop 중단: pointerDrag에서 UI_Item 컴포넌트를 가져오지 못했습니다.");
-            return;
-        }
-
-        Item droppedItem = new Item();
-        if (droppedItem == null)
-        {
-            Debug.Log("OnDrop 중단: 드롭된 아이템이 null입니다.");
-            return;
-        }
-
-        // 드래그된 아이템의 이전 슬롯 가져오기
-        GameObject previousSlotObject = droppedUIItem.InventorySlot;
-        if (previousSlotObject == null)
-        {
-            Debug.Log("OnDrop 중단: 드래그된 아이템의 이전 슬롯 오브젝트가 null입니다.");
-            return;
-        }
-
-        InventorySlot previousSlot = previousSlotObject.GetComponent<InventorySlot>();
-        if (previousSlot == null)
-        {
-            Debug.Log("OnDrop 중단: 이전 슬롯에서 InventorySlot 컴포넌트를 가져오지 못했습니다.");
-            return;
-        }
-
-        // 같은 슬롯에 드롭한 경우 무시
-        if (previousSlot == this)
-        {
-            Debug.Log("OnDrop 중단: 같은 슬롯에 드롭되었습니다.");
-            droppedUIItem.SetPosition();
-            return;
-        }
-
-
-        // 드롭 가능 여부 검증
-        if (!CanDropItemToThisSlot(droppedItem))
-        {
-            Debug.Log($"드롭 불가: {droppedItem.ItemName}을(를) {SlotType} 슬롯에 드롭할 수 없습니다.");
-            droppedUIItem.SetPosition();
-            return;
-        }
-
-        // 아이템 이동/교환 처리
-        Debug.Log("드롭 처리: 아이템 이동 또는 교환을 진행합니다.");
-        ProcessItemDrop(droppedItem, droppedUIItem, previousSlot);
-    }
-
-    public virtual void SetItem(Item newItem)
-    {
-        // item = newItem;
-        // HasItem = true;
-        //
-        // if (UI_Item == null)
-        // {
-        //     GameObject newUI = Instantiate(ItemPrefab, transform);
-        //     UI_Item = newUI.GetComponent<UI_Item>();
-        //     item = newItem;
-        // }
-        //
-        // UI_Item.Init(item, gameObject);
+        Item = newItem;
     }
 
     public virtual void ClearSlot()
@@ -156,7 +123,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             if (!CanItemGoToSlot(Item, previousSlot))
             {
                 Debug.Log("아이템 교환 불가: 현재 아이템이 이전 슬롯에 들어갈 수 없습니다.");
-                droppedUIItem.SetPosition();
                 return;
             }
 
@@ -194,12 +160,12 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     private void SwapItems(Item droppedItem, UI_Itembase droppedUIItem, InventorySlot previousSlot, PlayerController playerController)
     {
-       
+
     }
 
     private void MoveItemToEmptySlot(Item droppedItem, UI_Itembase droppedUIItem, InventorySlot previousSlot, PlayerController playerController)
     {
-        
+        SetData(droppedItem);
     }
 
     private void EquipIfNeeded(Item equipItem, InventorySlot slot, PlayerController playerController)
@@ -218,16 +184,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     private void UnequipIfNeeded(Item equipItem, InventorySlot slot, PlayerController playerController)
     {
-    //     if (slot.SlotType == SlotType.Equipment &&
-    //         equipItem.ItemType == ItemType.Equipment &&
-    //         equipItem.EquipmentData != null)
-    //     {
-    //         foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
-    //         {
-    //             playerController.RemoveEquipment(stat.Key, stat.Value);
-    //             Debug.Log($"[장비 해제] {equipItem.ItemName} - {stat.Key} : -{stat.Value}");
-    //         }
-    //     }
-    // }
+        //     if (slot.SlotType == SlotType.Equipment &&
+        //         equipItem.ItemType == ItemType.Equipment &&
+        //         equipItem.EquipmentData != null)
+        //     {
+        //         foreach(KeyValuePair<StatType, float> stat in equipItem.EquipmentData.Stats)
+        //         {
+        //             playerController.RemoveEquipment(stat.Key, stat.Value);
+        //             Debug.Log($"[장비 해제] {equipItem.ItemName} - {stat.Key} : -{stat.Value}");
+        //         }
+        //     }
+        // }
     }
 }
