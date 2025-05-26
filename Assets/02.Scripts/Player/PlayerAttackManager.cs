@@ -1,19 +1,22 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 public class PlayerAttackManager : Singleton<PlayerAttackManager>
 {
+    [FormerlySerializedAs("attackColliders")]
     [Header("Attack Colliders")]
     [Tooltip("List of Colliders to toggle during attack animations.")]
     [SerializeField]
-    private Collider[] attackColliders;
+    private Collider[] _attackColliders;
 
+    [FormerlySerializedAs("disableOnAwake")]
     [Header("Optional Settings")]
     [Tooltip("Automatically disable colliders on Awake if any are enabled.")]
     [SerializeField]
-    private bool disableOnAwake = true;
+    private bool _disableOnAwake = true;
     private StretchColliderOnly _stretchColliderOnly;
     private void Awake()
     {
-        if (disableOnAwake)
+        if (_disableOnAwake)
         {
             DisableAllColliders();
         }
@@ -36,11 +39,11 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
     }
     private void SetColliders(bool enabled)
     {
-        foreach(Collider col in attackColliders)
+        foreach(Collider _collider in _attackColliders)
         {
-            if (col != null)
+            if (_collider != null)
             {
-                col.enabled = enabled;
+                _collider.enabled = enabled;
             }
         }
     }

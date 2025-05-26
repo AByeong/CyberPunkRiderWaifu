@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 public class StretchColliderOnly : MonoBehaviour
 {
     public GameObject LineEffect;
-    public float TargetHeight = 3f;
+    public float TargetHeight = 1f;
 
     private BoxCollider _boxCollider;
     private float _originalHeight;
