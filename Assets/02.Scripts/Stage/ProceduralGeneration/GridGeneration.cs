@@ -143,17 +143,7 @@ public class GridGeneration : MonoBehaviour
         {
             EnemyManager.Instance.RemoveBossSpawner();
         }
-
-        // 입구/출구 해제
-        for (int i = 0; i < entryCount; i++)
-        {
-            StageManager.Instance.RemoveEntries();
-        }
-        for (int i = 0; i < exitCount; i++)
-        {
-            StageManager.Instance.RemoveExits();
-        }
-
+        
         // 맵 오브젝트 모두 해제
         foreach (Transform child in gameObject.transform)
         {
@@ -641,8 +631,6 @@ public class GridGeneration : MonoBehaviour
                 }
             }
         }
-        StageManager.Instance.AddEntries(_entries);
-        StageManager.Instance.AddExits(_exits);
     }
 
     private (MonsterSpawner prefab, SpawnerType type)? GetNextSpawnerPrefab()
@@ -768,20 +756,6 @@ public class GridGeneration : MonoBehaviour
 
     public GameObject GetStartEntry()
     {
-        // Vector3 startPosition = Vector3.zero;
-        // for (int i = 0; i < width; i++)
-        // {
-        //     for (int j = 0; j < height; j++)
-        //     {
-        //         if (grid[i, j] == (int)EGirdType.Enrty)
-        //         {
-        //             startPosition = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-        //             return startPosition;
-        //         }
-        //     }
-        // }
-        // return startPosition;
-
         int randomIndex = Random.Range(0, entryCount - 1);
         return _entries[randomIndex];
     }

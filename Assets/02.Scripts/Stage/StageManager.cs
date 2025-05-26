@@ -2,31 +2,37 @@ using UnityEngine;
 using Unity.AI.Navigation;
 using System.Collections.Generic;
 using Unity.Cinemachine;
-using Unity.Mathematics;
 
 public class StageManager : Singleton<StageManager>
 {
     public List<GridGeneration> SubStageList;
     public List<NavMeshSurface> NavmeshSurfaceList;
-    public GameObject Player;
+
     public CinemachineCamera CinemachineCam;
+
+    public GameObject Player;
     public GameObject ExitPortal;
 
-    public CinemachineOrbitalFollow OrbitalFollow;
+    public float SpawnDistance;
 
-    public bool _isClear = false;
+
+    private CinemachineOrbitalFollow _orbitalFollow;
+    private CharacterController _playerController;
+    
+    private bool _isClear = false;
     private int _currentStageIndex;
     private int _previousStageIndex;
     public int _nextStageIndex;
 
-    private Queue<List<GameObject>> _entryQueue = new Queue<List<GameObject>>();
-    private Queue<List<GameObject>> _exitQueue = new Queue<List<GameObject>>();
+    // private Queue<List<GameObject>> _entryQueue = new Queue<List<GameObject>>();
+    // private Queue<List<GameObject>> _exitQueue = new Queue<List<GameObject>>();
 
     private void Start()
     {
         DeliveryManager.Instance.OnCompleteSector += CompleteSector;
 
-        // _orbitalFollow = CinemachineCam.GetCinemachineComponent<CinemachineOrbitalFollow>();
+        _orbitalFollow = CinemachineCam.GetComponent<CinemachineOrbitalFollow>();
+        _playerController = Player.GetComponent<CharacterController>();
 
         StageInitialize();
         _currentStageIndex = 0;
@@ -34,6 +40,8 @@ public class StageManager : Singleton<StageManager>
 
         GameObject startPoint = SubStageList[_currentStageIndex].GetStartEntry();
         MovePlayerToStartPosition(startPoint);
+
+        _isClear = false;
     }
 
     // 디버깅
@@ -92,11 +100,18 @@ public class StageManager : Singleton<StageManager>
 
     private void MovePlayerToStartPosition(GameObject startPoint)
     {
-        CharacterController playerController = Player.GetComponent<CharacterController>();
-        playerController.enabled = false;
-        Player.transform.position = startPoint.transform.position;
+        _playerController.enabled = false;
+
+        Player.transform.position = startPoint.transform.position + startPoint.transform.forward * SpawnDistance;
         Player.transform.rotation = Quaternion.Euler(0, startPoint.transform.eulerAngles.y, 0);
-        playerController.enabled = true;
+
+        _playerController.enabled = true;
+
+        Vector3 relativePos = Camera.main.transform.position - ExitPortal.transform.position;
+        Vector3 newCamPos = relativePos + startPoint.transform.position;
+
+        _orbitalFollow.HorizontalAxis.Value = startPoint.transform.eulerAngles.y;
+        CinemachineCam.OnTargetObjectWarped(CinemachineCam.Follow, newCamPos - CinemachineCam.transform.position);
     }
 
     public void MoveNextStage()
@@ -106,7 +121,6 @@ public class StageManager : Singleton<StageManager>
             _isClear = false;
             GameObject startEntry = SubStageList[_nextStageIndex].GetStartEntry();
             MovePlayerToStartPosition(startEntry);
-            TeleportThroughPortal(startEntry);
 
             // TODO: 함수로 따로 뺴기
             _previousStageIndex = _currentStageIndex;
@@ -120,52 +134,6 @@ public class StageManager : Singleton<StageManager>
     public void CompleteSector()
     {
         Debug.LogWarning($"{gameObject.name}: 섹터 클리어!");
-    }
-
-    public void AddEntries(List<GameObject> entry)
-    {
-        _entryQueue.Enqueue(entry);
-    }
-
-    public void RemoveEntries()
-    {
-        if (_entryQueue.Count > 0)
-        {
-            _entryQueue.Dequeue();
-        }
-    }
-
-    public void AddExits(List<GameObject> exit)
-    {
-        _exitQueue.Enqueue(exit);
-    }
-
-    public void RemoveExits()
-    {
-        if (_exitQueue.Count > 0)
-        {
-            _exitQueue.Dequeue();
-        }
-    }
-
-    public void TeleportThroughPortal(GameObject startPoint)
-    {
-        Vector3 relativePos = Camera.main.transform.position - ExitPortal.transform.position;
-        Vector3 newCamPos = relativePos + startPoint.transform.position;
-
-        Quaternion relativeCamRot = Quaternion.Inverse(ExitPortal.transform.rotation) * Camera.main.transform.rotation;
-        Quaternion newCamRot = relativeCamRot * startPoint.transform.rotation;
-        // Quaternion newnewRota = Quaternion.Euler(Camera.main.transform.eulerAngles.x, newCamRot.eulerAngles.y, Camera.main.transform.eulerAngles.x);
-
-        if (CinemachineCam.Follow == null)
-        {
-            CinemachineCam.Follow = Player.transform;
-        }
-
-        OrbitalFollow.enabled = false;
-        CinemachineCam.OnTargetObjectWarped(CinemachineCam.Follow, newCamPos - Camera.main.transform.position);
-        CinemachineCam.ForceCameraPosition(newCamPos, newCamRot);
-        // CinemachineCam.ForceCameraPosition(newCamPos, newnewRota);
-        OrbitalFollow.enabled = true;
+        _isClear = true;
     }
 }
