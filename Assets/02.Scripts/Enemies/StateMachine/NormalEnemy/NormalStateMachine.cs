@@ -4,7 +4,6 @@ using UnityEngine;
 public class NormalStateMachine : MonoFSM<NormalEnemy>
 {
 
-    public Vector3 DownOffset;
     
     public override void AddStates()
     {

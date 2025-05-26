@@ -18,6 +18,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public int TakedDamageValue { get; private set; }
     public Vector3 VerticalVelocity = new Vector3();
 
+    public EDamageType DamageType;
+
     protected Animator _animator;
     protected NavMeshAgent _navMeshAgent;
     protected CharacterController _characterController;
@@ -34,7 +36,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public Animator Animator => _animator;
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
 
-    public ParticleSystem HitParticle;
 
     protected virtual void Awake()
     {
@@ -83,7 +84,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         IsHit = true;
         CurrentHealthPoint -= damage.DamageValue;
         TakedDamageValue = damage.DamageValue;
-
+        DamageType = damage.DamageType;
         Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
     }
 

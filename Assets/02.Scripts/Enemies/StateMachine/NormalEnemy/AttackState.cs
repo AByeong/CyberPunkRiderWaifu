@@ -36,6 +36,15 @@ public class AttackState : BaseNormalEnemyState
         {
             Owner.Animator.SetTrigger("OnAttack");
             attackTimer = 0;
+            if (distance < Owner.EnemyData.AttackDistance)
+            {
+                Damage damage = new Damage();
+                damage.DamageValue = Owner.EnemyData.Damage;
+                Owner.Target.GetComponent<PlayerHit>().TakeDamage(damage);
+            }
+            
+            
+            
         }
     }
 

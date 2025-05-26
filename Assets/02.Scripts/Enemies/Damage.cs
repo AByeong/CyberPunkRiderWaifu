@@ -4,6 +4,7 @@ public enum EDamageType
 {
     // TODO
     TODO
+    ,NoDamageButAir
 }
 
 public struct Damage

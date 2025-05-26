@@ -38,11 +38,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
         Debug.Log("Starting delivery");
         UIManager.Instance.UIInit();//UI 초기화
         
-        
         KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        CompleteSector = CurrentMissionData.DeliverystageData.Count;
         KillTracker.KillTrakerInit();//KillTracker초기화
 
-        CompleteSector = CurrentMissionData.DeliverystageData.Count;
 
     }
 

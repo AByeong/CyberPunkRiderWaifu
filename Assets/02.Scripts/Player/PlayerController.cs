@@ -557,10 +557,14 @@ namespace JY
             }
 
         }
-        public void TakeDamage(Damage damage)
+        public void TakeDamage(Damage damage, bool ApproveAnimation)
         {
-            // Set the Hurt parameter of the animator.
-            _animator.SetTrigger(_hashHurt);
+
+            if (ApproveAnimation)
+                // Set the Hurt parameter of the animator.
+            {
+                _animator.SetTrigger(_hashHurt);
+            }
 
             // Find the direction of the damage.
             Vector3 forward = damage.From.transform.position - transform.position;

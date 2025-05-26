@@ -75,21 +75,7 @@ public class HItState : BaseNormalEnemyState // BaseNormalEnemyState는 실제 �
     private float defaultFallbackLandY = 1f;
     // --- 바닥 감지 Raycast 관련 변수 끝 ---
 
-    // Owner와 관련된 프로퍼티 (BaseNormalEnemyState 또는 그 부모 클래스에 정의되어 있다고 가정)
-    // 예시: public class BaseNormalEnemyState : MonoBehaviour {
-    //          public NavMeshAgent NavMeshAgent { get; protected set; }
-    //          public Animator Animator { get; protected set; }
-    //          public NormalEnemyData EnemyData { get; protected set; } // InAirThreshold, StaggerTime 등
-    //          public GameObject Target { get; set; }
-    //          public float TakedDamageValue { get; set; }
-    //          public bool IsHit { get; set; }
-    //          public bool IsInAir { get; set; }
-    //          public string MaterialName { get; set; } // 예시 머티리얼 이름
-    //          public StateMachine SuperMachine { get; set; } // 상태 변경용
-    //       }
-    // 위 Owner 프로퍼티들은 실제 프로젝트의 구조에 맞게 접근해야 합니다.
-    // 여기서는 this.Owner.NavMeshAgent 등으로 접근한다고 가정합니다. (Owner는 HItState의 부모클래스 멤버)
-
+  
     private void CacheRenderersAndInitialColors()
     {
         // Debug.Log($"[HitState] CacheRenderersAndInitialColors: Called for {Owner?.gameObject.name}. Targeting material: '{targetMaterialName}', property: '{mainColorPropertyName}'.");
@@ -204,7 +190,7 @@ public class HItState : BaseNormalEnemyState // BaseNormalEnemyState는 실제 �
 
 
         // 데미지 양에 따라 공중 상태 또는 일반 피격 상태 결정
-        if (Owner.EnemyData != null && Owner.TakedDamageValue >= Owner.EnemyData.InAirThreshold)
+        if ((Owner.EnemyData != null && Owner.TakedDamageValue >= Owner.EnemyData.InAirThreshold) || Owner.DamageType == EDamageType.NoDamageButAir)
         {
             float currentY = Owner.transform.position.y;
             float desiredY = Mathf.Min(currentY + _airRiseAmount, _maxAirHeight); // 최대 높이 제한
