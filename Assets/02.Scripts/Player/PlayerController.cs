@@ -1,6 +1,4 @@
-using JY;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace JY
 {
@@ -25,15 +23,13 @@ namespace JY
         public float IdleTimeout = 5f;
         public bool CanAttack;
         public bool IsInCombo;
-        private Animator _animator;
-        
+
         [Header("Dash")]
         public float DashDistance = 5.0f;
         public float DashCooldown;
         public float DashDuration = 0.2f;
         private readonly int _hashAirborne = Animator.StringToHash("Airborne");
-        private float _dashSpeed;
-        
+
         // Parameters
 
         private readonly int _hashAirborneVerticalSpeed = Animator.StringToHash("AirborneVerticalSpeed");
@@ -42,6 +38,7 @@ namespace JY
         // Tags
         private readonly int _hashBlockInput = Animator.StringToHash("BlockInput");
         private readonly int _hashDeath = Animator.StringToHash("Death");
+        private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
         private readonly int _hashEllenCombo1 = Animator.StringToHash("EllenCombo1");
         private readonly int _hashEllenCombo2 = Animator.StringToHash("EllenCombo2");
         private readonly int _hashEllenCombo3 = Animator.StringToHash("EllenCombo3");
@@ -74,18 +71,18 @@ namespace JY
         private readonly int _hashStateTime = Animator.StringToHash("StateTime");
         private readonly int _hashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
         private readonly int _hashUpper = Animator.StringToHash("Upper");
-        private CharacterController _characterController;
-        private float _dashCooldownTimer;
-        private float _dashTime;
-        private PlayerInput _input;
-        private bool _isDashing;
-        private bool _isGrounded = true;
-        private IStatsProvider _stat;
+        private readonly Collider[] _overlapResult = new Collider[8];
+        private bool _airSkillExecuted;
 
         private float _angleDiff;
+        private Animator _animator;
+        private CharacterController _characterController;
 
 
         private AnimatorStateInfo _currentStateInfo;
+        private float _dashCooldownTimer;
+        private float _dashSpeed;
+        private float _dashTime;
         private float _desiredForwardSpeed;
         private float _forwardSpeed;
         private int _hashTriggerSkill1;
@@ -94,16 +91,19 @@ namespace JY
         private int _hashTriggerSkill4;
         private float _idleTimer;
         private bool _inAttack;
+        private PlayerInput _input;
         private bool _isAnimatorTransitioning;
+        private bool _isDashing;
+        private bool _isGrounded = true;
+        private bool _isRespawning;
         private AnimatorStateInfo _nextStateInfo;
-        private readonly Collider[] _overlapResult = new Collider[8];
         private AnimatorStateInfo _previousCurrentStateInfo;
         private bool _previousIsAnimatorTransitioning;
         private bool _previouslyGrounded = true;
         private AnimatorStateInfo _previousNextStateInfo;
         private bool _readyToJump;
         private Renderer[] _renderers;
-        private bool _isRespawning;
+        private IStatsProvider _stat;
         private Quaternion _targetRotation;
         private float _verticalSpeed;
         private bool IsMoveInput => !Mathf.Approximately(_input.MoveInput.sqrMagnitude, 0f);
@@ -209,51 +209,74 @@ namespace JY
         {
             Vector3 movement;
 
+            bool isAirSkill = IsAirSkill();
+            bool isAttacking = IsPerformingAction(); // 일반 공격 판정
+            bool hasMovementInput = _input.MoveInput != Vector2.zero;
+
             if (_isGrounded)
             {
-                RaycastHit hit;
-                Ray ray = new Ray(transform.position + Vector3.up * GroundedRayDistance * 0.5f, -Vector3.up);
-                if (Physics.Raycast(ray, out hit, GroundedRayDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+                if (isAirSkill)
                 {
-                    movement = Vector3.ProjectOnPlane(_animator.deltaPosition, hit.normal);
-                    Renderer groundRenderer = hit.collider.GetComponentInChildren<Renderer>();
+                    Debug.Log("Air Skill 루트모션 적용");
+                    movement = _animator.deltaPosition;
+
+                    if (_animator.deltaPosition.y > 0.01f) // 루트모션에 Y 이동이 있을 때만
+                    {
+                        _isGrounded = false;
+                    }
                 }
                 else
                 {
-                    bool isAttacking = IsPerformingAction(); // 공격 상태 판정
-                    bool hasMovementInput = _input.MoveInput != Vector2.zero;
-
-                    if (isAttacking)
+                    RaycastHit hit;
+                    Ray ray = new Ray(transform.position + Vector3.up * GroundedRayDistance * 0.5f, -Vector3.up);
+                    if (Physics.Raycast(ray, out hit, GroundedRayDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
                     {
-                        if (hasMovementInput)
-                        {
-                            // 공격 중이고 이동 입력 있으면 루트 모션 적용
-                            movement = _animator.deltaPosition;
-                        }
-                        else
-                        {
-                            // 공격 중이고 입력 없으면 제자리
-                            movement = Vector3.zero;
-                        }
+                        movement = Vector3.ProjectOnPlane(_animator.deltaPosition, hit.normal);
                     }
                     else
                     {
-                        movement = _animator.deltaPosition;
+                        if (isAttacking)
+                        {
+                            movement = hasMovementInput ? _animator.deltaPosition : Vector3.zero;
+                        }
+                        else
+                        {
+                            movement = _animator.deltaPosition;
+                        }
                     }
                 }
             }
             else
             {
-                movement = _forwardSpeed * transform.forward * Time.deltaTime;
+                if (isAirSkill)
+                {
+                    // 공중에서도 4번 스킬의 루트모션을 적용
+                    movement = _animator.deltaPosition;
+                }
+                else
+                {
+                    movement = _forwardSpeed * transform.forward * Time.deltaTime;
+                }
             }
-            
+
             _characterController.transform.rotation *= _animator.deltaRotation;
-            movement += _verticalSpeed * Vector3.up * Time.deltaTime;
+
+            bool isAirborneAttacking = !_isGrounded && IsInCombo;
+            bool ignoreGravity = isAirSkill || isAirborneAttacking;
+
+            if (!ignoreGravity)
+            {
+                Debug.Log("중력 작용");
+                movement += _verticalSpeed * Vector3.up * Time.deltaTime;
+            }
+
             _characterController.Move(movement);
             _isGrounded = _characterController.isGrounded;
 
             if (!_isGrounded)
+            {
                 _animator.SetFloat(_hashAirborneVerticalSpeed, _verticalSpeed);
+            }
 
             _animator.SetBool(_hashGrounded, _isGrounded);
         }
@@ -348,50 +371,76 @@ namespace JY
 
             _animator.SetFloat(_hashForwardSpeed, _forwardSpeed);
         }
-
-        // Called each physics step.
+        private bool IsAirSkill()
+        {
+            return _currentStateInfo.tagHash == _hashAirAttack || _nextStateInfo.tagHash == _hashAirAttack;
+        }
+        public void TriggerAirSkillJump()
+        {
+            if (!_airSkillExecuted)
+            {
+                _verticalSpeed = 0;
+                _isGrounded = false;
+                _readyToJump = false;
+                _airSkillExecuted = true;
+            }
+        }
         private void CalculateVerticalMovement()
         {
-            // If jump is not currently held and Ellen is on the ground then she is ready to jump.
             if (!_input.JumpInput && _isGrounded)
+            {
                 _readyToJump = true;
+            }
+            if (!IsAirSkill())
+            {
+                _airSkillExecuted = false;
+            }
 
             if (_isGrounded)
             {
-                // When grounded we apply a slight negative vertical speed to make Ellen "stick" to the ground.
                 _verticalSpeed = -Gravity * StickingGravityProportion;
 
-                // If jump is held, Ellen is ready to jump and not currently in the middle of a melee combo...
                 if (_input.JumpInput && _readyToJump && !IsInCombo)
                 {
-                    // ... then override the previously set vertical speed and make sure she cannot jump again.
                     _verticalSpeed = JumpSpeed;
                     _isGrounded = false;
                     _readyToJump = false;
                 }
+                // if (IsAirSkill() && !_airSkillExecuted && _readyToJump)
+                // {
+                //     _verticalSpeed = JumpSpeed;
+                //     _isGrounded = false;
+                //     _readyToJump = false;
+                //     _airSkillExecuted = true;
+                // }
             }
             else
             {
-                // If Ellen is airborne, the jump button is not held and Ellen is currently moving upwards...
+                if (_input.Attack)
+                {
+                    Debug.Log(_verticalSpeed);
+                    return;
+                }
+
                 if (!_input.JumpInput && _verticalSpeed > 0.0f)
                 {
-                    // ... decrease Ellen's vertical speed.
-                    // This is what causes holding jump to jump higher that tapping jump.
                     _verticalSpeed -= JumpAbortSpeed * Time.deltaTime;
                 }
 
-                // If a jump is approximately peaking, make it absolute.
                 if (Mathf.Approximately(_verticalSpeed, 0f))
                 {
                     _verticalSpeed = 0f;
                 }
 
-                // If Ellen is airborne, apply gravity.
-                _verticalSpeed -= Gravity * Time.deltaTime;
+                bool isAirborneAttacking = !_isGrounded && IsInCombo;
+                bool ignoreGravity = IsAirSkill() || isAirborneAttacking;
+                if (!ignoreGravity)
+                {
+                    _verticalSpeed -= Gravity * Time.deltaTime;
+                }
             }
         }
 
-        // Called each physics step to set the rotation Ellen is aiming to have.
         private void SetTargetRotation()
         {
             Vector2 moveInput = _input.MoveInput;
@@ -419,7 +468,6 @@ namespace JY
 
                     targetRotation = Quaternion.identity;
                 }
-                //targetRotation = (Quaternion.LookRotation(moveDirection).Equals(Vector3.zero)) ? Quaternion.identity : Quaternion.LookRotation(moveDirection);
 
             }
 
@@ -464,10 +512,9 @@ namespace JY
 
             _angleDiff = Mathf.DeltaAngle(angleCurrent, targetAngle);
             _targetRotation = targetRotation;
-        }       
+        }
 
 
-        // Called each physics step to help determine whether Ellen can turn under player input.
         private bool IsOrientationUpdated()
         {
             bool updateOrientationForLocomotion = !_isAnimatorTransitioning && _currentStateInfo.shortNameHash == _hashLocomotion || _nextStateInfo.shortNameHash == _hashLocomotion;
@@ -477,7 +524,6 @@ namespace JY
             return updateOrientationForLocomotion || updateOrientationForAirborne || updateOrientationForLanding || IsInCombo && !_inAttack;
         }
 
-        // Called each physics step after SetTargetRotation if there is move input and Ellen is in the correct animator state according to IsOrientationUpdated.
         private void UpdateOrientation()
         {
             _animator.SetFloat(_hashAngleDeltaRad, _angleDiff * Mathf.Deg2Rad);
@@ -511,47 +557,40 @@ namespace JY
             _animator.SetBool(_hashInputDetected, inputDetected);
         }
 
-        // This is called by an animation event when Ellen swings her staff.
         public void MeleeAttackStart(int throwing = 0)
         {
-            // meleeWeapon.BeginAttack(throwing != 0);
             _inAttack = true;
         }
 
-        // This is called by an animation event when Ellen finishes swinging her staff.
         public void MeleeAttackEnd()
         {
-            // meleeWeapon.EndAttack();
             _inAttack = false;
         }
 
 
-        // Called by a state machine behaviour on Ellen's animator controller.
         public void RespawnFinished()
         {
             _isRespawning = false;
 
-            //we set the damageable invincible so we can't get hurt just after being respawned (feel like a double punitive)
-            // _Damageable.isInvulnerable = false;
         }
         public void UseSkill(int skillNumber)
         {
             switch (skillNumber)
             {
                 case 0:
-                     _hashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
+                    _hashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
                     _animator.SetTrigger(_hashTriggerSkill1);
                     break;
                 case 1:
-                     _hashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
+                    _hashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
                     _animator.SetTrigger(_hashTriggerSkill2);
                     break;
                 case 2:
-                     _hashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
+                    _hashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
                     _animator.SetTrigger(_hashTriggerSkill3);
                     break;
                 case 3:
-                     _hashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
+                    _hashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
                     _animator.SetTrigger(_hashTriggerSkill4);
                     break;
             }

@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace JY
 {
-
     public class PlayerInput : MonoBehaviour
     {
-
-        private const float k_AttackInputDuration = 0.03f;
         [HideInInspector]
         public bool playerControllerInputBlocked;
+
+        private WaitForSeconds _AttackInputWait;
+        private Coroutine _AttackWaitCoroutine;
         protected Vector2 _camera;
         protected bool _isAttack;
         protected bool _isExternalInputBlocked;
@@ -23,22 +23,10 @@ namespace JY
         protected bool _isSkill4;
 
         protected Vector2 _movement;
-
-        private WaitForSeconds m_AttackInputWait;
-        private Coroutine m_AttackWaitCoroutine;
         public Vector2 MoveInput =>
             // if (playerControllerInputBlocked || _isExternalInputBlocked)
             //     return Vector2.zero;
             _movement;
-
-        public Vector2 CameraInput {
-            get
-            {
-                if (playerControllerInputBlocked || _isExternalInputBlocked)
-                    return Vector2.zero;
-                return _camera;
-            }
-        }
 
         public bool JumpInput => _isJump && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
@@ -65,57 +53,57 @@ namespace JY
 
             if (Input.GetButtonDown("Fire1"))
             {
-                if (m_AttackWaitCoroutine != null)
-                    StopCoroutine(m_AttackWaitCoroutine);
+                if (_AttackWaitCoroutine != null)
+                    StopCoroutine(_AttackWaitCoroutine);
 
-                m_AttackWaitCoroutine = StartCoroutine(AttackWait());
+                _AttackWaitCoroutine = StartCoroutine(AttackWait());
             }
 
             if (Input.GetButtonDown("Fire2"))
             {
-                if (m_AttackWaitCoroutine != null)
-                    StopCoroutine(m_AttackWaitCoroutine);
+                if (_AttackWaitCoroutine != null)
+                    StopCoroutine(_AttackWaitCoroutine);
 
-                m_AttackWaitCoroutine = StartCoroutine(RightAttackWait());
+                _AttackWaitCoroutine = StartCoroutine(RightAttackWait());
             }
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 Debug.Log("Left Shift Pressed");
-                if (m_AttackWaitCoroutine != null)
-                    StopCoroutine(m_AttackWaitCoroutine);
+                if (_AttackWaitCoroutine != null)
+                    StopCoroutine(_AttackWaitCoroutine);
 
-                m_AttackWaitCoroutine = StartCoroutine(RollWait());
+                _AttackWaitCoroutine = StartCoroutine(RollWait());
             }
 
             // 키 입력 처리
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                if (m_AttackWaitCoroutine != null)
-                    StopCoroutine(m_AttackWaitCoroutine);
+                if (_AttackWaitCoroutine != null)
+                    StopCoroutine(_AttackWaitCoroutine);
 
-                m_AttackWaitCoroutine = StartCoroutine(Skill1Wait());
+                _AttackWaitCoroutine = StartCoroutine(Skill1Wait());
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                if (m_AttackWaitCoroutine != null)
-                    StopCoroutine(m_AttackWaitCoroutine);
+                if (_AttackWaitCoroutine != null)
+                    StopCoroutine(_AttackWaitCoroutine);
 
-                m_AttackWaitCoroutine = StartCoroutine(Skill2Wait());
+                _AttackWaitCoroutine = StartCoroutine(Skill2Wait());
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                if (m_AttackWaitCoroutine != null)
-                    StopCoroutine(m_AttackWaitCoroutine);
+                if (_AttackWaitCoroutine != null)
+                    StopCoroutine(_AttackWaitCoroutine);
 
-                m_AttackWaitCoroutine = StartCoroutine(Skill3Wait());
+                _AttackWaitCoroutine = StartCoroutine(Skill3Wait());
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                if (m_AttackWaitCoroutine != null)
-                    StopCoroutine(m_AttackWaitCoroutine);
+                if (_AttackWaitCoroutine != null)
+                    StopCoroutine(_AttackWaitCoroutine);
 
-                m_AttackWaitCoroutine = StartCoroutine(Skill4Wait());
+                _AttackWaitCoroutine = StartCoroutine(Skill4Wait());
             }
             _isPause = Input.GetKeyDown(KeyCode.Escape);
             if (_isPause)
@@ -129,7 +117,7 @@ namespace JY
         {
             _isAttack = true;
 
-            yield return m_AttackInputWait;
+            yield return _AttackInputWait;
 
             _isAttack = false;
         }
@@ -138,7 +126,7 @@ namespace JY
         {
             _isRightAttack = true;
 
-            yield return m_AttackInputWait;
+            yield return _AttackInputWait;
 
             _isRightAttack = false;
         }
@@ -146,7 +134,7 @@ namespace JY
         {
             _isSkill1 = true;
 
-            yield return m_AttackInputWait;
+            yield return _AttackInputWait;
 
             _isSkill1 = false;
         }
@@ -154,7 +142,7 @@ namespace JY
         {
             _isSkill2 = true;
 
-            yield return m_AttackInputWait;
+            yield return _AttackInputWait;
 
             _isSkill2 = false;
         }
@@ -162,7 +150,7 @@ namespace JY
         {
             _isSkill3 = true;
 
-            yield return m_AttackInputWait;
+            yield return _AttackInputWait;
 
             _isSkill3 = false;
         }
@@ -170,7 +158,7 @@ namespace JY
         {
             _isSkill4 = true;
 
-            yield return m_AttackInputWait;
+            yield return _AttackInputWait;
 
             _isSkill4 = false;
         }
@@ -178,7 +166,7 @@ namespace JY
         {
             _isRoll = true;
 
-            yield return m_AttackInputWait;
+            yield return _AttackInputWait;
 
             _isRoll = false;
         }
