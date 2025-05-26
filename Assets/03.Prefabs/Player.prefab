@@ -2825,14 +2825,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxForwardSpeed: 8
-  gravity: 20
-  jumpSpeed: 10
-  minTurnSpeed: 400
-  maxTurnSpeed: 1200
-  idleTimeout: 5
-  canAttack: 1
-  m_InCombo: 0
-  _animator: {fileID: 0}
+  Gravity: 20
+  JumpSpeed: 10
+  MaxTurnSpeed: 1200
+  MinTurnSpeed: 400
+  IdleTimeout: 5
+  CanAttack: 1
+  IsInCombo: 0
   DashDistance: 5
   DashCooldown: 1
   DashDuration: 0.2
@@ -2876,6 +2875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f74feceda246d68808ab53f5784e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stretchColliderOnly: {fileID: 0}
 --- !u!1 &2989521625858347405
 GameObject:
   m_ObjectHideFlags: 0
@@ -7414,7 +7414,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5b0c91908e766743894ad561ed608df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetHeight: 1
+  LineEffect: {fileID: 6860876625593275641}
+  TargetHeight: 3
 --- !u!4 &3401306641066527042 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 239808274899621860, guid: 5755ecf46c222034a829fa2673dda6e1, type: 3}

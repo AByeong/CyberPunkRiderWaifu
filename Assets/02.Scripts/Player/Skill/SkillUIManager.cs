@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+
 [Serializable]
 public class SkillUIManager : MonoBehaviour
 {
@@ -12,17 +12,10 @@ public class SkillUIManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(SkillManager.Instance.DataList.SkillData);
-
         // 1단계: 모두 초기화 및 활성화
-        for (int i = 0; i < SkillManager.Instance.DataList.SkillData.Count; i++)
+        for (int i = 0; i < SkillManager.Instance.Skills.Count; i++)
         {
-            Skill skill = new Skill {SkillData = SkillManager.Instance.DataList.SkillData[i], Index = i};
-            if (SkillManager.Instance.EquippedSkills.Contains(skill))
-            {
-                AvailableSkills[i].SetSkill(skill, true);
-            }
-            AvailableSkills[i].SetSkill(skill, true);
+            AvailableSkills[i].SetSkill(SkillManager.Instance.Skills[i], true);
         }
 
         // 2단계: 장착된 스킬만 버튼 비활성화
@@ -55,7 +48,7 @@ public class SkillUIManager : MonoBehaviour
                 SkillManager.Instance.EquippedSkills[i] = skillToEquip;
                 EquippedSkills[i].SetSkill(skillToEquip, true);
 
-                AvailableSkills[skillIndex].GetComponent<Button>().interactable = false;
+                AvailableSkills[skillIndex].Button.interactable = false;
                 SkillManager.Instance.EquippedSkillsBool[i] = true;
 
                 return;
@@ -65,10 +58,11 @@ public class SkillUIManager : MonoBehaviour
         Debug.Log("No empty slot found.");
     }
 
-    public void UnequipSkill(int equipIndex)
+    public void RemoveSkill(int equipIndex)
     {
-        Skill skillToUnequip = SkillManager.Instance.EquippedSkills[equipIndex];
-        AvailableSkills[skillToUnequip.Index].GetComponent<Button>().interactable = true;
+        Skill skillToRemove = SkillManager.Instance.EquippedSkills[equipIndex];
+
+        AvailableSkills[skillToRemove.Index].Button.interactable = true;
         EquippedSkills[equipIndex].RemoveSkill();
         // EquippedSkills[equipIndex].GetComponent<Button>().interactable = false;
         SkillManager.Instance.EquippedSkills[equipIndex] = null;
