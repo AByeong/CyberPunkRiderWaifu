@@ -2,6 +2,7 @@
     ChipSlot : InventorySlot
 {
     public UI_EquipSkill TargetSkill;
+    public ItemChip chip;
     public override void SetItem(Item newItem)
     {
         base.SetItem(newItem);

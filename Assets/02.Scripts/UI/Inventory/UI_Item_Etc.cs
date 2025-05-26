@@ -14,29 +14,25 @@ public class UI_Item_Etc : UI_Itembase
 
     public override void Init(Item item, GameObject inventorySlot)
     {
-        Item = item;
-        OriginalSlot = inventorySlot;
+        base.SetItem(item); // Data도 여기서 설정됨
         InventorySlot = inventorySlot;
-     
-        if (item != null &&item.Icon != null)
-        {
-            GetComponent<Image>().sprite = item.Icon;
-        }
-        SetItem(inventorySlot);
+        OriginalSlot = inventorySlot;
     }
 
 
 
-    public void SetItem(GameObject slot)
+    public override void SetItem(Item item)
     {
-        InventorySlot = slot;
-        InventorySlot.GetComponent<InventorySlot>().Item = Item;
+        base.SetItem(item);
+
+        // Chip 데이터 추출
+        Data = item is ItemEtc etc ? etc : null;
     }
 
     public void RemoveSlotItem()
     {
-        if (InventorySlot == null) return;
-        InventorySlot.GetComponent<InventorySlot>().Item = null;
+        base.RemoveSlotItem(); // 기본 처리 수행
+        Data = null;           // ItemChip 전용 데이터 정리
     }
 
 

@@ -1,4 +1,7 @@
-﻿public class ItemEquipment : Item
+﻿using System;
+
+
+public class ItemEquipment : Item
 {
     public EquipmentData Data;
 }

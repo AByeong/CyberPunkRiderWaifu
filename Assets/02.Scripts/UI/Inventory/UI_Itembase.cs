@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDragHandler, IBeginDragHandler
 {
-    public Item Item;
     public GameObject InventorySlot;
     public GameObject OriginalSlot;
     protected RectTransform _rectTransform;
@@ -15,6 +14,8 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
     private bool _wasDroppedOnValidSlot;
     
     private Canvas _canvas;
+
+    public Item Item;
     
     public virtual void Init(Item item, GameObject inventorySlot)
     {
@@ -40,10 +41,25 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
     {
         _rectTransform.anchoredPosition += eventData.delta / _canvas.scaleFactor;
     }
-    public void SetItem(GameObject slot)
+    public virtual void SetItem(Item item)
     {
-        InventorySlot = slot;
-        InventorySlot.GetComponent<InventorySlot>().Item = Item;
+        Item = item;
+
+        // 기본 아이콘 변경 등 UI 갱신
+        if (item != null && item.Icon != null)
+        {
+            GetComponent<Image>().sprite = item.Icon;
+        }
+        else
+        {
+            GetComponent<Image>().sprite = null; // 아이템 없을 때
+        }
+
+        // InventorySlot에 있는 Item 데이터도 업데이트
+        if (InventorySlot != null)
+        {
+            InventorySlot.GetComponent<InventorySlot>().Item = item;
+        }
     }
     public virtual void OnEndDrag(PointerEventData eventData)
     {
@@ -59,9 +75,18 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
 
             if (targetSlot != null)
             {
-                Debug.Log($"유효한 슬롯에 드롭: {targetSlot.SlotType}");
-                _wasDroppedOnValidSlot = true;
-                // InventorySlot의 OnDrop이 처리할 것임
+                var targetUIItem = targetSlot.GetComponentInChildren<UI_Itembase>();
+
+                if (targetUIItem != null)
+                {
+                    // 데이터만 교환
+                    Item temp = this.Item;
+                    this.SetItem(targetUIItem.Item);
+                    targetUIItem.SetItem(temp);
+
+                    Debug.Log("아이템 데이터 스왑 완료");
+                }
+
                 return;
             }
         }
@@ -75,10 +100,23 @@ public class UI_Itembase : MonoBehaviour, IDragHandler, IPointerEnterHandler, IE
         // 툴팁이나 기타 UI 표시 가능
     }
 
-    public void RemoveSlotItem()
+    public virtual void RemoveSlotItem()
     {
         if (InventorySlot == null) return;
+
+        // 데이터 제거
         InventorySlot.GetComponent<InventorySlot>().Item = null;
+        Item = null;
+
+        // UI 초기화
+        Image image = GetComponent<Image>();
+        if (image != null)
+        {
+            image.sprite = null;
+        }
+
+        // 위치 복귀 또는 비활성화 처리도 가능
+        _rectTransform.anchoredPosition = Vector2.zero;
     }
     public void SetPosition()
     {
