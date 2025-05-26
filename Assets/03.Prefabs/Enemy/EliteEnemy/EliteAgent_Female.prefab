@@ -108,7 +108,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 300
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -135,7 +135,6 @@ MonoBehaviour:
   minPlayerDistance: 0.3
   desiredPlayerDistance: 1
   Tier2_Speed: 15
-  tier3LookAtPlayerMaxDistance: 10
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
 --- !u!114 &1084797560185989769
@@ -211,9 +210,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb4097539f236d4a9e8bc285ad11873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaterialName: Catherine
   _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
   Pool: {fileID: 0}
+  VerticalVelocity: {x: 0, y: 0, z: 0}
+  HitParticle: {fileID: 0}
   _attackType: 0
+  AttackTypeNumber: 2
   EliteAnimator: {fileID: 3184633984302917899}
 --- !u!95 &3184633984302917899
 Animator:
@@ -541,6 +544,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.009354316
       objectReference: {fileID: 0}
+    - target: {fileID: -2575514395089756015, guid: 0a6e8eb3639990349985af52b9beeee8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f5c30f820fd8145459de402b878bfd82, type: 2}
     - target: {fileID: -2072040086291044643, guid: 0a6e8eb3639990349985af52b9beeee8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000000009313225

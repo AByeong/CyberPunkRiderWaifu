@@ -12,7 +12,7 @@ public class ItemDataList
 {
     public List<ItemData> items = new List<ItemData>();
 }
-public class Inventory : MonoBehaviour
+public class InventoryManager : Singleton<InventoryManager>
 {
     private List<InventorySlot> _inventorySlots;
 
@@ -20,6 +20,11 @@ public class Inventory : MonoBehaviour
     
     public int InventorySize => InventorySlots.Count;
     
+    private void Awake()
+    {
+        // 하위에 있는 InventorySlot들을 순서대로 가져옴
+        _inventorySlots = new List<InventorySlot>(GetComponentsInChildren<InventorySlot>(true));
+    }
     public void AddItemToInventory(Item newItem)
     {
         foreach (var slot in _inventorySlots)

@@ -75,7 +75,10 @@ public class UI_Item : Itembase, IDragHandler, IPointerEnterHandler, IEndDragHan
         OriginalSlot = inventorySlot;
         InventorySlot = inventorySlot;
         inventorySlot.GetComponent<InventorySlot>().item = item;
-        GetComponent<Image>().sprite = item.Icon;
+        if (item != null &&item.Icon != null)
+        {
+            GetComponent<Image>().sprite = item.Icon;
+        }
         SetItem(inventorySlot);
     }
 
