@@ -14,6 +14,7 @@ namespace JY
         private const float StickingGravityProportion = 0.3f;
         private const float GroundAcceleration = 20f;
         private const float GroundDeceleration = 25f;
+        public float MaxAirAttackGraceTime = 0.3f;
 
         public float MaxForwardSpeed = 8f;
         public float Gravity = 20f;
@@ -23,11 +24,13 @@ namespace JY
         public float IdleTimeout = 5f;
         public bool CanAttack;
         public bool IsInCombo;
-
+        public bool IsAirCombo;
         [Header("Dash")]
         public float DashDistance = 5.0f;
         public float DashCooldown;
         public float DashDuration = 0.2f;
+
+        private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
         private readonly int _hashAirborne = Animator.StringToHash("Airborne");
 
         // Parameters
@@ -38,7 +41,6 @@ namespace JY
         // Tags
         private readonly int _hashBlockInput = Animator.StringToHash("BlockInput");
         private readonly int _hashDeath = Animator.StringToHash("Death");
-        private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
         private readonly int _hashEllenCombo1 = Animator.StringToHash("EllenCombo1");
         private readonly int _hashEllenCombo2 = Animator.StringToHash("EllenCombo2");
         private readonly int _hashEllenCombo3 = Animator.StringToHash("EllenCombo3");
@@ -52,6 +54,7 @@ namespace JY
         private readonly int _hashHurtFromX = Animator.StringToHash("HurtFromX");
         private readonly int _hashHurtFromY = Animator.StringToHash("HurtFromY");
         private readonly int _hashInputDetected = Animator.StringToHash("InputDetected");
+        private readonly int _hashIsAirCombo = Animator.StringToHash("IsAirCombo");
         private readonly int _hashLanding = Animator.StringToHash("Landing");
 
         // States
@@ -60,6 +63,7 @@ namespace JY
         private readonly int _hashRespawn = Animator.StringToHash("Respawn");
         private readonly int _hashRightAttack = Animator.StringToHash("RightAttack");
         private readonly int _hashRoll = Animator.StringToHash("Roll");
+        private readonly int _hashRootMotion = Animator.StringToHash("RootMotion");
         private readonly int _hashSkill1 = Animator.StringToHash("Skill1");
         private readonly int _hashSkill2 = Animator.StringToHash("Skill2");
         private readonly int _hashSkill3 = Animator.StringToHash("Skill3");
@@ -72,6 +76,7 @@ namespace JY
         private readonly int _hashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
         private readonly int _hashUpper = Animator.StringToHash("Upper");
         private readonly Collider[] _overlapResult = new Collider[8];
+        private float _airAttackGraceTime;
         private bool _airSkillExecuted;
 
         private float _angleDiff;
@@ -92,6 +97,8 @@ namespace JY
         private float _idleTimer;
         private bool _inAttack;
         private PlayerInput _input;
+        private bool _isAirborneAttacking;
+        // private bool _isAirCombo;
         private bool _isAnimatorTransitioning;
         private bool _isDashing;
         private bool _isGrounded = true;
@@ -103,9 +110,11 @@ namespace JY
         private AnimatorStateInfo _previousNextStateInfo;
         private bool _readyToJump;
         private Renderer[] _renderers;
+        private bool _rootMotionGroundedStart;
         private IStatsProvider _stat;
         private Quaternion _targetRotation;
         private float _verticalSpeed;
+        private bool _wasInRootMotionState;
         private bool IsMoveInput => !Mathf.Approximately(_input.MoveInput.sqrMagnitude, 0f);
         private void Awake()
         {
@@ -119,14 +128,7 @@ namespace JY
             _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
 
         }
-// // 무기 효과 (+15 공격력)
-//         stats = new StatModifierDecorator(stats, StatType.AttackPower, 15);
-//
-// // 방어구 효과 (+10 방어)
-//         stats = new StatModifierDecorator(stats, StatType.Defense, 10);
-//
-// // 데미지 계산
-//         float damage = stats.CalculateDamage(5); // base damage 5
+
 
         private void Update()
         {
@@ -186,17 +188,27 @@ namespace JY
 
 
             TimeoutToIdle();
+            CheckIsAirCombo();
+            SetIsAirCombo();
+            bool isNowInRootMotion = IsRootMotion();
+
+            if (isNowInRootMotion && !_wasInRootMotionState)
+            {
+                _rootMotionGroundedStart = _characterController.isGrounded;
+            }
+
+            _wasInRootMotionState = isNowInRootMotion;
 
             _previouslyGrounded = _isGrounded;
+
         }
-        // Called automatically by Unity after Awake whenever the script is enabled. 
+
         private void OnEnable()
         {
             EquipMeleeWeapon(false);
 
             _renderers = GetComponentsInChildren<Renderer>();
         }
-
         private void OnDisable()
         {
             for (int i = 0; i < _renderers.Length; ++i)
@@ -210,6 +222,7 @@ namespace JY
             Vector3 movement;
 
             bool isAirSkill = IsAirSkill();
+            bool isRootMotion = IsRootMotion();
             bool isAttacking = IsPerformingAction(); // 일반 공격 판정
             bool hasMovementInput = _input.MoveInput != Vector2.zero;
 
@@ -217,7 +230,6 @@ namespace JY
             {
                 if (isAirSkill)
                 {
-                    Debug.Log("Air Skill 루트모션 적용");
                     movement = _animator.deltaPosition;
 
                     if (_animator.deltaPosition.y > 0.01f) // 루트모션에 Y 이동이 있을 때만
@@ -250,7 +262,6 @@ namespace JY
             {
                 if (isAirSkill)
                 {
-                    // 공중에서도 4번 스킬의 루트모션을 적용
                     movement = _animator.deltaPosition;
                 }
                 else
@@ -261,17 +272,41 @@ namespace JY
 
             _characterController.transform.rotation *= _animator.deltaRotation;
 
-            bool isAirborneAttacking = !_isGrounded && IsInCombo;
-            bool ignoreGravity = isAirSkill || isAirborneAttacking;
+            _isAirborneAttacking = !_isGrounded && IsInCombo;
+            bool ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
 
-            if (!ignoreGravity)
+            if (isRootMotion)
             {
-                Debug.Log("중력 작용");
-                movement += _verticalSpeed * Vector3.up * Time.deltaTime;
+                movement = new Vector3(_animator.deltaPosition.x, 0, _animator.deltaPosition.z);
+
+                if (!_rootMotionGroundedStart)
+                {
+                    // 공중 시작 → 중력 적용
+                    _verticalSpeed -= Gravity * Time.deltaTime;
+                    movement += Vector3.up * (_animator.deltaPosition.y + _verticalSpeed * Time.deltaTime);
+                }
+                else
+                {
+                    // 지상 시작 → 중력 적용 없음
+                    movement += Vector3.up * _animator.deltaPosition.y;
+                }
+            }
+            else if (!ignoreGravity)
+            {
+                // 기본적으로 중력 적용
+                movement += Vector3.up * (_verticalSpeed * Time.deltaTime);
             }
 
             _characterController.Move(movement);
-            _isGrounded = _characterController.isGrounded;
+
+            if (isRootMotion)
+            {
+                _isGrounded = _rootMotionGroundedStart;
+            }
+            else
+            {
+                _isGrounded = _characterController.isGrounded;
+            }
 
             if (!_isGrounded)
             {
@@ -279,6 +314,11 @@ namespace JY
             }
 
             _animator.SetBool(_hashGrounded, _isGrounded);
+        }
+        private void CheckIsAirCombo()
+        {
+
+            IsAirCombo = IsAirSkill() || _isAirborneAttacking;
         }
 
         public void ApplyEquipment(StatType statType, float value)
@@ -360,8 +400,14 @@ namespace JY
         {
 
             Vector2 moveInput = _input.MoveInput;
+            if (IsAirCombo)
+            {
+                moveInput = Vector2.zero;
+            }
             if (moveInput.sqrMagnitude > 1f)
+            {
                 moveInput.Normalize();
+            }
 
             _desiredForwardSpeed = moveInput.magnitude * MaxForwardSpeed;
 
@@ -375,6 +421,11 @@ namespace JY
         {
             return _currentStateInfo.tagHash == _hashAirAttack || _nextStateInfo.tagHash == _hashAirAttack;
         }
+
+        private bool IsRootMotion()
+        {
+            return _currentStateInfo.tagHash == _hashRootMotion || _nextStateInfo.tagHash == _hashRootMotion;
+        }
         public void TriggerAirSkillJump()
         {
             if (!_airSkillExecuted)
@@ -383,14 +434,21 @@ namespace JY
                 _isGrounded = false;
                 _readyToJump = false;
                 _airSkillExecuted = true;
+                _airAttackGraceTime = MaxAirAttackGraceTime; // ✅ 여기서만 설정
             }
         }
         private void CalculateVerticalMovement()
         {
+            if (_airAttackGraceTime > 0f)
+            {
+                _airAttackGraceTime -= Time.deltaTime;
+            }
+
             if (!_input.JumpInput && _isGrounded)
             {
                 _readyToJump = true;
             }
+
             if (!IsAirSkill())
             {
                 _airSkillExecuted = false;
@@ -406,19 +464,11 @@ namespace JY
                     _isGrounded = false;
                     _readyToJump = false;
                 }
-                // if (IsAirSkill() && !_airSkillExecuted && _readyToJump)
-                // {
-                //     _verticalSpeed = JumpSpeed;
-                //     _isGrounded = false;
-                //     _readyToJump = false;
-                //     _airSkillExecuted = true;
-                // }
             }
             else
             {
                 if (_input.Attack)
                 {
-                    Debug.Log(_verticalSpeed);
                     return;
                 }
 
@@ -432,8 +482,8 @@ namespace JY
                     _verticalSpeed = 0f;
                 }
 
-                bool isAirborneAttacking = !_isGrounded && IsInCombo;
-                bool ignoreGravity = IsAirSkill() || isAirborneAttacking;
+                _isAirborneAttacking = !_isGrounded && IsInCombo;
+                bool ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
                 if (!ignoreGravity)
                 {
                     _verticalSpeed -= Gravity * Time.deltaTime;
@@ -526,6 +576,9 @@ namespace JY
 
         private void UpdateOrientation()
         {
+            if (_isAirborneAttacking)
+                return;
+
             _animator.SetFloat(_hashAngleDeltaRad, _angleDiff * Mathf.Deg2Rad);
 
             Vector3 localInput = new Vector3(_input.MoveInput.x, 0f, _input.MoveInput.y);
@@ -555,6 +608,11 @@ namespace JY
             }
 
             _animator.SetBool(_hashInputDetected, inputDetected);
+        }
+
+        private void SetIsAirCombo()
+        {
+            _animator.SetBool(_hashIsAirCombo, IsAirCombo);
         }
 
         public void MeleeAttackStart(int throwing = 0)

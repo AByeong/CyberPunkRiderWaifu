@@ -3,16 +3,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 [Serializable]
 public class SkillUIManager : MonoBehaviour
 {
     public List<UI_Skill> AvailableSkills;
     public List<UI_Skill> EquippedSkills;
 
+
     private void Start()
     {
-        // 1단계: 모두 초기화 및 활성화
         for (int i = 0; i < SkillManager.Instance.Skills.Count; i++)
         {
             AvailableSkills[i].SetSkill(SkillManager.Instance.Skills[i], true);
@@ -30,6 +29,25 @@ public class SkillUIManager : MonoBehaviour
     private void Update()
     {
         UpdateCooldowns(Time.deltaTime);
+    }
+
+
+    public void Show()
+    { // 1단계: 모두 초기화 및 활성화
+        for (int i = 0; i < SkillManager.Instance.Skills.Count; i++)
+        {
+            AvailableSkills[i].SetSkill(SkillManager.Instance.Skills[i], true);
+        }
+
+        // 2단계: 장착된 스킬만 버튼 비활성화
+        foreach(Skill equipped in SkillManager.Instance.EquippedSkills)
+        {
+            if (equipped != null)
+            {
+                AvailableSkills[equipped.Index].Button.interactable = false;
+            }
+        }
+        gameObject.SetActive(true);
     }
     public void EquipSkill(int skillIndex)
     {
