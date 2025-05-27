@@ -45,6 +45,7 @@ public class StageManager : MonoBehaviour
         _nextStageIndex = SubStageList.Count - 1;
 
         GameObject startPoint = SubStageList[_currentStageIndex].GetStartEntry();
+        ExitPortal = startPoint;
         MovePlayerToStartPosition(startPoint);
 
         _isClear = false;
