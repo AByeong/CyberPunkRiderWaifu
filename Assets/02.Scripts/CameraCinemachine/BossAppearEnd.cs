@@ -12,7 +12,7 @@ public class BossAppearEnd : MonoBehaviour
     
     public void BossAppearEndSignal()
     {
-        CinemachineManager.Instance.BossAppearEndEvent();
+        CinemachineManager.Instance.AnimationEnd();
         EnemyManager.Instance.SpawnBoss();
         Time.timeScale = 1;
     }

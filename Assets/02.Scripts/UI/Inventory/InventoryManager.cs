@@ -24,9 +24,12 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         // 하위에 있는 InventorySlot들을 순서대로 가져옴
         _inventorySlots = new List<InventorySlot>(GetComponentsInChildren<InventorySlot>(true));
+        
+        base.Awake();
     }
     public void AddItemToInventory(ItemData newItemData)
     {
+        
         foreach (var slot in _inventorySlots)
         {
             if (!slot.HasItem)

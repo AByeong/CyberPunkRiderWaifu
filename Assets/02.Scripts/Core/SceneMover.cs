@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneMover : MonoBehaviour
+public class SceneMover : Singleton<SceneMover>
 {
     public void MovetoScene(string sceneName)
     {

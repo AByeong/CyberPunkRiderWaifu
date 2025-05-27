@@ -29,7 +29,13 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
-        DeliveryManager.Instance.OnCompleteSector += CompleteSector;
+        DeliveryManager.Instance.OnCompleteSector += () =>
+        {
+            
+            CompleteSector();
+            Debug.Log("StageManager에서 DeliveryManager OnCompeteSector에 구독함");
+            
+        };
 
         _orbitalFollow = CinemachineCam.GetComponent<CinemachineOrbitalFollow>();
         _playerController = Player.GetComponent<CharacterController>();
@@ -55,6 +61,13 @@ public class StageManager : MonoBehaviour
 
     public void GenerateSubStage(int stageIndex)
     {
+        
+        if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector - 1)
+        {
+            CinemachineManager.Instance.BossAppear();
+        }
+        
+        
         if (SubStageList.Count == 0 || SubStageList == null)
         {
             Debug.LogError($"{gameObject.name}: SubStageList가 비어있습니다!!");
@@ -100,21 +113,28 @@ public class StageManager : MonoBehaviour
         CinemachineCam.OnTargetObjectWarped(CinemachineCam.Follow, newCamPos - CinemachineCam.transform.position);
     }
 
-    public void MoveNextStage()
+    public void CheckToMoveNextStage()
     {
         if (_isClear)
         {
-            _isClear = false;
-            GameObject startEntry = SubStageList[_nextStageIndex].GetStartEntry();
-            MovePlayerToStartPosition(startEntry);
-
-            // TODO: 함수로 따로 뺴기
-            _previousStageIndex = _currentStageIndex;
-            _currentStageIndex = _nextStageIndex;
-            _nextStageIndex = _previousStageIndex;
-
-            GenerateSubStage(_nextStageIndex);
+            CinemachineManager.Instance.ShowElevatorChangeAnimation();
+           
         }
+    }
+
+    public void MoveNextStage()
+    {
+        _isClear = false;
+        GameObject startEntry = SubStageList[_nextStageIndex].GetStartEntry();
+        MovePlayerToStartPosition(startEntry);
+
+        // TODO: 함수로 따로 뺴기
+        _previousStageIndex = _currentStageIndex;
+        _currentStageIndex = _nextStageIndex;
+        _nextStageIndex = _previousStageIndex;
+        
+        DeliveryManager.Instance.LoadNextSection();
+        GenerateSubStage(_nextStageIndex);
     }
 
     public void CompleteSector()

@@ -18,6 +18,11 @@ public class EliteAI_Female : MonoBehaviour
     private float currentCooldownTime = 0f;
     private Collider _collider;
 
+    
+    [SerializeField]
+    private ElliteStateMachine _elliteStateMachineite;
+    
+    
     private void Start()
     {
         _collider = GetComponent<Collider>();
@@ -79,6 +84,7 @@ public void EyeTurnOff()
 public GameObject KingStompVFX;
 public void KingStompAttack()
 {
+    
     KingStompVFX.SetActive(true);
     KingStompVFX.GetComponent<ParticleSystem>().Play();
 }
@@ -87,6 +93,7 @@ public void KingStompAttack()
     public GameObject StompVFX;
     public void StompAttack()
     {
+        _elliteStateMachineite.ChangeState<EliteAttackState>();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -96,7 +103,6 @@ public void KingStompAttack()
     public void TornadoAttack()
     {
         TornadoVFX.SetActive(true);
-        TornadoVFX.GetComponent<VisualEffect>().Play();
         TornadoVFX.GetComponent<ParticleSystem>().Play();
     }
 

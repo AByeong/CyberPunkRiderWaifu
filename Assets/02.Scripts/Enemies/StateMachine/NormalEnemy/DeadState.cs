@@ -17,7 +17,7 @@ public class DeadState : BaseNormalEnemyState
         switch (Owner.EnemyData.EnemyType)
         {
             case EEnemyType.Normal:
-                //DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
+                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
                 Debug.Log("Killed");
                 // 예시: 장비 2개, 칩 1개, 골드 3개 드랍
                 var dropPlan = new Dictionary<DropItemType, int>

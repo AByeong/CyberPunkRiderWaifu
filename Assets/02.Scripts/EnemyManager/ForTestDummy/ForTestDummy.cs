@@ -3,7 +3,6 @@ using UnityEngine.Playables;
 
 public class ForTestDummy : MonoBehaviour
 {
-    public PlayableDirector CinemachineDrector;
     public EnemyManager EnemyManager;
     
     void Update()
@@ -31,6 +30,8 @@ public class ForTestDummy : MonoBehaviour
         {
             DeliveryManager.Instance.StageManager._isClear = true;
         }
+        
+        
         
     }
 }

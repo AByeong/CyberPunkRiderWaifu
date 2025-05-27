@@ -49,11 +49,17 @@ public class DeliveryManager : Singleton<DeliveryManager>
     {
         //현재는 바로 바뀌지만 나중에는 완료와 전환 사이에 넣을 수 있다.
         OnCompleteSector?.Invoke();
-        LoadNextSection();
+        UIManager.Instance.StageMainUI.KillTrackingText.color = Color.cyan;
+        
+        //LoadNextSection();
     }
 
+   
     public void LoadNextSection()
     {
+        
+        
+        
         CurrentSector++;
         
         if (CurrentSector == CompleteSector)
@@ -62,18 +68,14 @@ public class DeliveryManager : Singleton<DeliveryManager>
         }
         else
         {
-
             KillTracker.ResetCurrentKillCount();
             Debug.Log(CurrentSector);
             KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
-            
-            StageManager._isClear = true;
+            KillTracker.KillTrakerInit();
+
         }
 
-        if (CurrentSector == CompleteSector - 1)
-        {
-            CinemachineManager.Instance.BossAppear();
-        }
+        
     }
 
     private void DeliveryComplete()
