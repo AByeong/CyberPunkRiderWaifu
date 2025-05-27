@@ -1,6 +1,6 @@
 ﻿public class UI_EquipSkill : UI_Skill
 {
-    public ChipSlot[] ChipSlots;
+    public UI_ChipSlot[] ChipSlots;
     public int Index;
     private void Start()
     {
@@ -9,28 +9,28 @@
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void SetChipOption(ChipData chipData)
+    public void SetChipOption(ChipDataSO chipDataSo)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipData.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipData.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipDataSo.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipDataSo.SkillRange;
 
     }
 
-    public void ClearChipOption(ChipData chipData)
+    public void ClearChipOption(ChipDataSO chipDataSo)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipData.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipData.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipDataSo.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipDataSo.SkillRange;
 
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)
     {
         base.SetSkill(skillToEquip, isActive);
-        foreach(ChipSlot chipSlot in ChipSlots)
+        foreach(UI_ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
+            if (chipSlot.HasItem)
             {
-                SetChipOption(chipSlot.ChipData);
+                SetChipOption(chipSlot.Item.Data as ChipDataSO );
             }
         }
     }
@@ -38,11 +38,12 @@
     public override void RemoveSkill()
     {
         base.RemoveSkill();
-        foreach(ChipSlot chipSlot in ChipSlots)
+        
+        foreach(UI_ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
+            if (chipSlot.HasItem)
             {
-                ClearChipOption(chipSlot.ChipData);
+                ClearChipOption(chipSlot.Item.Data as ChipDataSO);
             }
         }
     }

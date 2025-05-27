@@ -3,9 +3,10 @@ using UnityEngine;
 public enum EquipmentType { Weapon, Armor, Head, Boots }
 
 [CreateAssetMenu(fileName = "EquipmentData", menuName = "Scriptable Objects/EquipmentData")]
-public class EquipmentData : DataSO
+public class EquipmentDataSO : ItemBaseDataSO
 {
-    public string Id;
+    public new ItemType ItemType => ItemType.Equipment;
+    
     public string EquipmentName;
     public EquipmentType EquipmentType;
     public GameObject ModelPrefab;

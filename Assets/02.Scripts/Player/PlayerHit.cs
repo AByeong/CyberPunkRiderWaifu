@@ -39,13 +39,13 @@ public class PlayerHit : MonoBehaviour, IDamageable
         {
             _isKnockedBackable = false;
             _knockbackTimer = _hitAnimationCoolTime;
-            Debug.Log("넉백 있게 맞음");
+  //          Debug.Log("넉백 있게 맞음");
             _playerController.TakeDamage(damage, true);
             
         }
         else
         {
-            Debug.Log("넉백 없게 맞음");
+//            Debug.Log("넉백 없게 맞음");
             _playerController.TakeDamage(damage, false);
             
         }

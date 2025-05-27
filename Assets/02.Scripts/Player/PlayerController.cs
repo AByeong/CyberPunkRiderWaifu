@@ -266,7 +266,7 @@ namespace JY
 
             if (!ignoreGravity)
             {
-                Debug.Log("중력 작용");
+//                Debug.Log("중력 작용");
                 movement += _verticalSpeed * Vector3.up * Time.deltaTime;
             }
 
@@ -418,7 +418,7 @@ namespace JY
             {
                 if (_input.Attack)
                 {
-                    Debug.Log(_verticalSpeed);
+//                    Debug.Log(_verticalSpeed);
                     return;
                 }
 

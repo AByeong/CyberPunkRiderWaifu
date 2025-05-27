@@ -45,7 +45,7 @@ public class UIManager : Singleton<UIManager>
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            PlayerInput.ReleaseControl();
+            //PlayerInput.ReleaseControl();
             if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
             {
 

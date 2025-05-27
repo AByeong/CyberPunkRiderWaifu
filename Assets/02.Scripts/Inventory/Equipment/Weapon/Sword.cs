@@ -11,7 +11,7 @@ public class Sword : MonoBehaviour, IWeapon
     private void OnTriggerEnter(Collider collision)
     {
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-        Debug.Log("Sword");
+//        Debug.Log("Sword");
         
         if (damageable != null)
         {
