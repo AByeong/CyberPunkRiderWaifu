@@ -42,9 +42,6 @@ public class AttackState : BaseNormalEnemyState
                 damage.DamageValue = Owner.EnemyData.Damage;
                 Owner.Target.GetComponent<PlayerHit>().TakeDamage(damage);
             }
-            
-            
-            
         }
     }
 

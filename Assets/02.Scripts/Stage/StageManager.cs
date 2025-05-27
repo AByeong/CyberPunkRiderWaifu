@@ -19,7 +19,7 @@ public class StageManager : MonoBehaviour
     private CinemachineOrbitalFollow _orbitalFollow;
     private CharacterController _playerController;
     
-    private bool _isClear = false;
+    public bool _isClear = false;
     private int _currentStageIndex;
     private int _previousStageIndex;
     public int _nextStageIndex;

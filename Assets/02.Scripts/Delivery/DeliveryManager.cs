@@ -8,7 +8,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public EnemyManager EnemyManager;
     public int CurrentSector;
     public int CompleteSector;
-public StageManager StageManager;
+    public StageManager StageManager;
     public Action OnCompleteSector;
     
     
