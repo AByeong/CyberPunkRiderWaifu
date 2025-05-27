@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.Mathematics;
 
-public class StageManager : Singleton<StageManager>
+public class StageManager : MonoBehaviour
 {
     public List<GridGeneration> SubStageList;
     public List<NavMeshSurface> NavmeshSurfaceList;

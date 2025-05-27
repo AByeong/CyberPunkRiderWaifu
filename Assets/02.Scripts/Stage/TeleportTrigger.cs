@@ -6,8 +6,8 @@ public class TeleportTrigger : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            StageManager.Instance.ExitPortal = gameObject;
-            StageManager.Instance.MoveNextStage();
+            DeliveryManager.Instance.StageManager.ExitPortal = gameObject;
+            DeliveryManager.Instance.StageManager.MoveNextStage();
         }
     }
 }

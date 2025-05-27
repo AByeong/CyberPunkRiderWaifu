@@ -8,7 +8,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public EnemyManager EnemyManager;
     public int CurrentSector;
     public int CompleteSector;
-
+public StageManager StageManager;
     public Action OnCompleteSector;
     
     
@@ -66,6 +66,8 @@ public class DeliveryManager : Singleton<DeliveryManager>
             KillTracker.ResetCurrentKillCount();
             Debug.Log(CurrentSector);
             KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+            
+            StageManager._isClear = true;
         }
 
         if (CurrentSector == CompleteSector - 1)

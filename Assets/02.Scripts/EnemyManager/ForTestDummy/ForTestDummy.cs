@@ -24,12 +24,12 @@ public class ForTestDummy : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Backslash))
         {
-            StageManager.Instance.StageInitialize();
+            DeliveryManager.Instance.StageManager.StageInitialize();
         }
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            StageManager.Instance._isClear = true;
+            DeliveryManager.Instance.StageManager._isClear = true;
         }
         
     }

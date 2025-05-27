@@ -147,11 +147,11 @@ public class GridGeneration : MonoBehaviour
         // 입구/출구 해제
         for (int i = 0; i < entryCount; i++)
         {
-            StageManager.Instance.RemoveEntries();
+            DeliveryManager.Instance.StageManager.RemoveEntries();
         }
         for (int i = 0; i < exitCount; i++)
         {
-            StageManager.Instance.RemoveExits();
+            DeliveryManager.Instance.StageManager.RemoveExits();
         }
 
         // 맵 오브젝트 모두 해제
@@ -641,8 +641,8 @@ public class GridGeneration : MonoBehaviour
                 }
             }
         }
-        StageManager.Instance.AddEntries(_entries);
-        StageManager.Instance.AddExits(_exits);
+        DeliveryManager.Instance.StageManager.AddEntries(_entries);
+        DeliveryManager.Instance.StageManager.AddExits(_exits);
     }
 
     private (MonsterSpawner prefab, SpawnerType type)? GetNextSpawnerPrefab()
