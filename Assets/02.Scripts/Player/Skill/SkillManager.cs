@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-
 public class SkillManager : Singleton<SkillManager>
 {
     public SkillDataList DataList;
@@ -14,14 +13,14 @@ public class SkillManager : Singleton<SkillManager>
     public Skill EquippedSkill2 => EquippedSkills[1];
     public Skill EquippedSkill3 => EquippedSkills[2];
     public Skill EquippedSkill4 => EquippedSkills[3];
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         Skills = new List<Skill>();
         int i = 0;
-        foreach (SkillData skillData in DataList.SkillData)
+        foreach(SkillData skillData in DataList.SkillData)
         {
-            Skill skill = new Skill { SkillData = skillData, Index = i++ };
+            Skill skill = new Skill {SkillData = skillData, Index = i++};
             Skills.Add(skill);
         }
         // 완전히 초기화

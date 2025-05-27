@@ -1,30 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
-
 public class UI_Skill : MonoBehaviour
 {
-
     public Button Button;
-    private Image _icon;
+    public Image Icon;
     public Skill Skill { get; private set; }
-
-    private void Awake()
-    {
-        _icon = GetComponent<Image>();
-    }
 
     public virtual void SetSkill(Skill skillToEquip, bool isActive)
     {
         if (skillToEquip == null) return;
         Button.interactable = isActive;
         Skill = skillToEquip;
-        _icon.sprite = Skill.SkillData.Icon;
+        Icon.sprite = Skill.SkillData.Icon;
     }
 
     public virtual void RemoveSkill()
     {
         Skill = null;
-        _icon.sprite = null;
+        Icon.sprite = null;
         Button.interactable = false;
     }
 }

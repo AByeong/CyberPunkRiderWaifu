@@ -1,25 +1,30 @@
-﻿public class UI_EquipSkill : UI_Skill
+﻿using UnityEngine;
+public class UI_EquipSkill : UI_Skill
 {
     public ChipSlot[] ChipSlots;
-    public int Index;
+    public int Index = -1;
     private void Start()
     {
+        if (Index < 0)
+            return;
+
         if (SkillManager.Instance.EquippedSkills[Index] != null)
         {
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void SetChipOption(ChipData chipData)
+    public void SetChipOption(Item item)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipData.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipData.SkillRange;
+        Debug.Log(item.ChipData.ReduceCooldown);
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= item.ChipData.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= item.ChipData.SkillRange;
 
     }
 
-    public void ClearChipOption(ChipData chipData)
+    public void ClearChipOption(Item item)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipData.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipData.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= item.ChipData.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= item.ChipData.SkillRange;
 
     }
 
@@ -30,7 +35,7 @@
         {
             if (chipSlot.UI_Item != null)
             {
-                SetChipOption(chipSlot.ChipData);
+                SetChipOption(chipSlot.UI_Item.MyItem);
             }
         }
     }
@@ -42,7 +47,7 @@
         {
             if (chipSlot.UI_Item != null)
             {
-                ClearChipOption(chipSlot.ChipData);
+                ClearChipOption(chipSlot.UI_Item.MyItem);
             }
         }
     }
