@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using TMPro;
-using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Assertions.Must;
+
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
     public string MaterialName;
