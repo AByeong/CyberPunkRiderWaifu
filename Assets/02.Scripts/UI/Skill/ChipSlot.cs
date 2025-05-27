@@ -1,16 +1,18 @@
 ﻿public class ChipSlot : InventorySlot
 {
     public UI_EquipSkill TargetSkill;
-    public override void SetItem(Item newItem)
+    public ChipData ChipData;
+    public override void SetItem(ItemData newItemData)
     {
-        base.SetItem(newItem);
-        TargetSkill.SetChipOption(UI_Item.MyItem);
+        base.SetItem(newItemData);
+        ChipData = (ChipData)newItemData.Data;
+        TargetSkill.SetChipOption(ChipData);
     }
 
     public override void ClearSlot()
     {
 
-        TargetSkill.ClearChipOption(UI_Item.MyItem);
+        TargetSkill.ClearChipOption(ChipData);
         base.ClearSlot();
     }
 }

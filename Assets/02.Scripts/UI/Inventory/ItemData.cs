@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 public enum ItemType { Equipment, Chip, Etc }
 [Serializable]
-public class Item
+[CreateAssetMenu(fileName = "Item", menuName = "Scriptable Objects/ItemData")]
+public class ItemData : ScriptableObject
 {
     public string Id;
     public string ItemName;
@@ -10,6 +11,5 @@ public class Item
     public ItemType ItemType;
 
     public string EquipmentDataId;
-    public EquipmentData EquipmentData;
-    public ChipData ChipData;
+    public DataSO Data;
 }
