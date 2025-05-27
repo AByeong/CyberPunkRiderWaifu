@@ -22,6 +22,7 @@ public class ItemDropManager : Singleton<ItemDropManager>
     // Enemy에서 DropItemType 리스트를 넘기면 처리
     public void DropItems(Dictionary<DropItemType, int> dropPlan, Vector3 origin, Vector3 forward)
     {
+        Debug.Log("드랍");
         StartCoroutine(DropItemsCoroutine(dropPlan, origin, forward));
     }
 

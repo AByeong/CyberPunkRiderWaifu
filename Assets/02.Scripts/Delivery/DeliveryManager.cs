@@ -8,7 +8,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public EnemyManager EnemyManager;
     public int CurrentSector;
     public int CompleteSector;
-
+public StageManager StageManager;
     public Action OnCompleteSector;
     
     
@@ -38,11 +38,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
         Debug.Log("Starting delivery");
         UIManager.Instance.UIInit();//UI 초기화
         
-        
         KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        CompleteSector = CurrentMissionData.DeliverystageData.Count;
         KillTracker.KillTrakerInit();//KillTracker초기화
 
-        CompleteSector = CurrentMissionData.DeliverystageData.Count;
 
     }
 
@@ -67,6 +66,8 @@ public class DeliveryManager : Singleton<DeliveryManager>
             KillTracker.ResetCurrentKillCount();
             Debug.Log(CurrentSector);
             KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+            
+            StageManager._isClear = true;
         }
 
         if (CurrentSector == CompleteSector - 1)

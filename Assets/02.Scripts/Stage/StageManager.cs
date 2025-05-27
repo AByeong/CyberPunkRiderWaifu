@@ -3,7 +3,7 @@ using Unity.AI.Navigation;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 
-public class StageManager : Singleton<StageManager>
+public class StageManager : MonoBehaviour
 {
     public List<GridGeneration> SubStageList;
     public List<NavMeshSurface> NavmeshSurfaceList;
@@ -43,21 +43,7 @@ public class StageManager : Singleton<StageManager>
 
         _isClear = false;
     }
-
-    // 디버깅
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Backslash))
-        {
-            StageInitialize();
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            _isClear = true;
-        }
-    }
-    // 디버깅
+    
 
     public void StageInitialize()
     {

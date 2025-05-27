@@ -11,6 +11,7 @@ public class NormalEnemy : Enemy, IDamageable
 
        
     }
+
     
     
 

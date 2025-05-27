@@ -18,10 +18,10 @@ public class DeadState : BaseNormalEnemyState
         {
             case EEnemyType.Normal:
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
+                // 예시: 장비 2개, 칩 1개, 골드 3개 드랍
                 var dropPlan = new Dictionary<DropItemType, int>
                 {
-                    
-                    { DropItemType.Gold, 1 }
+                    { DropItemType.Equipment, 3 },
                 };
                 ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
                 break;
@@ -42,8 +42,6 @@ public class DeadState : BaseNormalEnemyState
         _deadTimer += Time.deltaTime;
         if (_deadTimer >= 3f)
         {
-            Owner.NavMeshAgent.ResetPath();
-            Owner.NavMeshAgent.velocity = Vector3.zero;
             Owner.Pool.ReturnObject(Owner.gameObject);
         }
     }

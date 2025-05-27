@@ -22,5 +22,15 @@ public class ForTestDummy : MonoBehaviour
          
         }
         
+        if (Input.GetKeyDown(KeyCode.Backslash))
+        {
+            DeliveryManager.Instance.StageManager.StageInitialize();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            DeliveryManager.Instance.StageManager._isClear = true;
+        }
+        
     }
 }

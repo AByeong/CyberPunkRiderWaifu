@@ -1,8 +1,8 @@
-﻿using Gamekit3D;
-using JY;
+﻿using JY;
 using UnityEngine;
 public class PlayerSkill : MonoBehaviour
 {
+    public StretchColliderOnly _stretchColliderOnly;
     private PlayerInput _input;
 
     private int _keyIndex = -1;
@@ -11,7 +11,7 @@ public class PlayerSkill : MonoBehaviour
     {
         _input = GetComponent<PlayerInput>();
         _player = GetComponent<PlayerController>();
-
+        _stretchColliderOnly = GetComponentInChildren<StretchColliderOnly>();
     }
 
     private void Update()
@@ -21,8 +21,12 @@ public class PlayerSkill : MonoBehaviour
             Debug.Log("1 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha1, out _keyIndex))
             {
-                _player.UseSkill(_keyIndex); // keyIndex: 0, 1, 2, 3 중 하나
-                UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                _player.UseSkill(_keyIndex);
+                _stretchColliderOnly.StretchDown(SkillManager.Instance.EquippedSkills[_keyIndex].SkillData.SkillRange);
+                if (UIManager.Instance.StageMainUI != null)
+                {
+                    UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                }
             }
         }
 
@@ -31,8 +35,12 @@ public class PlayerSkill : MonoBehaviour
             Debug.Log("2 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha2, out _keyIndex))
             {
-                _player.UseSkill(_keyIndex); // keyIndex: 0, 1, 2, 3 중 하나
-                UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                _player.UseSkill(_keyIndex);
+                _stretchColliderOnly.StretchDown(SkillManager.Instance.EquippedSkills[_keyIndex].SkillData.SkillRange);
+                if (UIManager.Instance.StageMainUI != null)
+                {
+                    UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                }
             }
         }
         if (_input.Skill3)
@@ -40,8 +48,12 @@ public class PlayerSkill : MonoBehaviour
             Debug.Log("3 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha3, out _keyIndex))
             {
-                _player.UseSkill(_keyIndex); // keyIndex: 0, 1, 2, 3 중 하나
-                UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                _player.UseSkill(_keyIndex);
+                _stretchColliderOnly.StretchDown(SkillManager.Instance.EquippedSkills[_keyIndex].SkillData.SkillRange);
+                if (UIManager.Instance.StageMainUI != null)
+                {
+                    UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                }
             }
         }
         if (_input.Skill4)
@@ -49,8 +61,12 @@ public class PlayerSkill : MonoBehaviour
             Debug.Log("4 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha4, out _keyIndex))
             {
-                _player.UseSkill(_keyIndex); // keyIndex: 0, 1, 2, 3 중 하나
-                UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                _player.UseSkill(_keyIndex);
+                _stretchColliderOnly.StretchDown(SkillManager.Instance.EquippedSkills[_keyIndex].SkillData.SkillRange);
+                if (UIManager.Instance.StageMainUI != null)
+                {
+                    UIManager.Instance.StageMainUI.SkillIconLoad(_keyIndex);
+                }
             }
         }
     }

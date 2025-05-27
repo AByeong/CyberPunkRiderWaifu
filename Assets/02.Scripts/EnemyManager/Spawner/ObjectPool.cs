@@ -85,14 +85,14 @@ public class ObjectPool : MonoBehaviour
         {
             CreateAndPoolObject();
         }
-        Debug.Log($"ObjectPool: Initialized with {initialPoolSize} objects for '{loadedPrefab.name}'.", this);
+//        Debug.Log($"ObjectPool: Initialized with {initialPoolSize} objects for '{loadedPrefab.name}'.", this);
     }
 
     GameObject CreateAndPoolObject()
     {
         if (loadedPrefab == null)
         {
-            Debug.LogError("ObjectPool: Attempted to create object, but loadedPrefab is null!", this);
+     //       Debug.LogError("ObjectPool: Attempted to create object, but loadedPrefab is null!", this);
             return null;
         }
 
@@ -154,7 +154,7 @@ public class ObjectPool : MonoBehaviour
         if (prefabToPoolRef.IsValid() && prefabToPoolRef.Asset != null) // AssetReference에 의해 에셋이 로드되었는지 확인
         {
             prefabToPoolRef.ReleaseAsset(); // AssetReference를 통해 로드된 에셋 해제
-            Debug.Log($"ObjectPool: Released Addressable asset for {loadedPrefab?.name ?? "prefabRef"}.", this);
+//            Debug.Log($"ObjectPool: Released Addressable asset for {loadedPrefab?.name ?? "prefabRef"}.", this);
         }
         loadedPrefab = null;
 

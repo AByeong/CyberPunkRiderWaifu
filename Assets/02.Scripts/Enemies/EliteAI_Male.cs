@@ -26,6 +26,24 @@ public class EliteAI_Male : MonoBehaviour
         
     }
 
+    public GameObject StompVFX;
+
+    public void Stomp()
+    {
+        StompVFX.SetActive(true);
+        StompVFX.GetComponent<ParticleSystem>().Play();
+    }
+
+
+    public GameObject KickVFX;
+
+    public void Kick()
+    {
+        KickVFX.SetActive(true);
+        KickVFX.GetComponent<ParticleSystem>().Play();
+    }
+    
+
     public void Summon()
     {
         Instantiate(SummonObject, SummonTransform.position, SummonTransform.rotation);

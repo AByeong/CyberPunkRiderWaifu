@@ -12,9 +12,9 @@ public enum AITier
 [RequireComponent(typeof(NavMeshAgent))]
 public class MonsterAI : MonoBehaviour
 {
-    [Header("Runtime Status")] // 인스펙터에서 구분을 위한 헤더
+    [Header("Runtime Status")]
     public AITier CurrentTier = AITier.Tier3_Background;
-    
+
     public Enemy Enemy;
     private NavMeshAgent navMeshAgent;
     private Transform playerTransform;
@@ -37,8 +37,6 @@ public class MonsterAI : MonoBehaviour
 
     [Header("Tier 3 Behavior")]
     private const float Tier3_LookAtPlayerSpeed = 3f;
-    // public float tier3LookAtPlayerMaxDistance = 10f; // 삭제: 항상 바라보도록 변경
-    // private float tier3LookAtPlayerMaxDistanceSqr; // 삭제
 
     private Renderer monsterRenderer;
 
@@ -49,15 +47,13 @@ public class MonsterAI : MonoBehaviour
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateRotation = true;
 
         monsterRenderer = GetComponentInChildren<Renderer>();
         if (monsterRenderer == null)
         {
             Debug.LogWarning("MonsterAI: Renderer component not found on " + gameObject.name, this.gameObject);
         }
-
-        // tier3LookAtPlayerMaxDistanceSqr = tier3LookAtPlayerMaxDistance * tier3LookAtPlayerMaxDistance; // 삭제
     }
 
     void OnDisable()
@@ -74,6 +70,9 @@ public class MonsterAI : MonoBehaviour
 
     public void Initialize(Transform player, FormationManager fm, AIManager am, ObjectPool pool)
     {
+        navMeshAgent.enabled = false;
+        navMeshAgent.enabled = true;
+
         playerTransform = player;
         formationManager = fm;
         aiManager = am;
@@ -85,7 +84,6 @@ public class MonsterAI : MonoBehaviour
         {
             Enemy.Pool = pool;
         }
-        // Debug.Log(gameObject.name + " 초기화 완");
     }
 
     public void SetAITier(AITier newTier, bool forceUpdate = false)
@@ -102,6 +100,7 @@ public class MonsterAI : MonoBehaviour
                 currentFormationSlot = null;
             }
         }
+
         isRetreating = false;
 
         switch (CurrentTier)
@@ -110,31 +109,25 @@ public class MonsterAI : MonoBehaviour
                 navMeshAgent.speed = Tier1_Speed;
                 navMeshAgent.acceleration = 8f;
                 navMeshAgent.autoRepath = true;
+                navMeshAgent.stoppingDistance = Tier1_SlotReachedThreshold * 0.8f;
+                navMeshAgent.isStopped = false;
                 logicUpdateInterval = 0.1f;
                 break;
+
             case AITier.Tier2_Approaching:
                 navMeshAgent.speed = Tier2_Speed;
                 navMeshAgent.acceleration = 5f;
                 navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
                 navMeshAgent.autoRepath = true;
+                navMeshAgent.isStopped = false; // ✅ 에이전트 다시 활성화
                 logicUpdateInterval = 0.3f;
                 break;
+
             case AITier.Tier3_Background:
-                if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh) navMeshAgent.isStopped = true;
+                if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+                    navMeshAgent.isStopped = true;
                 logicUpdateInterval = 1.0f;
                 break;
-        }
-    }
-
-    private void ExecuteLookAtPlayerLogic(float lookSpeed)
-    {
-        if (playerTransform == null) return;
-        Vector3 directionToPlayer = playerTransform.position - transform.position;
-        directionToPlayer.y = 0; // 수평으로만 회전하도록 y축 영향 제거
-        if (directionToPlayer.sqrMagnitude > 0.001f) // 매우 가까울 때 LookRotation 오류 방지
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, lookSpeed * Time.deltaTime);
         }
     }
 
@@ -149,16 +142,13 @@ public class MonsterAI : MonoBehaviour
             case AITier.Tier3_Background: UpdateTier3Behavior(); break;
         }
 
-        // 항상 플레이어를 바라보도록 수정
-        float currentLookSpeed;
-        switch (CurrentTier)
+        // 추가 안전장치: Tier2인데 isStopped면 다시 활성화
+        if (CurrentTier == AITier.Tier2_Approaching &&
+            navMeshAgent.enabled && navMeshAgent.isOnNavMesh &&
+            navMeshAgent.isStopped)
         {
-            case AITier.Tier1_ActiveFormation: currentLookSpeed = Tier1_LookAtPlayerSpeed; break;
-            case AITier.Tier2_Approaching: currentLookSpeed = Tier2_LookAtPlayerSpeed; break;
-            case AITier.Tier3_Background: currentLookSpeed = Tier3_LookAtPlayerSpeed; break;
-            default: currentLookSpeed = Tier1_LookAtPlayerSpeed; break; // 기본값 설정
+            navMeshAgent.isStopped = false;
         }
-        ExecuteLookAtPlayerLogic(currentLookSpeed);
     }
 
     void UpdateTier1Behavior()
@@ -191,7 +181,7 @@ public class MonsterAI : MonoBehaviour
                 Vector3 emergencyRetreatPos = transform.position + directionFromPlayer * 2.0f;
                 if (NavMesh.SamplePosition(emergencyRetreatPos, out hit, 1.0f, NavMesh.AllAreas))
                 {
-                     if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+                    if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
                         navMeshAgent.SetDestination(hit.position);
                 }
             }
@@ -225,9 +215,6 @@ public class MonsterAI : MonoBehaviour
         {
             if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && navMeshAgent.destination != currentFormationSlot.Value)
                 navMeshAgent.SetDestination(currentFormationSlot.Value);
-
-            // if (Vector3.Distance(transform.position, currentFormationSlot.Value) < Tier1_SlotReachedThreshold)
-            // { /* 공격 로직 */ }
         }
         else
         {

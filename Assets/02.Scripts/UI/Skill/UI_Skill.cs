@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
+
 public class UI_Skill : MonoBehaviour
 {
-    public float _skillCooldown;
-    public float _skillRange;
 
+    public Button Button;
     private Image _icon;
     public Skill Skill { get; private set; }
 
@@ -13,18 +13,18 @@ public class UI_Skill : MonoBehaviour
         _icon = GetComponent<Image>();
     }
 
-    public void SetSkill(Skill skillToEquip)
+    public virtual void SetSkill(Skill skillToEquip, bool isActive)
     {
+        if (skillToEquip == null) return;
+        Button.interactable = isActive;
         Skill = skillToEquip;
-
         _icon.sprite = Skill.SkillData.Icon;
-        _skillRange = Skill.SkillData.SkillRange;
-        _skillCooldown = Skill.SkillData.CoolTime;
     }
 
-    public void RemoveSkill()
+    public virtual void RemoveSkill()
     {
         Skill = null;
         _icon.sprite = null;
+        Button.interactable = false;
     }
 }
