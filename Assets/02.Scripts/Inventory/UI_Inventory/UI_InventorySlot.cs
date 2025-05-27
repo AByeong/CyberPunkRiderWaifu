@@ -9,7 +9,8 @@ using UnityEngine.Serialization;
 public enum SlotType // 인스펙터에서 설정
 {
     Inventory, // 일반 인벤토리
-    Equipment // 장비 슬롯
+    Equipment, // 장비 슬롯
+    Chip
 }
 
 public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -60,8 +61,19 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
             if (targetSlot != null)
             {
                 Debug.Log($"to: {targetSlot.gameObject.name}");
-                UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
-
+                
+                if(targetSlot.SlotType == SlotType.Inventory)
+                {
+                    UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
+                }
+                else if (targetSlot.SlotType == SlotType.Equipment)
+                {
+                    UI_InventoryPopup.Instance.EquipItem((UI_EquipmentSlot)targetSlot);
+                }
+                else if (targetSlot.SlotType == SlotType.Chip)
+                {
+                    UI_InventoryPopup.Instance.SetChip((UI_ChipSlot)targetSlot);
+                }
                 break;
             }
         }

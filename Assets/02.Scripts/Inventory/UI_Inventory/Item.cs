@@ -11,8 +11,6 @@ public class Item
     {
         _slotIndex = slotIndex;
     }
-    
-    
     // public float MaxHealth;
     // public float AttackPower;
     // public float Defense;

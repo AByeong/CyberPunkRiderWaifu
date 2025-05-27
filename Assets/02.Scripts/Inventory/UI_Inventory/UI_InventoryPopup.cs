@@ -10,6 +10,8 @@ public class UI_InventoryPopup : Popup
     
     [SerializeField]
     private List<UI_InventorySlot> _slots;
+    private List<UI_EquipmentSlot> _equipmentSlots;
+    private List<UI_ChipSlot> _chipSlots;
     
     public UI_InventorySlot DragSlot;
     private UI_InventorySlot _fromSlot;
@@ -72,6 +74,20 @@ public class UI_InventoryPopup : Popup
         Refresh();
     }
 
+    public void EquipItem(UI_EquipmentSlot toSlot)
+    {
+
+        if (!slot)
+        {
+            //slot.EquipmentType == _fromSlot.Item.Data.
+        }
+    }
+
+    public void SetChip(UI_ChipSlot toSlot)
+    {
+        
+    }
+
     private void Update()
     {
         if (_isDrag)
@@ -126,10 +142,5 @@ public class UI_InventoryPopup : Popup
             _slots[emptyIndex].SetItem(item);
             item.SetSlotIndex(emptyIndex);
         }
-        
-        
-        
-        
-        
     }
 }
