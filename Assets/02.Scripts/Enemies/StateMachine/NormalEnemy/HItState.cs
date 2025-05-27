@@ -61,7 +61,6 @@ public class HItState : BaseNormalEnemyState
     [Tooltip("공중에 떠 있는 동안 콜라이더가 활성화되어 있는 시간 (초).")]
     [SerializeField] private float airborneColliderActiveDuration = 0.8f;
     private Coroutine _airborneColliderManagementCoroutine;
-    private Collider _ownerCollider;
     // --- 공중 상태 콜라이더 제어 관련 변수 끝 ---
 
     // --- 바닥 감지 Raycast 관련 변수 ---
@@ -156,12 +155,6 @@ public class HItState : BaseNormalEnemyState
         }
         // --- 피격 머테리얼 효과 끝 ---
 
-        _ownerCollider = Owner.GetComponent<Collider>();
-        if (_ownerCollider == null)
-        {
-            // Debug.LogWarning($"[HitState] OnEnter: Owner {Owner.gameObject.name} does not have a Collider. Airborne collider management might not work.");
-        }
-
         Owner.IsHit = false;
         if (Owner.NavMeshAgent != null && Owner.NavMeshAgent.isOnNavMesh && Owner.NavMeshAgent.enabled)
         {
@@ -195,9 +188,9 @@ public class HItState : BaseNormalEnemyState
                     Owner.Animator.SetFloat("DownType", Random.Range(0, 4));
                     Owner.Animator.SetTrigger("OnDown");
                 }
-                if (_ownerCollider != null)
+                if (Owner.Collider != null)
                 {
-                    _ownerCollider.enabled = true;
+                    Owner.Collider.enabled = true;
                     if (_airborneColliderManagementCoroutine != null) StopCoroutine(_airborneColliderManagementCoroutine);
                     _airborneColliderManagementCoroutine = StartCoroutine(ManageAirborneCollider());
                 }
@@ -309,12 +302,12 @@ public class HItState : BaseNormalEnemyState
 
     private IEnumerator ManageAirborneCollider()
     {
-        if (_ownerCollider == null) yield break;
+        if (Owner.Collider == null) yield break;
         // Debug.Log($"[HitState] ManageAirborneCollider: Airborne state started. Collider will be active for {airborneColliderActiveDuration}s.");
         yield return new WaitForSeconds(airborneColliderActiveDuration); // 일반 WaitForSeconds 사용 (게임 시간에 따라 콜라이더 비활성화)
-        if (Owner.IsInAir && _ownerCollider.enabled)
+        if (Owner.IsInAir && Owner.Collider.enabled)
         {
-            _ownerCollider.enabled = false;
+            Owner.Collider.enabled = false;
             // Debug.Log("[HitState] ManageAirborneCollider: Collider disabled after duration for landing.");
         }
         _airborneColliderManagementCoroutine = null;
@@ -369,9 +362,9 @@ public class HItState : BaseNormalEnemyState
 
     private void PlayKnockbackOnly(Vector3 knockbackDir)
     {
-        if (_ownerCollider != null && !_ownerCollider.enabled)
+        if (Owner.Collider != null && !Owner.Collider.enabled)
         {
-            _ownerCollider.enabled = true;
+            Owner.Collider.enabled = true;
         }
 
         Vector3 startPos = Owner.transform.position;
@@ -472,11 +465,11 @@ public class HItState : BaseNormalEnemyState
             Owner.NavMeshAgent.isStopped = false;
         }
 
-        if (_ownerCollider != null && !_ownerCollider.enabled)
+        if (Owner.Collider != null && !Owner.Collider.enabled)
         {
             if (!Owner.IsInAir)
             {
-                _ownerCollider.enabled = true;
+                Owner.Collider.enabled = true;
             }
         }
     }
