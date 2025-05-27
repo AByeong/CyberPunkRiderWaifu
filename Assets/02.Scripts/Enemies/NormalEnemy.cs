@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NormalEnemy : Enemy, IDamageable
+public class NormalEnemy : Enemy
 {
     
     
