@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.AI.Navigation;
 using System.Collections.Generic;
 using Unity.Cinemachine;
+using System.Collections;
 
 public class StageManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class StageManager : MonoBehaviour
 
     private CinemachineOrbitalFollow _orbitalFollow;
     private CharacterController _playerController;
-    
+
     public bool _isClear = false;
     private int _currentStageIndex;
     private int _previousStageIndex;
@@ -31,10 +32,10 @@ public class StageManager : MonoBehaviour
     {
         DeliveryManager.Instance.OnCompleteSector += () =>
         {
-            
+
             CompleteSector();
             Debug.Log("StageManager에서 DeliveryManager OnCompeteSector에 구독함");
-            
+
         };
 
         _orbitalFollow = CinemachineCam.GetComponent<CinemachineOrbitalFollow>();
@@ -47,10 +48,19 @@ public class StageManager : MonoBehaviour
         GameObject startPoint = SubStageList[_currentStageIndex].GetStartEntry();
         ExitPortal = startPoint;
         MovePlayerToStartPosition(startPoint);
+        AddSpawners(_currentStageIndex);
+        StartCoroutine(WaitForPool());
 
         _isClear = false;
     }
-    
+
+    IEnumerator WaitForPool()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        EnemyManager.Instance.InitSpawn();
+    }
+
 
     public void StageInitialize()
     {
@@ -62,13 +72,13 @@ public class StageManager : MonoBehaviour
 
     public void GenerateSubStage(int stageIndex)
     {
-        
+
         if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector - 1)
         {
             CinemachineManager.Instance.BossAppear();
         }
-        
-        
+
+
         if (SubStageList.Count == 0 || SubStageList == null)
         {
             Debug.LogError($"{gameObject.name}: SubStageList가 비어있습니다!!");
@@ -119,13 +129,17 @@ public class StageManager : MonoBehaviour
         if (_isClear)
         {
             CinemachineManager.Instance.ShowElevatorChangeAnimation();
-           
+
         }
     }
 
     public void MoveNextStage()
     {
         _isClear = false;
+
+        AddSpawners(_currentStageIndex);
+        EnemyManager.Instance.InitSpawn();
+
         GameObject startEntry = SubStageList[_nextStageIndex].GetStartEntry();
         MovePlayerToStartPosition(startEntry);
 
@@ -133,7 +147,7 @@ public class StageManager : MonoBehaviour
         _previousStageIndex = _currentStageIndex;
         _currentStageIndex = _nextStageIndex;
         _nextStageIndex = _previousStageIndex;
-        
+
         DeliveryManager.Instance.LoadNextSection();
         GenerateSubStage(_nextStageIndex);
     }
@@ -142,5 +156,18 @@ public class StageManager : MonoBehaviour
     {
         Debug.LogWarning($"{gameObject.name}: 섹터 클리어!");
         _isClear = true;
+    }
+
+    private void AddSpawners(int _currentStageIndex)
+    {
+        foreach (MonsterSpawner spawner in SubStageList[_currentStageIndex].NormalSpawners)
+        {
+            EnemyManager.Instance.AddNormalSpwner(spawner);
+        }
+        
+        foreach (MonsterSpawner spawner in SubStageList[_currentStageIndex].EliteSpawners)
+        {
+            EnemyManager.Instance.AddEliteSpawner(spawner);
+        }
     }
 }

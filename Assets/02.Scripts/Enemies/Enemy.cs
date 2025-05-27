@@ -33,12 +33,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public Animator Animator => _animator;
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
+    public Collider Collider => _collider;
 
 
     protected virtual void Awake()
     {
-        CurrentHealthPoint = _enemyData.HealthPoint;
-
         _navMeshAgent = GetComponent<NavMeshAgent>();
         if (_navMeshAgent == null)
         {
@@ -51,7 +50,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
         }
 
-        CurrentHealthPoint = EnemyData.HealthPoint;
+        _collider = GetComponent<Collider>();
+        if (_collider == null)
+        {
+            Debug.LogWarning($"{gameObject.name} Collider가 없습니다");
+        }
+
+        CurrentHealthPoint = _enemyData.HealthPoint;
         IsHit = false;
         IsInAir = false;
     }
@@ -83,7 +88,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         CurrentHealthPoint -= damage.DamageValue;
         TakedDamageValue = damage.DamageValue;
         DamageType = damage.DamageType;
-        Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
+        // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
     }
 
     public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정
