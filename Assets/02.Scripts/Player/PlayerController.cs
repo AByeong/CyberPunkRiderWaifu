@@ -18,7 +18,7 @@ namespace JY
 
         public float MaxForwardSpeed = 8f;
         public float Gravity = 20f;
-        public float JumpSpeed = 10f;
+        public float JumpSpeed = 15f;
         public float MaxTurnSpeed = 1200f;
         public float MinTurnSpeed = 400f;
         public float IdleTimeout = 5f;
@@ -226,7 +226,7 @@ namespace JY
             bool isAttacking = IsPerformingAction(); // 일반 공격 판정
             bool hasMovementInput = _input.MoveInput != Vector2.zero;
 
-            if (_isGrounded)
+            if (_groundCheck.IsGrounded)
             {
                 if (isAirSkill)
                 {
@@ -272,7 +272,7 @@ namespace JY
 
             _characterController.transform.rotation *= _animator.deltaRotation;
 
-            _isAirborneAttacking = !_isGrounded && IsInCombo;
+            _isAirborneAttacking = !_groundCheck.IsGrounded && IsInCombo;
             bool ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
 
             if (isRootMotion)
@@ -299,21 +299,12 @@ namespace JY
 
             _characterController.Move(movement);
 
-            if (isRootMotion)
-            {
-                _isGrounded = _rootMotionGroundedStart;
-            }
-            else
-            {
-                _isGrounded = _groundCheck.IsGrounded;
-            }
-
-            if (!_isGrounded)
+            if (!_groundCheck.IsGrounded)
             {
                 _animator.SetFloat(_hashAirborneVerticalSpeed, _verticalSpeed);
             }
 
-            _animator.SetBool(_hashGrounded, _isGrounded);
+            _animator.SetBool(_hashGrounded, _groundCheck.IsGrounded);
         }
         private void CheckIsAirCombo()
         {
@@ -434,7 +425,7 @@ namespace JY
                 _isGrounded = false;
                 _readyToJump = false;
                 _airSkillExecuted = true;
-                _airAttackGraceTime = MaxAirAttackGraceTime; // ✅ 여기서만 설정
+                _airAttackGraceTime = MaxAirAttackGraceTime;
             }
         }
         private void CalculateVerticalMovement()
@@ -444,7 +435,7 @@ namespace JY
                 _airAttackGraceTime -= Time.deltaTime;
             }
 
-            if (!_input.JumpInput && _isGrounded)
+            if (!_input.JumpInput && _groundCheck.IsGrounded)
             {
                 _readyToJump = true;
             }
@@ -481,7 +472,7 @@ namespace JY
                     _verticalSpeed = 0f;
                 }
 
-                _isAirborneAttacking = !_isGrounded && IsInCombo;
+                _isAirborneAttacking = !_groundCheck.IsGrounded && IsInCombo;
                 bool ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
                 if (!ignoreGravity)
                 {
