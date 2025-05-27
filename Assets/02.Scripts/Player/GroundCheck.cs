@@ -13,7 +13,6 @@ public class GroundCheckComponent
 public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
 {
     [SerializeField] private GroundCheckComponent _component;
-    [SerializeField] private float _sphereRadius;
     [SerializeField] private float _groundCheckRadius;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _groundCheckOffsetY;

@@ -83,13 +83,13 @@ namespace JY
         private Animator _animator;
         private CharacterController _characterController;
 
-
         private AnimatorStateInfo _currentStateInfo;
         private float _dashCooldownTimer;
         private float _dashSpeed;
         private float _dashTime;
         private float _desiredForwardSpeed;
         private float _forwardSpeed;
+        private GroundCheck _groundCheck;
         private int _hashTriggerSkill1;
         private int _hashTriggerSkill2;
         private int _hashTriggerSkill3;
@@ -101,7 +101,7 @@ namespace JY
         // private bool _isAirCombo;
         private bool _isAnimatorTransitioning;
         private bool _isDashing;
-        private bool _isGrounded = true;
+        private bool _isGrounded;
         private bool _isRespawning;
         private AnimatorStateInfo _nextStateInfo;
         private AnimatorStateInfo _previousCurrentStateInfo;
@@ -121,7 +121,7 @@ namespace JY
             _input = GetComponent<PlayerInput>();
             _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
-
+            _groundCheck = GetComponent<GroundCheck>();
         }
         private async void Start()
         {
@@ -253,7 +253,7 @@ namespace JY
                         }
                         else
                         {
-                            movement = _animator.deltaPosition;
+                            movement = _animator.deltaPosition; // 루트 모션 모션에 Position값이 들어있음
                         }
                     }
                 }
@@ -305,7 +305,7 @@ namespace JY
             }
             else
             {
-                _isGrounded = _characterController.isGrounded;
+                _isGrounded = _groundCheck.IsGrounded;
             }
 
             if (!_isGrounded)
@@ -454,14 +454,13 @@ namespace JY
                 _airSkillExecuted = false;
             }
 
-            if (_isGrounded)
+            if (_groundCheck.IsGrounded)
             {
                 _verticalSpeed = -Gravity * StickingGravityProportion;
 
                 if (_input.JumpInput && _readyToJump && !IsInCombo)
                 {
                     _verticalSpeed = JumpSpeed;
-                    _isGrounded = false;
                     _readyToJump = false;
                 }
             }
