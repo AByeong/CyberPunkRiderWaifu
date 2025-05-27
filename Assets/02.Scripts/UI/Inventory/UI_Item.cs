@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDragHandler, IBeginDragHandler
 {
     private RectTransform _rectTransform;
     private Canvas _canvas;
-    public Item MyItem;
+    [FormerlySerializedAs("MyItem")] public ItemData myItemData;
     public GameObject InventorySlot;
     public GameObject OriginalSlot;
     
@@ -21,15 +22,15 @@ public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDr
         _canvas = GetComponentInParent<Canvas>();
     }
 
-    public void Init(Item item, GameObject inventorySlot)
+    public void Init(ItemData itemData, GameObject inventorySlot)
     {
-        MyItem = item;
+        myItemData = itemData;
         OriginalSlot = inventorySlot;
         InventorySlot = inventorySlot;
-        inventorySlot.GetComponent<InventorySlot>().item = item;
-        if (item != null &&item.Icon != null)
+        inventorySlot.GetComponent<InventorySlot>().itemData = itemData;
+        if (itemData != null &&itemData.Icon != null)
         {
-            GetComponent<Image>().sprite = item.Icon;
+            GetComponent<Image>().sprite = itemData.Icon;
         }
         SetItem(inventorySlot);
     }
@@ -43,13 +44,13 @@ public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDr
     public void SetItem(GameObject slot)
     {
         InventorySlot = slot;
-        InventorySlot.GetComponent<InventorySlot>().item = MyItem;
+        InventorySlot.GetComponent<InventorySlot>().itemData = myItemData;
     }
 
     public void RemoveSlotItem()
     {
         if(InventorySlot == null) return;
-        InventorySlot.GetComponent<InventorySlot>().item = null;
+        InventorySlot.GetComponent<InventorySlot>().itemData = null;
     }
     
     public void OnBeginDrag(PointerEventData eventData)
@@ -62,7 +63,7 @@ public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDr
         transform.SetParent(_canvas.transform);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
         
-        Debug.Log($"드래그 시작: {MyItem.ItemName}");
+        Debug.Log($"드래그 시작: {myItemData.ItemName}");
     }
     
     public void OnDrag(PointerEventData eventData)
@@ -92,7 +93,7 @@ public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDr
         }
         
         // 유효하지 않은 곳에 드롭된 경우 원래 위치로 복귀
-        Debug.Log($"유효하지 않은 곳에 드롭됨. 원래 위치로 복귀: {MyItem.ItemName}");
+        Debug.Log($"유효하지 않은 곳에 드롭됨. 원래 위치로 복귀: {myItemData.ItemName}");
         ReturnToOriginalPosition();
     }
     
@@ -122,7 +123,7 @@ public class UI_Item : MonoBehaviour, IDragHandler, IPointerEnterHandler, IEndDr
         // 원래 위치로 돌아가기
         _rectTransform.anchoredPosition = _originalPosition;
         
-        Debug.Log($"원래 위치로 복귀 완료: {MyItem.ItemName}");
+        Debug.Log($"원래 위치로 복귀 완료: {myItemData.ItemName}");
     }
 
     public void OnPointerEnter(PointerEventData eventData)

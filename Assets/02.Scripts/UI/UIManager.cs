@@ -1,3 +1,4 @@
+using System;
 using JY;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,9 +12,15 @@ public class UIManager : Singleton<UIManager>
     public PopupManager PopupManager;
     [FormerlySerializedAs("_playerInput")] public PlayerInput PlayerInput;
 
+    private void Start()
+    {
+        
+    }
+
     private void Update()
     {
         InventoryPopup();
+        
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PlayerInput.GainControl();

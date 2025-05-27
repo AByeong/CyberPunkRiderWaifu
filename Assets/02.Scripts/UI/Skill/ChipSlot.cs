@@ -2,10 +2,10 @@
 {
     public UI_EquipSkill TargetSkill;
     public ChipData ChipData;
-    public override void SetItem(Item newItem)
+    public override void SetItem(ItemData newItemData)
     {
-        base.SetItem(newItem);
-        ChipData = (ChipData)newItem.Data;
+        base.SetItem(newItemData);
+        ChipData = (ChipData)newItemData.Data;
         TargetSkill.SetChipOption(ChipData);
     }
 

@@ -2,8 +2,8 @@ using System;
 using UnityEngine;
 public enum ItemType { Equipment, Chip, Etc }
 [Serializable]
-[CreateAssetMenu(fileName = "New Item", menuName = "Scriptable Objects/Item")]
-public class Item : ScriptableObject
+[CreateAssetMenu(fileName = "Item", menuName = "Scriptable Objects/ItemData")]
+public class ItemData : ScriptableObject
 {
     public string Id;
     public string ItemName;
