@@ -32,6 +32,7 @@ namespace JY
         public float DashDistance = 5.0f;
         public float DashCooldown;
         public float DashDuration = 0.2f;
+        public bool NoGravity;
 
         private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
         private readonly int _hashAirborne = Animator.StringToHash("Airborne");
@@ -302,7 +303,9 @@ namespace JY
                 movement += Vector3.up * (_verticalSpeed * Time.deltaTime);
             }
 
+
             _characterController.Move(movement);
+
 
             if (!_groundCheck.IsGrounded)
             {
@@ -485,6 +488,8 @@ namespace JY
                 {
                     _verticalSpeed -= Gravity * Time.deltaTime;
                 }
+
+
             }
         }
 
