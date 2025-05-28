@@ -140,7 +140,7 @@ public class StageManager : MonoBehaviour
     {
         _isClear = false;
 
-        AddSpawners(_currentStageIndex);
+        AddSpawners(_nextStageIndex);
         EnemyManager.Instance.InitSpawn();
 
         GameObject startEntry = SubStageList[_nextStageIndex].GetStartEntry();
@@ -161,14 +161,22 @@ public class StageManager : MonoBehaviour
         _isClear = true;
     }
 
-    private void AddSpawners(int _currentStageIndex)
+    private void AddSpawners(int stageIndex)
     {
-        foreach (MonsterSpawner spawner in SubStageList[_currentStageIndex].NormalSpawners)
+        if (EnemyManager.Instance.NormalMonsterSpawners.Count > 0)
+        {
+            EnemyManager.Instance.NormalMonsterSpawners.Clear();
+        }
+        foreach (MonsterSpawner spawner in SubStageList[stageIndex].NormalSpawners)
         {
             EnemyManager.Instance.AddNormalSpwner(spawner);
         }
-        
-        foreach (MonsterSpawner spawner in SubStageList[_currentStageIndex].EliteSpawners)
+
+        if (EnemyManager.Instance.EliteMonsterSpawners.Count > 0)
+        {
+            EnemyManager.Instance.EliteMonsterSpawners.Clear();
+        }
+        foreach (MonsterSpawner spawner in SubStageList[stageIndex].EliteSpawners)
         {
             EnemyManager.Instance.AddEliteSpawner(spawner);
         }
