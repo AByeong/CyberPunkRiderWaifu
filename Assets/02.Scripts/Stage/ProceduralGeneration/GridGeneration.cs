@@ -70,6 +70,13 @@ public class GridGeneration : MonoBehaviour
     [SerializeField]
     private List<GameObject> _entries = new List<GameObject>();
 
+    [SerializeField]
+    private List<MonsterSpawner> _normalSpawners = new List<MonsterSpawner>();
+    [SerializeField]
+    private List<MonsterSpawner> _eliteSpawners = new List<MonsterSpawner>();
+    public List<MonsterSpawner> NormalSpawners => _normalSpawners;
+    public List<MonsterSpawner> EliteSpawners => _eliteSpawners;
+
     private int _totalSpawnerCount;
 
 
@@ -605,13 +612,13 @@ public class GridGeneration : MonoBehaviour
                                 switch (type)
                                 {
                                     case SpawnerType.Normal:
-                                        EnemyManager.Instance.AddNormalSpwner(spawner);
+                                        _normalSpawners.Add(spawner);
                                         break;
                                     case SpawnerType.Elite0:
-                                        EnemyManager.Instance.AddEliteSpawner(spawner);
+                                        _eliteSpawners.Add(spawner);
                                         break;
                                     case SpawnerType.Elite1:
-                                        EnemyManager.Instance.AddEliteSpawner(spawner);
+                                        _eliteSpawners.Add(spawner);
                                         break;
                                     case SpawnerType.Boss:
                                         EnemyManager.Instance.AddBossSpawner(spawner);
