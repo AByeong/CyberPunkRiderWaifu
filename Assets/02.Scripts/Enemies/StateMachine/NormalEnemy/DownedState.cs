@@ -9,8 +9,6 @@ public class DownedState : BaseNormalEnemyState
         base.OnEnter();
         
         Owner.NavMeshAgent.enabled = false;
-        // Owner.Animator.SetFloat("DownType", Random.Range(0, 4));
-        // Owner.Animator.SetTrigger("OnDown");
     }
 
     public override void Update()

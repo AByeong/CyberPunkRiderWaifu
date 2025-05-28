@@ -15,6 +15,15 @@ public class AttackState : BaseNormalEnemyState
     {
         base.Update();
 
+        // 🔄 타겟 바라보기
+        Vector3 direction = Owner.Target.transform.position - Owner.transform.position;
+        direction.y = 0; // 수평 회전만
+        if (direction.sqrMagnitude > 0.01f) // 방향이 0이 아닐 때만 회전
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            Owner.transform.rotation = Quaternion.Slerp(Owner.transform.rotation, targetRotation, Time.deltaTime * 10f);
+        }
+
         float distance = Vector3.Distance(Owner.transform.position, Owner.Target.transform.position);
         if (distance >= Owner.EnemyData.AttackDistance)
         {
@@ -27,6 +36,22 @@ public class AttackState : BaseNormalEnemyState
         {
             Owner.Animator.SetTrigger("OnAttack");
             attackTimer = 0;
+            Owner.WeaponCollider.enabled = true;
+
+            // if (distance < Owner.EnemyData.AttackDistance)
+            // {
+            //     Damage damage = new Damage();
+            //     damage.DamageValue = Owner.EnemyData.Damage;
+            //     Owner.Target.GetComponent<PlayerHit>().TakeDamage(damage);
+            // }
         }
     }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+
+        Owner.WeaponCollider.enabled = false;
+    }
+
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Text;
 
 public enum EGirdType
 {
@@ -61,8 +62,22 @@ public class GridGeneration : MonoBehaviour
     private int _bossSpawnerCreated = 0;
 
     private int[,] grid;
-    private List<Vector2Int> entries = new List<Vector2Int>();
-    private List<Vector2Int> exits = new List<Vector2Int>();
+    private List<Vector2Int> _exitsPos = new List<Vector2Int>();
+    private List<Vector2Int> _entriesPos = new List<Vector2Int>();
+
+    [SerializeField]
+    private List<GameObject> _exits = new List<GameObject>();
+    [SerializeField]
+    private List<GameObject> _entries = new List<GameObject>();
+
+    [SerializeField]
+    private List<MonsterSpawner> _normalSpawners = new List<MonsterSpawner>();
+    [SerializeField]
+    private List<MonsterSpawner> _eliteSpawners = new List<MonsterSpawner>();
+    private MonsterSpawner _bossSpawner;
+    public List<MonsterSpawner> NormalSpawners => _normalSpawners;
+    public List<MonsterSpawner> EliteSpawners => _eliteSpawners;
+    public MonsterSpawner BossSpawner => _bossSpawner;
 
     private int _totalSpawnerCount;
 
@@ -76,50 +91,55 @@ public class GridGeneration : MonoBehaviour
     // 7. 빈 공간 너비에 따른 랜덤패턴 생성
     // 8. 패턴들 구현
 
-    public void Generate()
+    private void DebugGrid()
     {
-        grid = new int[width, height];
-        for (int x = 0; x < width; x++)
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < width; i++)
         {
-            for (int y = 0; y < height; y++)
+            for (int j = 0; j < height; j++)
             {
-                grid[x, y] = (int)EGirdType.Activate;
+                sb.Append(grid[i, j]);
             }
+            sb.Append("\n");
         }
 
-        _totalSpawnerCount = NormalSpawnerCount + Elite0SpanwerCount + Elite1SpanwerCount + BossSpawnerCount;
-        _normalSpawnerCreated = 0;
-        _elite0SpawnerCreated = 0;
-        _elite1SpawnerCreated = 0;
-        _bossSpawnerCreated = 0;
+        Debug.Log(sb);
+    }
 
-        entries.Clear();
-        exits.Clear();
-
+    public void Generate()
+    {
+        Initialize();
         MaskOuterEmptySpaces();
+
         DetectBoundary();
 
         PlaceEntries();
         PlaceExits();
 
-        foreach (var entry in entries)
+        foreach (var entry in _entriesPos)
         {
-            foreach (var exit in exits)
+            foreach (var exit in _exitsPos)
             {
                 GeneratePath(entry, exit);
             }
         }
+
         RemoveFarActivateCells();
+
         DetectBoundary();
 
         GenerateRandomSpawner();
         GenerateRandomPatterns();
+
         BuildMap();
+
+        // DebugGrid();
     }
 
 
     public void DestroyMap()
     {
+        // 스포너 해제
         for (int i = 0; i < NormalSpawnerCount; i++)
         {
             EnemyManager.Instance.RemoveNormalSpwner();
@@ -132,7 +152,8 @@ public class GridGeneration : MonoBehaviour
         {
             EnemyManager.Instance.RemoveBossSpawner();
         }
-
+        
+        // 맵 오브젝트 모두 해제
         foreach (Transform child in gameObject.transform)
         {
             child.position = new Vector3(9999, 9999, 9999);
@@ -140,7 +161,31 @@ public class GridGeneration : MonoBehaviour
         }
     }
 
-    void MaskOuterEmptySpaces()
+    private void Initialize()
+    {
+        _totalSpawnerCount = NormalSpawnerCount + Elite0SpanwerCount + Elite1SpanwerCount + BossSpawnerCount;
+        _normalSpawnerCreated = 0;
+        _elite0SpawnerCreated = 0;
+        _elite1SpawnerCreated = 0;
+        _bossSpawnerCreated = 0;
+
+        _entriesPos.Clear();
+        _entries.Clear();
+
+        _exitsPos.Clear();
+        _exits.Clear();
+
+        grid = new int[width, height];
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                grid[x, y] = (int)EGirdType.Activate;
+            }
+        }
+    }
+
+    private void MaskOuterEmptySpaces()
     {
         for (int x = 0; x < width; x++)
         {
@@ -160,7 +205,7 @@ public class GridGeneration : MonoBehaviour
     }
 
 
-    void DetectBoundary()
+    private void DetectBoundary()
     {
         // 임시로 경계 셀을 저장할 리스트 (반복문 내에서 grid를 직접 수정하면 문제 발생 가능)
         List<Vector2Int> potentialBorderCells = new List<Vector2Int>();
@@ -170,6 +215,12 @@ public class GridGeneration : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
+                if (grid[x, y] == (int)EGirdType.Border)
+                {
+                    potentialBorderCells.Add(new Vector2Int(x, y));
+                    continue;
+                }
+
                 if (grid[x, y] == (int)EGirdType.Activate && HasEmptyNeighbor(x, y))
                 {
                     potentialBorderCells.Add(new Vector2Int(x, y));
@@ -198,95 +249,34 @@ public class GridGeneration : MonoBehaviour
         }
     }
 
-    private int GetGridValueSafe(int x, int y)
+    private bool IsCornerBorder(int x, int y)
     {
-        if (x < 0 || x >= width || y < 0 || y >= height)
+        bool borderNorth =  (grid[x, y + 1] == (int)EGirdType.Border || grid[x, y + 1] == (int)EGirdType.CornerBorder || grid[x, y + 1] == (int)EGirdType.Enrty || grid[x, y + 1] == (int)EGirdType.Exit);
+        bool borderSouth =  (grid[x, y - 1] == (int)EGirdType.Border || grid[x, y - 1] == (int)EGirdType.CornerBorder || grid[x, y - 1] == (int)EGirdType.Enrty || grid[x, y - 1] == (int)EGirdType.Exit);
+        bool borderEast =   (grid[x + 1, y] == (int)EGirdType.Border || grid[x + 1, y] == (int)EGirdType.CornerBorder || grid[x + 1, y] == (int)EGirdType.Enrty || grid[x + 1, y] == (int)EGirdType.Exit);
+        bool borderWest =   (grid[x - 1, y] == (int)EGirdType.Border || grid[x - 1, y] == (int)EGirdType.CornerBorder || grid[x - 1, y] == (int)EGirdType.Enrty || grid[x - 1, y] == (int)EGirdType.Exit);
+
+        if (borderNorth && borderWest) // 북서 코너 (맵의 안쪽은 남동쪽)
         {
-            return (int)EGirdType.Blank;
+            return true; // 0도 회전 (기본 방향)
         }
-        return grid[x, y];
+        else if (borderNorth && borderEast) // 북동 코너 (맵의 안쪽은 남서쪽)
+        {
+            return true; // 90도 회전
+        }
+        else if (borderSouth && borderEast) // 남동 코너 (맵의 안쪽은 북서쪽)
+        {
+            return true; // 180도 회전
+        }
+        else if (borderSouth && borderWest) // 남서 코너 (맵의 안쪽은 북동쪽)
+        {
+            return true; // 270도 회전
+        }
+
+        return false;
     }
 
-    bool IsCornerBorder(int x, int y)
-    {
-        // bool borderNorth =  (grid[x, y + 1] == (int)EGirdType.Border || grid[x, y + 1] == (int)EGirdType.CornerBorder || grid[x, y + 1] == (int)EGirdType.Enrty || grid[x, y + 1] == (int)EGirdType.Exit);
-        // bool borderSouth =  (grid[x, y - 1] == (int)EGirdType.Border || grid[x, y - 1] == (int)EGirdType.CornerBorder || grid[x, y - 1] == (int)EGirdType.Enrty || grid[x, y - 1] == (int)EGirdType.Exit);
-        // bool borderEast =   (grid[x + 1, y] == (int)EGirdType.Border || grid[x + 1, y] == (int)EGirdType.CornerBorder || grid[x + 1, y] == (int)EGirdType.Enrty || grid[x + 1, y] == (int)EGirdType.Exit);
-        // bool borderWest =   (grid[x - 1, y] == (int)EGirdType.Border || grid[x - 1, y] == (int)EGirdType.CornerBorder || grid[x - 1, y] == (int)EGirdType.Enrty || grid[x - 1, y] == (int)EGirdType.Exit);
-
-        // if (borderNorth && borderWest) // 북서 코너 (맵의 안쪽은 남동쪽)
-        // {
-        //     return true; // 0도 회전 (기본 방향)
-        // }
-        // else if (borderNorth && borderEast) // 북동 코너 (맵의 안쪽은 남서쪽)
-        // {
-        //     return true; // 90도 회전
-        // }
-        // else if (borderSouth && borderEast) // 남동 코너 (맵의 안쪽은 북서쪽)
-        // {
-        //     return true; // 180도 회전
-        // }
-        // else if (borderSouth && borderWest) // 남서 코너 (맵의 안쪽은 북동쪽)
-        // {
-        //     return true; // 270도 회전
-        // }
-
-        // return false;
-
-
-        // 이 함수는 EGirdType.Border (값 6)인 셀에 대해 호출됩니다.
-        // 이 셀이 Border 라인의 코너를 형성하는지 확인해야 합니다.
-        // 코너는 두 개의 인접한 (수직/수평) Border 이웃을 가질 때 형성됩니다.
-
-        Vector2Int[] cardinalDirections = new Vector2Int[]
-        {
-            new Vector2Int(0, 1),  // 북 (North)
-            new Vector2Int(0, -1), // 남 (South)
-            new Vector2Int(1, 0),  // 동 (East)
-            new Vector2Int(-1, 0)  // 서 (West)
-        };
-
-        List<Vector2Int> borderCardinalNeighbors = new List<Vector2Int>();
-
-        foreach (var dir in cardinalDirections)
-        {
-            int nx = x + dir.x;
-            int ny = y + dir.y;
-
-            // 이웃 셀이 그리드 범위 내에 있고, Border 또는 CornerBorder 타입인지 확인
-            // (이미 CornerBorder로 분류된 셀도 Border 라인의 일부로 간주)
-            int neighborType = GetGridValueSafe(nx, ny);
-            if (neighborType == (int)EGirdType.Border || neighborType == (int)EGirdType.CornerBorder || neighborType == (int)EGirdType.Enrty || neighborType == (int)EGirdType.Exit)
-            {
-                borderCardinalNeighbors.Add(new Vector2Int(nx, ny));
-            }
-        }
-
-
-        // 코너 셀은 일반적으로 정확히 두 개의 수직/수평 Border 이웃을 가집니다.
-        if (borderCardinalNeighbors.Count != 2)
-        {
-            return false;
-        }
-
-        // 이제 이 두 이웃이 서로 수직인지 확인합니다.
-        Vector2Int n1 = borderCardinalNeighbors[0];
-        Vector2Int n2 = borderCardinalNeighbors[1];
-
-        // 현재 셀 (x, y)를 기준으로 이웃들의 상대적 위치를 계산합니다.
-        int relX1 = n1.x - x;
-        int relY1 = n1.y - y;
-        int relX2 = n2.x - x;
-        int relY2 = n2.y - y;
-
-        // 두 이웃이 수직인 경우는 다음과 같습니다:
-        // 하나는 수평 방향 (relY=0, relX!=0)이고 다른 하나는 수직 방향 (relX=0, relY!=0)일 때.
-        bool isPerpendicular = ((relX1 != 0 && relY1 == 0 && relX2 == 0 && relY2 != 0) ||
-                                 (relX1 == 0 && relY1 != 0 && relX2 != 0 && relY2 == 0));
-        return isPerpendicular;
-    }
-
-    bool HasEmptyNeighbor(int x, int y)
+    private bool HasEmptyNeighbor(int x, int y)
     {
         for (int dx = -1; dx <= 1; dx++)
         {
@@ -308,19 +298,19 @@ public class GridGeneration : MonoBehaviour
         return false;
     }
 
-    void PlaceEntries()
+    private void PlaceEntries()
     {
         List<Vector2Int> candidates = GetInnerBoundaryCandidates();
         for (int i = 0; i < entryCount && candidates.Count > 0; i++)
         {
             Vector2Int entry = candidates[Random.Range(0, candidates.Count)];
             grid[entry.x, entry.y] = (int)EGirdType.Enrty;
-            entries.Add(entry);
+            _entriesPos.Add(entry);
             candidates.Remove(entry);
         }
     }
 
-    void PlaceExits()
+    private void PlaceExits()
     {
         List<Vector2Int> candidates = GetInnerBoundaryCandidates();
         for (int i = 0; i < exitCount && candidates.Count > 0; i++)
@@ -332,12 +322,12 @@ public class GridGeneration : MonoBehaviour
             }
 
             grid[exit.x, exit.y] = (int)EGirdType.Exit;
-            exits.Add(exit);
+            _exitsPos.Add(exit);
             candidates.Remove(exit);
         }
     }
 
-    List<Vector2Int> GetInnerBoundaryCandidates()
+    private List<Vector2Int> GetInnerBoundaryCandidates()
     {
         List<Vector2Int> candidates = new List<Vector2Int>();
 
@@ -373,7 +363,7 @@ public class GridGeneration : MonoBehaviour
         return candidates;
     }
 
-    void GeneratePath(Vector2Int start, Vector2Int end)
+    private void GeneratePath(Vector2Int start, Vector2Int end)
     {
         List<Vector2Int> pathPoints;
         if (Random.value < 0.5f)
@@ -401,7 +391,7 @@ public class GridGeneration : MonoBehaviour
         }
     }
 
-    List<Vector2Int> FindPath(Vector2Int from, Vector2Int to) // BFS 사용
+    private List<Vector2Int> FindPath(Vector2Int from, Vector2Int to) // BFS 사용
     {
         Queue<Vector2Int> queue = new Queue<Vector2Int>();
         Dictionary<Vector2Int, Vector2Int> cameFrom = new Dictionary<Vector2Int, Vector2Int>();
@@ -592,6 +582,7 @@ public class GridGeneration : MonoBehaviour
                             GameObject fencedoor = Instantiate(FenceDoorPrefab, transform);
                             fencedoor.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
                             fencedoor.transform.rotation = GetFenceDoorRotation(i, j);
+                            _entries.Add(fencedoor);
                             break;
                         }
 
@@ -600,6 +591,7 @@ public class GridGeneration : MonoBehaviour
                             GameObject fencedoor = Instantiate(FenceDoorPrefab, transform);
                             fencedoor.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
                             fencedoor.transform.rotation = GetFenceDoorRotation(i, j);
+                            _exits.Add(fencedoor);
                             break;
                         }
 
@@ -622,16 +614,16 @@ public class GridGeneration : MonoBehaviour
                                 switch (type)
                                 {
                                     case SpawnerType.Normal:
-                                        EnemyManager.Instance.AddNormalSpwner(spawner);
+                                        _normalSpawners.Add(spawner);
                                         break;
                                     case SpawnerType.Elite0:
-                                        EnemyManager.Instance.AddEliteSpawner(spawner);
+                                        _eliteSpawners.Add(spawner);
                                         break;
                                     case SpawnerType.Elite1:
-                                        EnemyManager.Instance.AddEliteSpawner(spawner);
+                                        _eliteSpawners.Add(spawner);
                                         break;
                                     case SpawnerType.Boss:
-                                        EnemyManager.Instance.AddBossSpawner(spawner);
+                                        _bossSpawner = spawner;
                                         break;
                                 }
                             }
@@ -707,7 +699,7 @@ public class GridGeneration : MonoBehaviour
 
         // 만약 어떤 이유로 Blank 이웃을 찾지 못한다면 기본 회전을 반환
         Debug.LogWarning($"Border cell at ({x}, {y}) has no cardinal Blank neighbor. Defaulting to identity rotation.");
-        return Quaternion.Euler(-90, 0, 0); // 기본 회전 (0,0,0)
+        return Quaternion.Euler(0, 0, 0); // 기본 회전 (0,0,0)
     }
 
     private Quaternion GetCornerFenceRotation(int x, int y)
@@ -768,24 +760,13 @@ public class GridGeneration : MonoBehaviour
 
         // 만약 어떤 이유로 Blank 이웃을 찾지 못한다면 기본 회전을 반환
         Debug.LogWarning($"Border cell at ({x}, {y}) has no cardinal Blank neighbor. Defaulting to identity rotation.");
-        return Quaternion.Euler(0, 0, 0); // 기본 회전 (0,0,0)
+        return Quaternion.Euler(-90, 0, 0); // 기본 회전 (0,0,0)
     }
 
-    public Vector3 GetStartPos()
+    public GameObject GetStartEntry()
     {
-        Vector3 startPosition = Vector3.zero;
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++)
-            {
-                if (grid[i, j] == (int)EGirdType.Enrty)
-                {
-                    startPosition = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-                    return startPosition;
-                }
-            }
-        }
-        return startPosition;
+        int randomIndex = Random.Range(0, entryCount - 1);
+        return _entries[randomIndex];
     }
 
 }

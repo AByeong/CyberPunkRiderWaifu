@@ -1,0 +1,522 @@
+fileFormatVersion: 2
+guid: e072a0974a24c054eadb717799bed093
+timeCreated: 1507730237
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: bike
+    100004: Blades
+    100006: Chassis
+    100008: driveshaft
+    100010: Foot.L
+    100012: Foot.L_end
+    100014: Foot.R
+    100016: Foot.R_end
+    100018: //RootNode
+    100020: Leg.L
+    100022: Leg.R
+    100024: Shin.L
+    100026: Shin.R
+    100028: SideCar
+    100030: SideCar.001
+    100032: turbine
+    100034: turbine_end
+    400000: Armature
+    400002: bike
+    400004: Blades
+    400006: Chassis
+    400008: driveshaft
+    400010: Foot.L
+    400012: Foot.L_end
+    400014: Foot.R
+    400016: Foot.R_end
+    400018: //RootNode
+    400020: Leg.L
+    400022: Leg.R
+    400024: Shin.L
+    400026: Shin.R
+    400028: SideCar
+    400030: SideCar.001
+    400032: turbine
+    400034: turbine_end
+    2300000: Blades
+    2300002: SideCar
+    2300004: SideCar.001
+    3300000: Blades
+    3300002: SideCar
+    3300004: SideCar.001
+    4300000: SideCar
+    4300002: SideCar.001
+    4300004: Blades
+    4300006: bike
+    7400000: BikeEnginesOff
+    7400002: BikeEnginesOn
+    7400004: BikeJumpToTakeOff
+    7400006: BikeLongStrideRun
+    7400008: BikeSpeedFly
+    7400010: BikeWalk
+    9500000: //RootNode
+    13700000: bike
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: BikeEnginesOff
+      takeName: Armature|BikeEnginesIdleOff
+      firstFrame: 0
+      lastFrame: 28
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Chassis
+        weight: 1
+      - path: Armature/Chassis/driveshaft
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R/Foot.R_end
+        weight: 1
+      - path: Armature/Chassis/SideCar
+        weight: 1
+      - path: Armature/Chassis/SideCar/SideCar.001
+        weight: 1
+      - path: Armature/Chassis/turbine
+        weight: 1
+      - path: Armature/Chassis/turbine/Blades
+        weight: 1
+      - path: Armature/Chassis/turbine/turbine_end
+        weight: 1
+      - path: bike
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BikeEnginesOn
+      takeName: Armature|BikeEnginesIdleOn
+      firstFrame: 0
+      lastFrame: 15
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Chassis
+        weight: 1
+      - path: Armature/Chassis/driveshaft
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R/Foot.R_end
+        weight: 1
+      - path: Armature/Chassis/SideCar
+        weight: 1
+      - path: Armature/Chassis/SideCar/SideCar.001
+        weight: 1
+      - path: Armature/Chassis/turbine
+        weight: 1
+      - path: Armature/Chassis/turbine/Blades
+        weight: 1
+      - path: Armature/Chassis/turbine/turbine_end
+        weight: 1
+      - path: bike
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BikeJumpToTakeOff
+      takeName: Armature|BikeJumpToTakeOff
+      firstFrame: 0
+      lastFrame: 68
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Chassis
+        weight: 1
+      - path: Armature/Chassis/driveshaft
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R/Foot.R_end
+        weight: 1
+      - path: Armature/Chassis/SideCar
+        weight: 1
+      - path: Armature/Chassis/SideCar/SideCar.001
+        weight: 1
+      - path: Armature/Chassis/turbine
+        weight: 1
+      - path: Armature/Chassis/turbine/Blades
+        weight: 1
+      - path: Armature/Chassis/turbine/turbine_end
+        weight: 1
+      - path: bike
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BikeLongStrideRun
+      takeName: Armature|BikeLongStrideRun
+      firstFrame: 0
+      lastFrame: 49
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Chassis
+        weight: 1
+      - path: Armature/Chassis/driveshaft
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R/Foot.R_end
+        weight: 1
+      - path: Armature/Chassis/SideCar
+        weight: 1
+      - path: Armature/Chassis/SideCar/SideCar.001
+        weight: 1
+      - path: Armature/Chassis/turbine
+        weight: 1
+      - path: Armature/Chassis/turbine/Blades
+        weight: 1
+      - path: Armature/Chassis/turbine/turbine_end
+        weight: 1
+      - path: bike
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BikeSpeedFly
+      takeName: Armature|BikeSpeedFly
+      firstFrame: 0
+      lastFrame: 28
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Chassis
+        weight: 1
+      - path: Armature/Chassis/driveshaft
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R/Foot.R_end
+        weight: 1
+      - path: Armature/Chassis/SideCar
+        weight: 1
+      - path: Armature/Chassis/SideCar/SideCar.001
+        weight: 1
+      - path: Armature/Chassis/turbine
+        weight: 1
+      - path: Armature/Chassis/turbine/Blades
+        weight: 1
+      - path: Armature/Chassis/turbine/turbine_end
+        weight: 1
+      - path: bike
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: BikeWalk
+      takeName: Armature|BikeWalk
+      firstFrame: 0
+      lastFrame: 27
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Chassis
+        weight: 1
+      - path: Armature/Chassis/driveshaft
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.L/Shin.L/Foot.L/Foot.L_end
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R
+        weight: 1
+      - path: Armature/Chassis/driveshaft/Leg.R/Shin.R/Foot.R/Foot.R_end
+        weight: 1
+      - path: Armature/Chassis/SideCar
+        weight: 1
+      - path: Armature/Chassis/SideCar/SideCar.001
+        weight: 1
+      - path: Armature/Chassis/turbine
+        weight: 1
+      - path: Armature/Chassis/turbine/Blades
+        weight: 1
+      - path: Armature/Chassis/turbine/turbine_end
+        weight: 1
+      - path: bike
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102627
+  packageName: Cyber Punk Girl & Vehicle
+  packageVersion: 1.0
+  assetPath: Assets/CyberPunkGirl&Vehicle/Assets/Meshes/JetBike&SideCar.fbx
+  uploadId: 206363

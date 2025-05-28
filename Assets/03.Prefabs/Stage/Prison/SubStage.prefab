@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1401629159002249675}
   - component: {fileID: 4713573989724380912}
   - component: {fileID: 9170682840414152598}
-  - component: {fileID: 7487813644931514649}
+  - component: {fileID: 7839119713628957498}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 4095745500683402786}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 0.015, y: 0.02, z: 0.02}
+  m_LocalPosition: {x: 0, y: -0.7, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9189819585382995178}
@@ -87,7 +87,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7487813644931514649
+--- !u!65 &7839119713628957498
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,8 +106,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 7838.0723, y: 5839.048, z: 14.944589}
-  m_Center: {x: -3919.0195, y: 2418.825, z: 7.2466555}
+  m_Size: {x: 7838.0713, y: 5839.048, z: 14.943753}
+  m_Center: {x: -3919.019, y: 2418.825, z: 7.247001}
 --- !u!1 &6321359638370033136
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,3 +243,7 @@ MonoBehaviour:
   Elite0SpanwerCount: 1
   Elite1SpanwerCount: 1
   BossSpawnerCount: 1
+  _exits: []
+  _entries: []
+  _normalSpawners: []
+  _eliteSpawners: []

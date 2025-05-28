@@ -2,8 +2,9 @@ using UnityEngine;
 
 public enum EDamageType
 {
-    // TODO
-    TODO
+    Normal,
+    Airborne,
+    Down
 }
 
 public struct Damage

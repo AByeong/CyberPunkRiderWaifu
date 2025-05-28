@@ -33,7 +33,7 @@ public class KillTracker : MonoBehaviour
    public void KillTrakerInit()
    {
        Debug.Log("KillTraker Init");
-       
+       UIManager.Instance.StageMainUI.KillTrackingText.color = Color.white;
        UIManager.Instance.StageMainUI.RefreshKillTracking(KillTrackString());
        
        //지금 미션에서의 킬카운트 가져오기
@@ -86,6 +86,8 @@ public class KillTracker : MonoBehaviour
        {
            Debug.Log("Mission Completed");
            DeliveryManager.Instance.CompleteCurrentSection();
+           
+
            
        }
 

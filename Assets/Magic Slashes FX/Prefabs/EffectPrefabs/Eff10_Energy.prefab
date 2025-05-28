@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477753075599386}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.88798696, z: 0, w: 0.4598687}
+  m_LocalRotation: {x: 0, y: -0.007646527, z: 0, w: -0.9999708}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4904,7 +4904,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1493330860611054}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.88798696, z: 0, w: 0.4598687}
+  m_LocalRotation: {x: 0, y: -0.007646527, z: 0, w: -0.9999708}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9829,6 +9829,7 @@ GameObject:
   - component: {fileID: 4356234397503160}
   - component: {fileID: 108721691106124672}
   - component: {fileID: 114826045513551038}
+  - component: {fileID: 3642489064155117227}
   m_Layer: 0
   m_Name: Point light
   m_TagString: Untagged
@@ -9995,3 +9996,26 @@ MonoBehaviour:
   GraphIntensityMultiplier: 1
   IsLoop: 0
   canUpdate: 0
+--- !u!114 &3642489064155117227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905639206520784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0

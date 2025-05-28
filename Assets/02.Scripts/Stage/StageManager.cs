@@ -1,44 +1,71 @@
+using System;
 using UnityEngine;
 using Unity.AI.Navigation;
 using System.Collections.Generic;
+using Unity.Cinemachine;
+using System.Collections;
 
-public class StageManager : Singleton<MonoBehaviour>
+public class StageManager : MonoBehaviour
 {
     public List<GridGeneration> SubStageList;
     public List<NavMeshSurface> NavmeshSurfaceList;
-    public GameObject Player;
 
-    private bool _isClear = false;
+    public CinemachineCamera CinemachineCam;
+
+    public GameObject Player;
+    public GameObject ExitPortal;
+
+    public float SpawnDistance;
+
+
+    private CinemachineOrbitalFollow _orbitalFollow;
+    private CharacterController _playerController;
+
+    public bool _isClear = false;
     private int _currentStageIndex;
     private int _previousStageIndex;
-    private int _nextStageIndex;
+    public int _nextStageIndex;
+
+    private float _yPosOffset = 2f;
+
+    // private Queue<List<GameObject>> _entryQueue = new Queue<List<GameObject>>();
+    // private Queue<List<GameObject>> _exitQueue = new Queue<List<GameObject>>();
+
+    
 
     private void Start()
     {
-        DeliveryManager.Instance.OnCompleteSector += CompleteSector;
+        DeliveryManager.Instance.OnCompleteSector += () =>
+        {
+
+            CompleteSector();
+            Debug.Log("StageManager에서 DeliveryManager OnCompeteSector에 구독함");
+
+        };
+
+        _orbitalFollow = CinemachineCam.GetComponent<CinemachineOrbitalFollow>();
+        _playerController = Player.GetComponent<CharacterController>();
 
         StageInitialize();
         _currentStageIndex = 0;
         _nextStageIndex = SubStageList.Count - 1;
-        MovePlayerToStartPosition(_currentStageIndex);
-    }
 
-    // 디버깅
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Backslash))
-        {
-            StageInitialize();
-        }
+        GameObject startPoint = SubStageList[_currentStageIndex].GetStartEntry();
+        ExitPortal = startPoint;
+        MovePlayerToStartPosition(startPoint);
+        AddSpawners(_currentStageIndex);
+        StartCoroutine(WaitForPool());
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            _isClear = true;
-            MoveNextStage();
-        }
         _isClear = false;
     }
-    // 디버깅
+
+    IEnumerator WaitForPool()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        EnemyManager.Instance.InitSpawn();
+    }
+
 
     public void StageInitialize()
     {
@@ -50,6 +77,13 @@ public class StageManager : Singleton<MonoBehaviour>
 
     public void GenerateSubStage(int stageIndex)
     {
+
+        if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector - 1)
+        {
+            CinemachineManager.Instance.BossAppear();
+        }
+
+
         if (SubStageList.Count == 0 || SubStageList == null)
         {
             Debug.LogError($"{gameObject.name}: SubStageList가 비어있습니다!!");
@@ -79,35 +113,79 @@ public class StageManager : Singleton<MonoBehaviour>
         NavmeshSurfaceList[stageIndex].UpdateNavMesh(NavmeshSurfaceList[stageIndex].navMeshData);
     }
 
-    private void MovePlayerToStartPosition(int stageIndex)
+    private void MovePlayerToStartPosition(GameObject startPoint)
     {
-        Vector3 startPosition = SubStageList[stageIndex].transform.worldToLocalMatrix * SubStageList[stageIndex].GetStartPos();
-        CharacterController playerController = Player.GetComponent<CharacterController>();
-        playerController.enabled = false;
-        Player.transform.position = startPosition;
-        playerController.enabled = true;
+        _playerController.enabled = false;
+
+        Vector3 PlayerSpawnPos = startPoint.transform.position + new Vector3(0, _yPosOffset, 0);
+
+        Player.transform.position = PlayerSpawnPos + startPoint.transform.forward * SpawnDistance;
+        Player.transform.rotation = Quaternion.Euler(0, startPoint.transform.eulerAngles.y, 0);
+
+        _playerController.enabled = true;
+
+        Vector3 relativePos = Camera.main.transform.position - ExitPortal.transform.position;
+        Vector3 newCamPos = relativePos + startPoint.transform.position;
+
+        _orbitalFollow.HorizontalAxis.Value = startPoint.transform.eulerAngles.y;
+        CinemachineCam.OnTargetObjectWarped(CinemachineCam.Follow, newCamPos - CinemachineCam.transform.position);
+    }
+
+    public void CheckToMoveNextStage()
+    {
+        if (_isClear)
+        {
+            CinemachineManager.Instance.ShowElevatorChangeAnimation();
+
+        }
     }
 
     public void MoveNextStage()
     {
-        if (_isClear)
-        {
-            _isClear = false;
-            MovePlayerToStartPosition(_nextStageIndex);
+        _isClear = false;
 
-            // TODO: 함수로 따로 뺴기
-            _previousStageIndex = _currentStageIndex;
-            _currentStageIndex = _nextStageIndex;
-            _nextStageIndex = _previousStageIndex;
+        AddSpawners(_nextStageIndex);
+        EnemyManager.Instance.InitSpawn();
 
-            GenerateSubStage(_nextStageIndex);
-        }
+        GameObject startEntry = SubStageList[_nextStageIndex].GetStartEntry();
+        MovePlayerToStartPosition(startEntry);
 
+        // TODO: 함수로 따로 뺴기
+        _previousStageIndex = _currentStageIndex;
+        _currentStageIndex = _nextStageIndex;
+        _nextStageIndex = _previousStageIndex;
+
+        DeliveryManager.Instance.LoadNextSection();
+        GenerateSubStage(_nextStageIndex);
     }
 
     public void CompleteSector()
     {
         Debug.LogWarning($"{gameObject.name}: 섹터 클리어!");
+        _isClear = true;
     }
 
+    private void AddSpawners(int stageIndex)
+    {
+        if (EnemyManager.Instance.NormalMonsterSpawners.Count > 0)
+        {
+            EnemyManager.Instance.NormalMonsterSpawners.Clear();
+        }
+        foreach (MonsterSpawner spawner in SubStageList[stageIndex].NormalSpawners)
+        {
+            EnemyManager.Instance.AddNormalSpwner(spawner);
+        }
+
+        if (EnemyManager.Instance.EliteMonsterSpawners.Count > 0)
+        {
+            EnemyManager.Instance.EliteMonsterSpawners.Clear();
+        }
+        foreach (MonsterSpawner spawner in SubStageList[stageIndex].EliteSpawners)
+        {
+            EnemyManager.Instance.AddEliteSpawner(spawner);
+        }
+
+        MonsterSpawner Bossspawner =SubStageList[stageIndex].BossSpawner;
+        EnemyManager.Instance.AddBossSpawner(Bossspawner);
+    }
 }

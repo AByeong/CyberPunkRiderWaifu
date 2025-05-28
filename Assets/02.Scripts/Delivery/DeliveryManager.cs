@@ -8,7 +8,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public EnemyManager EnemyManager;
     public int CurrentSector;
     public int CompleteSector;
-
+    public StageManager StageManager;
     public Action OnCompleteSector;
     
     
@@ -38,11 +38,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
         Debug.Log("Starting delivery");
         UIManager.Instance.UIInit();//UI 초기화
         
-        
         KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+        CompleteSector = CurrentMissionData.DeliverystageData.Count;
         KillTracker.KillTrakerInit();//KillTracker초기화
 
-        CompleteSector = CurrentMissionData.DeliverystageData.Count;
 
     }
 
@@ -50,29 +49,33 @@ public class DeliveryManager : Singleton<DeliveryManager>
     {
         //현재는 바로 바뀌지만 나중에는 완료와 전환 사이에 넣을 수 있다.
         OnCompleteSector?.Invoke();
-        LoadNextSection();
+        UIManager.Instance.StageMainUI.KillTrackingText.color = Color.cyan;
+        
+        //LoadNextSection();
     }
 
+   
     public void LoadNextSection()
     {
-        CurrentSector++;
         
+        
+        
+        CurrentSector++;
+        Debug.Log($"클리어까지 {CompleteSector - CurrentSector}만큼 남았습니다");
         if (CurrentSector == CompleteSector)
         {
             DeliveryComplete();
         }
         else
         {
-
             KillTracker.ResetCurrentKillCount();
             Debug.Log(CurrentSector);
             KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
+            KillTracker.KillTrakerInit();
+
         }
 
-        if (CurrentSector == CompleteSector - 1)
-        {
-            CinemachineManager.Instance.BossAppear();
-        }
+        
     }
 
     private void DeliveryComplete()

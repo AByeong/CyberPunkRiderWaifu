@@ -79,14 +79,14 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
     private int _etcIndex = 0;
 
     // 공통 장비 생성 함수
-    private Item CreateEquipment(EquipmentType type, Sprite icon, GameObject prefab, ref int index, string name = null)
+    private ItemData CreateEquipment(EquipmentType type, Sprite icon, GameObject prefab, ref int index, string name = null)
     {
-        Item item = new Item();
-        item.Id = $"Item_{_itemIndex++}";
-        item.ItemName = name ?? $"{type}_{index}";
-        item.EquipmentDataId = $"{ItemType.Equipment}.{type}_{index++}";
-        item.Icon = icon;
-        item.ItemType = ItemType.Equipment;
+        ItemData itemData = new ItemData();
+        itemData.Id = $"Item_{_itemIndex++}";
+        itemData.ItemName = name ?? $"{type}_{index}";
+        itemData.EquipmentDataId = $"{ItemType.Equipment}.{type}_{index++}";
+        itemData.Icon = icon;
+        itemData.ItemType = ItemType.Equipment;
 
         EquipmentData data = new EquipmentData();
         data.Id = $"EquipmentDataId_{type}_{index}";
@@ -117,47 +117,47 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
         }
 
         data.Stats = stat;
-        item.EquipmentData = data;
+        itemData.Data = data;
 
-        return item;
+        return itemData;
     }
 
-    public Item CreateWeapon()
+    public ItemData CreateWeapon()
         => CreateEquipment(EquipmentType.Weapon, WeaponSprite, UniqueSwordPrefab, ref _weaponIndex, "Katana");
 
-    public Item CreateHead()
+    public ItemData CreateHead()
         => CreateEquipment(EquipmentType.Head, HeadSprite, null, ref _headIndex);
 
-    public Item CreateArmor()
+    public ItemData CreateArmor()
         => CreateEquipment(EquipmentType.Armor, ArmorSprite, null, ref _armorIndex);
 
-    public Item CreateBoots()
+    public ItemData CreateBoots()
         => CreateEquipment(EquipmentType.Boots, BootsSprite, null, ref _bootsIndex);
 
-    public Item CreateChip()
+    public ItemData CreateChip()
     {
-        Item item = new Item();
-        item.Id = $"Item_{_itemIndex++}";
-        item.ItemName = $"Chip_{_chipIndex++}";
-        item.Icon = ChipSprite;
-        item.ItemType = ItemType.Chip;
-        item.ChipData = new ChipData
+        ItemData itemData = new ItemData();
+        itemData.Id = $"Item_{_itemIndex++}";
+        itemData.ItemName = $"Chip_{_chipIndex++}";
+        itemData.Icon = ChipSprite;
+        itemData.ItemType = ItemType.Chip;
+        itemData.Data = new ChipData
         {
             SkillRange = 1.0f,
             ReduceCooldown = 0.2f
         };
         // ChipData에 필요한 값 추가
-        return item;
+        return itemData;
     }
 
-    public Item CreateEtc()
+    public ItemData CreateEtc()
     {
-        Item item = new Item();
-        item.Id = $"Item_{_itemIndex++}";
-        item.ItemName = $"Etc_{_etcIndex++}";
-        item.Icon = UseItemSprite;
-        item.ItemType = ItemType.Etc;
+        ItemData itemData = new ItemData();
+        itemData.Id = $"Item_{_itemIndex++}";
+        itemData.ItemName = $"Etc_{_etcIndex++}";
+        itemData.Icon = UseItemSprite;
+        itemData.ItemType = ItemType.Etc;
         // 필요시 EtcData 등 추가
-        return item;
+        return itemData;
     }
 }

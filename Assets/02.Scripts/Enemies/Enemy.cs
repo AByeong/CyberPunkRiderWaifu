@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using TMPro;
-using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Assertions.Must;
+
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
     public string MaterialName;
@@ -17,6 +15,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public bool IsInAir { get; set; }
     public int TakedDamageValue { get; private set; }
     public Vector3 VerticalVelocity = new Vector3();
+
+    public EDamageType DamageType;
 
     protected Animator _animator;
     protected NavMeshAgent _navMeshAgent;
@@ -33,13 +33,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public Animator Animator => _animator;
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
+    public Collider Collider => _collider;
 
-    public ParticleSystem HitParticle;
 
     protected virtual void Awake()
     {
-        CurrentHealthPoint = _enemyData.HealthPoint;
-
         _navMeshAgent = GetComponent<NavMeshAgent>();
         if (_navMeshAgent == null)
         {
@@ -52,7 +50,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
         }
 
-        CurrentHealthPoint = EnemyData.HealthPoint;
+        _collider = GetComponent<Collider>();
+        if (_collider == null)
+        {
+            Debug.LogWarning($"{gameObject.name} Collider가 없습니다");
+        }
+
+        CurrentHealthPoint = _enemyData.HealthPoint;
         IsHit = false;
         IsInAir = false;
     }
@@ -83,8 +87,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         IsHit = true;
         CurrentHealthPoint -= damage.DamageValue;
         TakedDamageValue = damage.DamageValue;
-
-        Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
+        DamageType = damage.DamageType;
+        // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
     }
 
     public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정

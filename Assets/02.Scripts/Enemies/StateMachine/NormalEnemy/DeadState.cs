@@ -1,9 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using DG.Tweening;
 
 public class DeadState : BaseNormalEnemyState
 {
     private float _deadTimer;
+
+    private float _fallTime = 0.5f;
+    private float _defaultFallbackLandY = 0.7f;
+    private float _groundRaycastDistance = 10f;
+    private float _landingYOffset = 1f;
 
     public override void OnEnter()
     {
@@ -12,28 +19,30 @@ public class DeadState : BaseNormalEnemyState
         Owner.NavMeshAgent.enabled = false;
         Owner.Animator.SetFloat("DeadType", Random.Range(0, 3));
         Owner.Animator.SetTrigger("OnDead");
-        Owner.GetComponent<Collider>().enabled = false;
+        Owner.Collider.enabled = false;
 
-        switch (Owner.EnemyData.EnemyType)
+        if (Owner.IsInAir)
         {
-            case EEnemyType.Normal:
-                //DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
-                // 예시: 장비 2개, 칩 1개, 골드 3개 드랍
-                var dropPlan = new Dictionary<DropItemType, int>
-                {
-                    { DropItemType.Equipment, 3 },
-                };
-                ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
-                break;
+            float finalFallY = _defaultFallbackLandY;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(Owner.transform.position, out hit, _groundRaycastDistance, NavMesh.AllAreas))
+            {
+                finalFallY = hit.position.y + _landingYOffset;
+            }
+            Vector3 fallPos = new Vector3(transform.position.x, finalFallY, transform.position.z);
 
-            case EEnemyType.Elite:
-                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Elite);
-                break;
-
-            case EEnemyType.Boss:
-                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Boss);
-                break;
+            Owner.transform.DOMove(fallPos, _fallTime).SetEase(Ease.InQuad);
+            Owner.IsInAir = false;    
         }
+
+        DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
+        Debug.Log("Killed");
+        // 예시: 장비 2개, 칩 1개, 골드 3개 드랍
+        var dropPlan = new Dictionary<DropItemType, int>
+        {
+            { DropItemType.Equipment, 3 },
+        };
+        ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
     }
 
     public override void Update()

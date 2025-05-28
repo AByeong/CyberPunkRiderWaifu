@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class HItState : BaseNormalEnemyState
 {
+    // 타이머 및 시퀀스
     private float _hitTimer;
     private Sequence _airSequence;
 
@@ -13,286 +14,310 @@ public class HItState : BaseNormalEnemyState
     private Coroutine _hitFlashCoroutine;
 
     [Header("Hit Flash Material Effect")]
-    [Tooltip("효과를 적용할 머티리얼의 이름 (예: Boid)")]
-    public string targetMaterialName = "KyleRobot"; // 특정 머티리얼 이름 지정
+    [Tooltip("효과를 적용할 머티리얼의 이름 (예: Boid). Owner의 MaterialName 사용 시 비워둘 수 있음")]
+    public string targetMaterialName = "KyleRobot"; // 기본값 예시
 
     [Tooltip("머티리얼의 메인 색상 프로퍼티 이름 (예: _BaseColor, _Color)")]
-    public string mainColorPropertyName = "_Color";
+    public string mainColorPropertyName = "_Color"; // 대부분 셰이더에서 _Color 또는 _BaseColor 사용
 
-    [Tooltip("피격 시 밝기(V) 값 (0.0 ~ 1.0)")]
-    public float highlightVValue = 1.0f;
+    [Tooltip("피격 시 밝기(V) 값. 높을수록 희게 보임 (HDR 고려 시 1.0 이상)")]
+    [Range(0f, 5f)]
+    public float highlightVValue = 2.0f;
 
-    [Tooltip("피격 후 잠시 유지될 밝기(V) 값 (0.0 ~ 1.0)")]
-    public float normalVValue = 0.5f;
+    [Tooltip("피격 후 잠시 유지될 밝기(V) 값. 원래 머티리얼의 V값과 유사하게 설정")]
+    [Range(0f, 5f)]
+    public float normalVValue = 0.8f; // 예시 값, 실제 머티리얼 밝기에 맞춰 조정
 
     [Tooltip("피격 효과 지속 시간 (초). StaggerTime 보다 짧게 설정될 수 있음")]
-    public float hitFlashEffectDuration = 0.3f; // 이전 defaultHitFlashDuration에서 이름 변경 및 역할 명확화
+    public float hitFlashEffectDuration = 0.3f;
 
-    private List<Renderer> _targetedRenderers; // 필터링된 렌더러 목록
+    private List<Renderer> _targetedRenderers;
     private MaterialPropertyBlock _propertyBlock;
     private Dictionary<Renderer, Color> _initialRendererColors = new Dictionary<Renderer, Color>();
     // --- 피격 머테리얼 효과 관련 변수 끝 ---
 
-    // (넉백/공중띄우기 관련 변수들은 그대로 유지)
-    private float _maxAirHeight = 5f;
-    private float _airRiseAmount = 1f;
-    private float _airRiseTime = 0.2f;
-    private float _hangTime = 0.15f;
-    private float _fallTime = 0.5f;
+    // --- 넉백/공중띄우기 관련 변수 ---
+    [Header("Knockback & Airborne")]
+    [SerializeField] private float _maxAirHeight = 3f;
+    [SerializeField] private float _airRiseAmount = 2f;
+    [SerializeField] private float _airRiseTime = 0.2f;
+    [SerializeField] private float _hangTime = 0.5f;
+    [SerializeField] private float _fallTime = 0.8f;
 
     private Vector3 _knockbackDir;
-    private float _knockbackDistance = 2f;
-    private float _knockbackTime = 0.2f;
-    private float _knockbackAirbonCoeff = 1.5f;
+    [SerializeField] private float _knockbackDistance = 2.0f;
+    [SerializeField] private float _knockbackTime = 0.2f;
+    [SerializeField] private float _knockbackAirbonCoeff = 0;
+    // --- 넉백/공중띄우기 관련 변수 끝 ---
 
+    // --- 공중 상태 콜라이더 제어 관련 변수 ---
+    [Header("Airborne Collider Settings")]
+    [Tooltip("공중에 떠 있는 동안 콜라이더가 활성화되어 있는 시간 (초).")]
+
+    // --- 공중 상태 콜라이더 제어 관련 변수 끝 ---
+
+    // --- 바닥 감지 Raycast 관련 변수 ---
+    [Header("Ground Detection for Landing")]
+    [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private float raycastOriginOffsetY = 0.1f;
+    [SerializeField] private float groundRaycastDistance = 10f;
+    [SerializeField] private float landingYOffset = 1f; // 캐릭터 피봇에 따라 조정
+    [SerializeField] private float defaultFallbackLandY = 0.7f; // 바닥 못찾을 시 기본 Y
+    // --- 바닥 감지 Raycast 관련 변수 끝 ---
 
     private void CacheRenderersAndInitialColors()
     {
-        Debug.Log($"[HitState] CacheRenderersAndInitialColors: Called for {Owner?.gameObject.name}. Targeting material: '{targetMaterialName}', property: '{mainColorPropertyName}'.");
-        if (Owner == null)
+        if (Owner == null) return;
+
+
+        if (!string.IsNullOrEmpty(Owner.MaterialName))
         {
-            Debug.LogError("[HitState] CacheRenderersAndInitialColors: Owner is NULL.");
+            targetMaterialName = Owner.MaterialName;
+        }
+
+        if (string.IsNullOrEmpty(targetMaterialName))
+        {
+            // Debug.LogWarning($"[HitState] CacheRenderersAndInitialColors: targetMaterialName is not set for {Owner.gameObject.name}. Hit flash may not work.");
             return;
         }
 
-        if (_targetedRenderers == null)
-        {
-            _targetedRenderers = new List<Renderer>();
-        }
-        _targetedRenderers.Clear(); // 매번 새로 필터링된 렌더러 목록 생성
-
-        List<Renderer> allRenderers = new List<Renderer>();
-        Owner.GetComponentsInChildren<Renderer>(true, allRenderers); // 모든 자식 렌더러 일단 가져오기
-        Debug.Log($"[HitState] CacheRenderersAndInitialColors: Found {allRenderers.Count} total renderers under {Owner.gameObject.name}.");
-
+        if (_targetedRenderers == null) _targetedRenderers = new List<Renderer>();
+        _targetedRenderers.Clear();
         _initialRendererColors.Clear();
-        bool propertyExistsOnAnyTargetMaterial = false;
 
-        for (int i = 0; i < allRenderers.Count; i++)
+        Renderer[] allRenderers = Owner.GetComponentsInChildren<Renderer>(true);
+
+        foreach (Renderer rend in allRenderers)
         {
-            Renderer rend = allRenderers[i];
-            if (rend != null && rend.sharedMaterial != null)
+            if (rend != null && rend.sharedMaterials != null)
             {
-                // 1. 머티리얼 이름 필터링
-                if (rend.sharedMaterial.name == targetMaterialName) // 인스턴스 머티리얼 이름은 (Instance)가 붙을 수 있으니 주의
+                foreach (Material mat in rend.sharedMaterials)
                 {
-                    // 2. 프로퍼티 존재 확인
-                    if (rend.sharedMaterial.HasProperty(mainColorPropertyName))
+                    // 머티리얼 이름에 targetMaterialName이 포함되어 있고, (Instance)가 붙는 경우도 처리
+                    if (mat != null && mat.name.Contains(targetMaterialName))
                     {
-                        _targetedRenderers.Add(rend); // 필터링된 렌더러 목록에 추가
-                        _initialRendererColors[rend] = rend.sharedMaterial.GetColor(mainColorPropertyName);
-                        if (!propertyExistsOnAnyTargetMaterial)
+                        if (mat.HasProperty(mainColorPropertyName))
                         {
-                             Debug.Log($"[HitState] CacheRenderersAndInitialColors: Targeted Renderer '{rend.gameObject.name}' (Material: '{rend.sharedMaterial.name}') HAS property '{mainColorPropertyName}'. Storing initial color: {_initialRendererColors[rend]}");
-                             propertyExistsOnAnyTargetMaterial = true;
+                            if (!_targetedRenderers.Contains(rend)) _targetedRenderers.Add(rend);
+                            if (!_initialRendererColors.ContainsKey(rend)) // 첫 번째 일치하는 머티리얼의 색상 저장
+                            {
+                                _initialRendererColors[rend] = mat.GetColor(mainColorPropertyName);
+                            }
                         }
-                    }
-                    else
-                    {
-                         Debug.LogWarning($"[HitState] CacheRenderersAndInitialColors: Renderer '{rend.gameObject.name}' (Material: '{rend.sharedMaterial.name}') matches target name BUT DOES NOT HAVE property '{mainColorPropertyName}'. Skipping.");
+                        break; // 해당 렌더러에서 일치하는 머티리얼 하나 찾으면 다음 렌더러로
                     }
                 }
-                // else: 머티리얼 이름이 다르면 스킵
             }
         }
 
-        if (_targetedRenderers.Count == 0) {
-            Debug.LogWarning($"[HitState] CacheRenderersAndInitialColors: NO RENDERERS found using material '{targetMaterialName}' with property '{mainColorPropertyName}'. Color effects will not work.");
-        } else {
-            Debug.Log($"[HitState] CacheRenderersAndInitialColors: Added {_targetedRenderers.Count} renderers to _targetedRenderers list that use material '{targetMaterialName}' and have property '{mainColorPropertyName}'.");
+        if (_targetedRenderers.Count == 0)
+        {
+            // Debug.LogWarning($"[HitState] CacheRenderersAndInitialColors: No renderers found on {Owner.gameObject.name} using material '{targetMaterialName}' with property '{mainColorPropertyName}'. Hit flash will not work.");
         }
-
 
         if (_propertyBlock == null)
         {
             _propertyBlock = new MaterialPropertyBlock();
-            Debug.Log("[HitState] CacheRenderersAndInitialColors: New MaterialPropertyBlock created.");
         }
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
+        _hitTimer = 0f;
 
-        Owner.gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
-        
-        targetMaterialName = Owner.MaterialName;
-        
-        
-        // Debug.Log($"[HitState] OnEnter: Called for {Owner?.gameObject.name}");
-        // _airSequence?.Kill();
+        if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
-        // CacheRenderersAndInitialColors();
+        #region 피격 머테리얼 효과
+        // --- 피격 머테리얼 효과 시작 ---
+        CacheRenderersAndInitialColors();
+        if (_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0)
+        {
+            if (_hitFlashCoroutine != null) StopCoroutine(_hitFlashCoroutine);
 
-        // Debug.Log("[HitState] OnEnter: Attempting to start hit flash effect.");
-        // if (_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0) // _targetedRenderers로 조건 변경
-        // {
-        //     if (_hitFlashCoroutine != null)
-        //     {
-        //         Debug.Log("[HitState] OnEnter: Stopping existing HitFlashCoroutine.");
-        //         StopCoroutine(_hitFlashCoroutine);
-        //     }
+            float staggerDuration = (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0) ? Owner.EnemyData.StaggerTime : hitFlashEffectDuration;
+            float currentFlashDuration = Mathf.Min(staggerDuration, hitFlashEffectDuration);
 
-        //     float currentFlashDuration = hitFlashEffectDuration; // 인스펙터에서 설정한 값을 기본으로 사용
-        //     if (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0)
-        //     {
-        //         // StaggerTime이 효과 지속시간보다 짧으면 StaggerTime을 따르고, 아니면 설정된 효과 지속시간 사용
-        //         currentFlashDuration = Mathf.Min(Owner.EnemyData.StaggerTime, hitFlashEffectDuration);
-        //          Debug.Log($"[HitState] OnEnter: Flash duration will be {currentFlashDuration} (Min of StaggerTime and hitFlashEffectDuration).");
-        //     }
-        //     else
-        //     {
-        //          Debug.Log($"[HitState] OnEnter: Using hitFlashEffectDuration = {currentFlashDuration}");
-        //     }
-
-        //     if(currentFlashDuration <= 0) Debug.LogWarning($"[HitState] OnEnter: currentFlashDuration ({currentFlashDuration}) is zero or negative.");
-        //     _hitFlashCoroutine = StartCoroutine(HitFlashMainColorCoroutine(currentFlashDuration));
-        // }
-        // else
-        // {
-        //     Debug.LogWarning($"[HitState] OnEnter: No targeted renderers to apply hit flash effect. Check targetMaterialName ('{targetMaterialName}') and mainColorPropertyName ('{mainColorPropertyName}').");
-        // }
+            if (currentFlashDuration > 0)
+            {
+                _hitFlashCoroutine = StartCoroutine(HitFlashEffectCoroutine(currentFlashDuration));
+            }
+            else // 지속시간이 0이면 즉시 normalVValue 적용 (또는 원래 색상)
+            {
+                SetRenderersColorToVValue(normalVValue);
+            }
+        }
+        // --- 피격 머테리얼 효과 끝 ---
+        #endregion
 
         Owner.IsHit = false;
-        if (Owner.NavMeshAgent != null && Owner.NavMeshAgent.isOnNavMesh)
+        if (Owner.NavMeshAgent != null && Owner.NavMeshAgent.isOnNavMesh && Owner.NavMeshAgent.enabled)
         {
+            Owner.NavMeshAgent.isStopped = true;
             Owner.NavMeshAgent.enabled = false;
         }
 
-        Vector3 direction = (Owner.transform.position - Owner.Target.transform.position).normalized;
-        direction.y = 0;
-        _knockbackDir = direction;
+        if (Owner.Target != null)
+        {
+            Vector3 direction = (Owner.transform.position - Owner.Target.transform.position).normalized;
+            direction.y = 0;
+            _knockbackDir = direction;
+        }
+        else
+        {
+            _knockbackDir = -Owner.transform.forward;
+        }
 
-        if (Owner.TakedDamageValue >= Owner.EnemyData.InAirThreshold)
+        if (Owner.DamageType == EDamageType.Airborne)
         {
             float currentY = Owner.transform.position.y;
             float desiredY = Mathf.Min(currentY + _airRiseAmount, _maxAirHeight);
 
-            if (desiredY > currentY)
+            Owner.IsInAir = true;
+            if (Owner.Animator != null)
             {
-                Owner.IsInAir = true;
                 Owner.Animator.SetFloat("DownType", Random.Range(0, 4));
                 Owner.Animator.SetTrigger("OnDown");
-                PlayAirborneKnockbackSequence(desiredY, _knockbackDir);
             }
-            else
-            {
-                PlayKnockbackOnly(_knockbackDir);
-            }
+
+            PlayAirborneKnockbackSequence(desiredY, _knockbackDir); 
         }
         else
         {
-             Owner.Animator.SetFloat("HitType", Random.Range(1, 3));
-             Owner.Animator.SetTrigger("OnHit");
+            Owner.IsInAir = false;
+            if (Owner.Animator != null)
+            {
+                Owner.Animator.SetFloat("HitType", Random.Range(1, 3));
+                Owner.Animator.SetTrigger("OnHit");
+            }
             PlayKnockbackOnly(_knockbackDir);
         }
     }
 
-    // private IEnumerator HitFlashMainColorCoroutine(float duration)
-    // {
-    //     Debug.Log($"[HitState] HitFlashMainColorCoroutine: Started. Duration: {duration}. Target Highlight V: {highlightVValue}");
-    //     ApplyMainColorHSVModification(highlightVValue);
-    //     Debug.Log("[HitState] HitFlashMainColorCoroutine: Highlight V value applied.");
+    private IEnumerator HitFlashEffectCoroutine(float duration)
+    {
+        // 1. 즉시 highlightVValue로 변경
+        SetRenderersColorToVValue(highlightVValue);
 
-    //     if (duration > 0) {
-    //         yield return new WaitForSeconds(duration);
-    //         Debug.Log("[HitState] HitFlashMainColorCoroutine: Wait finished.");
-    //     }
+        // 2. 짧은 시간 동안 최대 밝기 유지 (예: 전체 duration의 20%)
+        float peakDuration = duration * 0.2f;
+        float elapsedTime = 0f;
+        while (elapsedTime < peakDuration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
 
-    //     Debug.Log($"[HitState] HitFlashMainColorCoroutine: Setting Normal V value ({normalVValue}).");
-    //     ApplyMainColorHSVModification(normalVValue);
-    //     Debug.Log("[HitState] HitFlashMainColorCoroutine: Normal V value applied.");
+        // 3. 나머지 시간 동안 normalVValue로 점진적 변경
+        float transitionDuration = duration - peakDuration;
+        elapsedTime = 0f; // 타이머 리셋
 
-    //     _hitFlashCoroutine = null;
-    //     Debug.Log("[HitState] HitFlashMainColorCoroutine: Coroutine finished.");
-    // }
+        if (transitionDuration > 0)
+        {
+            while (elapsedTime < transitionDuration)
+            {
+                float t = elapsedTime / transitionDuration; // 0에서 1로
+                foreach (Renderer rend in _targetedRenderers)
+                {
+                    if (_initialRendererColors.TryGetValue(rend, out Color initialColor))
+                    {
+                        Color.RGBToHSV(initialColor, out float H, out float S, out _);
+                        float currentV = Mathf.Lerp(highlightVValue, normalVValue, t);
+                        Color newColor = Color.HSVToRGB(H, S, currentV);
 
-    // private void ApplyMainColorHSVModification(float targetV)
-    // {
-    //     Debug.Log($"[HitState] ApplyMainColorHSVModification: Called with targetV: {targetV} for property '{mainColorPropertyName}'. Processing {_targetedRenderers?.Count} targeted renderers.");
-    //     if (_targetedRenderers == null || _propertyBlock == null || _initialRendererColors == null) return;
+                        rend.GetPropertyBlock(_propertyBlock);
+                        _propertyBlock.SetColor(mainColorPropertyName, newColor);
+                        rend.SetPropertyBlock(_propertyBlock);
+                    }
+                }
+                elapsedTime += Time.unscaledDeltaTime;
+                yield return null;
+            }
+        }
 
-    //     int appliedCount = 0;
-    //     foreach (Renderer rend in _targetedRenderers) // _targetedRenderers 사용
-    //     {
-    //         if (rend != null) // rend가 null이 아니고, _initialRendererColors에 있는지 확인 (Cache 로직에서 이미 필터링됨)
-    //         {
-    //             if (_initialRendererColors.TryGetValue(rend, out Color initialColor))
-    //             {
-    //                 float H, S, V_original;
-    //                 Color.RGBToHSV(initialColor, out H, out S, out V_original);
+        // 4. 최종적으로 normalVValue 적용 (또는 원래 색상으로 복구하려면 ApplyOriginalColors())
+        SetRenderersColorToVValue(normalVValue);
 
-    //                 Color newRGBColor = Color.HSVToRGB(H, S, Mathf.Clamp01(targetV));
-    //                 newRGBColor.a = initialColor.a;
+        _hitFlashCoroutine = null;
+    }
 
-    //                 rend.GetPropertyBlock(_propertyBlock);
-    //                 _propertyBlock.SetColor(mainColorPropertyName, newRGBColor);
-    //                 rend.SetPropertyBlock(_propertyBlock);
-    //                 appliedCount++;
-    //                 if(appliedCount==1) Debug.Log($"[HitState] ApplyMainColorHSVModification: Applied to '{rend.gameObject.name}'. InitialColor: {initialColor} (H:{H:F2} S:{S:F2} V:{V_original:F2}), TargetV: {targetV}, NewRGB: {newRGBColor}");
-    //             }
-    //         }
-    //     }
-    //     Debug.Log($"[HitState] ApplyMainColorHSVModification: Finished. Applied to {appliedCount} renderers.");
-    // }
+    private void SetRenderersColorToVValue(float vValue)
+    {
+        if (_targetedRenderers == null || _propertyBlock == null) return;
 
-    // private void ApplyOriginalColors()
-    // {
-    //     Debug.Log($"[HitState] ApplyOriginalColors: Reverting to initial colors for property '{mainColorPropertyName}'. Processing {_targetedRenderers?.Count} targeted renderers.");
-    //     if (_targetedRenderers == null || _propertyBlock == null || _initialRendererColors == null) return;
+        foreach (Renderer rend in _targetedRenderers)
+        {
+            if (_initialRendererColors.TryGetValue(rend, out Color initialColor))
+            {
+                Color.RGBToHSV(initialColor, out float H, out float S, out _);
+                Color targetColor = Color.HSVToRGB(H, S, vValue);
 
-    //     int revertedCount = 0;
-    //     foreach (Renderer rend in _targetedRenderers) // _targetedRenderers 사용
-    //     {
-    //         if (rend != null)
-    //         {
-    //             if (_initialRendererColors.TryGetValue(rend, out Color originalColor))
-    //             {
-    //                 rend.GetPropertyBlock(_propertyBlock);
-    //                 _propertyBlock.SetColor(mainColorPropertyName, originalColor);
-    //                 rend.SetPropertyBlock(_propertyBlock);
-    //                 revertedCount++;
-    //                 if(revertedCount==1) Debug.Log($"[HitState] ApplyOriginalColors: Reverted '{rend.gameObject.name}' to {originalColor}.");
-    //             }
-    //         }
-    //     }
-    //     Debug.Log($"[HitState] ApplyOriginalColors: Finished. Reverted {revertedCount} renderers.");
-    // }
+                rend.GetPropertyBlock(_propertyBlock);
+                _propertyBlock.SetColor(mainColorPropertyName, targetColor);
+                rend.SetPropertyBlock(_propertyBlock);
+            }
+        }
+    }
+
+    private void ApplyOriginalColors()
+    {
+        if (_targetedRenderers == null || _propertyBlock == null || _initialRendererColors.Count == 0) return;
+
+        foreach (Renderer rend in _targetedRenderers)
+        {
+            if (_initialRendererColors.TryGetValue(rend, out Color initialColor))
+            {
+                rend.GetPropertyBlock(_propertyBlock);
+                _propertyBlock.SetColor(mainColorPropertyName, initialColor);
+                rend.SetPropertyBlock(_propertyBlock);
+            }
+        }
+    }
 
     private void PlayAirborneKnockbackSequence(float toY, Vector3 knockbackDir)
     {
         Vector3 startPos = Owner.transform.position;
         Vector3 knockbackMove = knockbackDir * _knockbackDistance * _knockbackAirbonCoeff;
         Vector3 riseTarget = new Vector3(startPos.x + knockbackMove.x, toY, startPos.z + knockbackMove.z);
-        Vector3 fallPos = new Vector3(riseTarget.x, 1.7f, riseTarget.z);
 
+        float finalFallY = defaultFallbackLandY;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(startPos, out hit, groundRaycastDistance, NavMesh.AllAreas))
+        {
+            finalFallY = hit.position.y + landingYOffset;
+        }
+        Vector3 fallPos = new Vector3(riseTarget.x, finalFallY, riseTarget.z);
+
+
+        _airSequence?.Kill();
         _airSequence = DOTween.Sequence();
         _airSequence.Append(Owner.transform.DOMove(riseTarget, _airRiseTime).SetEase(Ease.OutSine))
-                    .AppendInterval(_hangTime)
-                    .Append(Owner.transform.DOMoveY(fallPos.y, _fallTime).SetEase(Ease.InQuad))
-                    .OnComplete(() =>
-                    {
-                        Owner.IsInAir = false;
-                        if (Owner.NavMeshAgent != null)
-                        {
-                            Owner.NavMeshAgent.enabled = true;
-                            if(Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
-                        }
-                        SuperMachine.ChangeState<DownedState>();
-                    });
+            .AppendInterval(_hangTime)
+            .Append(Owner.transform.DOMove(fallPos, _fallTime).SetEase(Ease.InQuad))
+            .OnComplete(() =>
+            {
+                Owner.IsInAir = false;
+                Owner.transform.position = fallPos; // 최종 위치 보정
+                if (SuperMachine != null) SuperMachine.ChangeState<DownedState>();
+            });
     }
 
     private void PlayKnockbackOnly(Vector3 knockbackDir)
     {
+        if (Owner.Collider != null && !Owner.Collider.enabled)
+        {
+            Owner.Collider.enabled = true;
+        }
+
         Vector3 startPos = Owner.transform.position;
         Vector3 knockbackTarget = startPos + knockbackDir * _knockbackDistance;
-        knockbackTarget.y = startPos.y;
 
+        _airSequence?.Kill();
         _airSequence = DOTween.Sequence();
         _airSequence.Append(Owner.transform.DOMove(knockbackTarget, _knockbackTime).SetEase(Ease.OutQuad));
 
-        float tempStaggerFallback = (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0) ? Owner.EnemyData.StaggerTime : hitFlashEffectDuration;
-        float remainingStagger = tempStaggerFallback - _knockbackTime;
+        float staggerDuration = (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0) ? Owner.EnemyData.StaggerTime : hitFlashEffectDuration;
+        float remainingStagger = staggerDuration - _knockbackTime;
 
         if (remainingStagger > 0)
         {
@@ -300,58 +325,77 @@ public class HItState : BaseNormalEnemyState
         }
 
         _airSequence.OnComplete(() =>
-                    {
-                        if (Owner.NavMeshAgent != null)
-                        {
-                            Owner.NavMeshAgent.enabled = true;
-                            if(Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
-                        }
-                        SuperMachine.ChangeState<IdleState>();
-                    });
+        {
+            // if (Owner.NavMeshAgent != null)
+            // {
+            //     Owner.NavMeshAgent.enabled = true;
+            //     if (Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
+            //     Owner.NavMeshAgent.isStopped = false;
+            // }
+            if (SuperMachine != null) SuperMachine.ChangeState<IdleState>();
+        });
     }
 
     public override void Update()
     {
         base.Update();
-        _hitTimer += Time.deltaTime;
-        float staggerTime = (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0) ? Owner.EnemyData.StaggerTime : hitFlashEffectDuration;
+        _hitTimer += Time.deltaTime; // 일반 deltaTime 사용 (게임 시간에 따른 상태 지속시간)
 
+        float currentStaggerTime = (Owner.EnemyData != null && Owner.EnemyData.StaggerTime > 0) ? Owner.EnemyData.StaggerTime : hitFlashEffectDuration;
 
-        if (_hitTimer >= staggerTime)
+        if (_hitTimer >= currentStaggerTime)
         {
-            if (_airSequence == null || !_airSequence.IsActive())
+            if ((_airSequence == null || !_airSequence.IsActive()) && !Owner.IsInAir)
             {
-                 if (!Owner.IsInAir)
-                {
-                    SuperMachine.ChangeState<IdleState>();
-                }
+                if (SuperMachine != null) SuperMachine.ChangeState<IdleState>();
             }
-            return;
         }
     }
 
     public override void OnExit()
     {
-        // Owner.gameObject.GetComponent<Animator>().updateMode = AnimatorUpdateMode.Normal;
-        // Debug.Log($"[HitState] OnExit: Called for {Owner?.gameObject.name}");
-        // base.OnExit();
-        // _airSequence?.Kill();
-        // _hitTimer = 0f;
+        base.OnExit();
 
-        // if (_hitFlashCoroutine != null)
-        // {
-        //     Debug.Log("[HitState] OnExit: Stopping active HitFlashCoroutine.");
-        //     StopCoroutine(_hitFlashCoroutine);
-        //     _hitFlashCoroutine = null;
-        // }
-        // Debug.Log("[HitState] OnExit: Reverting all targeted materials to their initial original colors.");
-        // ApplyOriginalColors();
+        if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.Normal;
 
+        _airSequence?.Kill();
+        _hitTimer = 0f;
 
-        if (Owner.NavMeshAgent != null && !Owner.NavMeshAgent.enabled)
+        #region 피격머테리얼 효과
+        // --- 피격 머테리얼 효과 종료 및 복구 ---
+        if (_hitFlashCoroutine != null)
         {
-            Owner.NavMeshAgent.enabled = true;
-            if(Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
+            StopCoroutine(_hitFlashCoroutine);
+            _hitFlashCoroutine = null;
+            ApplyOriginalColors(); // 코루틴 강제 종료 시 원래 색상으로 복구
+        }
+        else
+        {
+            // 코루틴이 이미 완료되었거나 실행되지 않은 경우에도,
+            // 만약을 위해 원래 색상으로 복구 (예: duration이 0이어서 코루틴이 안돌아간 경우)
+            // 이미 CacheRenderersAndInitialColors가 호출되었다는 가정하에 _targetedRenderers 사용
+            if (_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0)
+            {
+                ApplyOriginalColors();
+            }
+        }
+        // --- 피격 머테리얼 효과 종료 및 복구 끝 ---
+        #endregion 피격 머테리얼 효과
+
+
+        if (Owner.NavMeshAgent != null)
+        {
+            if (!Owner.NavMeshAgent.enabled) Owner.NavMeshAgent.enabled = true;
+            if (Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
+            Owner.NavMeshAgent.isStopped = false;
+        }
+
+        if (Owner.Collider != null && !Owner.Collider.enabled)
+        {
+            if (!Owner.IsInAir)
+            {
+                Owner.Collider.enabled = true;
+            }
         }
     }
 }

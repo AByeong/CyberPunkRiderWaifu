@@ -56,6 +56,7 @@ public class StageMainUI : MonoBehaviour
 
     public void RefreshKillTracking(string message)
     {
+        
         KillTrackingText.text = message;
         ProgressSlider.value = DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total) / (float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
         finisherIcon.StackChange(DeliveryManager.Instance.KillTracker.TotalKillCount);

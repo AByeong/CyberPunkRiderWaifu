@@ -86,13 +86,13 @@ namespace JY
         private Animator _animator;
         private CharacterController _characterController;
 
+
         private AnimatorStateInfo _currentStateInfo;
         private float _dashCooldownTimer;
         private float _dashSpeed;
         private float _dashTime;
         private float _desiredForwardSpeed;
         private float _forwardSpeed;
-        private GroundCheck _groundCheck;
         private int _hashTriggerSkill1;
         private int _hashTriggerSkill2;
         private int _hashTriggerSkill3;
@@ -104,7 +104,7 @@ namespace JY
         // private bool _isAirCombo;
         private bool _isAnimatorTransitioning;
         private bool _isDashing;
-        private bool _isGrounded;
+        private bool _isGrounded = true;
         private bool _isRespawning;
         private AnimatorStateInfo _nextStateInfo;
         private PlayerSound _playerSound;
@@ -258,7 +258,7 @@ namespace JY
                         }
                         else
                         {
-                            movement = _animator.deltaPosition; // 루트 모션 모션에 Position값이 들어있음
+                            movement = _animator.deltaPosition;
                         }
                     }
                 }
@@ -450,7 +450,7 @@ namespace JY
                 _airSkillExecuted = false;
             }
 
-            if (_groundCheck.IsGrounded)
+            if (_isGrounded)
             {
                 _verticalSpeed = -Gravity * StickingGravityProportion;
 
@@ -459,6 +459,7 @@ namespace JY
                 {
                     _playerSound.Play(EPlayerState.Jump);
                     _verticalSpeed = JumpSpeed;
+                    _isGrounded = false;
                     _readyToJump = false;
                 }
             }
@@ -655,10 +656,14 @@ namespace JY
             }
 
         }
-        public void TakeDamage(Damage damage)
+        public void TakeDamage(Damage damage, bool ApproveAnimation)
         {
-            // Set the Hurt parameter of the animator.
-            _animator.SetTrigger(_hashHurt);
+
+            if (ApproveAnimation)
+                // Set the Hurt parameter of the animator.
+            {
+                _animator.SetTrigger(_hashHurt);
+            }
 
             // Find the direction of the damage.
             Vector3 forward = damage.From.transform.position - transform.position;

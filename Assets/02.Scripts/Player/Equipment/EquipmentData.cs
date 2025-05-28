@@ -3,13 +3,13 @@ using UnityEngine;
 public enum EquipmentType { Weapon, Armor, Head, Boots }
 
 [CreateAssetMenu(fileName = "EquipmentData", menuName = "Scriptable Objects/EquipmentData")]
-public class EquipmentData : ScriptableObject
+public class EquipmentData : DataSO
 {
     public string Id;
     public string EquipmentName;
     public EquipmentType EquipmentType;
     public GameObject ModelPrefab;
-    
+
     public Dictionary<StatType, float> Stats = new Dictionary<StatType, float>();
     // public float MaxHealth;
     // public float AttackPower;

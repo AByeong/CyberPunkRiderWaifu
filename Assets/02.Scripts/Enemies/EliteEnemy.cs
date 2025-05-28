@@ -7,6 +7,8 @@ public class EliteEnemy : Enemy, IDamageable
     [SerializeField] // 인스펙터에서 초기값을 설정하고 보기 위함
     private int _attackType = 0; // 실제 AttackType 값을 저장할 private 백킹 필드
 
+    public float OriginalValue = 0.5f;
+    
     public int AttackTypeNumber = 2;
     public int AttackType
     {
