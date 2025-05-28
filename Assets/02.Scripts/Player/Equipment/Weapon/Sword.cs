@@ -12,7 +12,10 @@ public class Sword : MonoBehaviour, IWeapon
     {
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
         Debug.Log("Sword");
-        
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            return;
+        }
         if (damageable != null)
         {
             Damage damage = new Damage();
