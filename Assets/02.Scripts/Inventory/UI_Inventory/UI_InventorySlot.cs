@@ -33,7 +33,7 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         
     }
 
-    public void SetItem(Item item)
+    public virtual void SetItem(Item item)
     {
         if (item == null)
         {

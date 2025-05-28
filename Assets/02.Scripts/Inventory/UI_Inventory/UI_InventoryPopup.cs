@@ -21,7 +21,7 @@ public class UI_InventoryPopup : Popup
     
     
     private bool _isDrag = false;
-
+    private bool _isSwapEquipment = false;
 
     private void Awake()
     {
@@ -64,17 +64,63 @@ public class UI_InventoryPopup : Popup
         
         if(toSlot.HasItem == false)
         {
+            //내 아이템(fromSlot)을 빈 공간(toSlot)에 넣을 때
             //toSlot은 드래그 End에서 Ray hit한 Slot
             //fromSlot은 드래그 Begin에서 저장된 Slot
             int toIndex = -1;
-            if (toSlot.SlotType == SlotType.Inventory)
+            
+            //  fromSlot     toSlot
+            // Inventory -> Equipment
+            // Inventory -> Chip
+            // Inventory -> Inventory
+            if (_fromSlot.SlotType == SlotType.Inventory)
             {
-                // _slots의 멤버 UI_InvenrtorySlot을 돌며 toSlot과 같은 slot의 index를 반환
-                toIndex = _slots.FindIndex(slot => slot == toSlot); 
-            }   
-            else if (toSlot.SlotType == SlotType.Equipment)
+                if (toSlot.SlotType == SlotType.Inventory)
+                {
+                    // _slots의 멤버 UI_InvenrtorySlot을 돌며 toSlot과 같은 slot의 index를 반환
+                    toIndex = _slots.FindIndex(slot => slot == toSlot); 
+                }   
+                else if (toSlot.SlotType == SlotType.Equipment)
+                {
+                    toIndex = CheckEquipmentSlotType(toSlot,toIndex);
+                }
+                else if (toSlot.SlotType == SlotType.Chip)
+                {
+                    toIndex = CheckChipSlotType(toSlot, toIndex);
+                }    
+            }
+            // Equipment -> Inventory
+            // Equipment -> Chip X
+            // Equipment -> Equipment X (같은 자리에 놓는건 미리 X)
+            else if (_fromSlot.SlotType == SlotType.Equipment)
             {
-                toIndex = CheckEquipmentSlotType(toSlot,toIndex);
+                if (toSlot.SlotType == SlotType.Inventory)
+                {
+                    toIndex = _slots.FindIndex(slot => slot == toSlot);
+                }
+                else if (toSlot.SlotType == SlotType.Chip ||
+                         toSlot.SlotType == SlotType.Equipment)
+                {
+                    return;
+                }
+            }
+            // Chip -> Inventory
+            // Chip -> Equipment X
+            // Chip -> Chip
+            else if (_fromSlot.SlotType == SlotType.Chip)
+            {
+                if (toSlot.SlotType == SlotType.Inventory)
+                {
+                    toIndex = _slots.FindIndex(slot => slot == toSlot);
+                }
+                else if (toSlot.SlotType == SlotType.Equipment)
+                {
+                    return;
+                }
+                else if (toSlot.SlotType == SlotType.Chip)
+                {
+                    toIndex = CheckChipSlotType(toSlot, toIndex);
+                }
             }
                 
             Debug.Log($"Index : {toIndex}");
@@ -82,44 +128,75 @@ public class UI_InventoryPopup : Popup
         }
         else
         {  
-            int fromIndex =  _fromSlot.Item.SlotIndex;
-            SlotType fromSlotType = _fromSlot.SlotType;
-
-            CheckEquipmentSlotType(toSlot,_equipmentSlots.FindIndex(slot => slot == toSlot));
+            //양쪽이 아이템이 있는 경우
+            //from과 to가 같은 슬롯인 경우 무조건 X
+            //Equipment <-> Equipment 무조건 X
+            //Chip      <-> Equipment 무조건 X
+            //Equipment <-> Chip 무조건 X
+            // if (_fromSlot.Item == toSlot.Item ||
+            //     _fromSlot.SlotType == SlotType.Equipment && toSlot.SlotType == SlotType.Equipment ||
+            //     _fromSlot.SlotType == SlotType.Chip && toSlot.SlotType == SlotType.Equipment ||
+            //     _fromSlot.SlotType == SlotType.Equipment && toSlot.SlotType == SlotType.Chip)
+            // {
+            //     
+            // }
             
-            
-            
-            if (toSlot.SlotType == SlotType.Inventory)
+            //Chip      <-> Chip 무조건 스왑
+            //Inventory <-> Inventory 무조건 스왑
+            if (_fromSlot.SlotType == SlotType.Chip && toSlot.SlotType == SlotType.Chip ||
+                _fromSlot.SlotType == SlotType.Inventory && toSlot.SlotType == SlotType.Inventory)
             {
-                // _slots의 멤버 UI_InvenrtorySlot을 돌며 toSlot과 같은 slot의 index를 반환
-                toIndex = _slots.FindIndex(slot => slot == toSlot); 
-            }   
-            else if (toSlot.SlotType == SlotType.Equipment)
-            {
-                toIndex = CheckEquipmentSlotType(toSlot,toIndex);
+                SwapSlot(toSlot);
             }
             
+            //Inventory <-> Equipment : fromSlot.Item.Data의 EquipmentDataSO.EquipmentType과 toSlot.Item.Data의 SO.Type이 같을 때
+            //Equipment <-> Inventory : toSlot.Item.Data의 EquipmentDataSO.EquipmentType이 두 아이템이 서로 같은 경우
+            else if (_fromSlot.SlotType == SlotType.Inventory && toSlot.SlotType == SlotType.Equipment ||
+                _fromSlot.SlotType == SlotType.Equipment && toSlot.SlotType == SlotType.Inventory)
+            {
+                if (_fromSlot.Item.Data is EquipmentDataSO equipmentDataSO)
+                {
+                    EquipmentDataSO dataSO = toSlot.Item.Data as EquipmentDataSO;
+                    if (equipmentDataSO.EquipmentType == dataSO.EquipmentType)
+                    {
+                        SwapSlot(toSlot);
+                        _isSwapEquipment = true;
+                    }
+                }
+            }
             
-            _fromSlot.Item.SetSlotIndex(toSlot.SlotType, toSlot.Item.SlotIndex);
-            toSlot.Item.SetSlotIndex(slotType, fromIndex);
+            //Inventory <-> Chip : fromSlot.Item.Data.ItemType이 ItemType.Chip인 경우
+            //Chip <-> Inventory : toSlot.Item.Data.ItemType이 ItemType.Chip인 경우
+            else if (_fromSlot.SlotType == SlotType.Inventory && toSlot.SlotType == SlotType.Chip ||
+                     _fromSlot.SlotType == SlotType.Chip && toSlot.SlotType == SlotType.Inventory)
+            {
+                if (_fromSlot.Item.Data.ItemType == ItemType.Chip)
+                {
+                    SwapSlot(toSlot);
+                }
+            }
         }
     
-        if (toSlot.SlotType == SlotType.Equipment)
+        if (_isSwapEquipment)
         {
-            if (toSlot.HasItem == true)
+            if (toSlot.HasItem)
             {
                 InventoryManager.Instance.RemoveStat(toSlot.Item);
             }
             InventoryManager.Instance.AddStat(_fromSlot.Item);
+            _isSwapEquipment = false;
         }
         StopDragSlot();
         
         Refresh();
     }
 
-    private void SwapSlot(UI_InventorySlot toSlot, int toIndex)
+    private void SwapSlot(UI_InventorySlot toSlot)
     {
-        
+        int fromIndex =  _fromSlot.Item.SlotIndex;
+        SlotType fromSlotType = _fromSlot.SlotType;
+        _fromSlot.Item.SetSlotIndex(toSlot.SlotType, toSlot.Item.SlotIndex);
+        toSlot.Item.SetSlotIndex(fromSlotType, fromIndex);
     }
 
     private int CheckEquipmentSlotType(UI_InventorySlot toSlot, int toIndex)
@@ -139,7 +216,17 @@ public class UI_InventoryPopup : Popup
 
     private int CheckChipSlotType(UI_InventorySlot toSlot, int toIndex)
     {
+        if (_fromSlot.Item.Data is ChipDataSO chipDataSO)
+        {
+            if (toSlot is UI_ChipSlot toChipSlot)
+            {
+                toIndex = _chipSlots.FindIndex(slot => slot == toSlot);
+                return toIndex;
+            }    
+        }
         
+
+        return -1;
     }
     
     public void EquipItem(UI_EquipmentSlot toSlot)
@@ -210,6 +297,15 @@ public class UI_InventoryPopup : Popup
     private void Refresh()
     {
         foreach (var slot in _slots)
+        {
+            slot.SetItem(null);
+        }
+
+        foreach (var slot in _equipmentSlots)
+        {
+            slot.SetItem(null);
+        }
+        foreach (var slot in _chipSlots)
         {
             slot.SetItem(null);
         }

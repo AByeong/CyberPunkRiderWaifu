@@ -31,6 +31,12 @@ public class InventoryManager : Singleton<InventoryManager>
             Item item = new Item(soDatas[1]);
             Add(item);
         }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Debug.Log("C");
+            Item item = new Item(soDatas[2]);
+            Add(item);
+        }
     }
 
     public void Add(Item item)
