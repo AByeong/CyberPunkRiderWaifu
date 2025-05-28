@@ -61,7 +61,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
         
         
         CurrentSector++;
-        
+        Debug.Log($"클리어까지 {CompleteSector - CurrentSector}만큼 남았습니다");
         if (CurrentSector == CompleteSector)
         {
             DeliveryComplete();
