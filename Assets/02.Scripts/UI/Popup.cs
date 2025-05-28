@@ -11,10 +11,9 @@ public abstract class Popup : MonoBehaviour
         
         this.gameObject.SetActive(true);
         
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true; 
         
         
+        UIManager.Instance.CursorLock(false);
         
         Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
         if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
@@ -32,8 +31,8 @@ public abstract class Popup : MonoBehaviour
     // 자식 클래스에서 이 메서드를 오버라이드하여 각자의 닫힘 로직을 구현합니다.
     protected virtual void OnPopupClosed() 
     {
-        Cursor.lockState = CursorLockMode.Locked; // 커서를 화면 중앙에 고정
-        Cursor.visible = false; // 커서 숨김
+        UIManager.Instance.CursorLock(true);
+        
         GameManager.Instance.GameReplay();
         UIManager.Instance.ESCisClose = false;
     }
