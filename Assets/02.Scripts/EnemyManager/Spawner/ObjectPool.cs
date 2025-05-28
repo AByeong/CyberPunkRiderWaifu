@@ -125,7 +125,7 @@ public class ObjectPool : MonoBehaviour
                  Debug.LogError("ObjectPool: Cannot grow pool, loadedPrefab is null!", this);
                  return null;
             }
-            Debug.Log($"ObjectPool: Pool for {(loadedPrefab != null ? loadedPrefab.name : "N/A")} is growing. Current total: {allPooledObjects.Count}", this);
+//            Debug.Log($"ObjectPool: Pool for {(loadedPrefab != null ? loadedPrefab.name : "N/A")} is growing. Current total: {allPooledObjects.Count}", this);
             GameObject newObj = Instantiate(loadedPrefab, poolContainer);
             newObj.SetActive(true);
             allPooledObjects.Add(newObj);
