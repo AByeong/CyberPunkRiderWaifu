@@ -45,10 +45,11 @@ public class UIManager : Singleton<UIManager>
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            //PlayerInput.ReleaseControl();
+            PlayerInput.ReleaseControl();
             if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
             {
-
+                Cursor.lockState = CursorLockMode.Confined; // 커서를 화면 중앙에 고정
+                Cursor.visible = true; // 커서 숨김
                 PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
             }
             else

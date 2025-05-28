@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using JY;
@@ -22,6 +23,16 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     
     [Header("UI")]
     public Image IconImageUI;
+
+    private void Start()
+    {
+    }
+
+    private void Update()
+    {
+        
+    }
+
     public void SetItem(Item item)
     {
         if (item == null)
@@ -62,18 +73,23 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
             {
                 Debug.Log($"to: {targetSlot.gameObject.name}");
                 
-                if(targetSlot.SlotType == SlotType.Inventory)
-                {
-                    UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
-                }
-                else if (targetSlot.SlotType == SlotType.Equipment)
-                {
-                    UI_InventoryPopup.Instance.EquipItem((UI_EquipmentSlot)targetSlot);
-                }
-                else if (targetSlot.SlotType == SlotType.Chip)
-                {
-                    UI_InventoryPopup.Instance.SetChip((UI_ChipSlot)targetSlot);
-                }
+                UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
+                
+                // if(targetSlot.SlotType == SlotType.Inventory)
+                // {
+                //     Debug.Log("targetSlot == Inventory");
+                //     UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
+                // }
+                // else if (targetSlot.SlotType == SlotType.Equipment)
+                // {
+                //     Debug.Log("targetSlot == Equipment");
+                //     UI_InventoryPopup.Instance.EquipItem((UI_EquipmentSlot)targetSlot);
+                // }
+                // else if (targetSlot.SlotType == SlotType.Chip)
+                // {
+                //     Debug.Log("targetSlot == Chip");
+                //     UI_InventoryPopup.Instance.SetChip((UI_ChipSlot)targetSlot);
+                // }
                 break;
             }
         }
