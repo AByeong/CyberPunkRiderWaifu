@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
@@ -21,7 +22,7 @@ public class EnemyManager : Singleton<EnemyManager>
    {
       base.Awake();
       EnemyManagerInit();
-    }
+   }
 
    public void EnemyManagerInit()
    {
@@ -58,7 +59,7 @@ public class EnemyManager : Singleton<EnemyManager>
    {
       _bossMonsterSpawners = null;
    }
-   
+
 
    public void InitSpawn()
    {
@@ -78,7 +79,6 @@ public class EnemyManager : Singleton<EnemyManager>
       }
    }
 
-   
 
    // public void Spawn(int spawnerIndex)
    // {
@@ -94,9 +94,37 @@ public class EnemyManager : Singleton<EnemyManager>
    //    _eliteMonsterSpawners[spawnerIndex].StartSpawning();
    // }
 
+
    public void SpawnBoss()
    {
       _bossMonsterSpawners.StartSpawning();
+   }
+
+   public void DespawnALL()
+   {
+      foreach (MonsterSpawner spawner in _normalMonsterSpawners)
+      {
+         foreach (Transform child in spawner.transform.GetChild(0))
+         {
+            Enemy enemy = child.GetComponent<Enemy>();
+            if (enemy != null && enemy.gameObject.activeInHierarchy == true)
+            {
+               enemy.Pool.ReturnObject(enemy.gameObject);
+            }
+         }
+      }
+
+      // foreach (MonsterSpawner spawner in _eliteMonsterSpawners)
+      // {
+      //    foreach (Transform child in spawner.transform.GetChild(0))
+      //    {
+      //       Enemy enemy = child.GetComponent<Enemy>();
+      //       if (enemy != null && gameObject.activeInHierarchy == true)
+      //       {
+      //          enemy.Pool.ReturnObject(enemy.gameObject);
+      //       }
+      //    }
+      // }
    }
    
 }

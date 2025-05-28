@@ -61,6 +61,7 @@ public class EliteAI_Female : MonoBehaviour
                 Damage damage = new Damage();
                 damage.DamageValue = 0;
                 damage.DamageType = EDamageType.Airborne;
+                damage.DamageForce = 2f;
                 damageable.TakeDamage(damage);
                 affectedCount++;
             }
