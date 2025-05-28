@@ -30,6 +30,8 @@ public CinemaName CinemaName;
     
     public void BossAppear()
     {
+        Debug.Log("보스 시네머신 시작");
+
         AnimationStart(CinemaName.BossAppear);
     }
 
@@ -44,6 +46,7 @@ public CinemaName CinemaName;
 
     public void ShowElevatorChangeAnimation()
     {
+        Debug.Log("엘리베이터 시네머신 시작");
         Player.GetComponent<Animator>().applyRootMotion = false;
         Player.GetComponent<CharacterController>().enabled = false;
 
@@ -54,11 +57,14 @@ public CinemaName CinemaName;
 
     public void ElevatorChangeEnd()
     {
-        DeliveryManager.Instance.StageManager.MoveNextStage();
         Player.GetComponent<Animator>().applyRootMotion = true;
         Player.GetComponent<CharacterController>().enabled = true;
         PlayerCamera.gameObject.SetActive(true);
         Camera.main.cullingMask = ~0;
+        DeliveryManager.Instance.StageManager.MoveNextStage();
+        
+        
+        Debug.Log("엘리베이터 시네머신 종료");
     }
 
     public void EndSkill()
