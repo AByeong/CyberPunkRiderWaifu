@@ -51,7 +51,7 @@ public class KillTracker : MonoBehaviour
                  ((MissionKillCount.Elite > 0) ? $"엘리트 적 : {elite}/{MissionKillCount.Elite}\n" : "")+
                  ((MissionKillCount.Boss > 0) ? $"보스 : {boss}/{MissionKillCount.Boss}\n" : "");
 
-    Debug.Log(Message);
+//    Debug.Log(Message);
        return Message;
    }
 
