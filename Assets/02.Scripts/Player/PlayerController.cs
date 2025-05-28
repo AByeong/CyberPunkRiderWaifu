@@ -277,12 +277,12 @@ namespace JY
 
             if (isRootMotion)
             {
-                movement = new Vector3(_animator.deltaPosition.x, 0, _animator.deltaPosition.z);
+                movement = new Vector3(_animator.deltaPosition.x * 1.5f, 0, _animator.deltaPosition.z * 1.5f);
 
                 if (!_rootMotionGroundedStart)
                 {
                     // 공중 시작 → 중력 적용
-                    _verticalSpeed -= Gravity * Time.deltaTime;
+                    _verticalSpeed -= Gravity * 0.5f * Time.deltaTime;
                     movement += Vector3.up * (_animator.deltaPosition.y + _verticalSpeed * Time.deltaTime);
                 }
                 else
