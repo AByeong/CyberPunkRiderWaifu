@@ -7,9 +7,10 @@ public class EliteAttackState : EliteBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        _attackTimer = Owner.EnemyData.AttackCoolDown;
-        // Owner.NavMeshAgent.isStopped = true;
         Owner.NavMeshAgent.enabled = false;
+
+        _attackTimer = Owner.EnemyData.AttackCoolDown;
+        Owner.AttackType = Random.Range(0, 3);
     }
 
     public override void Update()

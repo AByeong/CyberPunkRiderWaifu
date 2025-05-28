@@ -45,7 +45,7 @@ public class HItState : BaseNormalEnemyState
     [SerializeField] private float _fallTime = 0.8f;
 
     private Vector3 _knockbackDir;
-    [SerializeField] private float _knockbackDistance = 2.0f;
+    // [SerializeField] private float _knockbackDistance = 2.0f;
     [SerializeField] private float _knockbackTime = 0.2f;
     [SerializeField] private float _knockbackAirbonCoeff = 0;
     // --- 넉백/공중띄우기 관련 변수 끝 ---
@@ -168,7 +168,7 @@ public class HItState : BaseNormalEnemyState
             _knockbackDir = -Owner.transform.forward;
         }
 
-        if (Owner.DamageType == EDamageType.Airborne)
+        if (Owner.TakedDamage.DamageType == EDamageType.Airborne)
         {
             float currentY = Owner.transform.position.y;
             float desiredY = Mathf.Min(currentY + _airRiseAmount, _maxAirHeight);
@@ -277,7 +277,7 @@ public class HItState : BaseNormalEnemyState
     private void PlayAirborneKnockbackSequence(float toY, Vector3 knockbackDir)
     {
         Vector3 startPos = Owner.transform.position;
-        Vector3 knockbackMove = knockbackDir * _knockbackDistance * _knockbackAirbonCoeff;
+        Vector3 knockbackMove = knockbackDir * Owner.TakedDamage.DamageForce * _knockbackAirbonCoeff;
         Vector3 riseTarget = new Vector3(startPos.x + knockbackMove.x, toY, startPos.z + knockbackMove.z);
 
         float finalFallY = defaultFallbackLandY;
@@ -310,7 +310,7 @@ public class HItState : BaseNormalEnemyState
         }
 
         Vector3 startPos = Owner.transform.position;
-        Vector3 knockbackTarget = startPos + knockbackDir * _knockbackDistance;
+        Vector3 knockbackTarget = startPos + knockbackDir * Owner.TakedDamage.DamageForce;
 
         _airSequence?.Kill();
         _airSequence = DOTween.Sequence();

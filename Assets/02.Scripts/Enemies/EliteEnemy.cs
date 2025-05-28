@@ -9,7 +9,7 @@ public class EliteEnemy : Enemy, IDamageable
 
     public float OriginalValue = 0.5f;
     
-    public int AttackTypeNumber = 2;
+    // public int AttackTypeNumber = 2;
     public int AttackType
     {
         get { return _attackType; }
@@ -18,9 +18,9 @@ public class EliteEnemy : Enemy, IDamageable
             if (_attackType != value) // 값이 실제로 변경되었을 때만 실행
             {
                 _attackType = value;
-                if (EliteAnimator != null)
+                if (_animator != null)
                 {
-                    EliteAnimator.SetInteger("AttackType", _attackType);
+                    _animator.SetInteger("AttackType", _attackType);
                 }
                 else
                 {
@@ -29,19 +29,13 @@ public class EliteEnemy : Enemy, IDamageable
             }
         }
     }
-
-    public Animator EliteAnimator; // 인스펙터에서 할당하거나 Awake에서 찾아야 함
-    
-    // private NavMeshAgent _navMeshAgent;
-    // private Animator _animator; // 일반적인 이동 애니메이션 등을 위한 Animator
-
    
     protected override void Awake()
     {
        
-        if (EliteAnimator != null)
+        if (_animator != null)
         {
-            EliteAnimator.SetInteger("AttackType", _attackType);
+            _animator.SetInteger("AttackType", _attackType);
         }
         else
         {
@@ -49,20 +43,7 @@ public class EliteEnemy : Enemy, IDamageable
             Debug.LogWarning($"{gameObject.name}의 EliteAnimator가 Awake 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
         }
 
-        base.Awake(); // Enemy 클래스의 Awake 실행
-
-        // _navMeshAgent = GetComponent<NavMeshAgent>();
-        // if (_navMeshAgent == null)
-        // {
-        //     Debug.LogWarning($"{gameObject.name} NavMeshAgent가 없습니다");
-        // }
-
-        // _animator = GetComponentInChildren<Animator>(); // 일반 애니메이션(속도 등)을 위한 Animator
-        // if (_animator == null)
-        // {
-        //     Debug.LogWarning($"{gameObject.name} Animator가 없습니다");
-        // }
-        
+        base.Awake();
     }
 
     void Update()

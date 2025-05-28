@@ -13,10 +13,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public bool IsHit { get; set; }
     public bool IsInAir { get; set; }
-    public int TakedDamageValue { get; private set; }
     public Vector3 VerticalVelocity = new Vector3();
 
-    public EDamageType DamageType;
+    public Damage TakedDamage => _takedDamage;
+    private Damage _takedDamage = new Damage();
 
     protected Animator _animator;
     protected NavMeshAgent _navMeshAgent;
@@ -86,8 +86,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         IsHit = true;
         CurrentHealthPoint -= damage.DamageValue;
-        TakedDamageValue = damage.DamageValue;
-        DamageType = damage.DamageType;
+        _takedDamage = damage;
         // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
     }
 

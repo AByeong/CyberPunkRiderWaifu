@@ -48,7 +48,7 @@ public class EliteHitState : EliteBaseState
     [SerializeField] private float _fallTime = 0.5f;
 
     private Vector3 _knockbackDir;
-    [SerializeField] private float _knockbackDistance = 2f;
+    // [SerializeField] private float _knockbackDistance = 2f;
     [SerializeField] private float _knockbackTime = 0.2f;
     [SerializeField] private float _knockbackAirbonCoeff = 1.5f;
     // --- 넉백/공중띄우기 관련 변수 끝 ---
@@ -172,7 +172,7 @@ public class EliteHitState : EliteBaseState
         }
 
 
-        if (Owner.DamageType == EDamageType.Airborne)
+        if (Owner.TakedDamage.DamageType == EDamageType.Airborne)
         {
             float currentY = Owner.transform.position.y;
             float desiredY = Mathf.Min(currentY + _airRiseAmount, _maxAirHeight);
@@ -313,7 +313,7 @@ public class EliteHitState : EliteBaseState
     private void PlayAirborneKnockbackSequence(float toY, Vector3 knockbackDir)
     {
         Vector3 startPos = Owner.transform.position;
-        Vector3 knockbackMove = knockbackDir * _knockbackDistance * _knockbackAirbonCoeff;
+        Vector3 knockbackMove = knockbackDir * Owner.TakedDamage.DamageForce * _knockbackAirbonCoeff;
         Vector3 riseTarget = new Vector3(startPos.x + knockbackMove.x, toY, startPos.z + knockbackMove.z);
 
         float finalFallY;
@@ -365,7 +365,7 @@ public class EliteHitState : EliteBaseState
         }
 
         Vector3 startPos = Owner.transform.position;
-        Vector3 knockbackTarget = startPos + knockbackDir * _knockbackDistance;
+        Vector3 knockbackTarget = startPos + knockbackDir * Owner.TakedDamage.DamageForce;
         // Y축은 현재 높이 유지 또는 바닥에 맞추기 (여기서는 현재 Y 유지)
         // Raycast로 바닥을 찾아 Y를 보정할 수도 있음
         float finalY = startPos.y;

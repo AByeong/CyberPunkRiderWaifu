@@ -4,12 +4,12 @@ using UnityEngine;
 public class EnemyManager : Singleton<EnemyManager>
 {
    [SerializeField]
-   private Queue<MonsterSpawner> _normalMonsterSpawners;
-   public Queue<MonsterSpawner> NormalMonsterSpawners => _normalMonsterSpawners;
+   private List<MonsterSpawner> _normalMonsterSpawners;
+   public List<MonsterSpawner> NormalMonsterSpawners => _normalMonsterSpawners;
 
    [SerializeField]
-   private Queue<MonsterSpawner> _eliteMonsterSpawners;
-   public Queue<MonsterSpawner> EliteMonsterSpawners => _eliteMonsterSpawners;
+   private List<MonsterSpawner> _eliteMonsterSpawners;
+   public List<MonsterSpawner> EliteMonsterSpawners => _eliteMonsterSpawners;
 
    [SerializeField]
    private MonsterSpawner _bossMonsterSpawners;
@@ -25,18 +25,18 @@ public class EnemyManager : Singleton<EnemyManager>
 
    public void EnemyManagerInit()
    {
-      _normalMonsterSpawners = new Queue<MonsterSpawner>();
-      _eliteMonsterSpawners = new Queue<MonsterSpawner>();
+      _normalMonsterSpawners = new List<MonsterSpawner>();
+      _eliteMonsterSpawners = new List<MonsterSpawner>();
    }
 
    public void AddNormalSpwner(MonsterSpawner spawner)
    {
-      _normalMonsterSpawners.Enqueue(spawner);
+      _normalMonsterSpawners.Add(spawner);
    }
 
    public void AddEliteSpawner(MonsterSpawner spawner)
    {
-      _eliteMonsterSpawners.Enqueue(spawner);
+      _eliteMonsterSpawners.Add(spawner);
    }
 
    public void AddBossSpawner(MonsterSpawner spawner)
@@ -46,12 +46,12 @@ public class EnemyManager : Singleton<EnemyManager>
 
    public void RemoveNormalSpwner()
    {
-      _normalMonsterSpawners.Dequeue();
+      _normalMonsterSpawners.Clear();
    }
 
    public void RemoveEliteSpawner()
    {
-      _eliteMonsterSpawners.Dequeue();
+      _eliteMonsterSpawners.Clear();
    }
 
    public void RemoveBossSpawner()
