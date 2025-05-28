@@ -2,11 +2,11 @@
 using UnityEngine;
 public class PlayerSkill : MonoBehaviour
 {
-    public StretchColliderOnly _stretchColliderOnly;
     private PlayerInput _input;
 
     private int _keyIndex = -1;
     private PlayerController _player;
+    private StretchColliderOnly _stretchColliderOnly;
     private void Start()
     {
         _input = GetComponent<PlayerInput>();

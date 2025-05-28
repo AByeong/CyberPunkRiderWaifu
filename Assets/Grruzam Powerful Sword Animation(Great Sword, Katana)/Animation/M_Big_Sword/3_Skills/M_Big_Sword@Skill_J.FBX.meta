@@ -482,9 +482,9 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
-      heightFromFeet: 0
+      heightFromFeet: 1
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
@@ -500,6 +500,13 @@ ModelImporter:
         functionName: DisableAttackColliders
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.52498
+        functionName: InstantiateEffect
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b8e9d17796fd47c46976ba2f17284603, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

@@ -5,6 +5,7 @@ public class SkillData
 {
     public string SkillName;
     public string TriggerName;
+    public EPlayerState PlayerState;
     public float SkillSpeed;
     public float CoolTime;
     public bool IsUpgraded;
