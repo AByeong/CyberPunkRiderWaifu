@@ -8,7 +8,7 @@ public class EliteAttackState : EliteBaseState
     {
         base.OnEnter();
         _attackTimer = Owner.EnemyData.AttackCoolDown;
-        Owner.NavMeshAgent.isStopped = true;
+        // Owner.NavMeshAgent.isStopped = true;
         Owner.NavMeshAgent.enabled = false;
     }
 

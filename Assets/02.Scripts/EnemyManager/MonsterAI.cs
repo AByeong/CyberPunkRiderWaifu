@@ -110,7 +110,7 @@ public class MonsterAI : MonoBehaviour
                 navMeshAgent.acceleration = 8f;
                 navMeshAgent.autoRepath = true;
                 navMeshAgent.stoppingDistance = Tier1_SlotReachedThreshold * 0.8f;
-                navMeshAgent.isStopped = false;
+                // navMeshAgent.isStopped = false;
                 logicUpdateInterval = 0.1f;
                 break;
 
@@ -119,7 +119,7 @@ public class MonsterAI : MonoBehaviour
                 navMeshAgent.acceleration = 5f;
                 navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
                 navMeshAgent.autoRepath = true;
-                navMeshAgent.isStopped = false; // ✅ 에이전트 다시 활성화
+                // navMeshAgent.isStopped = false; // ✅ 에이전트 다시 활성화
                 logicUpdateInterval = 0.3f;
                 break;
 

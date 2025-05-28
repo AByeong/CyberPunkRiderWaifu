@@ -4,12 +4,6 @@ using UnityEngine.AI;
 using System.Collections;
 using System.Collections.Generic;
 
-// BaseNormalEnemyState는 실제 프로젝트에 맞게 정의되어 있어야 합니다.
-// 예시: public abstract class BaseNormalEnemyState : State<Enemy> { }
-// Enemy 클래스에는 Animator, NavMeshAgent, EnemyData, Target, IsHit, IsInAir, TakedDamageValue, DamageType, MaterialName 등의 속성이 있다고 가정합니다.
-// StateMachine 클래스 (SuperMachine) 에는 ChangeState<T>() 메소드가 있다고 가정합니다.
-// IdleState, DownedState 등도 실제 프로젝트에 맞게 정의되어 있어야 합니다.
-
 public class HItState : BaseNormalEnemyState
 {
     // 타이머 및 시퀀스
@@ -44,23 +38,22 @@ public class HItState : BaseNormalEnemyState
 
     // --- 넉백/공중띄우기 관련 변수 ---
     [Header("Knockback & Airborne")]
-    [SerializeField] private float _maxAirHeight = 5f;
-    [SerializeField] private float _airRiseAmount = 1f;
+    [SerializeField] private float _maxAirHeight = 3f;
+    [SerializeField] private float _airRiseAmount = 2f;
     [SerializeField] private float _airRiseTime = 0.2f;
-    [SerializeField] private float _hangTime = 0.15f;
-    [SerializeField] private float _fallTime = 0.5f;
+    [SerializeField] private float _hangTime = 0.5f;
+    [SerializeField] private float _fallTime = 0.8f;
 
     private Vector3 _knockbackDir;
-    [SerializeField] private float _knockbackDistance = 2f;
+    [SerializeField] private float _knockbackDistance = 2.0f;
     [SerializeField] private float _knockbackTime = 0.2f;
-    [SerializeField] private float _knockbackAirbonCoeff = 1.5f;
+    [SerializeField] private float _knockbackAirbonCoeff = 0;
     // --- 넉백/공중띄우기 관련 변수 끝 ---
 
     // --- 공중 상태 콜라이더 제어 관련 변수 ---
     [Header("Airborne Collider Settings")]
     [Tooltip("공중에 떠 있는 동안 콜라이더가 활성화되어 있는 시간 (초).")]
-    [SerializeField] private float airborneColliderActiveDuration = 0.8f;
-    private Coroutine _airborneColliderManagementCoroutine;
+
     // --- 공중 상태 콜라이더 제어 관련 변수 끝 ---
 
     // --- 바닥 감지 Raycast 관련 변수 ---
@@ -68,8 +61,8 @@ public class HItState : BaseNormalEnemyState
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private float raycastOriginOffsetY = 0.1f;
     [SerializeField] private float groundRaycastDistance = 10f;
-    [SerializeField] private float landingYOffset = 0.1f; // 캐릭터 피봇에 따라 조정
-    [SerializeField] private float defaultFallbackLandY = 0f; // 바닥 못찾을 시 기본 Y
+    [SerializeField] private float landingYOffset = 1f; // 캐릭터 피봇에 따라 조정
+    [SerializeField] private float defaultFallbackLandY = 0.7f; // 바닥 못찾을 시 기본 Y
     // --- 바닥 감지 Raycast 관련 변수 끝 ---
 
     private void CacheRenderersAndInitialColors()
@@ -77,10 +70,10 @@ public class HItState : BaseNormalEnemyState
         if (Owner == null) return;
 
 
-         if (!string.IsNullOrEmpty(Owner.MaterialName))
-         {
-             targetMaterialName = Owner.MaterialName;
-         }
+        if (!string.IsNullOrEmpty(Owner.MaterialName))
+        {
+            targetMaterialName = Owner.MaterialName;
+        }
 
         if (string.IsNullOrEmpty(targetMaterialName))
         {
@@ -135,6 +128,7 @@ public class HItState : BaseNormalEnemyState
 
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
+        #region 피격 머테리얼 효과
         // --- 피격 머테리얼 효과 시작 ---
         CacheRenderersAndInitialColors();
         if (_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0)
@@ -154,6 +148,7 @@ public class HItState : BaseNormalEnemyState
             }
         }
         // --- 피격 머테리얼 효과 끝 ---
+        #endregion
 
         Owner.IsHit = false;
         if (Owner.NavMeshAgent != null && Owner.NavMeshAgent.isOnNavMesh && Owner.NavMeshAgent.enabled)
@@ -173,39 +168,19 @@ public class HItState : BaseNormalEnemyState
             _knockbackDir = -Owner.transform.forward;
         }
 
-        bool shouldBeAirborne = (Owner.EnemyData != null && Owner.TakedDamageValue >= Owner.EnemyData.InAirThreshold) || Owner.DamageType == EDamageType.NoDamageButAir;
-
-        if (shouldBeAirborne)
+        if (Owner.DamageType == EDamageType.Airborne)
         {
             float currentY = Owner.transform.position.y;
             float desiredY = Mathf.Min(currentY + _airRiseAmount, _maxAirHeight);
 
-            if (desiredY > currentY)
+            Owner.IsInAir = true;
+            if (Owner.Animator != null)
             {
-                Owner.IsInAir = true;
-                if (Owner.Animator != null)
-                {
-                    Owner.Animator.SetFloat("DownType", Random.Range(0, 4));
-                    Owner.Animator.SetTrigger("OnDown");
-                }
-                if (Owner.Collider != null)
-                {
-                    Owner.Collider.enabled = true;
-                    if (_airborneColliderManagementCoroutine != null) StopCoroutine(_airborneColliderManagementCoroutine);
-                    _airborneColliderManagementCoroutine = StartCoroutine(ManageAirborneCollider());
-                }
-                PlayAirborneKnockbackSequence(desiredY, _knockbackDir);
+                Owner.Animator.SetFloat("DownType", Random.Range(0, 4));
+                Owner.Animator.SetTrigger("OnDown");
             }
-            else
-            {
-                Owner.IsInAir = false;
-                if (Owner.Animator != null)
-                {
-                    Owner.Animator.SetFloat("HitType", Random.Range(1, 3));
-                    Owner.Animator.SetTrigger("OnHit");
-                }
-                PlayKnockbackOnly(_knockbackDir);
-            }
+
+            PlayAirborneKnockbackSequence(desiredY, _knockbackDir); 
         }
         else
         {
@@ -299,46 +274,23 @@ public class HItState : BaseNormalEnemyState
         }
     }
 
-
-    private IEnumerator ManageAirborneCollider()
-    {
-        if (Owner.Collider == null) yield break;
-        // Debug.Log($"[HitState] ManageAirborneCollider: Airborne state started. Collider will be active for {airborneColliderActiveDuration}s.");
-        yield return new WaitForSeconds(airborneColliderActiveDuration); // 일반 WaitForSeconds 사용 (게임 시간에 따라 콜라이더 비활성화)
-        if (Owner.IsInAir && Owner.Collider.enabled)
-        {
-            Owner.Collider.enabled = false;
-            // Debug.Log("[HitState] ManageAirborneCollider: Collider disabled after duration for landing.");
-        }
-        _airborneColliderManagementCoroutine = null;
-    }
-
     private void PlayAirborneKnockbackSequence(float toY, Vector3 knockbackDir)
     {
         Vector3 startPos = Owner.transform.position;
         Vector3 knockbackMove = knockbackDir * _knockbackDistance * _knockbackAirbonCoeff;
         Vector3 riseTarget = new Vector3(startPos.x + knockbackMove.x, toY, startPos.z + knockbackMove.z);
 
-        float finalFallY;
-        RaycastHit hitInfo;
-        Vector3 rayOrigin = new Vector3(riseTarget.x, Owner.transform.position.y + raycastOriginOffsetY, riseTarget.z);
-
-        if (Physics.Raycast(rayOrigin, Vector3.down, out hitInfo, groundRaycastDistance, groundLayerMask))
+        float finalFallY = defaultFallbackLandY;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(startPos, out hit, groundRaycastDistance, NavMesh.AllAreas))
         {
-            finalFallY = hitInfo.point.y + landingYOffset;
-        }
-        else
-        {
-            finalFallY = defaultFallbackLandY; // 기본 Y값 사용
-            // 바닥 감지 실패 시, 캐릭터의 현재 X,Z를 사용하거나 riseTarget의 X,Z를 사용
-            // 여기서는 riseTarget의 X,Z를 사용
+            finalFallY = hit.position.y + landingYOffset;
         }
         Vector3 fallPos = new Vector3(riseTarget.x, finalFallY, riseTarget.z);
 
 
         _airSequence?.Kill();
         _airSequence = DOTween.Sequence();
-        // NavMeshAgent가 비활성화된 동안 transform.DOMove 사용
         _airSequence.Append(Owner.transform.DOMove(riseTarget, _airRiseTime).SetEase(Ease.OutSine))
             .AppendInterval(_hangTime)
             .Append(Owner.transform.DOMove(fallPos, _fallTime).SetEase(Ease.InQuad))
@@ -346,16 +298,6 @@ public class HItState : BaseNormalEnemyState
             {
                 Owner.IsInAir = false;
                 Owner.transform.position = fallPos; // 최종 위치 보정
-
-                if (Owner.NavMeshAgent != null)
-                {
-                    Owner.NavMeshAgent.enabled = true;
-                    if (Owner.NavMeshAgent.isOnNavMesh)
-                    {
-                       Owner.NavMeshAgent.Warp(fallPos); // NavMesh 위로 안전하게 이동
-                    }
-                    // NavMesh 위에 없다면 Warp를 호출하면 오류가 날 수 있으므로, 상태 변경 후 Idle 등에서 위치 재설정 고려
-                }
                 if (SuperMachine != null) SuperMachine.ChangeState<DownedState>();
             });
     }
@@ -369,20 +311,6 @@ public class HItState : BaseNormalEnemyState
 
         Vector3 startPos = Owner.transform.position;
         Vector3 knockbackTarget = startPos + knockbackDir * _knockbackDistance;
-        // Y축은 현재 높이 유지 또는 바닥에 맞추기 (여기서는 현재 Y 유지)
-        // Raycast로 바닥을 찾아 Y를 보정할 수도 있음
-        float finalY = startPos.y;
-        RaycastHit hitInfo;
-        if (Physics.Raycast(new Vector3(knockbackTarget.x, startPos.y + raycastOriginOffsetY, knockbackTarget.z), Vector3.down, out hitInfo, groundRaycastDistance, groundLayerMask))
-        {
-            finalY = hitInfo.point.y + landingYOffset;
-        }
-        else {
-            // 바닥 못찾으면 현재 Y 유지 또는 기본값
-            finalY = defaultFallbackLandY != 0f ? defaultFallbackLandY : startPos.y; 
-        }
-        knockbackTarget.y = finalY;
-
 
         _airSequence?.Kill();
         _airSequence = DOTween.Sequence();
@@ -398,12 +326,12 @@ public class HItState : BaseNormalEnemyState
 
         _airSequence.OnComplete(() =>
         {
-            if (Owner.NavMeshAgent != null)
-            {
-                Owner.NavMeshAgent.enabled = true;
-                if (Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
-                Owner.NavMeshAgent.isStopped = false;
-            }
+            // if (Owner.NavMeshAgent != null)
+            // {
+            //     Owner.NavMeshAgent.enabled = true;
+            //     if (Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
+            //     Owner.NavMeshAgent.isStopped = false;
+            // }
             if (SuperMachine != null) SuperMachine.ChangeState<IdleState>();
         });
     }
@@ -433,6 +361,7 @@ public class HItState : BaseNormalEnemyState
         _airSequence?.Kill();
         _hitTimer = 0f;
 
+        #region 피격머테리얼 효과
         // --- 피격 머테리얼 효과 종료 및 복구 ---
         if (_hitFlashCoroutine != null)
         {
@@ -445,18 +374,14 @@ public class HItState : BaseNormalEnemyState
             // 코루틴이 이미 완료되었거나 실행되지 않은 경우에도,
             // 만약을 위해 원래 색상으로 복구 (예: duration이 0이어서 코루틴이 안돌아간 경우)
             // 이미 CacheRenderersAndInitialColors가 호출되었다는 가정하에 _targetedRenderers 사용
-            if(_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0)
+            if (_targetedRenderers != null && _targetedRenderers.Count > 0 && _initialRendererColors.Count > 0)
             {
                 ApplyOriginalColors();
             }
         }
         // --- 피격 머테리얼 효과 종료 및 복구 끝 ---
+        #endregion 피격 머테리얼 효과
 
-        if (_airborneColliderManagementCoroutine != null)
-        {
-            StopCoroutine(_airborneColliderManagementCoroutine);
-            _airborneColliderManagementCoroutine = null;
-        }
 
         if (Owner.NavMeshAgent != null)
         {
@@ -474,88 +399,3 @@ public class HItState : BaseNormalEnemyState
         }
     }
 }
-
-// --- 필요한 경우 아래 클래스들의 기본 정의 (실제 프로젝트에서는 별도 파일에 존재) ---
-/*
-public class BaseNormalEnemyState : State<Enemy> // State<T>는 FSM 구현에 따라 다름
-{
-    protected Enemy Owner { get; private set; }
-    protected StateMachine<Enemy> SuperMachine { get; private set; } // StateMachine<Enemy>
-
-    public virtual void Initialize(Enemy owner, StateMachine<Enemy> superMachine)
-    {
-        Owner = owner;
-        SuperMachine = superMachine;
-    }
-    public virtual void OnEnter() { }
-    public virtual void Update() { }
-    public virtual void FixedUpdate() { }
-    public virtual void OnExit() { }
-}
-
-public class Enemy : MonoBehaviour
-{
-    public Animator Animator { get; set; }
-    public NavMeshAgent NavMeshAgent { get; set; }
-    public EnemyData EnemyData { get; set; } // EnemyData 스크립터블 오브젝트 또는 클래스
-    public GameObject Target { get; set; } // 보통 플레이어
-    public bool IsHit { get; set; }
-    public bool IsInAir { get; set; }
-    public float TakedDamageValue { get; set; }
-    public EDamageType DamageType {get; set;} // EDamageType enum 정의 필요
-    public string MaterialName {get; set;} // 필요시 사용
-
-    // 기타 Enemy 속성 및 메소드
-    void Awake() {
-        Animator = GetComponent<Animator>();
-        NavMeshAgent = GetComponent<NavMeshAgent>();
-        // EnemyData 등 초기화
-    }
-}
-
-[System.Serializable]
-public class EnemyData // 예시 데이터 클래스
-{
-    public float StaggerTime = 0.5f;
-    public float InAirThreshold = 10f; // 이 값 이상의 데미지를 받으면 공중으로 뜸
-    // 기타 데이터
-}
-
-public enum EDamageType
-{
-    Normal,
-    Heavy,
-    NoDamageButAir, // 데미지 없이 공중에 띄우기만 하는 경우
-    // 기타 데미지 타입
-}
-
-public class StateMachine<T> // 간단한 상태 머신 예시
-{
-    private State<T> _currentState;
-    private T _owner;
-
-    public StateMachine(T owner) { _owner = owner; }
-
-    public void ChangeState<S>() where S : State<T>, new()
-    {
-        _currentState?.OnExit();
-        S newState = new S();
-        // newState.Initialize(_owner, this); // State<T>가 Initialize를 받는다면
-        _currentState = newState;
-        _currentState.OnEnter();
-    }
-     public void Update() { _currentState?.Update(); }
-     public void FixedUpdate() { _currentState?.FixedUpdate(); }
-}
-
-public abstract class State<T> {
-    // public virtual void Initialize(T owner, StateMachine<T> superMachine) { }
-    public virtual void OnEnter() { }
-    public virtual void Update() { }
-    public virtual void FixedUpdate() { }
-    public virtual void OnExit() { }
-}
-
-public class IdleState : BaseNormalEnemyState { } // 실제 구현 필요
-public class DownedState : BaseNormalEnemyState { } // 실제 구현 필요
-*/

@@ -171,9 +171,8 @@ public class EliteHitState : EliteBaseState
             _knockbackDir = -Owner.transform.forward;
         }
 
-        bool shouldBeAirborne = (Owner.EnemyData != null && Owner.TakedDamageValue >= Owner.EnemyData.InAirThreshold) || Owner.DamageType == EDamageType.NoDamageButAir;
 
-        if (shouldBeAirborne)
+        if (Owner.DamageType == EDamageType.Airborne)
         {
             float currentY = Owner.transform.position.y;
             float desiredY = Mathf.Min(currentY + _airRiseAmount, _maxAirHeight);
