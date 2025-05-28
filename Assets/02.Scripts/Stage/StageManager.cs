@@ -135,9 +135,10 @@ public class StageManager : MonoBehaviour
     {
         if (_isClear)
         {
+            _isClear = false;
+
             CinemachineManager.Instance.ShowElevatorChangeAnimation();
             DeliveryManager.Instance.LoadNextSection();
-            _isClear = false;
         }
     }
 

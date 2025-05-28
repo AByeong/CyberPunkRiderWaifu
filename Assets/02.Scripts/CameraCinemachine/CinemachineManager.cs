@@ -75,6 +75,11 @@ public class CinemachineManager : Singleton<CinemachineManager>
         
         AnimationEnd();
         Debug.Log("엘리베이터 시네머신 종료");
+        if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector-1)
+        {
+            ShowBossAppear();
+        }
+        
     }
 
     public void EndSkill()
