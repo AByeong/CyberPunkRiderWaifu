@@ -25,6 +25,8 @@ public class StageManager : MonoBehaviour
     private int _previousStageIndex;
     public int _nextStageIndex;
 
+    private float _yPosOffset = 2f;
+
     // private Queue<List<GameObject>> _entryQueue = new Queue<List<GameObject>>();
     // private Queue<List<GameObject>> _exitQueue = new Queue<List<GameObject>>();
 
@@ -112,7 +114,9 @@ public class StageManager : MonoBehaviour
     {
         _playerController.enabled = false;
 
-        Player.transform.position = startPoint.transform.position + startPoint.transform.forward * SpawnDistance;
+        Vector3 PlayerSpawnPos = startPoint.transform.position + new Vector3(0, _yPosOffset, 0);
+
+        Player.transform.position = PlayerSpawnPos + startPoint.transform.forward * SpawnDistance;
         Player.transform.rotation = Quaternion.Euler(0, startPoint.transform.eulerAngles.y, 0);
 
         _playerController.enabled = true;
