@@ -4,6 +4,9 @@ namespace JY
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(PlayerSound))]
+    [RequireComponent(typeof(GroundCheck))]
     public class PlayerController : MonoBehaviour
     {
         private const float AirborneTurnSpeedProportion = 5.4f;
@@ -104,6 +107,7 @@ namespace JY
         private bool _isGrounded;
         private bool _isRespawning;
         private AnimatorStateInfo _nextStateInfo;
+        private PlayerSound _playerSound;
         private AnimatorStateInfo _previousCurrentStateInfo;
         private bool _previousIsAnimatorTransitioning;
         private bool _previouslyGrounded = true;
@@ -122,6 +126,7 @@ namespace JY
             _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
             _groundCheck = GetComponent<GroundCheck>();
+            _playerSound = GetComponent<PlayerSound>();
         }
         private async void Start()
         {
@@ -449,8 +454,10 @@ namespace JY
             {
                 _verticalSpeed = -Gravity * StickingGravityProportion;
 
+                // 여기서 점프 실행
                 if (_input.JumpInput && _readyToJump && !IsInCombo)
                 {
+                    _playerSound.Play(EPlayerState.Jump);
                     _verticalSpeed = JumpSpeed;
                     _readyToJump = false;
                 }
@@ -626,19 +633,23 @@ namespace JY
             switch (skillNumber)
             {
                 case 0:
-                    _hashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
+                    _hashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkill1.SkillData.TriggerName);
+                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
                     _animator.SetTrigger(_hashTriggerSkill1);
                     break;
                 case 1:
-                    _hashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
+                    _hashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkill2.SkillData.TriggerName);
+                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
                     _animator.SetTrigger(_hashTriggerSkill2);
                     break;
                 case 2:
-                    _hashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
+                    _hashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkill3.SkillData.TriggerName);
+                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
                     _animator.SetTrigger(_hashTriggerSkill3);
                     break;
                 case 3:
-                    _hashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
+                    _hashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkill4.SkillData.TriggerName);
+                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
                     _animator.SetTrigger(_hashTriggerSkill4);
                     break;
             }
