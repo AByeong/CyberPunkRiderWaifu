@@ -85,7 +85,7 @@ namespace JY
         private float _angleDiff;
         private Animator _animator;
         private CharacterController _characterController;
-
+        private GroundCheck _groundCheck;
 
         private AnimatorStateInfo _currentStateInfo;
         private float _dashCooldownTimer;

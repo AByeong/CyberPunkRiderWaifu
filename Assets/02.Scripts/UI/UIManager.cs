@@ -31,10 +31,27 @@ public class UIManager : Singleton<UIManager>
     private void Update()
     {
         InventoryPopup();
-        
+        SkillPopup();
        DeliveryPopup();
     }
 
+    private void SkillPopup()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            PlayerInput.ReleaseControl();
+            if (!PopupManager.SkillPopup.gameObject.activeInHierarchy)
+            {
+
+                PopupManager.SkillPopup.GetComponent<Popup>().OpenPopup();
+            }
+            else
+            {
+                PopupManager.CloseLastPopup();
+            }
+        }
+    }
+    
     private void DeliveryPopup()
     {
         if (Input.GetKeyDown(KeyCode.Escape))

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 [Serializable]
-public class SkillUIManager : MonoBehaviour
+public class SkillUIManager : Popup
 {
     public List<UI_Skill> AvailableSkills;
     public List<UI_Skill> EquippedSkills;
