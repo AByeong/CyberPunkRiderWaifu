@@ -60,7 +60,7 @@ public class EliteAI_Female : MonoBehaviour
                 Debug.Log($"[StampStep] Applying NoDamageButAir to: {hitCollider.gameObject.name}");
                 Damage damage = new Damage();
                 damage.DamageValue = 0;
-                damage.DamageType = EDamageType.NoDamageButAir;
+                damage.DamageType = EDamageType.Airborne;
                 damageable.TakeDamage(damage);
                 affectedCount++;
             }

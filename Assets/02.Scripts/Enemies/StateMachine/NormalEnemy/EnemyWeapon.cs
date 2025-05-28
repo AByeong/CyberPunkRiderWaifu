@@ -11,7 +11,7 @@ public class EnemyWeapon : MonoBehaviour
             Damage damage = new Damage()
             {
                 From = gameObject,
-                DamageType = EDamageType.TODO,
+                DamageType = EDamageType.Normal,
                 DamageForce = Owner.EnemyData.AttackForce,
                 DamageValue = Owner.EnemyData.Damage
             };
