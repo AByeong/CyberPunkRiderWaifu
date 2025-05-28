@@ -24,13 +24,13 @@ public class EliteEnemy : Enemy, IDamageable
                 }
                 else
                 {
-                    Debug.LogWarning($"EliteAnimator가 {gameObject.name}에 할당되지 않았습니다. AttackType 변경 시 애니메이터 업데이트 불가.");
+                    Debug.LogWarning($"Animator가 {gameObject.name}에 할당되지 않았습니다. AttackType 변경 시 애니메이터 업데이트 불가.");
                 }
             }
         }
     }
-   
-    protected override void Awake()
+
+    private void Start()
     {
        
         if (_animator != null)
@@ -40,10 +40,8 @@ public class EliteEnemy : Enemy, IDamageable
         else
         {
           
-            Debug.LogWarning($"{gameObject.name}의 EliteAnimator가 Awake 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
+            Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
         }
-
-        base.Awake();
     }
 
     void Update()

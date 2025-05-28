@@ -1,15 +1,16 @@
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
    [SerializeField]
-   private List<MonsterSpawner> _normalMonsterSpawners;
-   public List<MonsterSpawner> NormalMonsterSpawners => _normalMonsterSpawners;
+   private Queue<MonsterSpawner> _normalMonsterSpawners;
+   public Queue<MonsterSpawner> NormalMonsterSpawners => _normalMonsterSpawners;
 
    [SerializeField]
-   private List<MonsterSpawner> _eliteMonsterSpawners;
-   public List<MonsterSpawner> EliteMonsterSpawners => _eliteMonsterSpawners;
+   private Queue<MonsterSpawner> _eliteMonsterSpawners;
+   public Queue<MonsterSpawner> EliteMonsterSpawners => _eliteMonsterSpawners;
 
    [SerializeField]
    private MonsterSpawner _bossMonsterSpawners;
@@ -21,22 +22,22 @@ public class EnemyManager : Singleton<EnemyManager>
    {
       base.Awake();
       EnemyManagerInit();
-    }
+   }
 
    public void EnemyManagerInit()
    {
-      _normalMonsterSpawners = new List<MonsterSpawner>();
-      _eliteMonsterSpawners = new List<MonsterSpawner>();
+      _normalMonsterSpawners = new Queue<MonsterSpawner>();
+      _eliteMonsterSpawners = new Queue<MonsterSpawner>();
    }
 
    public void AddNormalSpwner(MonsterSpawner spawner)
    {
-      _normalMonsterSpawners.Add(spawner);
+      _normalMonsterSpawners.Enqueue(spawner);
    }
 
    public void AddEliteSpawner(MonsterSpawner spawner)
    {
-      _eliteMonsterSpawners.Add(spawner);
+      _eliteMonsterSpawners.Enqueue(spawner);
    }
 
    public void AddBossSpawner(MonsterSpawner spawner)
@@ -46,19 +47,19 @@ public class EnemyManager : Singleton<EnemyManager>
 
    public void RemoveNormalSpwner()
    {
-      _normalMonsterSpawners.Clear();
+      _normalMonsterSpawners.Dequeue();
    }
 
    public void RemoveEliteSpawner()
    {
-      _eliteMonsterSpawners.Clear();
+      _eliteMonsterSpawners.Dequeue();
    }
 
    public void RemoveBossSpawner()
    {
       _bossMonsterSpawners = null;
    }
-   
+
 
    public void InitSpawn()
    {
@@ -78,7 +79,6 @@ public class EnemyManager : Singleton<EnemyManager>
       }
    }
 
-   
 
    // public void Spawn(int spawnerIndex)
    // {
@@ -94,9 +94,37 @@ public class EnemyManager : Singleton<EnemyManager>
    //    _eliteMonsterSpawners[spawnerIndex].StartSpawning();
    // }
 
+
    public void SpawnBoss()
    {
       _bossMonsterSpawners.StartSpawning();
+   }
+
+   public void DespawnALL()
+   {
+      foreach (MonsterSpawner spawner in _normalMonsterSpawners)
+      {
+         foreach (Transform child in spawner.transform.GetChild(0))
+         {
+            Enemy enemy = child.GetComponent<Enemy>();
+            if (enemy != null && enemy.gameObject.activeInHierarchy == true)
+            {
+               enemy.Pool.ReturnObject(enemy.gameObject);
+            }
+         }
+      }
+
+      // foreach (MonsterSpawner spawner in _eliteMonsterSpawners)
+      // {
+      //    foreach (Transform child in spawner.transform.GetChild(0))
+      //    {
+      //       Enemy enemy = child.GetComponent<Enemy>();
+      //       if (enemy != null && gameObject.activeInHierarchy == true)
+      //       {
+      //          enemy.Pool.ReturnObject(enemy.gameObject);
+      //       }
+      //    }
+      // }
    }
    
 }
