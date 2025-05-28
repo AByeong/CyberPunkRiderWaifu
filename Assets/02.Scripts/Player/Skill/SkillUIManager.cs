@@ -16,15 +16,21 @@ public class SkillUIManager : Popup
         {
             AvailableSkills[i].SetSkill(SkillManager.Instance.Skills[i], true);
         }
-
-        // 2단계: 장착된 스킬만 버튼 비활성화
+        // 2단계: EquippedSkills는 전부 비활성화
+        foreach(UI_Skill equippedSkill in EquippedSkills)
+        {
+            equippedSkill.Button.interactable = false;
+        }
+        // 3단계: 장착된 스킬만 버튼 비활성화
         foreach(Skill equipped in SkillManager.Instance.EquippedSkills)
         {
-            if (equipped != null)
+            if (equipped != null && equipped.Index > 0)
             {
                 AvailableSkills[equipped.Index].Button.interactable = false;
             }
         }
+
+
     }
     private void Update()
     {

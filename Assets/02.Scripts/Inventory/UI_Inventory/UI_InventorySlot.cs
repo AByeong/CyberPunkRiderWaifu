@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using JY;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-
+using UnityEngine.UI;
 public enum SlotType // 인스펙터에서 설정
 {
     Inventory, // 일반 인벤토리
@@ -17,12 +12,12 @@ public enum SlotType // 인스펙터에서 설정
 public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public SlotType SlotType;
+
+    [Header("UI")]
+    public Image IconImageUI;
     public Item Item;
 
     public bool HasItem => Item != null;
-    
-    [Header("UI")]
-    public Image IconImageUI;
 
     private void Start()
     {
@@ -30,29 +25,17 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
     private void Update()
     {
-        
+
     }
 
-    public virtual void SetItem(Item item)
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        if (item == null)
-        {
-            IconImageUI.sprite = null;
-            Item = null;
-            return;
-        }
-        
-        Item = item;
-        Set();
+        UI_InventoryPopup.Instance.StartDragSlot(this);
     }
 
-    private void Set()
+    public void OnDrag(PointerEventData eventData)
     {
-        // TODO: UI 세팅
 
-        if (!HasItem) return;
-        
-        IconImageUI.sprite = Item.Data.Icon;
     }
 
 
@@ -62,19 +45,19 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         PointerEventData pointerData = new PointerEventData(EventSystem.current);
         pointerData.position = Input.mousePosition;
 
-        var raycastResults = new System.Collections.Generic.List<RaycastResult>();
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, raycastResults);
-        
-        
-        foreach (var result in raycastResults)
+
+
+        foreach(RaycastResult result in raycastResults)
         {
             UI_InventorySlot targetSlot = result.gameObject.GetComponentInParent<UI_InventorySlot>();
             if (targetSlot != null)
             {
                 Debug.Log($"to: {targetSlot.gameObject.name}");
-                
+
                 UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
-                
+
                 // if(targetSlot.SlotType == SlotType.Inventory)
                 // {
                 //     Debug.Log("targetSlot == Inventory");
@@ -95,18 +78,34 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         }
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        UI_InventoryPopup.Instance.StartDragSlot(this);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        
-    }
-
     public void OnEndDrag(PointerEventData eventData)
     {
         UI_InventoryPopup.Instance.StopDragSlot();
+    }
+
+    public virtual void SetItem(Item item)
+    {
+        if (item == null)
+        {
+            ClearItem();
+            return;
+        }
+
+        Item = item;
+        Set();
+    }
+    protected virtual void ClearItem()
+    {
+        IconImageUI.sprite = null;
+        Item = null;
+    }
+
+    private void Set()
+    {
+        // TODO: UI 세팅
+
+        if (!HasItem) return;
+
+        IconImageUI.sprite = Item.Data.Icon;
     }
 }
