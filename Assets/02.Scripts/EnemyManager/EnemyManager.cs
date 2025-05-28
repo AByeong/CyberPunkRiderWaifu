@@ -5,10 +5,15 @@ public class EnemyManager : Singleton<EnemyManager>
 {
    [SerializeField]
    private Queue<MonsterSpawner> _normalMonsterSpawners;
+   public Queue<MonsterSpawner> NormalMonsterSpawners => _normalMonsterSpawners;
+
    [SerializeField]
    private Queue<MonsterSpawner> _eliteMonsterSpawners;
+   public Queue<MonsterSpawner> EliteMonsterSpawners => _eliteMonsterSpawners;
+
    [SerializeField]
    private MonsterSpawner _bossMonsterSpawners;
+   public MonsterSpawner BossMonsterSpawners => _bossMonsterSpawners;
 
    public float Timer = 1f;
 
