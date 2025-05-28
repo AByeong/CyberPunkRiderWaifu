@@ -180,5 +180,8 @@ public class StageManager : MonoBehaviour
         {
             EnemyManager.Instance.AddEliteSpawner(spawner);
         }
+
+        MonsterSpawner Bossspawner =SubStageList[stageIndex].BossSpawner;
+        EnemyManager.Instance.AddBossSpawner(Bossspawner);
     }
 }
