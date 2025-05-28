@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class EquipmentManager : Singleton<EquipmentManager>
+public class UI_EquipmentSlot : UI_InventorySlot
 {
+    public EquipmentType EquipmentType;
     void Start()
     {
         

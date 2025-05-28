@@ -48,7 +48,7 @@ public class EliteAI_Female : MonoBehaviour
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
         int affectedCount = 0; // 영향을 받은 개체 수 카운트
 
-        Debug.Log($"[StampStep] Detected {detectedColliders.Length} colliders in range.");
+//        Debug.Log($"[StampStep] Detected {detectedColliders.Length} colliders in range.");
 
         foreach (Collider hitCollider in detectedColliders)
         {
@@ -57,7 +57,7 @@ public class EliteAI_Female : MonoBehaviour
             IDamageable damageable = hitCollider.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                Debug.Log($"[StampStep] Applying NoDamageButAir to: {hitCollider.gameObject.name}");
+//                Debug.Log($"[StampStep] Applying NoDamageButAir to: {hitCollider.gameObject.name}");
                 Damage damage = new Damage();
                 damage.DamageValue = 0;
                 damage.DamageType = EDamageType.Airborne;
@@ -65,7 +65,7 @@ public class EliteAI_Female : MonoBehaviour
                 affectedCount++;
             }
         }
-        Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
+//        Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
     }
 
 public TrailRenderer EyeTrail;

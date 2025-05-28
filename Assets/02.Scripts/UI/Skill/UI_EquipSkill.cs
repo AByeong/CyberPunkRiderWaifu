@@ -13,27 +13,28 @@ public class UI_EquipSkill : UI_Skill
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void SetChipOption(ChipData item)
+    public void SetChipOption(chipDataSO chipDataSO)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= item.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= item.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipDataSO.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipDataSO.SkillRange;
 
     }
 
-    public void ClearChipOption(ChipData item)
+    public void ClearChipOption(chipDataSO chipDataSO)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= item.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= item.SkillRange;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipDataSO.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipDataSO.SkillRange;
 
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)
     {
         base.SetSkill(skillToEquip, isActive);
-        foreach(ChipSlot chipSlot in ChipSlots)
+        foreach(UI_ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
+            if (chipSlot.HasItem)
             {
+                SetChipOption(chipSlot.Item.Data as chipDataSO );
             }
         }
     }
@@ -41,10 +42,12 @@ public class UI_EquipSkill : UI_Skill
     public override void RemoveSkill()
     {
         base.RemoveSkill();
-        foreach(ChipSlot chipSlot in ChipSlots)
+        
+        foreach(UI_ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
+            if (chipSlot.HasItem)
             {
+                ClearChipOption(chipSlot.Item.Data as chipDataSO);
             }
         }
     }

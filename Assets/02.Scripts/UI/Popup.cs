@@ -15,7 +15,7 @@ public abstract class Popup : MonoBehaviour
         
         UIManager.Instance.CursorLock(false);
         
-        Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
+      //  Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
         if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
         {
             string popuplist = "";
@@ -23,7 +23,7 @@ public abstract class Popup : MonoBehaviour
             {
                 popuplist += popup.name + ", ";
             }
-            Debug.Log(popuplist);
+//            Debug.Log(popuplist);
         }
     }
 
@@ -44,7 +44,7 @@ public abstract class Popup : MonoBehaviour
         
         
         
-        Debug.Log($"닫는순간 현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
+//        Debug.Log($"닫는순간 현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
         
         if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
         {
