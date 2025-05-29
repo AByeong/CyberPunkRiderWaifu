@@ -53,6 +53,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
     
     public void EndBossAppear()
     {
+        EnemyManager.Instance.SpawnBoss();
         AnimationEnd();
     }
     

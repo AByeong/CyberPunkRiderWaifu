@@ -46,9 +46,11 @@ public class EliteAI_Female : MonoBehaviour
     {
         Vector3 sphereCenter = StampPosition.position;
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
-
-        //Debug.Log($"[StampStep] Detected {detectedColliders.Length} colliders in range.");
+        
         SoundManager.Instance.Play(SoundType.Elite_Female_Step);
+        
+        
+        
         foreach (Collider hitCollider in detectedColliders)
         {
             if (hitCollider.tag == "Elite") continue;
@@ -89,7 +91,7 @@ public void EyeTurnOff()
 public GameObject KingStompVFX;
 public void KingStompAttack()
 {
-    
+    SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
     KingStompVFX.SetActive(true);
     KingStompVFX.GetComponent<ParticleSystem>().Play();
 }
@@ -98,6 +100,7 @@ public void KingStompAttack()
     public GameObject StompVFX;
     public void StompAttack()
     {
+        SoundManager.Instance.Play(SoundType.Elite_Electricity);
         _elliteStateMachineite.ChangeState<EliteAttackState>();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
@@ -107,6 +110,7 @@ public void KingStompAttack()
 
     public void TornadoAttack()
     {
+        SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
         TornadoVFX.SetActive(true);
         TornadoVFX.GetComponent<ParticleSystem>().Play();
     }

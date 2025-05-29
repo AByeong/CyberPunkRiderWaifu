@@ -131,6 +131,13 @@ public class EliteHitState : EliteBaseState
         base.OnEnter();
         _hitTimer = 0f;
 
+
+        if (Owner.TakedDamage.From.CompareTag("Player"))
+        {
+            SoundManager.Instance.Play(SoundType.Elite_Female_Hit);
+        }
+        
+        
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
         // --- 피격 머테리얼 효과 시작 ---
