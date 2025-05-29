@@ -37,6 +37,14 @@ public class InventoryManager : Singleton<InventoryManager>
             Item item =ItemCreateManager.Instance.CreateBoots();
             Add(item);
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            var dropPlan = new Dictionary<DropItemType, int>
+            {
+                { DropItemType.Item, 3 },
+            };
+            ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward); 
+        }
     }
 
     public void Add(Item item)
