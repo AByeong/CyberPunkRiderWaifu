@@ -16,17 +16,17 @@ public class Item
         _slotIndex = slotIndex;
     }
     // Equipment 옵션
-    public float MaxHealth;
-    public float AttackPower;
-    public float Defense;
-    public float Speed;
-    public float AttackSpeed;
-    public float CritChance;
-    public float CritDamage;
+    public float MaxHealth = 0.0f;
+    public float AttackPower = 0.0f;
+    public float Defense = 0.0f;
+    public float Speed = 0.0f;
+    public float AttackSpeed = 0.0f;
+    public float CritChance = 0.0f;
+    public float CritDamage = 0.0f;
 
     // Chip 옵션
-    public float SkillRange;
-    public float ReduceCooldown;
+    public float SkillRange = 0.0f;
+    public float ReduceCooldown = 0.0f;
 
     public Item(ItemBaseDataSO data,  ItemSaveData saveData = null)
     {
@@ -35,8 +35,9 @@ public class Item
         if (saveData != null)
         {
             _slotIndex = saveData.SlotIndex;
-            if (saveData is EquipmentSaveData equipmentSaveData)
+            if (data.ItemType == ItemType.Equipment)
             {
+                EquipmentSaveData equipmentSaveData = saveData as EquipmentSaveData;
                 MaxHealth = equipmentSaveData.MaxHealth;
                 AttackPower = equipmentSaveData.AttackPower;
                 Defense = equipmentSaveData.Defense;

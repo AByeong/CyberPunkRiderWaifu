@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemObject : MonoBehaviour
 {
     private SphereCollider _collider;
-    private ItemBaseDataSO _itemBaseDataSo;
+    private Item item;
     private ParticleSystem _particleSystem;
     private AudioSource _audioSource;
 
@@ -16,7 +16,8 @@ public class ItemObject : MonoBehaviour
             // Equipment, Chip, Etc 일 경우 (Etc는 추가될 소비아이템) -> 소비아이템 인벤에 들어오는 형식 아니면 추후 수정
             if (_isTaked == true) return;
             
-            Item item = new Item(_itemBaseDataSo);
+            if(item == null)
+                Debug.LogError("Item이 Null임");
             InventoryManager.Instance.Add(item);
             
             _isTaked = true;
@@ -42,7 +43,7 @@ public class ItemObject : MonoBehaviour
         _particleSystem = GetComponent<ParticleSystem>();
         _audioSource = GetComponent<AudioSource>();
 
-        _itemBaseDataSo = ItemCreateManager.Instance.CreateWeapon();
+        item = ItemCreateManager.Instance.CreateWeapon();
         Debug.Log("CreateWeapon 호출됨");
     }
 

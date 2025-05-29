@@ -69,7 +69,6 @@ namespace JY
 
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                Debug.Log("Left Shift Pressed");
                 if (_AttackWaitCoroutine != null)
                     StopCoroutine(_AttackWaitCoroutine);
 

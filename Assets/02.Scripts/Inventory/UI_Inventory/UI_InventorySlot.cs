@@ -31,6 +31,9 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     public void OnBeginDrag(PointerEventData eventData)
     {
         UI_InventoryPopup.Instance.StartDragSlot(this);
+        Color color = IconImageUI.color;
+        color.a = 0.5f;
+        IconImageUI.color = color;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -81,6 +84,9 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     public void OnEndDrag(PointerEventData eventData)
     {
         UI_InventoryPopup.Instance.StopDragSlot();
+        Color color = IconImageUI.color;
+        color.a = 1.0f;
+        IconImageUI.color = color;
     }
 
     public virtual void SetItem(Item item)
