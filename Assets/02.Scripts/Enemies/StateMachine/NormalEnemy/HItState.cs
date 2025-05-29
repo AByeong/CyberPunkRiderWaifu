@@ -48,6 +48,8 @@ public class HItState : BaseNormalEnemyState
     // [SerializeField] private float _knockbackDistance = 2.0f;
     [SerializeField] private float _knockbackTime = 0.2f;
     [SerializeField] private float _knockbackAirbonCoeff = 0;
+
+    public Damage GettedDamage;
     // --- 넉백/공중띄우기 관련 변수 끝 ---
 
     // --- 공중 상태 콜라이더 제어 관련 변수 ---
@@ -86,7 +88,7 @@ public class HItState : BaseNormalEnemyState
         _initialRendererColors.Clear();
 
         Renderer[] allRenderers = Owner.GetComponentsInChildren<Renderer>(true);
-
+        
         foreach (Renderer rend in allRenderers)
         {
             if (rend != null && rend.sharedMaterials != null)
@@ -125,6 +127,11 @@ public class HItState : BaseNormalEnemyState
     {
         base.OnEnter();
         _hitTimer = 0f;
+
+        if (Owner.TakedDamage.From.CompareTag("Player"))
+        {
+            //SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
+        }
 
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 

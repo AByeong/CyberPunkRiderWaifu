@@ -19,6 +19,7 @@ public enum EPlayerState
     Skill8
 
 }
+
 [Serializable]
 public class SoundComponent
 {

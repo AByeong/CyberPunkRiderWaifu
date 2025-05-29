@@ -8,7 +8,7 @@ public abstract class Popup : MonoBehaviour
     {
         
         UIManager.Instance.PopupManager.PopupStack.Push(this); 
-        
+        SoundManager.Instance.Play(SoundType.UI_Open);
         this.gameObject.SetActive(true);
         
         
@@ -40,7 +40,8 @@ public abstract class Popup : MonoBehaviour
     virtual public void ClosePopup()
     {
         
-        
+        SoundManager.Instance.Play(SoundType.UI_Close);
+
         
         
         

@@ -48,7 +48,7 @@ public class EliteAI_Female : MonoBehaviour
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
 
         //Debug.Log($"[StampStep] Detected {detectedColliders.Length} colliders in range.");
-
+        SoundManager.Instance.Play(SoundType.Elite_Female_Step);
         foreach (Collider hitCollider in detectedColliders)
         {
             if (hitCollider.tag == "Elite") continue;
@@ -72,6 +72,11 @@ public TrailRenderer EyeTrail;
 
 public void EyeTurnOn()
 {
+    if (!EyeTrail.enabled)
+    {
+        SoundManager.Instance.Play(SoundType.Elite_Female_Detect);
+    }
+
     EyeTrail.gameObject.SetActive(true);
 }
 
