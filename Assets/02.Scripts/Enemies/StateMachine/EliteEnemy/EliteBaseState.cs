@@ -20,8 +20,15 @@ public class EliteBaseState : MonoState
 
         if (Owner.IsHit && !SuperMachine.IsCurrentState<EliteDeadState>())
         {
+            if (SuperMachine.IsCurrentState<EliteAttackState>())
+            {
+                Owner.IsHit = false;
+                return;    
+            }
+
             SuperMachine.ChangeState<EliteHitState>();
             return;
         }
+
     }
 }

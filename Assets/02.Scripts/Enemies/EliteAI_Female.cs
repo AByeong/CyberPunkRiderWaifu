@@ -4,32 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class EliteAI_Female : MonoBehaviour
+public class EliteAI_Female : EliteEnemy
 {
-    public Animator EliteAnimator;
 
+    public TrailRenderer EyeTrail;
     public float StampRange;
     public Transform StampPosition; // 현재 StampStep에서는 사용되지 않지만, 기즈모에서 활용 가능
 
-    [SerializeField]
-    private float runCooldownDuration = 3.0f;
+    [SerializeField] private float runCooldownDuration = 3.0f;
 
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
-    private Collider _collider;
 
-    
-    [SerializeField]
-    private ElliteStateMachine _elliteStateMachineite;
-    
-    
-    private void Start()
+    protected override void Update()
     {
-        _collider = GetComponent<Collider>();
-    }
-
-    void Update()
-    {
+        base.Update();
+        
         if (isCoolingDown)
         {
             currentCooldownTime -= Time.deltaTime;
@@ -44,6 +34,11 @@ public class EliteAI_Female : MonoBehaviour
 
     public void StampStep()
     {
+        if (_navMeshAgent.velocity.magnitude < 4f)
+        {
+            return;
+        }
+
         Vector3 sphereCenter = StampPosition.position;
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
         
@@ -70,7 +65,7 @@ public class EliteAI_Female : MonoBehaviour
        // Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
     }
 
-public TrailRenderer EyeTrail;
+
 
 public void EyeTurnOn()
 {
@@ -92,6 +87,7 @@ public GameObject KingStompVFX;
 public void KingStompAttack()
 {
     SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
+    _eliteStateMachine.ChangeState<EliteAttackState>();
     KingStompVFX.SetActive(true);
     KingStompVFX.GetComponent<ParticleSystem>().Play();
 }
@@ -101,7 +97,7 @@ public void KingStompAttack()
     public void StompAttack()
     {
         SoundManager.Instance.Play(SoundType.Elite_Electricity);
-        _elliteStateMachineite.ChangeState<EliteAttackState>();
+        _eliteStateMachine.ChangeState<EliteAttackState>();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -111,6 +107,7 @@ public void KingStompAttack()
     public void TornadoAttack()
     {
         SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
+        _eliteStateMachine.ChangeState<EliteAttackState>();
         TornadoVFX.SetActive(true);
         TornadoVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -127,14 +124,14 @@ public void KingStompAttack()
     {
         if (!isCoolingDown)
         {
-            EliteAnimator.SetBool("Running", true);
+            _animator.SetBool("Running", true);
             if(_collider != null) _collider.enabled = false; // 콜라이더가 있는 경우에만 비활성화
         }
     }
 
     public void NotRunning()
     {
-        EliteAnimator.SetBool("Running", false);
+        _animator.SetBool("Running", false);
         if(_collider != null) _collider.enabled = true; // 콜라이더가 있는 경우에만 활성화
         isCoolingDown = true;
         currentCooldownTime = runCooldownDuration;
