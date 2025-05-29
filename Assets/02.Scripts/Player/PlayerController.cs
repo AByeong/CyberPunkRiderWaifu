@@ -30,7 +30,7 @@ namespace JY
         public bool IsInCombo;
         public bool IsAirCombo;
         [Header("Dash")]
-        public float DashDistance = 5.0f;
+        public float DashDistance => MaxForwardSpeed * 0.6f;
         public float DashCooldown;
         public float DashDuration = 0.2f;
         public bool NoGravity;
