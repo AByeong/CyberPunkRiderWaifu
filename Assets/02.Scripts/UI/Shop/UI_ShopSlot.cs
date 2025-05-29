@@ -18,7 +18,7 @@ public class UI_ShopSlot : MonoBehaviour
 
     public void OnSellItems()
     {
-        
+        Price *= 2;
     }
 }
 

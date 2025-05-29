@@ -82,9 +82,7 @@ public class UI_InventoryPopup : Popup
                 }   
                 else if (toSlot.SlotType == SlotType.Equipment)
                 {
-                    
                     toIndex = CheckEquipmentSlotType(toSlot,toIndex);
-                    
                 }
                 else if (toSlot.SlotType == SlotType.Chip)
                 {
@@ -231,18 +229,6 @@ public class UI_InventoryPopup : Popup
         
 
         return -1;
-    }
-    
-    public void EquipItem(UI_EquipmentSlot toSlot)
-    {
-        StopDragSlot();
-        
-        Refresh();
-    }
-
-    public void SetChip(UI_ChipSlot toSlot)
-    {
-        
     }
 
     private void Update()
