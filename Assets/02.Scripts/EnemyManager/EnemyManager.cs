@@ -1,63 +1,33 @@
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
    [SerializeField]
-   private Queue<MonsterSpawner> _normalMonsterSpawners;
-   public Queue<MonsterSpawner> NormalMonsterSpawners => _normalMonsterSpawners;
+   private MonsterSpawner[] _normalMonsterSpawners = new MonsterSpawner[0];
+   public MonsterSpawner[] NormalMonsterSpawners => _normalMonsterSpawners;
 
    [SerializeField]
-   private Queue<MonsterSpawner> _eliteMonsterSpawners;
-   public Queue<MonsterSpawner> EliteMonsterSpawners => _eliteMonsterSpawners;
+   private MonsterSpawner[] _eliteMonsterSpawners = new MonsterSpawner[0];
+   public MonsterSpawner[] EliteMonsterSpawners => _eliteMonsterSpawners;
 
    [SerializeField]
-   private MonsterSpawner _bossMonsterSpawners;
-   public MonsterSpawner BossMonsterSpawners => _bossMonsterSpawners;
+   private MonsterSpawner _bossMonsterSpawner;
+   public MonsterSpawner BossMonsterSpawner => _bossMonsterSpawner;
 
-   public float Timer = 1f;
 
-   protected override void Awake()
+   public void SetNormalSpwner(MonsterSpawner[] spawners)
    {
-      base.Awake();
-      EnemyManagerInit();
+      _normalMonsterSpawners = spawners;
    }
 
-   public void EnemyManagerInit()
+   public void SetEliteSpawner(MonsterSpawner[] spawners)
    {
-      _normalMonsterSpawners = new Queue<MonsterSpawner>();
-      _eliteMonsterSpawners = new Queue<MonsterSpawner>();
+      _eliteMonsterSpawners = spawners;
    }
 
-   public void AddNormalSpwner(MonsterSpawner spawner)
+   public void SetBossSpawner(MonsterSpawner spawner)
    {
-      _normalMonsterSpawners.Enqueue(spawner);
-   }
-
-   public void AddEliteSpawner(MonsterSpawner spawner)
-   {
-      _eliteMonsterSpawners.Enqueue(spawner);
-   }
-
-   public void AddBossSpawner(MonsterSpawner spawner)
-   {
-      _bossMonsterSpawners = spawner;
-   }
-
-   public void RemoveNormalSpwner()
-   {
-      _normalMonsterSpawners.Dequeue();
-   }
-
-   public void RemoveEliteSpawner()
-   {
-      _eliteMonsterSpawners.Dequeue();
-   }
-
-   public void RemoveBossSpawner()
-   {
-      _bossMonsterSpawners = null;
+      _bossMonsterSpawner = spawner;
    }
 
 
@@ -79,26 +49,21 @@ public class EnemyManager : Singleton<EnemyManager>
       }
    }
 
+   public void Spawn(int spawnerIndex)
+   {
+      _normalMonsterSpawners[spawnerIndex].StartSpawning();
+   }
 
-   // public void Spawn(int spawnerIndex)
-   // {
-   //    foreach (MonsterSpawner spawner in _normalMonsterSpawners)  // Queue로 자료형 변경으로 인한 코드 수정
-   //    {
-   //       spawner.StartSpawning();         
-   //    }
-   //    // _normalMonsterSpawners[spawnerIndex].StartSpawning();
-   // }
-
-   // public void SpawnElite(int spawnerIndex)
-   // {
-   //    _eliteMonsterSpawners[spawnerIndex].StartSpawning();
-   // }
-
+   public void SpawnElite(int spawnerIndex)
+   {
+      _eliteMonsterSpawners[spawnerIndex].StartSpawning();
+   }
 
    public void SpawnBoss()
    {
-      _bossMonsterSpawners.StartSpawning();
+      _bossMonsterSpawner.StartSpawning();
    }
+
 
    public void DespawnALL()
    {
@@ -114,17 +79,18 @@ public class EnemyManager : Singleton<EnemyManager>
          }
       }
 
-      // foreach (MonsterSpawner spawner in _eliteMonsterSpawners)
-      // {
-      //    foreach (Transform child in spawner.transform.GetChild(0))
-      //    {
-      //       Enemy enemy = child.GetComponent<Enemy>();
-      //       if (enemy != null && gameObject.activeInHierarchy == true)
-      //       {
-      //          enemy.Pool.ReturnObject(enemy.gameObject);
-      //       }
-      //    }
-      // }
+      foreach (MonsterSpawner spawner in _eliteMonsterSpawners)
+      {
+         foreach (Transform child in spawner.transform.GetChild(0))
+         {
+            Enemy enemy = child.GetComponent<Enemy>();
+            if (enemy != null && enemy.gameObject.activeInHierarchy == true)
+            {
+               enemy.Pool.ReturnObject(enemy.gameObject);
+            }
+         }   
+      }
+      
    }
    
 }

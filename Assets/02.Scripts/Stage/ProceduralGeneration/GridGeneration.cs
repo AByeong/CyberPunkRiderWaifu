@@ -42,7 +42,7 @@ public class GridGeneration : MonoBehaviour
 
     // public MonsterSpawner[] Spawners;
 
-    public MonsterSpawner NormalSpawner;
+    public MonsterSpawner[] NormalSpawner;
     public MonsterSpawner[] EliteSpawner;
     public MonsterSpawner BossSpawner;
 
@@ -145,21 +145,7 @@ public class GridGeneration : MonoBehaviour
 
 
     public void DestroyMap()
-    {
-        // 스포너 해제
-        for (int i = 0; i < NormalSpawnerCount; i++)
-        {
-            EnemyManager.Instance.RemoveNormalSpwner();
-        }
-        for (int i = 0; i < Elite0SpanwerCount + Elite1SpanwerCount; i++)
-        {
-            EnemyManager.Instance.RemoveEliteSpawner();
-        }
-        for (int i = 0; i < BossSpawnerCount; i++)
-        {
-            EnemyManager.Instance.RemoveBossSpawner();
-        }
-        
+    {     
         // 맵 오브젝트 모두 해제
         foreach (Transform child in gameObject.transform)
         {
@@ -616,22 +602,6 @@ public class GridGeneration : MonoBehaviour
                             {
                                 var (spawner, type) = result.Value;
                                 spawner.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-
-                                // switch (type)
-                                // {
-                                //     case SpawnerType.Normal:
-                                //         _normalSpawners.Add(spawner);
-                                //         break;
-                                //     case SpawnerType.Elite0:
-                                //         _eliteSpawners.Add(spawner);
-                                //         break;
-                                //     case SpawnerType.Elite1:
-                                //         _eliteSpawners.Add(spawner);
-                                //         break;
-                                //     case SpawnerType.Boss:
-                                //         _bossSpawner = spawner;
-                                //         break;
-                                // }
                             }
                             break;
                         }
@@ -653,7 +623,7 @@ public class GridGeneration : MonoBehaviour
         if (_normalSpawnerCreated < NormalSpawnerCount)
         {
             _normalSpawnerCreated++;
-            return (NormalSpawner, SpawnerType.Normal);
+            return (NormalSpawner[0], SpawnerType.Normal);
         }
         else if (_elite0SpawnerCreated < Elite0SpanwerCount)
         {

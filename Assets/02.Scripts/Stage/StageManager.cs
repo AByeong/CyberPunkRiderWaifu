@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Unity.AI.Navigation;
 using System.Collections.Generic;
@@ -27,10 +26,6 @@ public class StageManager : MonoBehaviour
     public int _nextStageIndex;
 
     private float _yPosOffset = 2f;
-
-    // private Queue<List<GameObject>> _entryQueue = new Queue<List<GameObject>>();
-    // private Queue<List<GameObject>> _exitQueue = new Queue<List<GameObject>>();
-
 
 
     private void Start()
@@ -146,7 +141,7 @@ public class StageManager : MonoBehaviour
 
         EnemyManager.Instance.DespawnALL();
         AddSpawners(_nextStageIndex);
-        EnemyManager.Instance.AddBossSpawner(SubStageList[_currentStageIndex].BossSpawner);
+        EnemyManager.Instance.SetBossSpawner(SubStageList[_nextStageIndex].BossSpawner);
         EnemyManager.Instance.InitSpawn();
 
 
@@ -173,21 +168,10 @@ public class StageManager : MonoBehaviour
     private void AddSpawners(int stageIndex)
     {
         // Normal Enemy 
-        while (EnemyManager.Instance.NormalMonsterSpawners.Count > 0)
-        {
-            EnemyManager.Instance.RemoveNormalSpwner();
-        }
-        EnemyManager.Instance.AddNormalSpwner(SubStageList[stageIndex].NormalSpawner);
+        EnemyManager.Instance.SetNormalSpwner(SubStageList[stageIndex].NormalSpawner);
 
 
         // Elite Enemy
-        while (EnemyManager.Instance.EliteMonsterSpawners.Count > 0)
-        {
-            EnemyManager.Instance.RemoveEliteSpawner();
-        }
-        foreach (MonsterSpawner spawner in SubStageList[stageIndex].EliteSpawner)
-        {
-            EnemyManager.Instance.AddEliteSpawner(spawner);
-        }
+        EnemyManager.Instance.SetEliteSpawner(SubStageList[stageIndex].EliteSpawner);
     }
 }
