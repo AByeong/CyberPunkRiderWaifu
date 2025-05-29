@@ -28,7 +28,6 @@ public class UI_ShopPopup : Popup
     {
         foreach (var slot in ShopSlots)
         {
-            slot.Price = 1000;
             slot.PriceText.text = $"{slot.Price.ToString()}";
         }
     }

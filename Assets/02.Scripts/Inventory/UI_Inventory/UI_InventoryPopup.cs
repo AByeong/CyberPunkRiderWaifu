@@ -70,9 +70,9 @@ public class UI_InventoryPopup : Popup
             int toIndex = -1;
             
             //  fromSlot     toSlot
+            // Inventory -> Inventory
             // Inventory -> Equipment
             // Inventory -> Chip
-            // Inventory -> Inventory
             if (_fromSlot.SlotType == SlotType.Inventory)
             {
                 if (toSlot.SlotType == SlotType.Inventory)
@@ -82,7 +82,9 @@ public class UI_InventoryPopup : Popup
                 }   
                 else if (toSlot.SlotType == SlotType.Equipment)
                 {
+                    
                     toIndex = CheckEquipmentSlotType(toSlot,toIndex);
+                    
                 }
                 else if (toSlot.SlotType == SlotType.Chip)
                 {
@@ -97,6 +99,7 @@ public class UI_InventoryPopup : Popup
                 if (toSlot.SlotType == SlotType.Inventory)
                 {
                     toIndex = _slots.FindIndex(slot => slot == toSlot);
+                    InventoryManager.Instance.RemoveStat(_fromSlot.Item);
                 }
                 else if (toSlot.SlotType == SlotType.Chip ||
                          toSlot.SlotType == SlotType.Equipment)
@@ -208,6 +211,7 @@ public class UI_InventoryPopup : Popup
                 if (dataSO.EquipmentType != toEquipmentSlot.EquipmentType) return -1;
                 
                 toIndex = _equipmentSlots.FindIndex(slot => slot == toSlot);
+                _isSwapEquipment = true;
                 return toIndex;
             }
         }
