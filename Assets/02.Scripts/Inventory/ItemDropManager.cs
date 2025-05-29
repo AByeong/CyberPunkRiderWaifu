@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 // 전역 Enum 선언
-public enum DropItemType { Equipment, Chip, Etc, Gold }
+public enum DropItemType { Item, Etc, Gold }
 
 public class ItemDropManager : Singleton<ItemDropManager>
 {
@@ -15,7 +15,6 @@ public class ItemDropManager : Singleton<ItemDropManager>
     public GameObject EquipmentNormalVFX;
     public GameObject EquipmentRareVFX;
     public GameObject EquipmentUniqueVFX;
-    public GameObject ChipVFX;
     public GameObject EtcVFX;
     public GameObject GoldVFX;
 
@@ -35,7 +34,7 @@ public class ItemDropManager : Singleton<ItemDropManager>
             for (int i = 0; i < count; i++)
             {
                 GameObject vfx = null;
-                if (type == DropItemType.Equipment)
+                if (type == DropItemType.Item)
                 {
                     DropGrade grade = GetRandomGrade();
                     vfx = GetVFXByTypeAndGrade(type, grade);
@@ -70,7 +69,7 @@ public class ItemDropManager : Singleton<ItemDropManager>
     {
         switch (type)
         {
-            case DropItemType.Equipment:
+            case DropItemType.Item:
                 switch (grade)
                 {
                     case DropGrade.Normal: return EquipmentNormalVFX;
@@ -78,8 +77,6 @@ public class ItemDropManager : Singleton<ItemDropManager>
                     case DropGrade.Unique: return EquipmentUniqueVFX;
                 }
                 break;
-            case DropItemType.Chip:
-                return ChipVFX;
             case DropItemType.Etc:
                 return EtcVFX;
             case DropItemType.Gold:
