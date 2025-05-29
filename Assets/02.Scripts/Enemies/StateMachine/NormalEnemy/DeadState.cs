@@ -40,7 +40,7 @@ public class DeadState : BaseNormalEnemyState
         // 예시: 장비 2개, 칩 1개, 골드 3개 드랍
         var dropPlan = new Dictionary<DropItemType, int>
         {
-            { DropItemType.Equipment, 3 },
+            { DropItemType.Item, 3 },
         };
         ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
     }

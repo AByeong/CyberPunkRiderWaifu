@@ -24,6 +24,7 @@ public class Item
     public float CritChance = 0.0f;
     public float CritDamage = 0.0f;
 
+    public SetItemType SetItemType;
     // Chip 옵션
     public float SkillRange = 0.0f;
     public float ReduceCooldown = 0.0f;
@@ -45,6 +46,7 @@ public class Item
                 AttackSpeed = equipmentSaveData.AttackSpeed;
                 CritChance = equipmentSaveData.CritChance;
                 CritDamage = equipmentSaveData.CritDamage;
+                SetItemType = equipmentSaveData.SetItemType;
             }
             else if (saveData is ChipSaveData chipSaveData)
             {
@@ -67,7 +69,8 @@ public class Item
                 Speed = Speed,
                 AttackSpeed = AttackSpeed,
                 CritChance = CritChance,
-                CritDamage = CritDamage
+                CritDamage = CritDamage,
+                SetItemType = SetItemType
             };
         }
         else if (Data.ItemType == ItemType.Chip)

@@ -56,7 +56,7 @@ public class InventoryManager : Singleton<InventoryManager>
         GameManager.Instance.player.ApplyEquipment(StatType.AttackSpeed,item.AttackSpeed);
         GameManager.Instance.player.ApplyEquipment(StatType.CritChance,item.CritChance);
         GameManager.Instance.player.ApplyEquipment(StatType.CritDamage,item.CritDamage);
-        Debug.Log($"{item.Speed}");
+        Debug.Log($"playerStat 참조 안됨, ItemSpeed : {item.Speed}"); // 플레이어 Stat 참조 안됨
     }
 
     public void RemoveStat(Item item)
@@ -121,6 +121,7 @@ public class EquipmentSaveData : ItemSaveData
     public float AttackSpeed;
     public float CritChance;
     public float CritDamage;
+    public SetItemType SetItemType;
 }
 
 [System.Serializable]
