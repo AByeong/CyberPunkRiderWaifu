@@ -39,7 +39,7 @@ public class HItState : BaseNormalEnemyState
     // --- 넉백/공중띄우기 관련 변수 ---
     [Header("Knockback & Airborne")]
     [SerializeField] private float _maxAirHeight = 3f;
-    [SerializeField] private float _airRiseAmount = 2f;
+    [SerializeField] public float _airRiseAmount = 2f;
     [SerializeField] private float _airRiseTime = 0.2f;
     [SerializeField] private float _hangTime = 0.5f;
     [SerializeField] private float _fallTime = 0.8f;

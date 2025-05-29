@@ -46,7 +46,6 @@ public class EliteAI_Female : MonoBehaviour
     {
         Vector3 sphereCenter = StampPosition.position;
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
-        int affectedCount = 0; // 영향을 받은 개체 수 카운트
 
         //Debug.Log($"[StampStep] Detected {detectedColliders.Length} colliders in range.");
 
@@ -62,8 +61,8 @@ public class EliteAI_Female : MonoBehaviour
                 damage.DamageValue = 0;
                 damage.DamageType = EDamageType.Airborne;
                 damage.DamageForce = 2f;
+                damage.From = this.gameObject;
                 damageable.TakeDamage(damage);
-                affectedCount++;
             }
         }
        // Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
@@ -111,7 +110,6 @@ public void KingStompAttack()
     public void TornadoAttackEnd()
     {
         TornadoVFX.SetActive(false);
-        TornadoVFX.GetComponent<VisualEffect>().Stop();
         TornadoVFX.GetComponent<ParticleSystem>().Stop();
     }
     
