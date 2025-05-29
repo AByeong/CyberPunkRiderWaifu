@@ -1,21 +1,27 @@
-using System;
 using JY;
 using UnityEngine;
 using UnityEngine.Serialization;
 public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose;
-    public bool isInDelivery = false;
-    public bool isCursorLockNeed = false;
+    public bool isInDelivery;
+    public bool isCursorLockNeed;
     public StageMainUI StageMainUI;
 
     [Header("팝업")]
     public PopupManager PopupManager;
     [FormerlySerializedAs("_playerInput")] public PlayerInput PlayerInput;
 
+    private void Update()
+    {
+        InventoryPopup();
+        SkillPopup();
+        DeliveryPopup();
+    }
+
     public void CursorLock(bool locking)
     {
-        if(locking == true && isCursorLockNeed == true)
+        if (locking && isCursorLockNeed)
         {
             Cursor.lockState = CursorLockMode.Locked; // 커서를 화면 중앙에 고정
             Cursor.visible = false; // 커서 숨김
@@ -25,14 +31,7 @@ public class UIManager : Singleton<UIManager>
             Cursor.lockState = CursorLockMode.Confined; //커서가 화면 밖을 나가지는 못하게 함
             Cursor.visible = true; //커서 보이게 함
         }
-        
-    }
 
-    private void Update()
-    {
-        InventoryPopup();
-        SkillPopup();
-       DeliveryPopup();
     }
 
     private void SkillPopup()
@@ -51,7 +50,7 @@ public class UIManager : Singleton<UIManager>
             }
         }
     }
-    
+
     private void DeliveryPopup()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -71,32 +70,32 @@ public class UIManager : Singleton<UIManager>
                 PopupManager.CloseLastPopup();
 
             }
-            
-            
-        //     if (isInDelivery)
-        //     {
-        //
-        //         PlayerInput.GainControl();
-        //         if (!ESCisClose)
-        //         {
-        //             PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
-        //             if (PopupManager.PopupStack.Count > 0)
-        //             {
-        //
-        //                 GameManager.Instance.GameStop();
-        //             }
-        //         }
-        //         else
-        //         {
-        //             PopupManager.CloseLastPopup();
-        //
-        //         }
-        //     }
-        // }
-        // else
-        // {
-        //     PopupManager.CloseLastPopup();
-        //
+
+
+            //     if (isInDelivery)
+            //     {
+            //
+            //         PlayerInput.GainControl();
+            //         if (!ESCisClose)
+            //         {
+            //             PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
+            //             if (PopupManager.PopupStack.Count > 0)
+            //             {
+            //
+            //                 GameManager.Instance.GameStop();
+            //             }
+            //         }
+            //         else
+            //         {
+            //             PopupManager.CloseLastPopup();
+            //
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     PopupManager.CloseLastPopup();
+            //
         }
     }
 

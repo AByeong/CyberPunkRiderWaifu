@@ -9,8 +9,17 @@ public class SkillUIManager : Popup
     public List<UI_Skill> AvailableSkills;
     public List<UI_Skill> EquippedSkills;
 
+    private void Update()
+    {
+        UpdateCooldowns(Time.deltaTime);
+    }
 
-    private void Start()
+    public override void OpenPopup()
+    {
+        Init();
+        base.OpenPopup();
+    }
+    private void Init()
     {
         for (int i = 0; i < SkillManager.Instance.Skills.Count; i++)
         {
@@ -29,12 +38,6 @@ public class SkillUIManager : Popup
                 AvailableSkills[equipped.Index].Button.interactable = false;
             }
         }
-
-
-    }
-    private void Update()
-    {
-        UpdateCooldowns(Time.deltaTime);
     }
 
 

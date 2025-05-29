@@ -12,18 +12,20 @@
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void SetChipOption(ChipDataSO chipDataSO)
+    public void TrySetChipOption(ChipDataSO chipDataSO)
     {
+        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
+
         SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipDataSO.ReduceCooldown;
         SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipDataSO.SkillRange;
-
     }
 
-    public void ClearChipOption(ChipDataSO chipDataSO)
+    public void TryClearChipOption(ChipDataSO chipDataSO)
     {
+        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
+
         SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipDataSO.ReduceCooldown;
         SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipDataSO.SkillRange;
-
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)
@@ -33,7 +35,7 @@
         {
             if (chipSlot.HasItem)
             {
-                SetChipOption(chipSlot.Item.Data as ChipDataSO);
+                TrySetChipOption(chipSlot.Item.Data as ChipDataSO);
             }
         }
     }
@@ -46,7 +48,7 @@
         {
             if (chipSlot.HasItem)
             {
-                ClearChipOption(chipSlot.Item.Data as ChipDataSO);
+                TryClearChipOption(chipSlot.Item.Data as ChipDataSO);
             }
         }
     }
