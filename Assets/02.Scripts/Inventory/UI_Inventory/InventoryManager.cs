@@ -100,12 +100,6 @@ public class InventoryManager : Singleton<InventoryManager>
             Add(item);
         }
     }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        Debug.Log("나 삭제됨");
-    }
 }
 
 [System.Serializable]

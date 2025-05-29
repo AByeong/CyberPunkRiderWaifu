@@ -26,17 +26,14 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
     // 공통 장비 생성 함수
     private ItemBaseDataSO CreateEquipment(EquipmentType type, Sprite icon, GameObject prefab, ref int index, string name = null)
     {
-        ItemBaseDataSO itemBaseDataSo = new ItemBaseDataSO();
-        itemBaseDataSo.Id = $"Item_{_itemIndex++}";
-        itemBaseDataSo.ItemName = name ?? $"{type}_{index}";
-        itemBaseDataSo.Icon = icon;
-        itemBaseDataSo.ItemType = ItemType.Equipment;
+        EquipmentDataSO itemBaseDataSO = new  EquipmentDataSO();
+        itemBaseDataSO.Id = $"Equipment.{type}_{index++}";
+        itemBaseDataSO.ItemName = name ?? $"{type}_{index}";
+        itemBaseDataSO.Icon = icon;
 
-        itemBaseDataSo.Id = $"{ItemType.Equipment}.{type}_{index++}";
-        EquipmentDataSO dataSo = new EquipmentDataSO();
-        dataSo.Id = $"EquipmentDataId_{type}_{index}";
-        dataSo.EquipmentName = name ?? type.ToString();
-        dataSo.ModelPrefab = prefab;
+        itemBaseDataSO.EquipmentName = name ?? type.ToString();
+        itemBaseDataSO.EquipmentType = type;
+        itemBaseDataSO.ModelPrefab = prefab;
 
         Dictionary<StatType, float> stat = new Dictionary<StatType, float>();
         foreach (StatType statType in System.Enum.GetValues(typeof(StatType)))
@@ -61,10 +58,9 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
             stat[StatType.Speed] = 15.0f;
         }
 
-        dataSo.Stats = stat;
-        itemBaseDataSo = dataSo;
+        itemBaseDataSO.Stats = stat;
 
-        return itemBaseDataSo;
+        return itemBaseDataSO;
     }
 
     public ItemBaseDataSO CreateWeapon()
