@@ -4,7 +4,7 @@ using UnityEngine.AI;
 // AITypes.cs 또는 공용 파일에 정의된 AITier enum을 사용한다고 가정합니다.
 // public enum AITier { Tier1_ActiveFormation, Tier2_Approaching, Tier3_Background }
 
-public abstract class MonsterAI : MonoBehaviour
+public class MonsterAI : MonoBehaviour
 {
     [Header("Runtime Status")]
     public AITier CurrentTier = AITier.Tier3_Background;
@@ -143,8 +143,14 @@ public abstract class MonsterAI : MonoBehaviour
     protected virtual float GetTier1Speed() => DefaultTier1Speed;
     protected virtual float GetTier1Acceleration() => DefaultTier1Acceleration;
     protected virtual float GetTier2Speed() => DefaultTier2Speed;
-    protected abstract void ConfigureNavMeshAgentForTier1(); // Tier1 NavMeshAgent 설정 (stoppingDistance 등)
-    protected abstract void OnExitTier1(); // Tier1 상태를 벗어날 때 호출
+
+    protected virtual void ConfigureNavMeshAgentForTier1()
+    {
+    } // Tier1 NavMeshAgent 설정 (stoppingDistance 등)
+
+    protected virtual void OnExitTier1()
+    {
+    } // Tier1 상태를 벗어날 때 호출
 
     public void ManagedUpdateLogic()
     {
@@ -172,7 +178,9 @@ public abstract class MonsterAI : MonoBehaviour
         }
     }
 
-    protected abstract void UpdateTier1Behavior();
+    protected virtual void UpdateTier1Behavior()
+    {
+    }
 
     protected virtual void UpdateTier2Behavior()
     {
