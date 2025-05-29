@@ -56,16 +56,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             Debug.LogWarning($"{gameObject.name} Collider가 없습니다");
         }
-
-        CurrentHealthPoint = _enemyData.HealthPoint;
-        IsHit = false;
-        IsInAir = false;
     }
 
     private async void Start()
     {
         _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
         _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
+
+        CurrentHealthPoint = _enemyData.HealthPoint;
+        IsHit = false;
+        IsInAir = false;
     }
 
     public virtual void Initialize()
