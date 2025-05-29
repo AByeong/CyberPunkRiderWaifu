@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
     public string MaterialName;
@@ -13,10 +12,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public bool IsHit { get; set; }
     public bool IsInAir { get; set; }
-    public int TakedDamageValue { get; private set; }
     public Vector3 VerticalVelocity = new Vector3();
 
-    public EDamageType DamageType;
+    public Damage TakedDamage => _takedDamage;
+    private Damage _takedDamage = new Damage();
 
     protected Animator _animator;
     protected NavMeshAgent _navMeshAgent;
@@ -34,7 +33,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public Animator Animator => _animator;
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
     public Collider Collider => _collider;
-
+    public Transform DamagePopupPosition;
+    public GameObject DamagePopup;
+    public GameObject WorldSpaceCanvas;
 
     protected virtual void Awake()
     {
@@ -86,9 +87,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         IsHit = true;
         CurrentHealthPoint -= damage.DamageValue;
-        TakedDamageValue = damage.DamageValue;
-        DamageType = damage.DamageType;
+        _takedDamage = damage;
         // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
+        Vector3 worldPos = DamagePopupPosition.position;
+
+        // Canvas 하위로 생성
+        GameObject popup = Instantiate(DamagePopup, WorldSpaceCanvas.transform);
+        popup.transform.position = worldPos;
+        popup.GetComponentInChildren<TypingEffect>().Typing(damage.DamageValue.ToString());
+        // 선택: 파괴 또는 애니메이션
+        Destroy(popup, 1.5f);
     }
 
     public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정

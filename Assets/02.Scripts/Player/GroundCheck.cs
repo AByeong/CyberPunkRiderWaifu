@@ -5,7 +5,6 @@ using UnityEngine;
 [Serializable]
 public class GroundCheckComponent
 {
-    public Animator Animator;
     public CharacterController CharacterController;
 }
 
@@ -21,7 +20,6 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
     public bool IsGrounded { get; private set; }
     private void Reset()
     {
-        _component.Animator = GetComponent<Animator>();
         _component.CharacterController = GetComponent<CharacterController>();
     }
 
@@ -32,7 +30,7 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
     }
     private void OnDrawGizmos()
     {
-        if (_component.Animator == null || _component.CharacterController == null)
+        if (_component.CharacterController == null)
         {
             Reset();
         }
@@ -62,7 +60,7 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
         if (_isGroundedLast != IsGrounded)
         {
             _isGroundedLast = IsGrounded;
-            _component.Animator.SetBool("IsGrounded", IsGrounded);
+            // _component.Animator.SetBool("IsGrounded", IsGrounded);
         }
     }
 }

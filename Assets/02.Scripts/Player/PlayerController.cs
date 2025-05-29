@@ -19,7 +19,8 @@ namespace JY
         private const float GroundDeceleration = 25f;
         public float MaxAirAttackGraceTime = 0.3f;
 
-        public float MaxForwardSpeed = 8f;
+        public float MaxForwardSpeed;
+        public float AttackPower;
         public float Gravity = 20f;
         public float JumpSpeed = 15f;
         public float MaxTurnSpeed = 1200f;
@@ -29,10 +30,12 @@ namespace JY
         public bool IsInCombo;
         public bool IsAirCombo;
         [Header("Dash")]
-        public float DashDistance = 5.0f;
+        public float DashDistance => MaxForwardSpeed * 0.6f;
         public float DashCooldown;
         public float DashDuration = 0.2f;
         public bool NoGravity;
+
+        public IStatsProvider Stat { get; private set; }
 
         private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
         private readonly int _hashAirborne = Animator.StringToHash("Airborne");
@@ -116,7 +119,8 @@ namespace JY
         private bool _readyToJump;
         private Renderer[] _renderers;
         private bool _rootMotionGroundedStart;
-        private IStatsProvider _stat;
+        
+
         private Quaternion _targetRotation;
         private float _verticalSpeed;
         private bool _wasInRootMotionState;
@@ -131,11 +135,10 @@ namespace JY
         }
         private async void Start()
         {
-            _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
-
+            Stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
+            RefreshStat();
         }
-
-
+        
         private void Update()
         {
             CacheAnimatorState();
@@ -322,11 +325,13 @@ namespace JY
 
         public void ApplyEquipment(StatType statType, float value)
         {
-            _stat = new StatModifierDecorator(_stat, statType, value);
+            Stat = new StatModifierDecorator(Stat, statType, value);
+            RefreshStat();
         }
         public void RemoveEquipment(StatType statType, float value)
         {
-            _stat = new StatModifierDecorator(_stat, statType, -value);
+            Stat = new StatModifierDecorator(Stat, statType, -value);
+            RefreshStat();
         }
         public void Dash()
         {
@@ -679,6 +684,11 @@ namespace JY
             _animator.SetFloat(_hashHurtFromX, localHurt.x);
             _animator.SetFloat(_hashHurtFromY, localHurt.z);
 
+        }
+        public void RefreshStat()
+        {
+            AttackPower = Stat.GetStat(StatType.AttackPower);
+            MaxForwardSpeed = Stat.GetStat(StatType.Speed);
         }
     }
 

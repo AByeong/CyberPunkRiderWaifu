@@ -22,8 +22,6 @@ public class EliteIdleState : EliteBaseState
         float distance = Vector3.Distance(Owner.transform.position, Owner.Target.transform.position);
         if (distance <= Owner.EnemyData.AttackDistance)
         {
-            Owner.AttackType = Random.Range(0, 2);
-            Debug.Log("엘리트의 공격 패턴은 " + Owner.AttackType + " 입니다.");
             SuperMachine.ChangeState<EliteAttackState>();
             return;
         }

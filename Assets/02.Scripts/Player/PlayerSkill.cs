@@ -18,7 +18,6 @@ public class PlayerSkill : MonoBehaviour
     {
         if (_input.Skill1)
         {
-            Debug.Log("1 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha1, out _keyIndex))
             {
                 _player.UseSkill(_keyIndex);
@@ -32,7 +31,6 @@ public class PlayerSkill : MonoBehaviour
 
         if (_input.Skill2)
         {
-            Debug.Log("2 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha2, out _keyIndex))
             {
                 _player.UseSkill(_keyIndex);
@@ -45,7 +43,6 @@ public class PlayerSkill : MonoBehaviour
         }
         if (_input.Skill3)
         {
-            Debug.Log("3 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha3, out _keyIndex))
             {
                 _player.UseSkill(_keyIndex);
@@ -58,7 +55,6 @@ public class PlayerSkill : MonoBehaviour
         }
         if (_input.Skill4)
         {
-            Debug.Log("4 입력받음");
             if (SkillManager.Instance.UseSkill(KeyCode.Alpha4, out _keyIndex))
             {
                 _player.UseSkill(_keyIndex);

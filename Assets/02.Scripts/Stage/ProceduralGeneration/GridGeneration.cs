@@ -38,8 +38,13 @@ public class GridGeneration : MonoBehaviour
     public GameObject FenceCornerPrefab;
     public GameObject FenceDoorPrefab;
     public GameObject PathPrefab;
-    public MonsterSpawner[] SpawnerPrefabs;
     public GameObject[] PropPrefabs;
+
+    // public MonsterSpawner[] Spawners;
+
+    public MonsterSpawner[] NormalSpawner;
+    public MonsterSpawner[] EliteSpawner;
+    public MonsterSpawner BossSpawner;
 
     public float PositionOffset; // 에셋 크기
 
@@ -65,19 +70,16 @@ public class GridGeneration : MonoBehaviour
     private List<Vector2Int> _exitsPos = new List<Vector2Int>();
     private List<Vector2Int> _entriesPos = new List<Vector2Int>();
 
-    [SerializeField]
-    private List<GameObject> _exits = new List<GameObject>();
-    [SerializeField]
-    private List<GameObject> _entries = new List<GameObject>();
+    [SerializeField] private List<GameObject> _exits = new List<GameObject>();
+    [SerializeField] private List<GameObject> _entries = new List<GameObject>();
 
-    [SerializeField]
-    private List<MonsterSpawner> _normalSpawners = new List<MonsterSpawner>();
-    [SerializeField]
-    private List<MonsterSpawner> _eliteSpawners = new List<MonsterSpawner>();
-    private MonsterSpawner _bossSpawner;
-    public List<MonsterSpawner> NormalSpawners => _normalSpawners;
-    public List<MonsterSpawner> EliteSpawners => _eliteSpawners;
-    public MonsterSpawner BossSpawner => _bossSpawner;
+    // [SerializeField] private List<MonsterSpawner> _normalSpawners = new List<MonsterSpawner>();
+    // [SerializeField] private List<MonsterSpawner> _eliteSpawners = new List<MonsterSpawner>();
+    // [SerializeField] private MonsterSpawner _bossSpawner;
+    
+    // public List<MonsterSpawner> NormalSpawners => _normalSpawners;
+    // public List<MonsterSpawner> EliteSpawners => _eliteSpawners;
+    // public MonsterSpawner BossSpawner => _bossSpawner;
 
     private int _totalSpawnerCount;
 
@@ -90,6 +92,11 @@ public class GridGeneration : MonoBehaviour
     // 6. 경계 검출
     // 7. 빈 공간 너비에 따른 랜덤패턴 생성
     // 8. 패턴들 구현
+
+    private void Awake()
+    {
+        
+    }
 
     private void DebugGrid()
     {
@@ -138,21 +145,7 @@ public class GridGeneration : MonoBehaviour
 
 
     public void DestroyMap()
-    {
-        // 스포너 해제
-        for (int i = 0; i < NormalSpawnerCount; i++)
-        {
-            EnemyManager.Instance.RemoveNormalSpwner();
-        }
-        for (int i = 0; i < Elite0SpanwerCount + Elite1SpanwerCount; i++)
-        {
-            EnemyManager.Instance.RemoveEliteSpawner();
-        }
-        for (int i = 0; i < BossSpawnerCount; i++)
-        {
-            EnemyManager.Instance.RemoveBossSpawner();
-        }
-        
+    {     
         // 맵 오브젝트 모두 해제
         foreach (Transform child in gameObject.transform)
         {
@@ -607,25 +600,8 @@ public class GridGeneration : MonoBehaviour
                             var result = GetNextSpawnerPrefab();
                             if (result.HasValue)
                             {
-                                var (prefab, type) = result.Value;
-                                MonsterSpawner spawner = Instantiate(prefab, transform);
+                                var (spawner, type) = result.Value;
                                 spawner.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-
-                                switch (type)
-                                {
-                                    case SpawnerType.Normal:
-                                        _normalSpawners.Add(spawner);
-                                        break;
-                                    case SpawnerType.Elite0:
-                                        _eliteSpawners.Add(spawner);
-                                        break;
-                                    case SpawnerType.Elite1:
-                                        _eliteSpawners.Add(spawner);
-                                        break;
-                                    case SpawnerType.Boss:
-                                        _bossSpawner = spawner;
-                                        break;
-                                }
                             }
                             break;
                         }
@@ -647,22 +623,22 @@ public class GridGeneration : MonoBehaviour
         if (_normalSpawnerCreated < NormalSpawnerCount)
         {
             _normalSpawnerCreated++;
-            return (SpawnerPrefabs[0], SpawnerType.Normal);
+            return (NormalSpawner[0], SpawnerType.Normal);
         }
         else if (_elite0SpawnerCreated < Elite0SpanwerCount)
         {
             _elite0SpawnerCreated++;
-            return (SpawnerPrefabs[1], SpawnerType.Elite0);
+            return (EliteSpawner[0], SpawnerType.Elite0);
         }
         else if (_elite1SpawnerCreated < Elite1SpanwerCount)
         {
             _elite1SpawnerCreated++;
-            return (SpawnerPrefabs[2], SpawnerType.Elite1);
+            return (EliteSpawner[1], SpawnerType.Elite1);
         }
         else if (_bossSpawnerCreated < BossSpawnerCount)
         {
             _bossSpawnerCreated++;
-            return (SpawnerPrefabs[3], SpawnerType.Boss);
+            return (BossSpawner, SpawnerType.Boss);
         }
 
         return null;

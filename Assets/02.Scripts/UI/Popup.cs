@@ -4,12 +4,13 @@ public abstract class Popup : MonoBehaviour
 
     public virtual void OpenPopup() // 매개변수 없음
     {
-
-        UIManager.Instance.PopupManager.PopupStack.Push(this);
-
-        gameObject.SetActive(true);
-
-
+        
+        UIManager.Instance.PopupManager.PopupStack.Push(this); 
+        SoundManager.Instance.Play(SoundType.UI_Open);
+        this.gameObject.SetActive(true);
+        
+        
+        
         UIManager.Instance.CursorLock(false);
 
         //  Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
@@ -36,8 +37,12 @@ public abstract class Popup : MonoBehaviour
 
     public virtual void ClosePopup()
     {
+        
+        SoundManager.Instance.Play(SoundType.UI_Close);
 
-
+        
+        
+        
 //        Debug.Log($"닫는순간 현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
 
         if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
