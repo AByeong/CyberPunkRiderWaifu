@@ -1,8 +1,4 @@
-
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-
 public class ItemCreateManager : Singleton<ItemCreateManager>
 {
     // public Sprite WeaponSprite;
@@ -87,7 +83,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
         }
         if (type == EquipmentType.Boots)
         {
-            item.Speed = 15.0f;
+            item.Speed = 2.0f;
         }
 
         return item;

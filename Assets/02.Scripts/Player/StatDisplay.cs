@@ -11,46 +11,22 @@ public class StatDisplay : MonoBehaviour
     private bool _isInitialized;
     private IStatsProvider _lastStat;
 
-    private void Start()
-    {
-        _previousStats = new Dictionary<StatType, float>();
-        _isInitialized = false;
-        _lastStat = null;
-
-        if (playerController == null)
-        {
-            Debug.LogError("PlayerController가 할당되지 않았습니다!");
-            return;
-        }
-
-        // 초기 스탯 표시
-        DisplayStats();
-    }
-
-    private void Update()
-    {
-        if (!_isInitialized && playerController.Stat != null)
-        {
-            _isInitialized = true;
-            _lastStat = playerController.Stat;
-            DisplayStats();
-            return;
-        }
-
-        // Stat 객체가 변경되었는지 확인
-        if (_isInitialized && _lastStat != playerController.Stat)
-        {
-            _lastStat = playerController.Stat;
-            DisplayStats();
-            return;
-        }
-
-        if (_isInitialized && HasStatsChanged())
-        {
-            DisplayStats();
-        }
-    }
-
+    // private void Start()
+    // {
+    //     _previousStats = new Dictionary<StatType, float>();
+    //     _isInitialized = false;
+    //     _lastStat = null;
+    //
+    //     if (playerController == null)
+    //     {
+    //         Debug.LogError("PlayerController가 할당되지 않았습니다!");
+    //         return;
+    //     }
+    //
+    //     // 초기 스탯 표시
+    //     DisplayStats();
+    // }
+    //
     private bool HasStatsChanged()
     {
         if (!_isInitialized || playerController.Stat == null) return false;
@@ -74,13 +50,12 @@ public class StatDisplay : MonoBehaviour
         return false;
     }
 
-    public void DisplayStats()
+    public void DisplayStats(Stat stat)
     {
-        if (!_isInitialized || playerController.Stat == null) return;
+        Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-        Stat currentStat = playerController.Stat as Stat;
-        if (currentStat == null || currentStat.Stats == null) return;
-
+        Stat currentStat = stat;
+       
         StringBuilder sb = new StringBuilder();
         Dictionary<StatType, float> statDict = currentStat.Stats;
 

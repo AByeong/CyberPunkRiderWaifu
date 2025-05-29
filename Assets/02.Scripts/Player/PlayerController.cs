@@ -19,7 +19,8 @@ namespace JY
         private const float GroundDeceleration = 25f;
         public float MaxAirAttackGraceTime = 0.3f;
 
-        public float MaxForwardSpeed = 8f;
+        public float MaxForwardSpeed;
+        public float AttackPower;
         public float Gravity = 20f;
         public float JumpSpeed = 15f;
         public float MaxTurnSpeed = 1200f;
@@ -135,9 +136,9 @@ namespace JY
         private async void Start()
         {
             Stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
+            RefreshStat();
         }
-
-
+        
         private void Update()
         {
             CacheAnimatorState();
@@ -325,10 +326,12 @@ namespace JY
         public void ApplyEquipment(StatType statType, float value)
         {
             Stat = new StatModifierDecorator(Stat, statType, value);
+            RefreshStat();
         }
         public void RemoveEquipment(StatType statType, float value)
         {
             Stat = new StatModifierDecorator(Stat, statType, -value);
+            RefreshStat();
         }
         public void Dash()
         {
@@ -681,6 +684,11 @@ namespace JY
             _animator.SetFloat(_hashHurtFromX, localHurt.x);
             _animator.SetFloat(_hashHurtFromY, localHurt.z);
 
+        }
+        public void RefreshStat()
+        {
+            AttackPower = Stat.GetStat(StatType.AttackPower);
+            MaxForwardSpeed = Stat.GetStat(StatType.Speed);
         }
     }
 

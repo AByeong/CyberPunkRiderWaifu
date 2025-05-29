@@ -11,6 +11,6 @@ public class SkillData
     public bool IsUpgraded;
     public bool IsGroundSkill;
     public float SkillRange;
-
+    public float SkillDamage;
     public Sprite Icon;
 }

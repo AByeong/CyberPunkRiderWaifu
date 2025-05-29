@@ -22,6 +22,7 @@ public class Stat : IStatsProvider
 {
     private readonly Random _rng = new Random();
     public Dictionary<StatType, float> Stats;
+    
     public Stat(Dictionary<StatType, float> statDict)
     {
         Stats = statDict;
