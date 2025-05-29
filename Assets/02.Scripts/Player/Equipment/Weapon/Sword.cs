@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Sword : MonoBehaviour, IWeapon
@@ -10,8 +9,12 @@ public class Sword : MonoBehaviour, IWeapon
 
     private void OnTriggerEnter(Collider collision)
     {
+        if (collision.tag == "Player")
+        {
+            return;
+        }
+
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
-        Debug.Log("Sword");
         
         if (damageable != null)
         {

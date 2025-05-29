@@ -27,6 +27,7 @@ public class EliteAttackState : EliteBaseState
         _attackTimer += Time.deltaTime;
         if (_attackTimer >= Owner.EnemyData.AttackCoolDown)
         {
+            Owner.AttackType = Random.Range(0, 3);
             Owner.Animator.SetTrigger("OnAttack");
             _attackTimer = 0;
         }
