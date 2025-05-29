@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Collections;
 using UnityEngine;
 
@@ -12,13 +13,21 @@ public class EliteAI_Male : EliteEnemy
     [SerializeField] private float _kickRange = 3f;
    
 
+    private void LookAtTarget()
+    {
+
+        Vector3 direction = (GameManager.Instance.player.transform.position - transform.position).normalized;
+        direction.y = 0f; // 수평만 회전하도록
+        transform.forward = direction;
+    }
+    
 
     // 패턴 1
     public GameObject StompVFX;
     public void Stomp()
     {
         SoundManager.Instance.Play(SoundType.Elite_Electricity);
-
+        LookAtTarget();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -28,7 +37,8 @@ public class EliteAI_Male : EliteEnemy
     public void Kick()
     {
         SoundManager.Instance.Play(SoundType.Elite_male_Kick);
-        
+        LookAtTarget();
+
         Vector3 sphereCenter = KickTransfrom.position;
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, _kickRange);
         
@@ -66,6 +76,8 @@ public class EliteAI_Male : EliteEnemy
 
     public void SummonStart()
     {
+        LookAtTarget();
+
         SoundManager.Instance.Play(SoundType.Elite_male_Summon);
         Instantiate(SummonEffect, SummonTransform.position, SummonTransform.rotation);    
     }

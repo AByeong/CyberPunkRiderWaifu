@@ -30,7 +30,13 @@ public class EliteAI_Female : EliteEnemy
         }
         
     }
+    private void LookAtTarget()
+    {
 
+        Vector3 direction = (GameManager.Instance.player.transform.position - transform.position).normalized;
+        direction.y = 0f; // 수평만 회전하도록
+        transform.forward = direction;
+    }
     public void StampStep()
     {
         if (_navMeshAgent.velocity.magnitude < 4f)
@@ -42,7 +48,7 @@ public class EliteAI_Female : EliteEnemy
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
         
         SoundManager.Instance.Play(SoundType.Elite_Female_Step);
-        
+        LookAtTarget();
         
         
         foreach (Collider hitCollider in detectedColliders)
@@ -72,7 +78,8 @@ public void EyeTurnOn()
     {
         SoundManager.Instance.Play(SoundType.Elite_Female_Detect);
     }
-    
+    LookAtTarget();
+
     EyeTrail.gameObject.SetActive(true);
 }
 
@@ -96,6 +103,8 @@ public void KingStompAttack()
     public void StompAttack()
     {
         SoundManager.Instance.Play(SoundType.Elite_Electricity);
+        LookAtTarget();
+
         _eliteStateMachine.ChangeState<EliteAttackState>();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
@@ -106,6 +115,8 @@ public void KingStompAttack()
     public void TornadoAttack()
     {
         SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
+        LookAtTarget();
+
         _eliteStateMachine.ChangeState<EliteAttackState>();
         TornadoVFX.SetActive(true);
         TornadoVFX.GetComponent<ParticleSystem>().Play();

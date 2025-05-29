@@ -107,7 +107,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -239,15 +239,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -293,6 +293,22 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 19800004, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
       propertyPath: looping
       value: 1
@@ -321,8 +337,24 @@ PrefabInstance:
       propertyPath: InitialModule.startRotationY.minMaxState
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 19900000, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: m_MaxParticleSize
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900002, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: m_MaxParticleSize
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900004, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: m_MaxParticleSize
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19900004, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
       propertyPath: m_NormalDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900006, guid: 9c001e713c3ebd34b9a93ba39ccdb2c7, type: 3}
+      propertyPath: m_MaxParticleSize
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

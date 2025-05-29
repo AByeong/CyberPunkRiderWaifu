@@ -7,7 +7,7 @@ public class FormationManager : MonoBehaviour
     [Header("Formation Settings")]
     public Transform playerTransform;
     public int maxFormationSlots = 15;
-    public float formationRadius = 7f;
+    public float formationRadius = 10f;
     public float slotUpdateInterval = 0.5f;
 
     private List<Vector3> calculatedPhysicalSlots = new List<Vector3>();
