@@ -25,12 +25,11 @@ public enum SoundType
         Elite_Female_Die,
         
         Elite_male_Walk,
-        Elite_male_Step,
-        Elite_male_KingStamp,
-        Elite_male_Detect,
+        Elite_male_Kick,
         Elite_male_Hit,
-        Elite_male_Tornado,
-        Elite_Female_Die,
+        Elite_male_Summon,
+        Summoner,
+        Elite_male_Die,
         
         
         
@@ -56,20 +55,23 @@ public class SoundManager : Singleton<SoundManager>
 
     private void Awake()
     {
+        
+        if(Source == null) { Source = GetComponent<AudioSource>(); }
+        base.Awake();
+        
         foreach(SoundStruct soundComponent in Sounds)
         {
-           
+ 
 //노말 몬스터의 피격 사운드 설정
             if (soundComponent.state == SoundType.NormalEnemy_Hit)
             {
                 NormalEnemySource.clip = soundComponent.clip;
-                return;
+                break;
             }
         }
         
         
-        if(Source == null) { Source = GetComponent<AudioSource>(); }
-        base.Awake();
+        
     }
     
     
