@@ -440,8 +440,9 @@ MonoBehaviour:
   CurrentTier: 2
   Enemy: {fileID: 3832887580745971059}
   Tier1_Speed: 3.5
-  minPlayerDistance: 0.3
+  minPlayerDistance: 2
   desiredPlayerDistance: 3
+  isRetreating: 0
   Tier2_Speed: 3.5
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
@@ -509,7 +510,6 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: 0ac7dd1b3081a324480d0cf452f49ed6, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
-  DamageType: 0
   WeaponCollider: {fileID: 8854814758725385779}
 --- !u!114 &-2461674269757663333
 MonoBehaviour:

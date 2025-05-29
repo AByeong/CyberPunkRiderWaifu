@@ -46,10 +46,11 @@ public class EliteAI_Female : MonoBehaviour
     {
         Vector3 sphereCenter = StampPosition.position;
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
-        int affectedCount = 0; // 영향을 받은 개체 수 카운트
-
-        //Debug.Log($"[StampStep] Detected {detectedColliders.Length} colliders in range.");
-
+        
+        SoundManager.Instance.Play(SoundType.Elite_Female_Step);
+        
+        
+        
         foreach (Collider hitCollider in detectedColliders)
         {
             if (hitCollider.tag == "Elite") continue;
@@ -61,8 +62,9 @@ public class EliteAI_Female : MonoBehaviour
                 Damage damage = new Damage();
                 damage.DamageValue = 0;
                 damage.DamageType = EDamageType.Airborne;
+                damage.DamageForce = 2f;
+                damage.From = this.gameObject;
                 damageable.TakeDamage(damage);
-                affectedCount++;
             }
         }
        // Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
@@ -72,6 +74,11 @@ public TrailRenderer EyeTrail;
 
 public void EyeTurnOn()
 {
+    if (!EyeTrail.enabled)
+    {
+        SoundManager.Instance.Play(SoundType.Elite_Female_Detect);
+    }
+
     EyeTrail.gameObject.SetActive(true);
 }
 
@@ -84,7 +91,7 @@ public void EyeTurnOff()
 public GameObject KingStompVFX;
 public void KingStompAttack()
 {
-    
+    SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
     KingStompVFX.SetActive(true);
     KingStompVFX.GetComponent<ParticleSystem>().Play();
 }
@@ -93,6 +100,7 @@ public void KingStompAttack()
     public GameObject StompVFX;
     public void StompAttack()
     {
+        SoundManager.Instance.Play(SoundType.Elite_Electricity);
         _elliteStateMachineite.ChangeState<EliteAttackState>();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
@@ -102,6 +110,7 @@ public void KingStompAttack()
 
     public void TornadoAttack()
     {
+        SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
         TornadoVFX.SetActive(true);
         TornadoVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -110,7 +119,6 @@ public void KingStompAttack()
     public void TornadoAttackEnd()
     {
         TornadoVFX.SetActive(false);
-        TornadoVFX.GetComponent<VisualEffect>().Stop();
         TornadoVFX.GetComponent<ParticleSystem>().Stop();
     }
     

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Unity.AI.Navigation;
 using System.Collections.Generic;
@@ -28,10 +27,6 @@ public class StageManager : MonoBehaviour
 
     private float _yPosOffset = 2f;
 
-    // private Queue<List<GameObject>> _entryQueue = new Queue<List<GameObject>>();
-    // private Queue<List<GameObject>> _exitQueue = new Queue<List<GameObject>>();
-
-    
 
     private void Start()
     {
@@ -62,7 +57,7 @@ public class StageManager : MonoBehaviour
     IEnumerator WaitForPool()
     {
         yield return new WaitForSeconds(1f);
-        
+
         EnemyManager.Instance.InitSpawn();
     }
 
@@ -145,9 +140,12 @@ public class StageManager : MonoBehaviour
     public void MoveNextStage()
     {
         
-    Debug.LogError("다음 스테이지로 이동");
+
+        EnemyManager.Instance.DespawnALL();
         AddSpawners(_nextStageIndex);
+        EnemyManager.Instance.SetBossSpawner(SubStageList[_nextStageIndex].BossSpawner);
         EnemyManager.Instance.InitSpawn();
+
 
         GameObject startEntry = SubStageList[_nextStageIndex].GetStartEntry();
         MovePlayerToStartPosition(startEntry);
@@ -167,25 +165,11 @@ public class StageManager : MonoBehaviour
 
     private void AddSpawners(int stageIndex)
     {
-        if (EnemyManager.Instance.NormalMonsterSpawners.Count > 0)
-        {
-            EnemyManager.Instance.NormalMonsterSpawners.Clear();
-        }
-        foreach (MonsterSpawner spawner in SubStageList[stageIndex].NormalSpawners)
-        {
-            EnemyManager.Instance.AddNormalSpwner(spawner);
-        }
+        // Normal Enemy 
+        EnemyManager.Instance.SetNormalSpwner(SubStageList[stageIndex].NormalSpawner);
 
-        if (EnemyManager.Instance.EliteMonsterSpawners.Count > 0)
-        {
-            EnemyManager.Instance.EliteMonsterSpawners.Clear();
-        }
-        foreach (MonsterSpawner spawner in SubStageList[stageIndex].EliteSpawners)
-        {
-            EnemyManager.Instance.AddEliteSpawner(spawner);
-        }
 
-        MonsterSpawner Bossspawner =SubStageList[stageIndex].BossSpawner;
-        EnemyManager.Instance.AddBossSpawner(Bossspawner);
+        // Elite Enemy
+        EnemyManager.Instance.SetEliteSpawner(SubStageList[stageIndex].EliteSpawner);
     }
 }

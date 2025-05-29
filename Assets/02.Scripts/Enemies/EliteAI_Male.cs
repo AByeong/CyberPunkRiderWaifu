@@ -30,6 +30,8 @@ public class EliteAI_Male : MonoBehaviour
 
     public void Stomp()
     {
+        SoundManager.Instance.Play(SoundType.Elite_Electricity);
+
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
     }

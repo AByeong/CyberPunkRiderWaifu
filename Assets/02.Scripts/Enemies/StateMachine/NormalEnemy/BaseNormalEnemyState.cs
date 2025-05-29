@@ -20,6 +20,7 @@ public class BaseNormalEnemyState : MonoState
 
         if (Owner.IsHit && !SuperMachine.IsCurrentState<DeadState>())
         {
+            
             SuperMachine.ChangeState<HItState>();
             return;
         }

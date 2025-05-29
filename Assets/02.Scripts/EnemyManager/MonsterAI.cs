@@ -27,7 +27,7 @@ public class MonsterAI : MonoBehaviour
     public float desiredPlayerDistance = 6.0f;
     private const float Tier1_SlotReachedThreshold = 1.5f;
     private const float Tier1_LookAtPlayerSpeed = 5f;
-    private bool isRetreating = false;
+    public bool isRetreating = false;
     private Vector3? currentFormationSlot = null;
 
     [Header("Tier 2 Behavior (Approaching)")]

@@ -13,4 +13,10 @@ public struct Damage
     public EDamageType DamageType;
     public float DamageForce;
     public int DamageValue;
+    public float AirRiseAmount;
+
+    public void InitAirRiseAmount()
+    {
+        AirRiseAmount = 2f;
+    }
 }
