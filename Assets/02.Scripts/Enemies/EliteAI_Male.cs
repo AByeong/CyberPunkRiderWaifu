@@ -8,24 +8,7 @@ public class EliteAI_Male : MonoBehaviour
     public Transform SummonTransform;
 
     public float SummonTime;
-
-
-    private void Start()
-    {
-        StartCoroutine(Summoning());
-    }
-    
-    public IEnumerator Summoning()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(SummonTime);
-
-            
-        }
-        
-    }
-
+    public GameObject SummonEffect;
     public GameObject StompVFX;
 
     public void Stomp()
@@ -49,5 +32,11 @@ public class EliteAI_Male : MonoBehaviour
     public void Summon()
     {
         Instantiate(SummonObject, SummonTransform.position, SummonTransform.rotation);
-    }   
+    }
+
+    public void SummonStart()
+    {
+        SoundManager.Instance.Play(SoundType.Elite_male_Summon);
+        Instantiate(SummonEffect, SummonTransform.position, SummonTransform.rotation);    
+    }
 }
