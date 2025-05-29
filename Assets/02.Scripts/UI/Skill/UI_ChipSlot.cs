@@ -5,7 +5,7 @@
     public override void SetItem(Item item)
     {
         base.SetItem(item);
-        if (item == null)
+        if (item == null || TargetSkill == null)
         {
             return;
         }
