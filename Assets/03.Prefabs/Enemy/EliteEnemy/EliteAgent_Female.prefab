@@ -277,6 +277,7 @@ MonoBehaviour:
   Tier1_Speed: 3.5
   minPlayerDistance: 0
   desiredPlayerDistance: 0.5
+  isRetreating: 0
   Tier2_Speed: 20
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
@@ -292,12 +293,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5566a3506dbefb46b915b2e1e168a1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EliteAnimator: {fileID: 3184633984302917899}
+  MaterialName: 
+  _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
+  Pool: {fileID: 0}
+  VerticalVelocity: {x: 0, y: 0, z: 0}
+  targetMaterialName: Catherine
+  mainColorPropertyName: _Color
+  highlightVValue: 2
+  normalVValue: 0.8
+  hitFlashEffectDuration: 0.3
+  _attackType: 0
+  OriginalValue: 0.5
+  EyeTrail: {fileID: 5879733122949013281}
   StampRange: 3
   StampPosition: {fileID: 5357526854719067528}
   runCooldownDuration: 3
-  _elliteStateMachineite: {fileID: 8669644209295390855}
-  EyeTrail: {fileID: 5879733122949013281}
   KingStompVFX: {fileID: 8500580943124956084}
   StompVFX: {fileID: 7011299679447090867}
   TornadoVFX: {fileID: 1161899211291565523}
@@ -365,6 +375,11 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
+  targetMaterialName: KyleRobot
+  mainColorPropertyName: _Color
+  highlightVValue: 2
+  normalVValue: 0.8
+  hitFlashEffectDuration: 0.3
   _attackType: 0
   OriginalValue: 0.5
 --- !u!95 &3184633984302917899

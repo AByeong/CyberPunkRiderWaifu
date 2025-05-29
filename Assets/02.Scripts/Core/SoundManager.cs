@@ -33,9 +33,13 @@ public enum SoundType
         
         
         
-        
+        BGM_OfficeStage,
+        BGM_DeliveryStage,
+        BGM_BossStage
         
 }
+
+
 
 
 [Serializable]
@@ -50,8 +54,10 @@ public class SoundManager : Singleton<SoundManager>
 {
     
     public SoundStruct[] Sounds;
+    public SoundStruct[] BGMs;
     public AudioSource Source;
     public AudioSource NormalEnemySource;
+    public AudioSource BGMSource;
 
     private void Awake()
     {
@@ -73,7 +79,22 @@ public class SoundManager : Singleton<SoundManager>
         
         
     }
-    
+
+    public void PlayBGM(SoundType state)
+    {
+        foreach(SoundStruct soundComponent in BGMs)
+        {
+           
+
+            if (soundComponent.state == state)
+            {
+                if (soundComponent.clip == null) return;
+                BGMSource.clip = soundComponent.clip;
+                BGMSource.Play();
+                return;
+            }
+        }
+    }
     
     public void Play(SoundType state)
     {

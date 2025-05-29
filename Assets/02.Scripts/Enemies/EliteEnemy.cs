@@ -29,6 +29,14 @@ public class EliteEnemy : Enemy, IDamageable
         }
     }
 
+
+    public void TakeDamage(Damage damage)
+    {
+        SoundManager.Instance.Play(SoundType.Elite_male_Hit);
+        
+        base.TakeDamage(damage);
+    }
+
     protected ElliteStateMachine _eliteStateMachine;
 
     private void Start()
@@ -49,6 +57,9 @@ public class EliteEnemy : Enemy, IDamageable
             }
     }
 
+    
+    
+    
     protected virtual void Update()
     {
         if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh) // isOnNavMesh 추가

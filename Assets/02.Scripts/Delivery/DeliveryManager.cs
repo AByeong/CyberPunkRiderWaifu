@@ -43,6 +43,8 @@ public class DeliveryManager : Singleton<DeliveryManager>
         Debug.Log($"{CompleteSector}이 현재 매니져의 값이고 \n {CurrentMissionData.DeliverystageData.Count}이게 데이터의 값입니다");
         KillTracker.KillTrakerInit();//KillTracker초기화
 
+        
+        SoundManager.Instance.PlayBGM(SoundType.BGM_DeliveryStage);
         Debug.Log("Starting delivery");
     }
 

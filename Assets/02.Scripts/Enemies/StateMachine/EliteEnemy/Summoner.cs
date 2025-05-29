@@ -23,12 +23,16 @@ public class Summoner : MonoBehaviour
 
     private void Update()
     {
+        
         MoveTowardPlayer(); // 🔸 이동 함수 호출
     }
 
     private void MoveTowardPlayer()
     {
-        if (PlayerTransform == null) return;
+        if (PlayerTransform != null)
+        {
+            PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        }
 
         // 방향 벡터 계산
         Vector3 direction = (PlayerTransform.position - transform.position).normalized;
@@ -51,7 +55,7 @@ public class Summoner : MonoBehaviour
                 DamageType = EDamageType.Normal
             };
             
-            Instantiate(BombEffect,this.transform.position,this.transform.rotation);
+            Instantiate(BombEffect);
             PlayerTransform.gameObject.GetComponent<PlayerHit>().TakeDamage(damage);
         }
 
