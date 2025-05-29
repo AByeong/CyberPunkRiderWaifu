@@ -76,13 +76,13 @@ public abstract class MonsterAI : MonoBehaviour
         // 초기 업데이트 시간 분산을 위해 Random.Range 사용. AIManager가 이 값을 읽고 첫 업데이트 후 다시 설정.
         this.nextIndividualLogicUpdateTime = Time.time + Random.Range(0f, logicUpdateInterval);
 
+        
+        
+        
         if (Enemy != null)
         {
             Enemy.Target = player.gameObject;
-            // if (pool != null && Enemy.GetType().GetProperty("Pool") != null) // Enemy에 Pool 속성이 있는지 확인
-            // {
-            //      // Enemy.Pool = pool; // Enemy 클래스에 Pool 멤버가 있다면 사용
-            // }
+           Enemy.Pool = pool;
         }
         else
         {

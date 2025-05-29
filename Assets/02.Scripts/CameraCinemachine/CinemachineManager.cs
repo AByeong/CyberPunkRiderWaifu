@@ -63,7 +63,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
     public void ShowElevatorChangeAnimation()
     {
         Debug.Log("엘리베이터 시네머신 시작");
-        Camera.main.cullingMask = Camera.main.cullingMask = 1 << LayerMask.NameToLayer("Player");
+        Camera.main.cullingMask = Camera.main.cullingMask = 1 << LayerMask.NameToLayer("Cinemachine");
 
         AnimationStart(CinemaName.ElevatorChange);
     }

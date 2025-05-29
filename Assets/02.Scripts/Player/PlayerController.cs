@@ -128,6 +128,9 @@ namespace JY
             _characterController = GetComponent<CharacterController>();
             _groundCheck = GetComponent<GroundCheck>();
             _playerSound = GetComponent<PlayerSound>();
+            
+            GameManager.Instance.player = this;
+
         }
         private async void Start()
         {

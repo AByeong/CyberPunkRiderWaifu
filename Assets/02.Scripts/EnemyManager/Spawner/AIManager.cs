@@ -82,7 +82,13 @@ public class AIManager : MonoBehaviour
     public void InitializeSpawnedMonster(MonsterAI monster, ObjectPool pool) // ObjectPool 타입은 프로젝트에 맞게 사용
     {
         if (monster == null) return;
+        Debug.Log("몬스터 있지용");
 
+        if (playerTransform != null)
+        {
+            playerTransform =GameManager.Instance.player.transform;
+        }
+        
         // MonsterAI의 Initialize 호출 (여기서 nextIndividualLogicUpdateTime 등이 초기화됨)
         monster.Initialize(playerTransform, formationManager, this, pool);
         
