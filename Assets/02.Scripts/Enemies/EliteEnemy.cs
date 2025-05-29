@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EliteEnemy : Enemy, IDamageable
 {
@@ -30,27 +29,31 @@ public class EliteEnemy : Enemy, IDamageable
         }
     }
 
+    protected ElliteStateMachine _eliteStateMachine;
+
     private void Start()
     {
-       
+        _eliteStateMachine = GetComponent<ElliteStateMachine>();
+        if (_eliteStateMachine == null)
+        {
+           Debug.LogWarning($"{gameObject.name}의 StateMachine이 없습니다.");
+        }
+
         if (_animator != null)
-        {
-            _animator.SetInteger("AttackType", _attackType);
-        }
-        else
-        {
-          
-            Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
-        }
+            {
+                _animator.SetInteger("AttackType", _attackType);
+            }
+            else
+            {
+                Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
+            }
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh) // isOnNavMesh 추가
         {
             _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);
         }
     }
-
-   
 }
