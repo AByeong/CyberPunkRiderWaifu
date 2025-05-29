@@ -1,5 +1,3 @@
-// SkillUIManager.cs
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +7,11 @@ public class SkillUIManager : Popup
     public List<UI_Skill> AvailableSkills;
     public List<UI_Skill> EquippedSkills;
 
+    private void Start()
+    {
+        Init();
+    }
+
     private void Update()
     {
         UpdateCooldowns(Time.deltaTime);
@@ -16,68 +19,77 @@ public class SkillUIManager : Popup
 
     public override void OpenPopup()
     {
-        Init();
+        Show();
         base.OpenPopup();
     }
+
     private void Init()
     {
-        for (int i = 0; i < SkillManager.Instance.Skills.Count; i++)
-        {
-            AvailableSkills[i].SetSkill(SkillManager.Instance.Skills[i], true);
-        }
-        // 2단계: EquippedSkills는 전부 비활성화
+        // EquippedSkills 버튼은 항상 비활성화 (처음 한 번만 설정)
         foreach(UI_Skill equippedSkill in EquippedSkills)
         {
             equippedSkill.Button.interactable = false;
         }
-        // 3단계: 장착된 스킬만 버튼 비활성화
-        foreach(Skill equipped in SkillManager.Instance.EquippedSkills)
-        {
-            if (equipped != null && equipped.Index > 0)
-            {
-                AvailableSkills[equipped.Index].Button.interactable = false;
-            }
-        }
-    }
 
-
-    public void Show()
-    { // 1단계: 모두 초기화 및 활성화
+        // AvailableSkills에 SkillManager의 전체 스킬 연결 (처음 한 번만)
         for (int i = 0; i < SkillManager.Instance.Skills.Count; i++)
         {
             AvailableSkills[i].SetSkill(SkillManager.Instance.Skills[i], true);
         }
+    }
 
-        // 2단계: 장착된 스킬만 버튼 비활성화
-        foreach(Skill equipped in SkillManager.Instance.EquippedSkills)
+    public void Show()
+    {
+        // 모든 Available 버튼 다시 활성화
+        foreach(UI_Skill uiSkill in AvailableSkills)
         {
+            uiSkill.Button.interactable = true;
+        }
+
+        // 장착된 스킬 인덱스를 기준으로 Available/Equipped UI 상태 갱신
+        for (int i = 0; i < SkillManager.Instance.EquippedSkills.Count; i++)
+        {
+            Skill equipped = SkillManager.Instance.EquippedSkills[i];
+
             if (equipped != null)
             {
-                AvailableSkills[equipped.Index].Button.interactable = false;
+                // AvailableSkills에서 동일한 스킬은 비활성화
+                if (equipped.Index >= 0 && equipped.Index < AvailableSkills.Count)
+                {
+                    AvailableSkills[equipped.Index].Button.interactable = false;
+                }
+
+                // EquippedSkills UI에 표시
+                if (i < EquippedSkills.Count)
+                {
+                    EquippedSkills[i].SetSkill(equipped, true);
+                }
+            }
+            else
+            {
+                // 스킬이 없으면 UI 초기화
+                if (i < EquippedSkills.Count)
+                {
+                    EquippedSkills[i].RemoveSkill();
+                }
             }
         }
-        gameObject.SetActive(true);
+
     }
+
     public void EquipSkill(int skillIndex)
     {
-
         Skill skillToEquip = AvailableSkills[skillIndex].Skill;
 
         for (int i = 0; i < SkillManager.Instance.EquippedSkills.Count; i++)
         {
-            Skill slot = SkillManager.Instance.EquippedSkills[i];
-
-            if (!SkillManager.Instance.EquippedSkillsBool[i]) // 빈 슬롯을 찾았을 때
+            if (!SkillManager.Instance.EquippedSkillsBool[i]) // 빈 슬롯
             {
-                Debug.Log($"Found empty slot at index {i}!");
-
-                // 여기서 실제 장착 로직
                 SkillManager.Instance.EquippedSkills[i] = skillToEquip;
-                EquippedSkills[i].SetSkill(skillToEquip, true);
-
-                AvailableSkills[skillIndex].Button.interactable = false;
                 SkillManager.Instance.EquippedSkillsBool[i] = true;
 
+                EquippedSkills[i].SetSkill(skillToEquip, true);
+                AvailableSkills[skillIndex].Button.interactable = false;
                 return;
             }
         }
@@ -89,11 +101,14 @@ public class SkillUIManager : Popup
     {
         Skill skillToRemove = SkillManager.Instance.EquippedSkills[equipIndex];
 
-        AvailableSkills[skillToRemove.Index].Button.interactable = true;
-        EquippedSkills[equipIndex].RemoveSkill();
-        // EquippedSkills[equipIndex].GetComponent<Button>().interactable = false;
-        SkillManager.Instance.EquippedSkills[equipIndex] = null;
-        SkillManager.Instance.EquippedSkillsBool[equipIndex] = false;
+        if (skillToRemove != null)
+        {
+            AvailableSkills[skillToRemove.Index].Button.interactable = true;
+            EquippedSkills[equipIndex].RemoveSkill();
+
+            SkillManager.Instance.EquippedSkills[equipIndex] = null;
+            SkillManager.Instance.EquippedSkillsBool[equipIndex] = false;
+        }
     }
 
     private void UpdateCooldowns(float deltaTime)

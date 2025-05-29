@@ -34,6 +34,8 @@ namespace JY
         public float DashDuration = 0.2f;
         public bool NoGravity;
 
+        public IStatsProvider Stat { get; private set; }
+
         private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
         private readonly int _hashAirborne = Animator.StringToHash("Airborne");
 
@@ -116,7 +118,8 @@ namespace JY
         private bool _readyToJump;
         private Renderer[] _renderers;
         private bool _rootMotionGroundedStart;
-        private IStatsProvider _stat;
+        
+
         private Quaternion _targetRotation;
         private float _verticalSpeed;
         private bool _wasInRootMotionState;
@@ -131,8 +134,7 @@ namespace JY
         }
         private async void Start()
         {
-            _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
-
+            Stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
         }
 
 
@@ -322,11 +324,11 @@ namespace JY
 
         public void ApplyEquipment(StatType statType, float value)
         {
-            _stat = new StatModifierDecorator(_stat, statType, value);
+            Stat = new StatModifierDecorator(Stat, statType, value);
         }
         public void RemoveEquipment(StatType statType, float value)
         {
-            _stat = new StatModifierDecorator(_stat, statType, -value);
+            Stat = new StatModifierDecorator(Stat, statType, -value);
         }
         public void Dash()
         {

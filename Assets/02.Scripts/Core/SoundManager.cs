@@ -30,7 +30,7 @@ public enum SoundType
         Elite_male_Detect,
         Elite_male_Hit,
         Elite_male_Tornado,
-        Elite_Female_Die,
+        Elite_male_Die,
         
         
         
