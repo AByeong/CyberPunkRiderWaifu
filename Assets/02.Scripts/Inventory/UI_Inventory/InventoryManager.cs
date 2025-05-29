@@ -28,13 +28,13 @@ public class InventoryManager : Singleton<InventoryManager>
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("Q");
-            Item item = new Item(soDatas[1]);
+            Item item = ItemCreateManager.Instance.CreateHead();
             Add(item);
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log("C");
-            Item item = new Item(soDatas[2]);
+            Item item =ItemCreateManager.Instance.CreateBoots();
             Add(item);
         }
     }
@@ -56,6 +56,7 @@ public class InventoryManager : Singleton<InventoryManager>
         GameManager.Instance.player.ApplyEquipment(StatType.AttackSpeed,item.AttackSpeed);
         GameManager.Instance.player.ApplyEquipment(StatType.CritChance,item.CritChance);
         GameManager.Instance.player.ApplyEquipment(StatType.CritDamage,item.CritDamage);
+        Debug.Log($"{item.Speed}");
     }
 
     public void RemoveStat(Item item)

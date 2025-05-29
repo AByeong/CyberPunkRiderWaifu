@@ -1,20 +1,32 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemCreateManager : Singleton<ItemCreateManager>
 {
-    public Sprite WeaponSprite;
-    public Sprite HeadSprite;
-    public Sprite ArmorSprite;
-    public Sprite BootsSprite;
-    public Sprite UseItemSprite;
-    public Sprite ChipSprite;
+    // public Sprite WeaponSprite;
+    // public Sprite HeadSprite;
+    // public Sprite ArmorSprite;
+    // public Sprite BootsSprite;
+    // public Sprite UseItemSprite;
+    // public Sprite ChipSprite;
+    //
+    // public GameObject UniqueSwordPrefab;
+    // public GameObject ChipPrefab;
+    // public GameObject EtcPrefab;
 
-    public GameObject UniqueSwordPrefab;
-    public GameObject ChipPrefab;
-    public GameObject EtcPrefab;
-
+    public EquipmentDataSO NormalWeaponEquipmentDataSO;
+    public EquipmentDataSO RareWeaponEquipmentDataSO;
+    public EquipmentDataSO UniqueWeaponEquipmentDataSO;
+    public EquipmentDataSO HeadEquipmentDataSO;
+    public EquipmentDataSO ArmorEquipmentDataSO;
+    public EquipmentDataSO BootsEquipmentDataSO;
+    //Chip도 더 좋은 칩 구분할거면 추가
+    public ChipDataSO ChipDataSO;
+    
+    public ItemBaseDataSO ItemBaseDataSO;
+    
     private int _itemIndex = 0;
     private int _weaponIndex = 0;
     private int _headIndex = 0;
@@ -24,75 +36,100 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
     private int _etcIndex = 0;
 
     // 공통 장비 생성 함수
-    private ItemBaseDataSO CreateEquipment(EquipmentType type, Sprite icon, GameObject prefab, ref int index, string name = null)
+    private Item CreateEquipment(EquipmentType type, int rarity = 0)
     {
-        EquipmentDataSO itemBaseDataSO = new  EquipmentDataSO();
-        itemBaseDataSO.Id = $"Equipment.{type}_{index++}";
-        itemBaseDataSO.ItemName = name ?? $"{type}_{index}";
-        itemBaseDataSO.Icon = icon;
-
-        itemBaseDataSO.EquipmentName = name ?? type.ToString();
-        itemBaseDataSO.EquipmentType = type;
-        itemBaseDataSO.ModelPrefab = prefab;
-
-        Dictionary<StatType, float> stat = new Dictionary<StatType, float>();
-        foreach (StatType statType in System.Enum.GetValues(typeof(StatType)))
+        // EquipmentDataSO.Id = $"Equipment.{type}_{index++}";
+        // EquipmentDataSO.ItemName = name ?? $"{type}_{index}";
+        // EquipmentDataSO.Icon = icon;
+        //
+        // EquipmentDataSO.EquipmentName = name ?? type.ToString();
+        // EquipmentDataSO.EquipmentType = type;
+        // EquipmentDataSO.ModelPrefab = prefab;
+        Item item = null;
+        switch (type)
         {
-            stat[statType] = 0.0f;
+            case EquipmentType.Weapon:
+                if(rarity == 0)
+                    item = new Item(NormalWeaponEquipmentDataSO);
+                else if(rarity == 1)
+                    item = new Item(RareWeaponEquipmentDataSO);
+                else if (rarity == 2)
+                    item = new Item(UniqueWeaponEquipmentDataSO);
+                else
+                    Debug.LogError("무기 레어도는 0~2까지만");
+                break;
+            case EquipmentType.Armor:
+                item = new Item(ArmorEquipmentDataSO);
+                break;
+            case EquipmentType.Head:
+                item = new Item(HeadEquipmentDataSO);
+                break;
+            case EquipmentType.Boots:
+                item = new Item(BootsEquipmentDataSO);
+                break;
+            default:
+                Debug.LogError("무기 생성 Type이 잘못됐음");
+                break;
         }
+
         // 예시: 타입별로 스탯 다르게 할당 가능
         if (type == EquipmentType.Weapon)
         {
-            stat[StatType.AttackPower] = 100.0f;
+            item.AttackPower = 100.0f;
         }
         if (type == EquipmentType.Head)
         {
-            stat[StatType.MaxHealth] = 50.0f;
+            item.MaxHealth = 50.0f;
         }
         if (type == EquipmentType.Armor)
         {
-            stat[StatType.Defense] = 30.0f;
+            item.Defense = 30.0f;
         }
         if (type == EquipmentType.Boots)
         {
-            stat[StatType.Speed] = 15.0f;
+            item.Speed = 15.0f;
         }
 
-        itemBaseDataSO.Stats = stat;
-
-        return itemBaseDataSO;
+        return item;
     }
 
-    public ItemBaseDataSO CreateWeapon()
-        => CreateEquipment(EquipmentType.Weapon, WeaponSprite, UniqueSwordPrefab, ref _weaponIndex, "Katana");
+    public Item CreateWeapon()
+        => CreateEquipment(EquipmentType.Weapon);
 
-    public ItemBaseDataSO CreateHead()
-        => CreateEquipment(EquipmentType.Head, HeadSprite, null, ref _headIndex);
+    public Item CreateHead()
+        => CreateEquipment(EquipmentType.Head);
 
-    public ItemBaseDataSO CreateArmor()
-        => CreateEquipment(EquipmentType.Armor, ArmorSprite, null, ref _armorIndex);
+    public Item CreateArmor()
+        => CreateEquipment(EquipmentType.Armor);
 
-    public ItemBaseDataSO CreateBoots()
-        => CreateEquipment(EquipmentType.Boots, BootsSprite, null, ref _bootsIndex);
+    public Item CreateBoots()
+        => CreateEquipment(EquipmentType.Boots);
 
-    public ItemBaseDataSO CreateChip()
+    public Item CreateChip(int rarity = 0)
     {
-        return null;
+        Item item = null;
+        if(rarity == 0)
+             item = new Item(ChipDataSO);
+        else if(rarity == 1)
+             item = new Item(ChipDataSO);
+        else if(rarity == 2)
+             item = new Item(ChipDataSO);
 
-
-        
+        return item;
         //Item item = new Item(InventoryManager.Instance.ChipSODatas[랜덤]), null);
         //InventoryManager.Add(item);
     }
 
-    public ItemBaseDataSO CreateEtc()
+    public Item CreateEtc()
     {
-        ItemBaseDataSO itemBaseDataSo = new ItemBaseDataSO();
-        itemBaseDataSo.Id = $"Item_{_itemIndex++}";
-        itemBaseDataSo.ItemName = $"Etc_{_etcIndex++}";
-        itemBaseDataSo.Icon = UseItemSprite;
-        itemBaseDataSo.ItemType = ItemType.Etc;
+        Item item = new Item(ItemBaseDataSO);
+        // ItemBaseDataSO itemBaseDataSo = new ItemBaseDataSO();
+        // itemBaseDataSo.Id = $"Item_{_itemIndex++}";
+        // itemBaseDataSo.ItemName = $"Etc_{_etcIndex++}";
+        // itemBaseDataSo.Icon = UseItemSprite;
+        // itemBaseDataSo.ItemType = ItemType.Etc;
         // 필요시 EtcData 등 추가
-        return itemBaseDataSo;
+
+        return item;
     }
 }
