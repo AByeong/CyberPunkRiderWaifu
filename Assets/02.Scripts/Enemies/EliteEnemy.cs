@@ -64,7 +64,7 @@ public class EliteEnemy : Enemy, IDamageable
     {
         if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh) // isOnNavMesh 추가
         {
-            _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);
+            _animator.SetFloat("Velocity",  _navMeshAgent.velocity.magnitude);
         }
     }
 }

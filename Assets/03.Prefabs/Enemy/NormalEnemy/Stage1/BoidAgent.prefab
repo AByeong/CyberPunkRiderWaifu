@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 2563987164733640846}
   - component: {fileID: 3269765981359261967}
   - component: {fileID: 2985244666764805926}
-  - component: {fileID: 9145306139702554860}
+  - component: {fileID: 4401242198475575466}
   - component: {fileID: 5252955424619335002}
   - component: {fileID: 3564118245039200704}
   - component: {fileID: 3832887580745971059}
@@ -425,7 +425,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 1
---- !u!114 &9145306139702554860
+--- !u!114 &4401242198475575466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -434,18 +434,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3016843131154389009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71d7189a6b0dd154eb309570f9ab0191, type: 3}
+  m_Script: {fileID: 11500000, guid: 019c891c8dcfdd9439384956ce144379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTier: 2
   Enemy: {fileID: 3832887580745971059}
-  Tier1_Speed: 3.5
-  minPlayerDistance: 2
-  desiredPlayerDistance: 3
-  isRetreating: 0
-  Tier2_Speed: 3.5
+  DefaultTier1Speed: 3.5
+  DefaultTier2Speed: 7
+  DefaultTier1Acceleration: 8
+  DefaultTier2Acceleration: 5
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
+  Tier1Speed: 3.5
+  Tier1Acceleration: 8
+  SlotReachedThreshold: 1.5
+  NoSlotApproachDistanceMultiplier: 0.9
 --- !u!65 &5252955424619335002
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -510,6 +513,11 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: 0ac7dd1b3081a324480d0cf452f49ed6, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
+  targetMaterialName: KyleRobot
+  mainColorPropertyName: _Color
+  highlightVValue: 2
+  normalVValue: 0.8
+  hitFlashEffectDuration: 0.3
   WeaponCollider: {fileID: 8854814758725385779}
 --- !u!114 &-2461674269757663333
 MonoBehaviour:

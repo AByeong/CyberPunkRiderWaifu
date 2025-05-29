@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 2563987164733640846}
   - component: {fileID: 3269765981359261967}
   - component: {fileID: 2985244666764805926}
-  - component: {fileID: 9145306139702554860}
+  - component: {fileID: 8097379986340055428}
   - component: {fileID: 5252955424619335002}
   - component: {fileID: 3564118245039200704}
   - component: {fileID: 8621727571898490721}
@@ -152,7 +152,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 1
---- !u!114 &9145306139702554860
+--- !u!114 &8097379986340055428
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,18 +161,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3016843131154389009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71d7189a6b0dd154eb309570f9ab0191, type: 3}
+  m_Script: {fileID: 11500000, guid: a7852481e3d2d7548bd79f9f6820c833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTier: 2
-  Enemy: {fileID: 8621727571898490721}
-  Tier1_Speed: 3.5
-  minPlayerDistance: 0
-  desiredPlayerDistance: 1
-  isRetreating: 0
-  Tier2_Speed: 3.5
+  Enemy: {fileID: 670941019872839500}
+  DefaultTier1Speed: 3.5
+  DefaultTier2Speed: 7
+  DefaultTier1Acceleration: 8
+  DefaultTier2Acceleration: 5
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
+  Tier1Speed: 4.5
+  Tier1Acceleration: 9
+  AttackDistanceMultiplier: 0.8
 --- !u!65 &5252955424619335002
 BoxCollider:
   m_ObjectHideFlags: 0

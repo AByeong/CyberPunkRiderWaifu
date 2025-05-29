@@ -10,7 +10,6 @@ public class EliteAI_Female : EliteEnemy
     public TrailRenderer EyeTrail;
     public float StampRange;
     public Transform StampPosition; // 현재 StampStep에서는 사용되지 않지만, 기즈모에서 활용 가능
-
     [SerializeField] private float runCooldownDuration = 3.0f;
 
     private bool isCoolingDown = false;
@@ -73,7 +72,7 @@ public void EyeTurnOn()
     {
         SoundManager.Instance.Play(SoundType.Elite_Female_Detect);
     }
-
+    
     EyeTrail.gameObject.SetActive(true);
 }
 
