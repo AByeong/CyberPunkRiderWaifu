@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 public class ItemCreateManager : Singleton<ItemCreateManager>
 {
