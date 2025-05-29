@@ -49,8 +49,9 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void Add(Item item)
     {
+        Debug.Log("InventoryManager Add 진입ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
         _items.Add(item);
-
+        Debug.Log("InventoryManager Add댐ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
         OnDataChanged?.Invoke();
     }
 
@@ -105,6 +106,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
         foreach (ItemSaveData saveData in saveDataList.SaveDatas)
         {
+            Debug.Log(saveData.ItemSOIndex);
             Item item = new Item(soDatas[saveData.ItemSOIndex], saveData);
             Add(item);
         }
