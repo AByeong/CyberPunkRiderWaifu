@@ -23,7 +23,6 @@ public class InventoryManager : Singleton<InventoryManager>
     }
 
     public int SlotCount = 36;
-    public bool IsInventoryFull => _items.Count == SlotCount;
 
     public void Start()
     {
@@ -51,6 +50,11 @@ public class InventoryManager : Singleton<InventoryManager>
                 { DropItemType.Item, 3 },
             };
             ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward); 
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            CurrencyManager.Instance.Add(CurrencyType.Gold, 100000);
         }
     }
 
