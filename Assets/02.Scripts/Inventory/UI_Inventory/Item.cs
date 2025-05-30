@@ -17,9 +17,16 @@ public class Item
         _slotType = slotType;
         _slotIndex = slotIndex;
 
+        // 장착
         if (_slotType == SlotType.Equipment)
         {
             IsEquipped = true;
+        }
+        
+        // 장착 해제
+        if (_slotType == SlotType.Inventory)
+        {
+            IsEquipped = false;
         }
     }
     // Equipment 옵션

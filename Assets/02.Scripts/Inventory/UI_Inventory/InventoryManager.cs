@@ -58,12 +58,7 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         _items.Add(item);
         OnDataChanged?.Invoke();
-    }
-
-    public void Equip(Item item)
-    {
         
-        OnEquipChanged?.Invoke();
         if (UI_InventoryPopup.Instance.IsInventoryFull() == false)
         {
             _items.Add(item);
@@ -76,7 +71,10 @@ public class InventoryManager : Singleton<InventoryManager>
             return false;
         }
     }
-
+    public void Equip(Item item)
+    {
+        OnEquipChanged?.Invoke();
+    }
     public void Remove(Item item)
     {
         if (item == null)
@@ -97,18 +95,7 @@ public class InventoryManager : Singleton<InventoryManager>
             Debug.LogWarning($"{item.Data.ItemName} 아이템을 인벤토리에서 찾을 수 없습니다.");
         }
     }
-    public void AddStat(Item item)
-    {
-        Debug.Log($"{item.Data.ItemName} Added");
-        GameManager.Instance.player.ApplyEquipment(StatType.MaxHealth,item.MaxHealth);
-        GameManager.Instance.player.ApplyEquipment(StatType.AttackPower,item.AttackPower);                   
-        GameManager.Instance.player.ApplyEquipment(StatType.Defense,item.Defense);
-        GameManager.Instance.player.ApplyEquipment(StatType.Speed,item.Speed);
-        GameManager.Instance.player.ApplyEquipment(StatType.AttackSpeed,item.AttackSpeed);
-        GameManager.Instance.player.ApplyEquipment(StatType.CritChance,item.CritChance);
-        GameManager.Instance.player.ApplyEquipment(StatType.CritDamage,item.CritDamage);
-        Debug.Log($"playerStat 참조 안됨, ItemSpeed : {item.Speed}"); // 플레이어 Stat 참조 안됨
-    }
+   
     
     private void Save()
     {

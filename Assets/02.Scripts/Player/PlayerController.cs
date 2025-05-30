@@ -220,7 +220,7 @@ namespace JY
         private void OnEnable()
         {
             EquipMeleeWeapon(false);
-            InventoryManager.Instance.OnDataChanged += RefreshStat;
+            InventoryManager.Instance.OnEquipChanged += RefreshStat;
             _renderers = GetComponentsInChildren<Renderer>();
         }
         private void OnDisable()
