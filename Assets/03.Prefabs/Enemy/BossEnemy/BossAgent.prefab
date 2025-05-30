@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 9145306139702554860}
   - component: {fileID: 5252955424619335002}
   - component: {fileID: 3564118245039200704}
+  - component: {fileID: 8621727571898490721}
   - component: {fileID: -8350040400276831494}
-  - component: {fileID: 2874488962133899996}
   - component: {fileID: 3184633984302917899}
   m_Layer: 3
   m_Name: BossAgent
@@ -129,9 +129,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTier: 2
-  Enemy: {fileID: 2874488962133899996}
+  Enemy: {fileID: 8621727571898490721}
   DefaultTier1Speed: 3.5
-  DefaultTier2Speed: 7
+  DefaultTier2Speed: 3.5
   DefaultTier1Acceleration: 8
   DefaultTier2Acceleration: 5
   logicUpdateInterval: 0.2
@@ -184,7 +184,7 @@ LODGroup:
     renderers:
     - renderer: {fileID: 0}
   m_Enabled: 1
---- !u!114 &-8350040400276831494
+--- !u!114 &8621727571898490721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,19 +193,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3016843131154389009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 068fb2bbdc17ae8468e5161e545a1382, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2874488962133899996
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3016843131154389009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f88cfde2148c16c4994b1a6ae122de4b, type: 3}
+  m_Script: {fileID: 11500000, guid: ffb4097539f236d4a9e8bc285ad11873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MaterialName: 
@@ -222,15 +210,19 @@ MonoBehaviour:
   hitFlashEffectDuration: 0.3
   _attackType: 0
   OriginalValue: 0.5
-  MissilePrefab: {fileID: 5940647220179492604, guid: 55e433a0eeb5d2e43b9af70d8dc83d34, type: 3}
-  LaserPrefab: {fileID: 1178844608527456, guid: 990bf98ec179b3e4b8304aa2958b1e2c, type: 3}
-  BulletHitVFX: {fileID: 5139191600351067223, guid: 31e9cb589fb1c9e4fbc97dc55e6b73f1, type: 3}
-  WarningVFX: {fileID: 8105840715448463403, guid: b6c69c5ea0bfdaa4ea312f1f46ec8c01, type: 3}
-  _hitDelay: 1
-  _granadeRadius: 2
-  _missileRadius: 4
-  _yPosOffset: 1.5
-  _arcHeight: 10
+  IsAttacking: 0
+--- !u!114 &-8350040400276831494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3016843131154389009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068fb2bbdc17ae8468e5161e545a1382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &3184633984302917899
 Animator:
   serializedVersion: 7

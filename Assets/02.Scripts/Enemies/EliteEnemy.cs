@@ -8,6 +8,8 @@ public class EliteEnemy : Enemy, IDamageable
     private int _attackType = 0; // 실제 AttackType 값을 저장할 private 백킹 필드
 
     public float OriginalValue = 0.5f;
+    public bool IsAttacking = false;
+    public float AttackTimer = 0f;
 
     // public int AttackTypeNumber = 2;
 
