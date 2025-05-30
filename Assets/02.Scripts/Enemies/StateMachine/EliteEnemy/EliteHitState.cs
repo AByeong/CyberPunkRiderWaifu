@@ -37,6 +37,10 @@ public class EliteHitState : EliteBaseState
         base.OnEnter();
         _hitTimer = 0f;
 
+
+        
+        
+        
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
         Owner.IsHit = false;

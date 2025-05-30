@@ -75,7 +75,7 @@ public class StageManager : MonoBehaviour
 
         if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector - 1)
         {
-            CinemachineManager.Instance.BossAppear();
+            CinemachineManager.Instance.ShowBossAppear();
         }
 
 
@@ -130,14 +130,16 @@ public class StageManager : MonoBehaviour
     {
         if (_isClear)
         {
-            DeliveryManager.Instance.StageManager.MoveNextStage();
+            _isClear = false;
+
             CinemachineManager.Instance.ShowElevatorChangeAnimation();
+            DeliveryManager.Instance.LoadNextSection();
         }
     }
 
     public void MoveNextStage()
     {
-        _isClear = false;
+        
 
         EnemyManager.Instance.DespawnALL();
         AddSpawners(_nextStageIndex);
@@ -152,10 +154,6 @@ public class StageManager : MonoBehaviour
         _previousStageIndex = _currentStageIndex;
         _currentStageIndex = _nextStageIndex;
         _nextStageIndex = _previousStageIndex;
-
-        Debug.Log($"{gameObject.name}:: CurrentSector {_currentStageIndex} || NextSector {_nextStageIndex} || PreviousSector {_previousStageIndex}");
-
-        DeliveryManager.Instance.LoadNextSection();
         GenerateSubStage(_nextStageIndex);
     }
 

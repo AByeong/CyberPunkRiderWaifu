@@ -22,6 +22,7 @@ public class Stat : IStatsProvider
 {
     private readonly Random _rng = new Random();
     public Dictionary<StatType, float> Stats;
+    
     public Stat(Dictionary<StatType, float> statDict)
     {
         Stats = statDict;
@@ -31,7 +32,7 @@ public class Stat : IStatsProvider
     {
         return Stats.TryGetValue(type, out float value) ? value : 0f;
     }
-    public virtual float CalculateDamage(float baseDamage)
+    public float CalculateDamage(float baseDamage)
     {
         float attackPower = GetStat(StatType.AttackPower);
         float critChance = GetStat(StatType.CritChance);

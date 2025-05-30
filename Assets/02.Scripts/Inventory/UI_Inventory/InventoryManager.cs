@@ -1,0 +1,148 @@
+using System;
+using System.Collections.Generic;
+using JY;
+using UnityEngine;
+using UnityEngine.Serialization;
+using Newtonsoft.Json;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem;
+
+[System.Serializable]
+public class InventoryManager : Singleton<InventoryManager>
+{
+    public List<ItemBaseDataSO> soDatas;
+
+    private List<Item> _items = new List<Item>();
+    public List<Item> Items => _items;
+    
+    public Action OnDataChanged;
+
+
+    public void Start()
+    {
+        Load();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("Q");
+            Item item = ItemCreateManager.Instance.CreateHead();
+            Add(item);
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Debug.Log("C");
+            Item item =ItemCreateManager.Instance.CreateBoots();
+            Add(item);
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            var dropPlan = new Dictionary<DropItemType, int>
+            {
+                { DropItemType.Item, 3 },
+            };
+            ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward); 
+        }
+    }
+
+    public void Add(Item item)
+    {
+        Debug.Log("InventoryManager Add 진입ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+        _items.Add(item);
+        Debug.Log("InventoryManager Add댐ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
+        OnDataChanged?.Invoke();
+    }
+
+    public void AddStat(Item item)
+    {
+        Debug.Log($"{item.Data.ItemName} Added");
+        GameManager.Instance.player.ApplyEquipment(StatType.MaxHealth,item.MaxHealth);
+        GameManager.Instance.player.ApplyEquipment(StatType.AttackPower,item.AttackPower);
+        GameManager.Instance.player.ApplyEquipment(StatType.Defense,item.Defense);
+        GameManager.Instance.player.ApplyEquipment(StatType.Speed,item.Speed);
+        GameManager.Instance.player.ApplyEquipment(StatType.AttackSpeed,item.AttackSpeed);
+        GameManager.Instance.player.ApplyEquipment(StatType.CritChance,item.CritChance);
+        GameManager.Instance.player.ApplyEquipment(StatType.CritDamage,item.CritDamage);
+        Debug.Log($"playerStat 참조 안됨, ItemSpeed : {item.Speed}"); // 플레이어 Stat 참조 안됨
+    }
+
+    public void RemoveStat(Item item)
+    {
+        Debug.Log($"{item.Data.ItemName} Deleted");
+        GameManager.Instance.player.RemoveEquipment(StatType.MaxHealth,item.MaxHealth);
+        GameManager.Instance.player.RemoveEquipment(StatType.AttackPower,item.AttackPower);
+        GameManager.Instance.player.RemoveEquipment(StatType.Defense,item.Defense);
+        GameManager.Instance.player.RemoveEquipment(StatType.Speed,item.Speed);
+        GameManager.Instance.player.RemoveEquipment(StatType.AttackSpeed,item.AttackSpeed);
+        GameManager.Instance.player.RemoveEquipment(StatType.CritChance,item.CritChance);
+        GameManager.Instance.player.RemoveEquipment(StatType.CritDamage,item.CritDamage);
+    }
+
+    private void Save()
+    {
+        ItemSaveDataList dataList = new ItemSaveDataList();
+        foreach (var item in _items)
+        {
+            ItemSaveData saveData = item.ToSaveData(soDatas.IndexOf(item.Data));
+            dataList.SaveDatas.Add(saveData);
+        }
+        string json = JsonConvert.SerializeObject(dataList, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        });
+        PlayerPrefs.SetString("Inventory", json);
+    }
+
+    private void Load()
+    {
+        string json =  PlayerPrefs.GetString("Inventory", "");
+        if (string.IsNullOrEmpty(json)) return;
+        ItemSaveDataList saveDataList = JsonConvert.DeserializeObject<ItemSaveDataList>(json, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Auto
+        });
+
+        foreach (ItemSaveData saveData in saveDataList.SaveDatas)
+        {
+            Debug.Log(saveData.ItemSOIndex);
+            Item item = new Item(soDatas[saveData.ItemSOIndex], saveData);
+            Add(item);
+        }
+    }
+}
+
+[System.Serializable]
+public class ItemSaveData
+{
+    public ItemType ItemType;
+    public SlotType SlotType;
+    public int ItemSOIndex; // SO Index
+    public int SlotIndex;
+}
+[System.Serializable]
+public class EquipmentSaveData : ItemSaveData
+{
+    public float MaxHealth;
+    public float AttackPower;
+    public float Defense;
+    public float Speed;
+    public float AttackSpeed;
+    public float CritChance;
+    public float CritDamage;
+    public SetItemType SetItemType;
+}
+
+[System.Serializable]
+public class ChipSaveData : ItemSaveData
+{
+    public float SkillRange;
+    public float ReduceCooldown;
+}
+[Serializable]
+public class ItemSaveDataList
+{
+   public List<ItemSaveData> SaveDatas = new List<ItemSaveData>();
+}
+

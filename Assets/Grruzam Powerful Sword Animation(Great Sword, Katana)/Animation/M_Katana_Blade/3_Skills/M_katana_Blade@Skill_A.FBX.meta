@@ -1047,14 +1047,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.07850175
+      - time: 0.051687874
         functionName: EnableAttackColliders
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.17557251
+      - time: 0.18927445
         functionName: DisableAttackColliders
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
@@ -1068,10 +1068,24 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.43002546
-        functionName: DrakkarTrailStart
+      - time: 0.45557252
+        functionName: DisableAttackColliders
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 6a7fa2396a451cd4ea2d2d0afee243c1, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.47571328
+        functionName: InstantiateEffect
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b8e9d17796fd47c46976ba2f17284603, type: 3}
+        floatParameter: 0
+        intParameter: 10
+        messageOptions: 0
+      - time: 0.5835962
+        functionName: DisableAttackColliders
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

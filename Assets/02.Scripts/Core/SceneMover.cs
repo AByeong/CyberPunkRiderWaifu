@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,11 @@ public class SceneMover : Singleton<SceneMover>
     {
         base.Awake();
 //        DontDestroyOnLoad(this.gameObject); // 씬이 바뀌어도 파괴되지 않음
+    }
+
+    private void Start()
+    {
+        SoundManager.Instance.PlayBGM(SoundType.BGM_OfficeStage);
     }
 
     public void ShowDungeonPopup(string dungeonName)

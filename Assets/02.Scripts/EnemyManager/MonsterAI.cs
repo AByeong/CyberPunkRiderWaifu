@@ -1,139 +1,174 @@
-using Unity.Behavior; // BehaviorGraphAgent를 위해 필요
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum AITier
-{
-    Tier1_ActiveFormation,
-    Tier2_Approaching,
-    Tier3_Background
-}
+// AITypes.cs 또는 공용 파일에 정의된 AITier enum을 사용한다고 가정합니다.
+// public enum AITier { Tier1_ActiveFormation, Tier2_Approaching, Tier3_Background }
 
-[RequireComponent(typeof(NavMeshAgent))]
 public class MonsterAI : MonoBehaviour
 {
     [Header("Runtime Status")]
     public AITier CurrentTier = AITier.Tier3_Background;
 
-    public Enemy Enemy;
-    private NavMeshAgent navMeshAgent;
-    private Transform playerTransform;
-    private FormationManager formationManager;
-    private AIManager aiManager;
+    public Enemy Enemy; // Enemy 스크립트에 EnemyData 및 AttackDistance가 있다고 가정
+    protected NavMeshAgent navMeshAgent;
+    protected Transform playerTransform;
+    protected FormationManager formationManager; // 파생 클래스에서 사용 가능
+    protected AIManager aiManager;
 
-    [Header("Tier 1 Behavior (Active Formation & Retreat)")]
-    public float Tier1_Speed = 3.5f;
-    public float minPlayerDistance = 4.0f;
-    public float desiredPlayerDistance = 6.0f;
-    private const float Tier1_SlotReachedThreshold = 1.5f;
-    private const float Tier1_LookAtPlayerSpeed = 5f;
-    private bool isRetreating = false;
-    private Vector3? currentFormationSlot = null;
+    [Header("Common Speeds & Config")]
+    public float DefaultTier1Speed = 3.5f;
+    public float DefaultTier2Speed = 7f;
+    public float DefaultTier1Acceleration = 8f;
+    public float DefaultTier2Acceleration = 5f;
 
-    [Header("Tier 2 Behavior (Approaching)")]
-    public float Tier2_Speed = 7f;
-    private const float Tier2_ApproachStoppingDistance = 8f;
-    private const float Tier2_LookAtPlayerSpeed = 4f;
+    [Header("Tier 2 Behavior")]
+    protected const float Tier2_ApproachStoppingDistance = 8f;
 
-    [Header("Tier 3 Behavior")]
-    private const float Tier3_LookAtPlayerSpeed = 3f;
-
-    private Renderer monsterRenderer;
+    private Renderer monsterRenderer; // 필요시 사용 (예: 시야 검사, 디버깅)
 
     [Header("Performance")]
-    public float logicUpdateInterval = 0.2f;
-    public float nextIndividualLogicUpdateTime = 0f;
+    public float logicUpdateInterval = 0.2f; // AIManager에서 읽기 위해 public
+    public float nextIndividualLogicUpdateTime = 0f; // AIManager에서 읽고 쓰기 위해 public으로 변경
 
-    void Awake()
+    protected virtual void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        navMeshAgent.updateRotation = true;
+        if (navMeshAgent == null)
+        {
+            Debug.LogError($"[{this.GetType().Name}] NavMeshAgent component not found on {gameObject.name}, adding one.", this.gameObject);
+            navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
+        }
+        navMeshAgent.updateRotation = true; // NavMeshAgent가 회전을 직접 제어
 
         monsterRenderer = GetComponentInChildren<Renderer>();
         if (monsterRenderer == null)
         {
-            Debug.LogWarning("MonsterAI: Renderer component not found on " + gameObject.name, this.gameObject);
+            Debug.LogWarning($"[{this.GetType().Name}] Renderer component not found on child of {gameObject.name}", this.gameObject);
         }
     }
 
-    void OnDisable()
+    protected virtual void OnDisable()
     {
-        if (aiManager != null) aiManager.UnregisterMonster(this);
-        if (currentFormationSlot.HasValue && formationManager != null)
+        if (aiManager != null)
         {
-            formationManager.ReleaseFormationSlot(this);
-            currentFormationSlot = null;
+            aiManager.UnregisterMonster(this); // AIManager가 MonsterAI 타입을 받을 수 있어야 함
         }
-        isRetreating = false;
-        if (navMeshAgent != null && navMeshAgent.enabled && navMeshAgent.isOnNavMesh) navMeshAgent.isStopped = true;
+        HandleOnDisable(); // 파생 클래스에서 포메이션 슬롯 해제 등을 처리
+        if (navMeshAgent != null && navMeshAgent.isOnNavMesh && navMeshAgent.enabled)
+        {
+            navMeshAgent.isStopped = true;
+        }
     }
 
-    public void Initialize(Transform player, FormationManager fm, AIManager am, ObjectPool pool)
+    // 파생 클래스에서 재정의하여 포메이션 슬롯 등을 해제
+    protected virtual void HandleOnDisable() { }
+
+    public virtual void Initialize(Transform player, FormationManager fm, AIManager am, ObjectPool pool)
     {
-        navMeshAgent.enabled = false;
+        if (navMeshAgent == null) navMeshAgent = GetComponent<NavMeshAgent>();
+
+        if (navMeshAgent.enabled) navMeshAgent.enabled = false; // 에이전트 리셋을 위해 잠시 비활성화
         navMeshAgent.enabled = true;
 
         playerTransform = player;
         formationManager = fm;
         aiManager = am;
-        nextIndividualLogicUpdateTime = Time.time + Random.Range(0, logicUpdateInterval);
+        // 초기 업데이트 시간 분산을 위해 Random.Range 사용. AIManager가 이 값을 읽고 첫 업데이트 후 다시 설정.
+        this.nextIndividualLogicUpdateTime = Time.time + Random.Range(0f, logicUpdateInterval);
 
-        Enemy.Target = player.gameObject;
-
+        
+        
+        
         if (Enemy != null)
         {
-            Enemy.Pool = pool;
+            Enemy.Target = player.gameObject;
+           Enemy.Pool = pool;
+        }
+        else
+        {
+            Debug.LogError($"[{this.GetType().Name}] Enemy component is not assigned on {gameObject.name}", this.gameObject);
         }
     }
 
-    public void SetAITier(AITier newTier, bool forceUpdate = false)
+    // AIManager에서 monster.logicUpdateInterval을 직접 사용하므로 이 메서드가 외부에서 꼭 필요하진 않을 수 있음.
+    // MonsterAI 내부 및 파생 클래스에서 일관된 방식으로 logicUpdateInterval을 가져오고 싶을 때 유용.
+    protected virtual float GetLogicUpdateInterval() => this.logicUpdateInterval;
+
+
+    public virtual void SetAITier(AITier newTier, bool forceUpdate = false)
     {
         if (CurrentTier == newTier && !forceUpdate) return;
+
         AITier previousTier = CurrentTier;
         CurrentTier = newTier;
 
         if (previousTier == AITier.Tier1_ActiveFormation && newTier != AITier.Tier1_ActiveFormation)
         {
-            if (currentFormationSlot.HasValue && formationManager != null)
-            {
-                formationManager.ReleaseFormationSlot(this);
-                currentFormationSlot = null;
-            }
+            OnExitTier1(); // Tier1에서 나갈 때 파생 클래스가 처리할 내용 (예: 포메이션 슬롯 해제)
         }
 
-        isRetreating = false;
+        navMeshAgent.isStopped = false; // 기본적으로 이동 상태로 설정
 
         switch (CurrentTier)
         {
             case AITier.Tier1_ActiveFormation:
-                navMeshAgent.speed = Tier1_Speed;
-                navMeshAgent.acceleration = 8f;
+                navMeshAgent.speed = GetTier1Speed();
+                navMeshAgent.acceleration = GetTier1Acceleration();
                 navMeshAgent.autoRepath = true;
-                navMeshAgent.stoppingDistance = Tier1_SlotReachedThreshold * 0.8f;
-                // navMeshAgent.isStopped = false;
-                logicUpdateInterval = 0.1f;
+                ConfigureNavMeshAgentForTier1(); // stoppingDistance 등 Tier1 특화 설정
+                this.logicUpdateInterval = 0.1f; // Tier1 인터벌 설정 (예시)
                 break;
 
             case AITier.Tier2_Approaching:
-                navMeshAgent.speed = Tier2_Speed;
-                navMeshAgent.acceleration = 5f;
+                navMeshAgent.speed = GetTier2Speed();
+                navMeshAgent.acceleration = DefaultTier2Acceleration;
                 navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
                 navMeshAgent.autoRepath = true;
-                // navMeshAgent.isStopped = false; // ✅ 에이전트 다시 활성화
-                logicUpdateInterval = 0.3f;
+                this.logicUpdateInterval = 0.3f; // Tier2 인터벌 설정 (예시)
                 break;
 
             case AITier.Tier3_Background:
                 if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+                {
                     navMeshAgent.isStopped = true;
-                logicUpdateInterval = 1.0f;
+                }
+                this.logicUpdateInterval = 1.0f; // Tier3 인터벌 설정 (예시)
                 break;
         }
+        // Tier 변경 시 다음 업데이트 시간을 현재 시간 + 새 인터벌의 랜덤 값으로 즉시 재설정하여 반응성 향상 및 몰림 방지
+        this.nextIndividualLogicUpdateTime = Time.time + Random.Range(0f, this.logicUpdateInterval);
     }
+
+    // 파생 클래스에서 재정의하여 Tier1 관련 설정을 커스터마이징
+    protected virtual float GetTier1Speed() => DefaultTier1Speed;
+    protected virtual float GetTier1Acceleration() => DefaultTier1Acceleration;
+    protected virtual float GetTier2Speed() => DefaultTier2Speed;
+
+    protected virtual void ConfigureNavMeshAgentForTier1()
+    {
+    } // Tier1 NavMeshAgent 설정 (stoppingDistance 등)
+
+    protected virtual void OnExitTier1()
+    {
+    } // Tier1 상태를 벗어날 때 호출
 
     public void ManagedUpdateLogic()
     {
-        if (playerTransform == null || !gameObject.activeInHierarchy) return;
+        if (playerTransform == null || !gameObject.activeInHierarchy || Enemy == null || (Enemy.EnemyData == null))
+        {
+            if (navMeshAgent != null && navMeshAgent.enabled && navMeshAgent.isOnNavMesh && !navMeshAgent.isStopped)
+            {
+                navMeshAgent.isStopped = true; // 필수 조건 미충족 시 정지
+            }
+            return;
+        }
+
+        // Tier3이 아니고, 에이전트가 멈춰있다면 다시 활성화 (Tier 변경 직후 isStopped가 true일 수 있음)
+        if (CurrentTier != AITier.Tier3_Background && navMeshAgent.enabled && navMeshAgent.isOnNavMesh && navMeshAgent.isStopped)
+        {
+            navMeshAgent.isStopped = false;
+        }
+
 
         switch (CurrentTier)
         {
@@ -141,117 +176,44 @@ public class MonsterAI : MonoBehaviour
             case AITier.Tier2_Approaching: UpdateTier2Behavior(); break;
             case AITier.Tier3_Background: UpdateTier3Behavior(); break;
         }
-
-        // 추가 안전장치: Tier2인데 isStopped면 다시 활성화
-        if (CurrentTier == AITier.Tier2_Approaching &&
-            navMeshAgent.enabled && navMeshAgent.isOnNavMesh &&
-            navMeshAgent.isStopped)
-        {
-            navMeshAgent.isStopped = false;
-        }
     }
 
-    void UpdateTier1Behavior()
+    protected virtual void UpdateTier1Behavior()
     {
-        if (playerTransform == null) return;
-
-        float sqrDistToPlayer = (playerTransform.position - transform.position).sqrMagnitude;
-        float minPlayerDistSqr = minPlayerDistance * minPlayerDistance;
-
-        if (sqrDistToPlayer < minPlayerDistSqr && !isRetreating)
-        {
-            isRetreating = true;
-        }
-
-        if (isRetreating)
-        {
-            Vector3 directionFromPlayer = (transform.position - playerTransform.position).normalized;
-            Vector3 retreatTargetPos = playerTransform.position + directionFromPlayer * desiredPlayerDistance;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(retreatTargetPos, out hit, 3.0f, NavMesh.AllAreas))
-            {
-                if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
-                {
-                    navMeshAgent.SetDestination(hit.position);
-                    navMeshAgent.stoppingDistance = 0.2f;
-                }
-            }
-            else
-            {
-                Vector3 emergencyRetreatPos = transform.position + directionFromPlayer * 2.0f;
-                if (NavMesh.SamplePosition(emergencyRetreatPos, out hit, 1.0f, NavMesh.AllAreas))
-                {
-                    if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
-                        navMeshAgent.SetDestination(hit.position);
-                }
-            }
-
-            float desiredDistSqr = desiredPlayerDistance * desiredPlayerDistance;
-            if (sqrDistToPlayer > desiredDistSqr * 0.9f)
-            {
-                if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance + 0.5f)
-                {
-                    isRetreating = false;
-                    navMeshAgent.ResetPath();
-                }
-            }
-            return;
-        }
-
-        if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
-            navMeshAgent.stoppingDistance = Tier1_SlotReachedThreshold * 0.8f;
-
-        bool needsNewSlot = !currentFormationSlot.HasValue;
-        if (currentFormationSlot.HasValue && formationManager != null && formationManager.IsSlotStale(currentFormationSlot.Value, this))
-        {
-            formationManager.ReleaseFormationSlot(this);
-            currentFormationSlot = null;
-            needsNewSlot = true;
-        }
-        if (needsNewSlot && formationManager != null)
-            currentFormationSlot = formationManager.RequestFormationSlot(this);
-
-        if (currentFormationSlot.HasValue)
-        {
-            if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && navMeshAgent.destination != currentFormationSlot.Value)
-                navMeshAgent.SetDestination(currentFormationSlot.Value);
-        }
-        else
-        {
-            if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
-            {
-                navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
-                if (navMeshAgent.destination != playerTransform.position)
-                    navMeshAgent.SetDestination(playerTransform.position);
-            }
-        }
     }
 
-    void UpdateTier2Behavior()
+    protected virtual void UpdateTier2Behavior()
     {
         if (playerTransform == null) return;
 
         if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
         {
-            navMeshAgent.stoppingDistance = Tier2_ApproachStoppingDistance;
+            // SetAITier에서 stoppingDistance가 이미 설정되었으므로 여기서는 목적지만 갱신
             if (navMeshAgent.destination != playerTransform.position)
+            {
                 navMeshAgent.SetDestination(playerTransform.position);
+            }
         }
     }
 
-    void UpdateTier3Behavior()
+    protected virtual void UpdateTier3Behavior()
     {
+        // SetAITier에서 이미 isStopped = true로 설정됨. 추가 로직이 필요하면 여기에 작성
         if (navMeshAgent.enabled && navMeshAgent.isOnNavMesh && !navMeshAgent.isStopped)
-            navMeshAgent.isStopped = true;
+        {
+             navMeshAgent.isStopped = true;
+        }
     }
 
-    public void NotifyNewFormationSlotPosition(Vector3 newWorldPosition)
+    /// <summary>
+    /// FormationManager가 몬스터에게 새로운 포메이션 슬롯 위치를 알릴 때 호출합니다.
+    /// 포메이션을 사용하는 파생 클래스(현재 NormalMonsterAI)에서 이 메서드를 재정의(override)하여
+    /// currentFormationSlot 값을 업데이트하고, 필요시 NavMeshAgent의 목적지를 설정합니다.
+    /// </summary>
+    /// <param name="newWorldPosition">새로운 월드 포메이션 슬롯 위치. 슬롯을 잃었음을 의미할 경우 Vector3.positiveInfinity와 같은 특수 값을 사용할 수 있습니다.</param>
+    public virtual void NotifyNewFormationSlotPosition(Vector3 newWorldPosition)
     {
-        currentFormationSlot = newWorldPosition;
-        if (CurrentTier == AITier.Tier1_ActiveFormation && !isRetreating && navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
-        {
-            if (navMeshAgent.destination != currentFormationSlot.Value)
-                navMeshAgent.SetDestination(currentFormationSlot.Value);
-        }
+        // 기본 클래스에서는 특별한 동작을 하지 않습니다.
+        // 포메이션을 사용하는 파생 클래스가 이 메서드를 override 하여 실제 로직을 구현합니다.
     }
 }

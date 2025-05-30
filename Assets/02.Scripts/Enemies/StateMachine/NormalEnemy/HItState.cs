@@ -13,7 +13,7 @@ public class HItState : BaseNormalEnemyState
     // --- 넉백/공중띄우기 관련 변수 ---
     [Header("Knockback & Airborne")]
     [SerializeField] private float _maxAirHeight = 3f;
-    [SerializeField] private float _airRiseAmount = 2f;
+    [SerializeField] public float _airRiseAmount = 2f;
     [SerializeField] private float _airRiseTime = 0.2f;
     [SerializeField] private float _hangTime = 0.5f;
     [SerializeField] private float _fallTime = 0.8f;
@@ -21,6 +21,8 @@ public class HItState : BaseNormalEnemyState
     private Vector3 _knockbackDir;
     [SerializeField] private float _knockbackTime = 0.2f;
     [SerializeField] private float _knockbackAirbonCoeff = 0;
+
+    public Damage GettedDamage;
     // --- 넉백/공중띄우기 관련 변수 끝 ---
 
 
@@ -38,6 +40,11 @@ public class HItState : BaseNormalEnemyState
 
         Owner.IsHit = false;
         _hitTimer = 0f;
+
+        if (Owner.TakedDamage.From.CompareTag("Player"))
+        {
+            SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
+        }
 
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 

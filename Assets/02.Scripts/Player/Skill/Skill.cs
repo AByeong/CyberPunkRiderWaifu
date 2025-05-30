@@ -6,8 +6,13 @@ public class Skill
     public int Index;
     public SkillData SkillData;
     private float _cooldownTimer;
-
+    
     private bool _isActive = false;
+
+    public Skill()
+    {
+        Index = -1;
+    }
     public void UpdateCooldown(float deltaTime)
     {
         _cooldownTimer += deltaTime;

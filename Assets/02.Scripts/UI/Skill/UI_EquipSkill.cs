@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-public class UI_EquipSkill : UI_Skill
+﻿public class UI_EquipSkill : UI_Skill
 {
-    public ChipSlot[] ChipSlots;
+    public UI_ChipSlot[] ChipSlots;
     public int Index = -1;
     private void Start()
     {
@@ -13,27 +12,30 @@ public class UI_EquipSkill : UI_Skill
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void SetChipOption(ChipData item)
+    public void TrySetChipOption(ChipDataSO chipDataSO)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= item.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= item.SkillRange;
+        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
 
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipDataSO.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipDataSO.SkillRange;
     }
 
-    public void ClearChipOption(ChipData item)
+    public void TryClearChipOption(ChipDataSO chipDataSO)
     {
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= item.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= item.SkillRange;
+        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
 
+        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipDataSO.ReduceCooldown;
+        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipDataSO.SkillRange;
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)
     {
         base.SetSkill(skillToEquip, isActive);
-        foreach(ChipSlot chipSlot in ChipSlots)
+        foreach(UI_ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
+            if (chipSlot.HasItem)
             {
+                TrySetChipOption(chipSlot.Item.Data as ChipDataSO);
             }
         }
     }
@@ -41,10 +43,12 @@ public class UI_EquipSkill : UI_Skill
     public override void RemoveSkill()
     {
         base.RemoveSkill();
-        foreach(ChipSlot chipSlot in ChipSlots)
+
+        foreach(UI_ChipSlot chipSlot in ChipSlots)
         {
-            if (chipSlot.UI_Item != null)
+            if (chipSlot.HasItem)
             {
+                TryClearChipOption(chipSlot.Item.Data as ChipDataSO);
             }
         }
     }

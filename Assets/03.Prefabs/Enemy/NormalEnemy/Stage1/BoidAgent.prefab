@@ -170,6 +170,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1954761248280692769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1745675462461744177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3504270062352540899}
+  m_Layer: 3
+  m_Name: DamageTextPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3504270062352540899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745675462461744177}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.43, y: 0.282, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845003869140558324}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2451318517563722406
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +352,7 @@ GameObject:
   - component: {fileID: 2563987164733640846}
   - component: {fileID: 3269765981359261967}
   - component: {fileID: 2985244666764805926}
-  - component: {fileID: 9145306139702554860}
+  - component: {fileID: 4401242198475575466}
   - component: {fileID: 5252955424619335002}
   - component: {fileID: 3564118245039200704}
   - component: {fileID: 3832887580745971059}
@@ -348,6 +379,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1459524087799009121}
+  - {fileID: 3504270062352540899}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2563987164733640846
@@ -412,7 +444,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3016843131154389009}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 1
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -425,7 +457,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 1
---- !u!114 &9145306139702554860
+--- !u!114 &4401242198475575466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -434,17 +466,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3016843131154389009}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71d7189a6b0dd154eb309570f9ab0191, type: 3}
+  m_Script: {fileID: 11500000, guid: 019c891c8dcfdd9439384956ce144379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTier: 2
   Enemy: {fileID: 3832887580745971059}
-  Tier1_Speed: 3.5
-  minPlayerDistance: 0.3
-  desiredPlayerDistance: 3
-  Tier2_Speed: 3.5
+  DefaultTier1Speed: 3.5
+  DefaultTier2Speed: 7
+  DefaultTier1Acceleration: 8
+  DefaultTier2Acceleration: 5
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
+  Tier1Speed: 3.5
+  Tier1Acceleration: 8
+  SlotReachedThreshold: 1.5
+  NoSlotApproachDistanceMultiplier: 0.9
 --- !u!65 &5252955424619335002
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -509,7 +545,14 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: 0ac7dd1b3081a324480d0cf452f49ed6, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
-  DamageType: 0
+  DamagePopupPosition: {fileID: 3504270062352540899}
+  DamagePopup: {fileID: 2101629379635105609, guid: bf0f131c53c73e84a811f58eb7818f01, type: 3}
+  WorldSpaceCanvas: {fileID: 0}
+  targetMaterialName: KyleRobot
+  mainColorPropertyName: _Color
+  highlightVValue: 2
+  normalVValue: 0.8
+  hitFlashEffectDuration: 0.3
   WeaponCollider: {fileID: 8854814758725385779}
 --- !u!114 &-2461674269757663333
 MonoBehaviour:

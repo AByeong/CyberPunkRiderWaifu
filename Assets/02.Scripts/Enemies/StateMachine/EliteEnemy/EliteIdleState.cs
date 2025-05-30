@@ -11,15 +11,18 @@ public class EliteIdleState : EliteBaseState
 
     public override void Update()
     {
+        
         base.Update();
 
         if (Owner.Target == null)
         {
-            Owner.Target = GameObject.FindGameObjectWithTag("Player");
-            if (Owner.Target == null) return; // 플레이어 없으면 리턴
+            Owner.Target = GameManager.Instance.player.gameObject;
         }
 
         float distance = Vector3.Distance(Owner.transform.position, Owner.Target.transform.position);
+       // Debug.Log($"{Owner.gameObject.name}이 적과의 거리 : {distance},플레이어의 위치 {Owner.Target.transform.position} ,어택까지 남은 거리 : {Owner.EnemyData.AttackDistance - distance}");
+        
+        
         if (distance <= Owner.EnemyData.AttackDistance)
         {
             SuperMachine.ChangeState<EliteAttackState>();

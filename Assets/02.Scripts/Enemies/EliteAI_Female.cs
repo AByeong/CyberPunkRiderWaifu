@@ -7,7 +7,6 @@ public class EliteAI_Female : EliteEnemy
     public TrailRenderer EyeTrail;
     public float StampRange;
     public Transform StampPosition; // 현재 StampStep에서는 사용되지 않지만, 기즈모에서 활용 가능
-
     [SerializeField] private float runCooldownDuration = 3.0f;
 
     private bool isCoolingDown = false;
@@ -28,7 +27,13 @@ public class EliteAI_Female : EliteEnemy
         }
         
     }
+    private void LookAtTarget()
+    {
 
+        Vector3 direction = (GameManager.Instance.player.transform.position - transform.position).normalized;
+        direction.y = 0f; // 수평만 회전하도록
+        transform.forward = direction;
+    }
     public void StampStep()
     {
         if (_navMeshAgent.velocity.magnitude < 4f)
@@ -38,10 +43,11 @@ public class EliteAI_Female : EliteEnemy
 
         Vector3 sphereCenter = StampPosition.position;
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
-        int affectedCount = 0; // 영향을 받은 개체 수 카운트
-
-        Debug.Log($"[StampStep] Detected {detectedColliders.Length} colliders in range.");
-
+        
+        SoundManager.Instance.Play(SoundType.Elite_Female_Step);
+        LookAtTarget();
+        
+        
         foreach (Collider hitCollider in detectedColliders)
         {
             if (hitCollider.tag == "Elite") continue;
@@ -49,22 +55,28 @@ public class EliteAI_Female : EliteEnemy
             IDamageable damageable = hitCollider.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                Debug.Log($"[StampStep] Applying NoDamageButAir to: {hitCollider.gameObject.name}");
+               // Debug.Log($"[StampStep] Applying NoDamageButAir to: {hitCollider.gameObject.name}");
                 Damage damage = new Damage();
                 damage.DamageValue = 0;
                 damage.DamageType = EDamageType.Airborne;
                 damage.DamageForce = 2f;
+                damage.From = this.gameObject;
                 damageable.TakeDamage(damage);
-                affectedCount++;
             }
         }
-        Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
+       // Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
     }
 
 
 
 public void EyeTurnOn()
 {
+    if (!EyeTrail.enabled)
+    {
+        SoundManager.Instance.Play(SoundType.Elite_Female_Detect);
+    }
+    LookAtTarget();
+
     EyeTrail.gameObject.SetActive(true);
 }
 
@@ -77,6 +89,7 @@ public void EyeTurnOff()
 public GameObject KingStompVFX;
 public void KingStompAttack()
 {
+    SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
     _eliteStateMachine.ChangeState<EliteAttackState>();
     KingStompVFX.SetActive(true);
     KingStompVFX.GetComponent<ParticleSystem>().Play();
@@ -86,6 +99,9 @@ public void KingStompAttack()
     public GameObject StompVFX;
     public void StompAttack()
     {
+        SoundManager.Instance.Play(SoundType.Elite_Electricity);
+        LookAtTarget();
+
         _eliteStateMachine.ChangeState<EliteAttackState>();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
@@ -95,6 +111,9 @@ public void KingStompAttack()
 
     public void TornadoAttack()
     {
+        SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
+        LookAtTarget();
+
         _eliteStateMachine.ChangeState<EliteAttackState>();
         TornadoVFX.SetActive(true);
         TornadoVFX.GetComponent<ParticleSystem>().Play();
@@ -104,7 +123,6 @@ public void KingStompAttack()
     public void TornadoAttackEnd()
     {
         TornadoVFX.SetActive(false);
-        TornadoVFX.GetComponent<VisualEffect>().Stop();
         TornadoVFX.GetComponent<ParticleSystem>().Stop();
     }
     

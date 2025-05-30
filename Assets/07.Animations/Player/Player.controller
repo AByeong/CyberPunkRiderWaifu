@@ -61,7 +61,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: b3fbf7fea81c6dd40b32a92f18380f5c, type: 3}
-  m_Tag: 
+  m_Tag: RootMotion
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
@@ -2298,7 +2298,7 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 3
     m_ConditionEvent: StateTime
-    m_EventTreshold: 0.24
+    m_EventTreshold: 0.4
   - m_ConditionMode: 4
     m_ConditionEvent: StateTime
     m_EventTreshold: 1
@@ -3440,7 +3440,7 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -210, y: -160, z: 0}
   m_EntryPosition: {x: 396, y: -168, z: 0}
-  m_ExitPosition: {x: 696, y: 24, z: 0}
+  m_ExitPosition: {x: 670, y: 380, z: 0}
   m_ParentStateMachinePosition: {x: 96, y: -168, z: 0}
   m_DefaultState: {fileID: 1102367316240351284}
 --- !u!1107 &1107267585127195014
@@ -3498,7 +3498,7 @@ AnimatorStateMachine:
     m_Position: {x: 480, y: 0, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 1107228720668996938}
-    m_Position: {x: -200, y: 250, z: 0}
+    m_Position: {x: -190, y: 280, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 1107144586752185528}
     m_Position: {x: 360, y: 120, z: 0}
@@ -3618,7 +3618,7 @@ AnimatorStateMachine:
     m_Position: {x: 780, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1034924845687260936}
-    m_Position: {x: 730, y: -280, z: 0}
+    m_Position: {x: 780, y: -320, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions:
@@ -4073,7 +4073,10 @@ AnimatorTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: Grounded
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 1107144586752185528}
   m_DstState: {fileID: 0}
   m_Solo: 0
@@ -4185,7 +4188,7 @@ AnimatorState:
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: fb14fa234e735414080e259fae996858, type: 3}
-  m_Tag: AirAttack
+  m_Tag: RootMotion
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 

@@ -4,6 +4,9 @@ namespace JY
 {
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(PlayerSound))]
+    [RequireComponent(typeof(GroundCheck))]
     public class PlayerController : MonoBehaviour
     {
         private const float AirborneTurnSpeedProportion = 5.4f;
@@ -16,9 +19,10 @@ namespace JY
         private const float GroundDeceleration = 25f;
         public float MaxAirAttackGraceTime = 0.3f;
 
-        public float MaxForwardSpeed = 8f;
+        public float MaxForwardSpeed;
+        public float AttackPower;
         public float Gravity = 20f;
-        public float JumpSpeed = 10f;
+        public float JumpSpeed = 15f;
         public float MaxTurnSpeed = 1200f;
         public float MinTurnSpeed = 400f;
         public float IdleTimeout = 5f;
@@ -26,9 +30,12 @@ namespace JY
         public bool IsInCombo;
         public bool IsAirCombo;
         [Header("Dash")]
-        public float DashDistance = 5.0f;
+        public float DashDistance => MaxForwardSpeed * 0.6f;
         public float DashCooldown;
         public float DashDuration = 0.2f;
+        public bool NoGravity;
+
+        public IStatsProvider Stat { get; private set; }
 
         private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
         private readonly int _hashAirborne = Animator.StringToHash("Airborne");
@@ -83,17 +90,14 @@ namespace JY
         private Animator _animator;
         private CharacterController _characterController;
 
-
         private AnimatorStateInfo _currentStateInfo;
         private float _dashCooldownTimer;
         private float _dashSpeed;
         private float _dashTime;
         private float _desiredForwardSpeed;
         private float _forwardSpeed;
-        private int _hashTriggerSkill1;
-        private int _hashTriggerSkill2;
-        private int _hashTriggerSkill3;
-        private int _hashTriggerSkill4;
+        private GroundCheck _groundCheck;
+        private int _hashTriggerSkill;
         private float _idleTimer;
         private bool _inAttack;
         private PlayerInput _input;
@@ -101,9 +105,10 @@ namespace JY
         // private bool _isAirCombo;
         private bool _isAnimatorTransitioning;
         private bool _isDashing;
-        private bool _isGrounded = true;
+        private bool _isGrounded;
         private bool _isRespawning;
         private AnimatorStateInfo _nextStateInfo;
+        private PlayerSound _playerSound;
         private AnimatorStateInfo _previousCurrentStateInfo;
         private bool _previousIsAnimatorTransitioning;
         private bool _previouslyGrounded = true;
@@ -111,7 +116,8 @@ namespace JY
         private bool _readyToJump;
         private Renderer[] _renderers;
         private bool _rootMotionGroundedStart;
-        private IStatsProvider _stat;
+        
+
         private Quaternion _targetRotation;
         private float _verticalSpeed;
         private bool _wasInRootMotionState;
@@ -121,15 +127,18 @@ namespace JY
             _input = GetComponent<PlayerInput>();
             _animator = GetComponent<Animator>();
             _characterController = GetComponent<CharacterController>();
+            _groundCheck = GetComponent<GroundCheck>();
+            _playerSound = GetComponent<PlayerSound>();
+            
+            GameManager.Instance.player = this;
 
         }
         private async void Start()
         {
-            _stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
-
+            Stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
+            RefreshStat();
         }
-
-
+        
         private void Update()
         {
             CacheAnimatorState();
@@ -226,7 +235,7 @@ namespace JY
             bool isAttacking = IsPerformingAction(); // 일반 공격 판정
             bool hasMovementInput = _input.MoveInput != Vector2.zero;
 
-            if (_isGrounded)
+            if (_groundCheck.IsGrounded)
             {
                 if (isAirSkill)
                 {
@@ -272,17 +281,17 @@ namespace JY
 
             _characterController.transform.rotation *= _animator.deltaRotation;
 
-            _isAirborneAttacking = !_isGrounded && IsInCombo;
+            _isAirborneAttacking = !_groundCheck.IsGrounded && IsInCombo;
             bool ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
 
             if (isRootMotion)
             {
-                movement = new Vector3(_animator.deltaPosition.x, 0, _animator.deltaPosition.z);
+                movement = new Vector3(_animator.deltaPosition.x * 1.5f, 0, _animator.deltaPosition.z * 1.5f);
 
                 if (!_rootMotionGroundedStart)
                 {
                     // 공중 시작 → 중력 적용
-                    _verticalSpeed -= Gravity * Time.deltaTime;
+                    _verticalSpeed -= Gravity * 0.5f * Time.deltaTime;
                     movement += Vector3.up * (_animator.deltaPosition.y + _verticalSpeed * Time.deltaTime);
                 }
                 else
@@ -297,23 +306,16 @@ namespace JY
                 movement += Vector3.up * (_verticalSpeed * Time.deltaTime);
             }
 
+
             _characterController.Move(movement);
 
-            if (isRootMotion)
-            {
-                _isGrounded = _rootMotionGroundedStart;
-            }
-            else
-            {
-                _isGrounded = _characterController.isGrounded;
-            }
 
-            if (!_isGrounded)
+            if (!_groundCheck.IsGrounded)
             {
                 _animator.SetFloat(_hashAirborneVerticalSpeed, _verticalSpeed);
             }
 
-            _animator.SetBool(_hashGrounded, _isGrounded);
+            _animator.SetBool(_hashGrounded, _groundCheck.IsGrounded);
         }
         private void CheckIsAirCombo()
         {
@@ -323,11 +325,13 @@ namespace JY
 
         public void ApplyEquipment(StatType statType, float value)
         {
-            _stat = new StatModifierDecorator(_stat, statType, value);
+            Stat = new StatModifierDecorator(Stat, statType, value);
+            RefreshStat();
         }
         public void RemoveEquipment(StatType statType, float value)
         {
-            _stat = new StatModifierDecorator(_stat, statType, -value);
+            Stat = new StatModifierDecorator(Stat, statType, -value);
+            RefreshStat();
         }
         public void Dash()
         {
@@ -434,7 +438,7 @@ namespace JY
                 _isGrounded = false;
                 _readyToJump = false;
                 _airSkillExecuted = true;
-                _airAttackGraceTime = MaxAirAttackGraceTime; // ✅ 여기서만 설정
+                _airAttackGraceTime = MaxAirAttackGraceTime;
             }
         }
         private void CalculateVerticalMovement()
@@ -444,7 +448,7 @@ namespace JY
                 _airAttackGraceTime -= Time.deltaTime;
             }
 
-            if (!_input.JumpInput && _isGrounded)
+            if (!_input.JumpInput && _groundCheck.IsGrounded)
             {
                 _readyToJump = true;
             }
@@ -454,14 +458,15 @@ namespace JY
                 _airSkillExecuted = false;
             }
 
-            if (_isGrounded)
+            if (_groundCheck.IsGrounded)
             {
                 _verticalSpeed = -Gravity * StickingGravityProportion;
 
+                // 여기서 점프 실행
                 if (_input.JumpInput && _readyToJump && !IsInCombo)
                 {
+                    _playerSound.Play(EPlayerState.Jump);
                     _verticalSpeed = JumpSpeed;
-                    _isGrounded = false;
                     _readyToJump = false;
                 }
             }
@@ -482,12 +487,14 @@ namespace JY
                     _verticalSpeed = 0f;
                 }
 
-                _isAirborneAttacking = !_isGrounded && IsInCombo;
+                _isAirborneAttacking = !_groundCheck.IsGrounded && IsInCombo;
                 bool ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
                 if (!ignoreGravity)
                 {
                     _verticalSpeed -= Gravity * Time.deltaTime;
                 }
+
+
             }
         }
 
@@ -633,26 +640,12 @@ namespace JY
         }
         public void UseSkill(int skillNumber)
         {
-            switch (skillNumber)
-            {
-                case 0:
-                    _hashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[0].SkillData.TriggerName);
-                    _animator.SetTrigger(_hashTriggerSkill1);
-                    break;
-                case 1:
-                    _hashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[1].SkillData.TriggerName);
-                    _animator.SetTrigger(_hashTriggerSkill2);
-                    break;
-                case 2:
-                    _hashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[2].SkillData.TriggerName);
-                    _animator.SetTrigger(_hashTriggerSkill3);
-                    break;
-                case 3:
-                    _hashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkills[3].SkillData.TriggerName);
-                    _animator.SetTrigger(_hashTriggerSkill4);
-                    break;
-            }
 
+            _hashTriggerSkill = Animator.StringToHash(SkillManager.Instance.EquippedSkills[skillNumber].SkillData.TriggerName);
+            _playerSound.Play(SkillManager.Instance.EquippedSkills[skillNumber].SkillData.PlayerState);
+            _animator.SetTrigger(_hashTriggerSkill);
+                  
+            
         }
         public void TakeDamage(Damage damage, bool ApproveAnimation)
         {
@@ -673,6 +666,11 @@ namespace JY
             _animator.SetFloat(_hashHurtFromX, localHurt.x);
             _animator.SetFloat(_hashHurtFromY, localHurt.z);
 
+        }
+        public void RefreshStat()
+        {
+            AttackPower = Stat.GetStat(StatType.AttackPower);
+            MaxForwardSpeed = Stat.GetStat(StatType.Speed);
         }
     }
 
