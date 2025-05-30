@@ -20,7 +20,8 @@ public class EliteIdleState : EliteBaseState
         
         if (distance <= Owner.EnemyData.AttackDistance && !Owner.IsAttacking)
         {
-            Owner.AttackType = Random.Range(0, Owner.AttackTypeNumber-1);
+           // Owner.AttackType = Random.Range(0, Owner.AttackTypeNumber-1);
+           Owner.AttackType = Random.Range(0, 3);
             Debug.Log($"{Owner.AttackType}의 패턴으로 공격합니다.");
             SuperMachine.ChangeState<EliteAttackState>();
             return;

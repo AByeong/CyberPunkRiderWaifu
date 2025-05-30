@@ -16,15 +16,20 @@ public class OnAttackBehaviour : StateMachineBehaviour
         
     }
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        base.OnStateExit(animator, stateInfo, layerIndex);
-
+        base.OnStateUpdate(animator, stateInfo, layerIndex);
         
-        Owner.IsAttacking = false;
-        Owner.AttackTimer = 0;
-
+        if (stateInfo.normalizedTime >= 1f)
+        {
+            // Owner 스크립트의 속성을 변경합니다.
+            Owner.IsAttacking = false;
+            Owner.AttackTimer = 0;
+        }
         
         
     }
+
+    
 }
