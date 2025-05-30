@@ -161,13 +161,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroy: 1
+  NormalArmorEquipmentDataSO: {fileID: 0}
+  NormalBootsEquipmentDataSO: {fileID: 0}
+  NormalHeadEquipmentDataSO: {fileID: 0}
   NormalWeaponEquipmentDataSO: {fileID: 0}
+  RareArmorEquipmentDataSO: {fileID: 0}
+  RareBootsEquipmentDataSO: {fileID: 0}
+  RareHeadEquipmentDataSO: {fileID: 0}
   RareWeaponEquipmentDataSO: {fileID: 0}
+  UniqueArmorEquipmentDataSO: {fileID: 0}
+  UniqueBootsEquipmentDataSO: {fileID: 0}
+  UniqueHeadEquipmentDataSO: {fileID: 0}
   UniqueWeaponEquipmentDataSO: {fileID: 0}
-  HeadEquipmentDataSO: {fileID: 11400000, guid: 932a577882fb8bb49937f9c1da80286c, type: 2}
-  ArmorEquipmentDataSO: {fileID: 0}
-  BootsEquipmentDataSO: {fileID: 11400000, guid: 1e785665f48296847bdbbd27f34e3d6b, type: 2}
-  ChipDataSO: {fileID: 0}
+  NormalChipDataSO: {fileID: 0}
+  RareChipDataSO: {fileID: 0}
+  UniqueChipDataSO: {fileID: 0}
   ItemBaseDataSO: {fileID: 0}
 --- !u!4 &13922099
 Transform:
@@ -198,8 +206,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroy: 1
   Sounds: []
+  BGMs: []
   Source: {fileID: 13922101}
   NormalEnemySource: {fileID: 0}
+  BGMSource: {fileID: 0}
 --- !u!82 &13922101
 AudioSource:
   m_ObjectHideFlags: 0
