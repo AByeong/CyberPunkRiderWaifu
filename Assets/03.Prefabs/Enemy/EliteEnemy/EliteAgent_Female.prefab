@@ -153,11 +153,10 @@ GameObject:
   - component: {fileID: 2985244666764805926}
   - component: {fileID: 9145306139702554860}
   - component: {fileID: 1084797560185989769}
+  - component: {fileID: 8669644209295390855}
   - component: {fileID: 5252955424619335002}
   - component: {fileID: 3564118245039200704}
-  - component: {fileID: 8621727571898490721}
   - component: {fileID: 3184633984302917899}
-  - component: {fileID: 8669644209295390855}
   m_Layer: 3
   m_Name: EliteAgent_Female
   m_TagString: Elite
@@ -273,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentTier: 2
-  Enemy: {fileID: 8621727571898490721}
+  Enemy: {fileID: 1084797560185989769}
   Tier1_Speed: 3.5
   minPlayerDistance: 0.1
   desiredPlayerDistance: 0.5
@@ -292,15 +291,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5566a3506dbefb46b915b2e1e168a1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EliteAnimator: {fileID: 3184633984302917899}
+  MaterialName: Catherine
+  _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
+  Pool: {fileID: 0}
+  VerticalVelocity: {x: 0, y: 0, z: 0}
+  _attackType: 0
+  OriginalValue: 0.5
+  EyeTrail: {fileID: 5879733122949013281}
   StampRange: 3
   StampPosition: {fileID: 5357526854719067528}
   runCooldownDuration: 3
   _elliteStateMachineite: {fileID: 8669644209295390855}
-  EyeTrail: {fileID: 5879733122949013281}
   KingStompVFX: {fileID: 8500580943124956084}
   StompVFX: {fileID: 7011299679447090867}
   TornadoVFX: {fileID: 1161899211291565523}
+--- !u!114 &8669644209295390855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3016843131154389009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 068fb2bbdc17ae8468e5161e545a1382, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &5252955424619335002
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -349,27 +365,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 0}
   m_Enabled: 1
---- !u!114 &8621727571898490721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3016843131154389009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffb4097539f236d4a9e8bc285ad11873, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaterialName: Catherine
-  _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
-  Pool: {fileID: 0}
-  VerticalVelocity: {x: 0, y: 0, z: 0}
-  DamageType: 0
-  _attackType: 0
-  OriginalValue: 0.5
-  AttackTypeNumber: 2
-  EliteAnimator: {fileID: 3184633984302917899}
 --- !u!95 &3184633984302917899
 Animator:
   serializedVersion: 7
@@ -392,18 +387,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8669644209295390855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3016843131154389009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 068fb2bbdc17ae8468e5161e545a1382, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7758174719341347882
 GameObject:
   m_ObjectHideFlags: 0
