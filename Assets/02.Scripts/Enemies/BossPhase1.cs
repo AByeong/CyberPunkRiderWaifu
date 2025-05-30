@@ -24,8 +24,13 @@ public class BossPhase1 : EliteEnemy
     private Damage _attack1Damage;
     private Damage _attack2Damage;
 
-    private Coroutine laserCoroutine;
+    private Coroutine _laserCoroutine;
 
+
+    private bool _isLasing = false;
+    private float _laserDuration = 3f;
+    [SerializeField] private float _laserTimer;
+    private float rotateSpeed = 30f;
 
     protected override void Awake()
     {
@@ -60,13 +65,36 @@ public class BossPhase1 : EliteEnemy
 
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        if (_eliteStateMachine.IsCurrentState<EliteAttackState>())
+        {
+            Vector3 targetPos = Target.transform.position;
+            targetPos.y = transform.position.y;
+            Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+        }
+        
+
+        if (_isLasing)
+        {
+            _laserTimer += Time.deltaTime;
+
+            if (_laserTimer >= _laserDuration)
+            {
+                _laserTimer = 0;
+                LaserEnd();
+                ResetAttackTimer();
+            }
+        }
+    }
+
     // 패턴 1
     public void BustShot()
     {
         Vector3 targetPosition = Target.transform.position;
-
-
-
         StartCoroutine(ShotFire(targetPosition));
     }
 
@@ -99,23 +127,30 @@ public class BossPhase1 : EliteEnemy
     // 패턴 2
     public void StartLaser()
     {
-        laser = Instantiate(LaserPrefab, transform.position, transform.rotation);
-        laser.transform.parent = transform;
-
-        laserCoroutine = StartCoroutine(FireLaser());
+        if (!_isLasing)
+        {
+            _isLasing = true;
+            laser = Instantiate(LaserPrefab, transform.position, transform.rotation);
+            laser.transform.parent = transform;
+            _laserCoroutine = StartCoroutine(FireLaser());    
+        }
 
     }
-    
-    public void LaserEnd()
+
+    private void LaserEnd()
     {
-        Debug.Log("LaserEnd!!!!!!");
+        _isLasing = false;
         Destroy(laser);
-        // 레이저 종료 (코루틴 종료)
-        if (laserCoroutine != null)
+        Debug.Log($"LaserEnd!!!!!");
+        if (_laserCoroutine != null)
         {
-            StopCoroutine(laserCoroutine);
-            laserCoroutine = null;
+            StopCoroutine(_laserCoroutine);
+            _laserCoroutine = null;
         }
+
+        int attackType = Random.Range(0, 2);
+        if (attackType == 1) attackType = 0;
+        AttackType = attackType;
     }
 
     private IEnumerator FireLaser()
@@ -155,8 +190,7 @@ public class BossPhase1 : EliteEnemy
         Vector3 upLike = Vector3.Cross(direction, Random.onUnitSphere).normalized;
         Vector3 control = midPoint + upLike * _arcHeight;
 
-        GameObject missile = Instantiate(MissilePrefab);
-        missile.transform.position = startPosition;
+        GameObject missile = Instantiate(MissilePrefab, startPosition, transform.rotation);
 
         DOTween.To(() => 0f, t =>
             {
@@ -172,7 +206,7 @@ public class BossPhase1 : EliteEnemy
             .SetEase(Ease.InOutQuad)
             .OnComplete(() =>
             {
-                ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, transform.rotation);
+                ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);
                 Destroy(missile);
 
                 Collider[] colliders = Physics.OverlapSphere(targetPosition, _missileRadius);

@@ -2,22 +2,17 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class EliteAttackState : EliteBaseState
-{    
+{
     public override void OnEnter()
     {
         base.OnEnter();
         Owner.NavMeshAgent.enabled = false;
 
-        
-    }
-
-    
-    public void IsAttacking()
-    {
-        Owner.IsAttacking = true;
 
     }
-    
+
+
+
     public override void Update()
     {
         base.Update();
@@ -37,7 +32,6 @@ public class EliteAttackState : EliteBaseState
         }
 
 
-        
         if (Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown && !Owner.IsAttacking)
         {
             Owner.AttackType = Random.Range(0,Owner.AttackTypeNumber-1);
@@ -59,9 +53,7 @@ public class EliteAttackState : EliteBaseState
             
             Owner.Animator.SetTrigger("OnAttack");
         }
-        
-        
     }
 
-    
+
 }
