@@ -8,16 +8,21 @@ public class Boss_Waifu_AI : EliteEnemy
     [SerializeField] private Collider _swordCollider;
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
-private Animator animator;
+    private Animator animator;
+    
+    public ParticleSystem SwordParticles;
+    
     public  void AttackStart()
     {
         IsAttacking = true;
+        SwordParticles.Play();
     }
 
     public  void AttackEnd()
     {
         
         IsAttacking = false;
+        SwordParticles.Stop();
         
     }
     
