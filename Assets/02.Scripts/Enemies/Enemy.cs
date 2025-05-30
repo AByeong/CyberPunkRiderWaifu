@@ -57,13 +57,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             Debug.LogWarning($"{gameObject.name} Collider가 없습니다");
         }
+        WorldSpaceCanvas = GameManager.Instance.WorldCanvas;
     }
 
     private async void Start()
     {
         _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
         _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
-
+        
         CurrentHealthPoint = _enemyData.HealthPoint;
         IsHit = false;
         IsInAir = false;
@@ -110,7 +111,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Vector3 worldPos = DamagePopupPosition.position;
 
         // Canvas 하위로 생성
-        GameObject popup = Instantiate(DamagePopup, WorldSpaceCanvas.transform);
+        GameObject popup = Instantiate(DamagePopup, GameManager.Instance.WorldCanvas.transform);
         popup.transform.position = worldPos;
         popup.GetComponentInChildren<TypingEffect>().Typing(damage.DamageValue.ToString());
         // 선택: 파괴 또는 애니메이션

@@ -5,6 +5,8 @@ public class Item
 {
     public readonly ItemBaseDataSO Data;
 
+    public bool IsEquipped;
+    
     private int _slotIndex = -1;
     private SlotType _slotType = SlotType.Inventory;
     public int SlotIndex => _slotIndex;
@@ -14,6 +16,11 @@ public class Item
     {
         _slotType = slotType;
         _slotIndex = slotIndex;
+
+        if (_slotType == SlotType.Equipment)
+        {
+            IsEquipped = true;
+        }
     }
     // Equipment 옵션
     public float MaxHealth = 0.0f;

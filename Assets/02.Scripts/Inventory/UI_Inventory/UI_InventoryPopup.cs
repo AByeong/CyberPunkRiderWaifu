@@ -97,7 +97,8 @@ public class UI_InventoryPopup : Popup
                 if (toSlot.SlotType == SlotType.Inventory)
                 {
                     toIndex = _slots.FindIndex(slot => slot == toSlot);
-                    InventoryManager.Instance.RemoveStat(_fromSlot.Item);
+                    // InventoryManager.Instance.RemoveStat(_fromSlot.Item);
+                    // _fromSlot.Item.IsEquipped = false;
                 }
                 else if (toSlot.SlotType == SlotType.Chip ||
                          toSlot.SlotType == SlotType.Equipment)
@@ -182,9 +183,9 @@ public class UI_InventoryPopup : Popup
         {
             if (toSlot.HasItem)
             {
-                InventoryManager.Instance.RemoveStat(toSlot.Item);
+                // InventoryManager.Instance.RemoveStat(toSlot.Item);
             }
-            InventoryManager.Instance.AddStat(_fromSlot.Item);
+            InventoryManager.Instance.Equip(_fromSlot.Item);
             _isSwapEquipment = false;
         }
         StopDragSlot();

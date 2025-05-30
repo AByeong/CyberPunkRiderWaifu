@@ -74,6 +74,7 @@ Transform:
   - {fileID: 7256133388591372458}
   - {fileID: 8583713575513199965}
   - {fileID: 2681016583863052982}
+  - {fileID: 4391874345956298896}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2563987164733640846
@@ -238,11 +239,8 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
-  DamagePopupPosition: {fileID: 0}
-  DamagePopup: {fileID: 0}
-  WorldSpaceCanvas: {fileID: 0}
-  DamagePopupPosition: {fileID: 0}
-  DamagePopup: {fileID: 0}
+  DamagePopupPosition: {fileID: 4391874345956298896}
+  DamagePopup: {fileID: 2101629379635105609, guid: bf0f131c53c73e84a811f58eb7818f01, type: 3}
   WorldSpaceCanvas: {fileID: 0}
   targetMaterialName: Paperman
   mainColorPropertyName: _Color
@@ -251,6 +249,8 @@ MonoBehaviour:
   hitFlashEffectDuration: 0.3
   _attackType: 0
   OriginalValue: 0.3
+  IsAttacking: 0
+  AttackTimer: 0
   SummonObject: {fileID: 1023497570757360046, guid: 63d6a4f8c6bf69f43b580baee774afd7, type: 3}
   SummonTransform: {fileID: 6671257276421727992}
   SummonTime: 5
@@ -323,6 +323,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2079860427395645649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5246955530741726905
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4391874345956298896}
+  m_Layer: 3
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4391874345956298896
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5246955530741726905}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.604, y: -0.263, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845003869140558324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &915495149631594809
 PrefabInstance:

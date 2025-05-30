@@ -14,8 +14,13 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private List<Item> _items = new List<Item>();
     public List<Item> Items => _items;
-    
+
     public Action OnDataChanged;
+    public Action OnEquipChanged;
+    public List<Item> GetEquippedItems()
+    {
+        return _items.FindAll(item => item.IsEquipped);
+    }
 
 
     public void Start()
@@ -49,37 +54,16 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void Add(Item item)
     {
-        Debug.Log("InventoryManager Add 진입ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
         _items.Add(item);
-        Debug.Log("InventoryManager Add댐ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
         OnDataChanged?.Invoke();
     }
 
-    public void AddStat(Item item)
+    public void Equip(Item item)
     {
-        Debug.Log($"{item.Data.ItemName} Added");
-        GameManager.Instance.player.ApplyEquipment(StatType.MaxHealth,item.MaxHealth);
-        GameManager.Instance.player.ApplyEquipment(StatType.AttackPower,item.AttackPower);
-        GameManager.Instance.player.ApplyEquipment(StatType.Defense,item.Defense);
-        GameManager.Instance.player.ApplyEquipment(StatType.Speed,item.Speed);
-        GameManager.Instance.player.ApplyEquipment(StatType.AttackSpeed,item.AttackSpeed);
-        GameManager.Instance.player.ApplyEquipment(StatType.CritChance,item.CritChance);
-        GameManager.Instance.player.ApplyEquipment(StatType.CritDamage,item.CritDamage);
-        Debug.Log($"playerStat 참조 안됨, ItemSpeed : {item.Speed}"); // 플레이어 Stat 참조 안됨
+        
+        OnEquipChanged?.Invoke();
     }
-
-    public void RemoveStat(Item item)
-    {
-        Debug.Log($"{item.Data.ItemName} Deleted");
-        GameManager.Instance.player.RemoveEquipment(StatType.MaxHealth,item.MaxHealth);
-        GameManager.Instance.player.RemoveEquipment(StatType.AttackPower,item.AttackPower);
-        GameManager.Instance.player.RemoveEquipment(StatType.Defense,item.Defense);
-        GameManager.Instance.player.RemoveEquipment(StatType.Speed,item.Speed);
-        GameManager.Instance.player.RemoveEquipment(StatType.AttackSpeed,item.AttackSpeed);
-        GameManager.Instance.player.RemoveEquipment(StatType.CritChance,item.CritChance);
-        GameManager.Instance.player.RemoveEquipment(StatType.CritDamage,item.CritDamage);
-    }
-
+    
     private void Save()
     {
         ItemSaveDataList dataList = new ItemSaveDataList();
