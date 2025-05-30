@@ -10,6 +10,7 @@
             return;
         }
         TargetSkill.TrySetChipOption(item.Data as ChipDataSO);
+        
     }
 
     protected override void ClearItem()

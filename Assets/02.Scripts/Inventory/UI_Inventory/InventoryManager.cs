@@ -17,6 +17,8 @@ public class InventoryManager : Singleton<InventoryManager>
     
     public Action OnDataChanged;
 
+    public int SlotCount = 36;
+    public bool IsInventoryFull => _items.Count == SlotCount;
 
     public void Start()
     {
@@ -47,14 +49,41 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
-    public void Add(Item item)
+    public bool Add(Item item)
     {
-        Debug.Log("InventoryManager Add 진입ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-        _items.Add(item);
-        Debug.Log("InventoryManager Add댐ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ");
-        OnDataChanged?.Invoke();
+        if (UI_InventoryPopup.Instance.IsInventoryFull() == false)
+        {
+            _items.Add(item);
+            OnDataChanged?.Invoke();
+            return true;
+        }
+        else
+        {
+            Debug.Log("인벤토리 꽉참ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+            return false;
+        }
     }
 
+    public void Remove(Item item)
+    {
+        if (item == null)
+        {
+            Debug.LogWarning("삭제하려는 아이템이 null입니다.");
+            return;
+        }
+    
+        bool removed = _items.Remove(item);
+    
+        if (removed)
+        {
+            Debug.Log($"{item.Data.ItemName} 아이템이 인벤토리에서 제거되었습니다.");
+            OnDataChanged?.Invoke();
+        }
+        else
+        {
+            Debug.LogWarning($"{item.Data.ItemName} 아이템을 인벤토리에서 찾을 수 없습니다.");
+        }
+    }
     public void AddStat(Item item)
     {
         Debug.Log($"{item.Data.ItemName} Added");

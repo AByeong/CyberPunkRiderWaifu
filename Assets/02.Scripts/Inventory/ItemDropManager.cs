@@ -20,11 +20,7 @@ public class ItemDropManager : Singleton<ItemDropManager>
 
 
     // 각 타입별 VFX 프리팹
-    public GameObject EquipmentNormalVFX;
-    public GameObject EquipmentRareVFX;
-    public GameObject EquipmentUniqueVFX;
-    public GameObject EtcVFX;
-    public GameObject GoldVFX;
+
 
     
     protected override void Awake()
@@ -52,6 +48,14 @@ public class ItemDropManager : Singleton<ItemDropManager>
 
     private IEnumerator DropItemsCoroutine(Dictionary<DropItemType, int> dropPlan, Vector3 origin, Vector3 forward)
     {
+        // 루프 전에 미리 ground Y 계산
+        Vector3 raycastOrigin = origin + Vector3.up * 2f; // 약간 위에서 쏘면 안정적
+        float groundY = origin.y - 1f; // 기본값 (못 맞췄을 때 대비)
+
+        if (Physics.Raycast(raycastOrigin, Vector3.down, out RaycastHit hit, 10f, LayerMask.GetMask("Ground")))
+        {
+            groundY = hit.point.y;
+        }
         foreach (var kvp in dropPlan)
         {
             DropItemType type = kvp.Key;
@@ -72,6 +76,7 @@ public class ItemDropManager : Singleton<ItemDropManager>
                 Vector3 randomDir = (Quaternion.Euler(0, Random.Range(-30f, 30f), 0) * forward).normalized;
                 Vector3 spawnPos = origin + randomDir * Random.Range(0.5f, 1.5f) + Vector3.up * 0.5f;
 
+                spawnPos.y = groundY;
                 if (vfx != null)
                 {
                     
@@ -113,15 +118,15 @@ public class ItemDropManager : Singleton<ItemDropManager>
             case DropItemType.Item:
                 switch (grade)
                 {
-                    case DropGrade.Normal: return EquipmentNormalVFX;
-                    case DropGrade.Rare: return EquipmentRareVFX;
-                    case DropGrade.Unique: return EquipmentUniqueVFX;
+                    case DropGrade.Normal: return Pool.GetObject((int)VFXType.Normal);
+                    case DropGrade.Rare: return Pool.GetObject((int)VFXType.Rare);
+                    case DropGrade.Unique: return Pool.GetObject((int)VFXType.Unique);
                 }
                 break;
             case DropItemType.Etc:
-                return EtcVFX;
+                return Pool.GetObject((int)VFXType.Etc);
             case DropItemType.Gold:
-                return GoldVFX;
+                return Pool.GetObject((int)VFXType.Etc);
         }
         return null;
     }

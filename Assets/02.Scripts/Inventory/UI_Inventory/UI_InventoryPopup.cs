@@ -6,7 +6,6 @@ using JY;
 
 public class UI_InventoryPopup : Popup
 {
-
     public static UI_InventoryPopup Instance;
     
     [SerializeField]
@@ -30,6 +29,19 @@ public class UI_InventoryPopup : Popup
         Refresh();
 
         InventoryManager.Instance.OnDataChanged += Refresh;
+    }
+
+    public bool IsInventoryFull()
+    {
+        foreach (UI_InventorySlot slot in _slots)
+        {
+            if (slot.HasItem == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
     public void StartDragSlot(UI_InventorySlot fromSlot)
     {
@@ -237,18 +249,6 @@ public class UI_InventoryPopup : Popup
         {
             DragSlot.transform.position = Input.mousePosition;
         }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("E");
-            foreach (UI_InventorySlot slot in _slots)
-            {
-                if (slot.HasItem == false)
-                {
-                    slot.SetItem(InventoryManager.Instance.Items[1]);
-                }
-            }
-            Refresh();
-        }
     }
     
     
@@ -284,6 +284,7 @@ public class UI_InventoryPopup : Popup
                 break;
         }
     }
+    
     private void Refresh()
     {
         foreach (var slot in _slots)
@@ -292,7 +293,7 @@ public class UI_InventoryPopup : Popup
         }
 
         foreach (var slot in _equipmentSlots)
-        {
+        { 
             slot.SetItem(null);
         }
         foreach (var slot in _chipSlots)
