@@ -60,6 +60,7 @@ public class UI_ShopSlot : MonoBehaviour
         {
             Price *= 2;
             PriceText.text = Price.ToString();
+            CurrencyManager.Instance.TryConsume(CurrencyType.Gold, Price);
         }
     }
 }

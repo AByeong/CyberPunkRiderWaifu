@@ -21,7 +21,7 @@ public class UI_ShopPopup : Popup
 
     private void Start()
     {
-        PriceReset();
+        // PriceReset();
     }
 
     public void PriceReset()
