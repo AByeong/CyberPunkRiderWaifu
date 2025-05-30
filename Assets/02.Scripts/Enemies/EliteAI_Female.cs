@@ -1,9 +1,7 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class EliteAI_Female : EliteEnemy
 {
-
     public TrailRenderer EyeTrail;
     public float StampRange;
     public Transform StampPosition; // 현재 StampStep에서는 사용되지 않지만, 기즈모에서 활용 가능
@@ -28,10 +26,6 @@ public class EliteAI_Female : EliteEnemy
         
     }
 
-    public void ResetIsAttackAndTimer()
-    {
-        ResetAttackTimer();
-    }
     private void LookAtTarget()
     {
 

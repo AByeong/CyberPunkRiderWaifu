@@ -1,5 +1,6 @@
 using System.Collections;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class BossPhase1 : EliteEnemy
@@ -21,15 +22,8 @@ public class BossPhase1 : EliteEnemy
 
 
     private Damage _attack0Damage;
-    private Damage _attack1Damage;
     private Damage _attack2Damage;
 
-    private Coroutine _laserCoroutine;
-
-
-    private bool _isLasing = false;
-    private float _laserDuration = 3f;
-    [SerializeField] private float _laserTimer;
     private float rotateSpeed = 30f;
 
     protected override void Awake()
@@ -41,15 +35,6 @@ public class BossPhase1 : EliteEnemy
             DamageType = EDamageType.Airborne,
             DamageValue = 10,
             DamageForce = 2f,
-            From = gameObject,
-            AirRiseAmount = 0f
-        };
-
-        _attack1Damage = new Damage()
-        {
-            DamageType = EDamageType.Normal,
-            DamageValue = 10,
-            DamageForce = 1f,
             From = gameObject,
             AirRiseAmount = 0f
         };
@@ -75,19 +60,6 @@ public class BossPhase1 : EliteEnemy
             targetPos.y = transform.position.y;
             Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
-        }
-        
-
-        if (_isLasing)
-        {
-            _laserTimer += Time.deltaTime;
-
-            if (_laserTimer >= _laserDuration)
-            {
-                _laserTimer = 0;
-                LaserEnd();
-                ResetAttackTimer();
-            }
         }
     }
 
@@ -123,108 +95,69 @@ public class BossPhase1 : EliteEnemy
 
 
 
-    GameObject laser;
+    private GameObject laser;
     // 패턴 2
     public void StartLaser()
     {
-        if (!_isLasing)
-        {
-            _isLasing = true;
-            laser = Instantiate(LaserPrefab, transform.position, transform.rotation);
-            laser.transform.parent = transform;
-            _laserCoroutine = StartCoroutine(FireLaser());    
-        }
-
+        laser = Instantiate(LaserPrefab, transform.position, transform.rotation);
+        laser.transform.parent = transform;
     }
 
-    private void LaserEnd()
+    public void LaserEnd()
     {
-        _isLasing = false;
         Destroy(laser);
-        Debug.Log($"LaserEnd!!!!!");
-        if (_laserCoroutine != null)
-        {
-            StopCoroutine(_laserCoroutine);
-            _laserCoroutine = null;
-        }
-
-        int attackType = Random.Range(0, 2);
-        if (attackType == 1) attackType = 0;
-        AttackType = attackType;
     }
 
-    private IEnumerator FireLaser()
-    {
-        while (true)
-        {
-            Vector3 origin = transform.position + Vector3.up * _yPosOffset;
-            Vector3 dir = transform.forward;
-
-            Vector3 center = origin + dir * (100f / 2f);
-            Vector3 halfExtents = new Vector3(5 / 2f, 5 / 2f, 100 / 2f);
-            Quaternion rot = Quaternion.LookRotation(dir);
-
-            Collider[] hits = Physics.OverlapBox(center, halfExtents, rot);
-            foreach (var col in hits)
-            {
-                if (col.tag == "Player")
-                {
-                    col.GetComponent<PlayerHit>()?.TakeDamage(_attack1Damage);
-                }
-            }
-
-            yield return null;
-        }
-    }
+   
 
 
-    // 패턴 3
-    public void MissileSwamp()
-    {
-        Vector3 targetPosition = Target.transform.position;
-        Vector3 startPosition = transform.position + Vector3.up * _yPosOffset;
-        Vector3 previousPos = startPosition;
+    // // 패턴 3
+    // public void MissileSwamp()
+    // {
+    //     Vector3 targetPosition = Target.transform.position;
+    //     Vector3 startPosition = transform.position + Vector3.up * _yPosOffset;
+    //     Vector3 previousPos = startPosition;
 
-        Vector3 midPoint = (startPosition + targetPosition) / 2;
-        Vector3 direction = (targetPosition - startPosition).normalized;
-        Vector3 upLike = Vector3.Cross(direction, Random.onUnitSphere).normalized;
-        Vector3 control = midPoint + upLike * _arcHeight;
+    //     Vector3 midPoint = (startPosition + targetPosition) / 2;
+    //     Vector3 direction = (targetPosition - startPosition).normalized;
+    //     Vector3 upLike = Vector3.Cross(direction, Random.onUnitSphere).normalized;
+    //     Vector3 control = midPoint + upLike * _arcHeight;
 
-        GameObject missile = Instantiate(MissilePrefab, startPosition, transform.rotation);
+    //     GameObject missile = Instantiate(MissilePrefab, startPosition, transform.rotation);
 
-        DOTween.To(() => 0f, t =>
-            {
-                Vector3 newPos = CalculateQuadraticBezierPoint(t, startPosition, control, targetPosition);
-                missile.transform.position = newPos;
+    //     DOTween.To(() => 0f, t =>
+    //         {
+    //             Vector3 newPos = CalculateQuadraticBezierPoint(t, startPosition, control, targetPosition);
+    //             missile.transform.position = newPos;
 
-                Vector3 moveDir = (newPos - previousPos).normalized;
-                if (moveDir != Vector3.zero)
-                    missile.transform.forward = moveDir;
+    //             Vector3 moveDir = (newPos - previousPos).normalized;
+    //             if (moveDir != Vector3.zero)
+    //                 missile.transform.forward = moveDir;
 
-                previousPos = newPos;
-            }, 1f, _hitDelay)
-            .SetEase(Ease.InOutQuad)
-            .OnComplete(() =>
-            {
-                ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);
-                Destroy(missile);
+    //             previousPos = newPos;
+    //         }, 1f, _hitDelay)
+    //         .SetEase(Ease.InOutQuad)
+    //         .OnComplete(() =>
+    //         {
+    //             ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);
+    //             Destroy(missile);
 
-                Collider[] colliders = Physics.OverlapSphere(targetPosition, _missileRadius);
-                foreach (Collider collider in colliders)
-                {
-                    if (collider.tag == "Player")
-                    {
-                        _attack2Damage.From = vfx.gameObject;
-                        collider.GetComponent<PlayerHit>().TakeDamage(_attack2Damage);
-                    }
-                }
-            });
-    }
+    //             Collider[] colliders = Physics.OverlapSphere(targetPosition, _missileRadius);
+    //             foreach (Collider collider in colliders)
+    //             {
+    //                 if (collider.tag == "Player")
+    //                 {
+    //                     _attack2Damage.From = vfx.gameObject;
+    //                     collider.GetComponent<PlayerHit>().TakeDamage(_attack2Damage);
+    //                 }
+    //             }
+    //         });
+    // }
     
-    private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
-    {
-        // 2차 베지어 공식: (1 - t)^2 * P0 + 2(1 - t)t * P1 + t^2 * P2
-        float u = 1 - t;
-        return u * u * p0 + 2 * u * t * p1 + t * t * p2;
-    }
+    // private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
+    // {
+    //     // 2차 베지어 공식: (1 - t)^2 * P0 + 2(1 - t)t * P1 + t^2 * P2
+    //     float u = 1 - t;
+    //     return u * u * p0 + 2 * u * t * p1 + t * t * p2;
+    // }
 }

@@ -5,7 +5,6 @@ public class EliteIdleState : EliteBaseState
     public override void OnEnter()
     {
         base.OnEnter();
-        Owner.IsAttacking = false;
         Owner.NavMeshAgent.enabled = true;
         Owner.Animator.SetTrigger("OnIdle");
     }
@@ -18,9 +17,9 @@ public class EliteIdleState : EliteBaseState
 //        Debug.Log($"{Owner.gameObject.name}이 적과의 거리 : {distance},플레이어의 위치 {Owner.Target.transform.position} ,어택까지 남은 거리 : {distance <= Owner.EnemyData.AttackDistance}");
         
         
-        if (distance <= Owner.EnemyData.AttackDistance && !Owner.IsAttacking)
+        if (distance < Owner.EnemyData.AttackDistance && Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown)
         {
-            Owner.AttackType = Random.Range(0, Owner.AttackTypeNumber-1);
+            Owner.AttackType = Random.Range(0, Owner.AttackTypeNumber);
             Debug.Log($"{Owner.AttackType}의 패턴으로 공격합니다.");
             SuperMachine.ChangeState<EliteAttackState>();
             return;

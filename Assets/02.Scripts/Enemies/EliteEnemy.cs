@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class EliteEnemy : Enemy, IDamageable
@@ -9,10 +7,9 @@ public class EliteEnemy : Enemy, IDamageable
     private int _attackType = 0; // 실제 AttackType 값을 저장할 private 백킹 필드
 
     public float OriginalValue = 0.5f;
-    public bool IsAttacking = false;
     public float AttackTimer = 0f;
 
-     public int AttackTypeNumber = 2;
+    public int AttackTypeNumber;
 
     public int AttackType
     {
@@ -34,6 +31,8 @@ public class EliteEnemy : Enemy, IDamageable
         }
     }
 
+    protected ElliteStateMachine _eliteStateMachine;
+
 
     public override void TakeDamage(Damage damage)
     {
@@ -41,8 +40,6 @@ public class EliteEnemy : Enemy, IDamageable
 
         SoundManager.Instance.Play(SoundType.Elite_male_Hit);
     }
-
-    protected ElliteStateMachine _eliteStateMachine;
 
     private void Start()
     {
@@ -61,23 +58,10 @@ public class EliteEnemy : Enemy, IDamageable
             Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
         }
     }
-
-
-    public void ResetAttackTimer()
-    {
-        //IsAttacking = false;
-        //AttackTimer = 0;
-        
-        
-        Debug.Log($"{this.name}의 타이머가 초기화됨");
-    }
-
     
     protected virtual void Update()
     {
-        
-        
-        if (AttackTimer < EnemyData.AttackCoolDown && !IsAttacking)
+        if (AttackTimer < EnemyData.AttackCoolDown && !_eliteStateMachine.IsCurrentState<AttackState>())
         {
             AttackTimer += Time.deltaTime;
         }

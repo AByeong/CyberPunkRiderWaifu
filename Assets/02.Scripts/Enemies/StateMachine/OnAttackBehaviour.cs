@@ -1,30 +1,23 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class OnAttackBehaviour : StateMachineBehaviour
 {
-
     private EliteEnemy Owner;
-    
+
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateEnter(animator, stateInfo, layerIndex);
         Owner = animator.gameObject.GetComponent<EliteEnemy>();
-
-        Owner.IsAttacking = true;
-        
         
     }
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        base.OnStateExit(animator, stateInfo, layerIndex);
+        base.OnStateUpdate(animator, stateInfo, layerIndex);
 
-        
-        Owner.IsAttacking = false;
-        Owner.AttackTimer = 0;
-
-        
-        
+        if (stateInfo.normalizedTime >=  0.9f)
+        {
+            
+        }
     }
 }

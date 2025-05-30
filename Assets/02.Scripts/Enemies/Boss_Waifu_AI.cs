@@ -9,22 +9,17 @@ public class Boss_Waifu_AI : EliteEnemy
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
 private Animator animator;
-    public  void AttackStart()
-    {
-        IsAttacking = true;
-    }
+    // public  void AttackStart()
+    // {
+    //     IsAttacking = true;
+    // }
 
-    public  void AttackEnd()
-    {
+    // public  void AttackEnd()
+    // {
         
-        IsAttacking = false;
+    //     IsAttacking = false;
         
-    }
-    
-    public void ResetIsAttackAndTimer()
-    {
-        ResetAttackTimer();
-    }
+    // }
 
     protected override void Awake()
     {
