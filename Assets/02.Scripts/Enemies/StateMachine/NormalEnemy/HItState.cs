@@ -117,12 +117,12 @@ public class HItState : BaseNormalEnemyState
         _airSequence?.Kill();
         _hitTimer = 0f;
 
-        if (Owner.NavMeshAgent != null)
-        {
-            if (!Owner.NavMeshAgent.enabled) Owner.NavMeshAgent.enabled = true;
-            if (Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
-            Owner.NavMeshAgent.isStopped = false;
-        }
+        // if (Owner.NavMeshAgent != null)
+        // {
+        //     if (!Owner.NavMeshAgent.enabled) Owner.NavMeshAgent.enabled = true;
+        //     if (Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
+        //     // Owner.NavMeshAgent.isStopped = false;
+        // }
     }
     
 
