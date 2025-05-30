@@ -2,7 +2,6 @@ using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class TypingEffect : MonoBehaviour
 {
@@ -11,7 +10,9 @@ public class TypingEffect : MonoBehaviour
     public float fontScaleStart = 1.5f;
     public float fontScaleEnd = 1f;
     public float fontSizeDuration = 0.3f;
-    public Color targetColor = Color.cyan;
+
+    [Header("Color Gradient")]
+    public Gradient gradient;
 
     private TextMeshProUGUI textUI;
     private Coroutine typingCoroutine;
@@ -30,29 +31,34 @@ public class TypingEffect : MonoBehaviour
         }
 
         textUI.text = ""; // 초기화
-        textUI.color = new Color(targetColor.r, targetColor.g, targetColor.b, 1f); // 기본 색
 
         typingCoroutine = StartCoroutine(ShowTextWithEffect(fullText));
     }
 
     private IEnumerator ShowTextWithEffect(string fullText)
     {
-        for (int i = 0; i < fullText.Length; i++)
+        int totalLength = fullText.Length;
+
+        for (int i = 0; i < totalLength; i++)
         {
             char c = fullText[i];
             textUI.text += c;
 
-            // TMP 텍스트 전체가 아닌 개별 문자에 애니메이션 적용하려면 → 어렵고 TextMeshPro TextInfo를 써야 함
-            // 대신, 전체 텍스트에 시각적 효과 적용 (scale + fade)로 표현
+            // 문자 위치 비율
+            float t = totalLength > 1 ? i / (float)(totalLength - 1) : 0f;
+            Color charColor = gradient.Evaluate(t);
 
+            // 처음엔 흰색
+            textUI.color = Color.white;
             textUI.transform.localScale = Vector3.one * fontScaleStart;
-            textUI.color = new Color(targetColor.r, targetColor.g, targetColor.b, 0f);
 
-            textUI.transform.DOScale(Vector3.one * fontScaleEnd, fontSizeDuration)
+            // 색상 애니메이션: 흰색 → gradient color
+            textUI.DOColor(charColor, fontSizeDuration)
                 .SetEase(Ease.OutQuad)
                 .SetTarget(this);
 
-            textUI.DOFade(1f, fontSizeDuration)
+            // 스케일 애니메이션
+            textUI.transform.DOScale(Vector3.one * fontScaleEnd, fontSizeDuration)
                 .SetEase(Ease.OutQuad)
                 .SetTarget(this);
 
