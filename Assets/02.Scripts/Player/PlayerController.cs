@@ -97,10 +97,7 @@ namespace JY
         private float _desiredForwardSpeed;
         private float _forwardSpeed;
         private GroundCheck _groundCheck;
-        private int _hashTriggerSkill1;
-        private int _hashTriggerSkill2;
-        private int _hashTriggerSkill3;
-        private int _hashTriggerSkill4;
+        private int _hashTriggerSkill;
         private float _idleTimer;
         private bool _inAttack;
         private PlayerInput _input;
@@ -643,30 +640,12 @@ namespace JY
         }
         public void UseSkill(int skillNumber)
         {
-            switch (skillNumber)
-            {
-                case 0:
-                    _hashTriggerSkill1 = Animator.StringToHash(SkillManager.Instance.EquippedSkill1.SkillData.TriggerName);
-                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
-                    _animator.SetTrigger(_hashTriggerSkill1);
-                    break;
-                case 1:
-                    _hashTriggerSkill2 = Animator.StringToHash(SkillManager.Instance.EquippedSkill2.SkillData.TriggerName);
-                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
-                    _animator.SetTrigger(_hashTriggerSkill2);
-                    break;
-                case 2:
-                    _hashTriggerSkill3 = Animator.StringToHash(SkillManager.Instance.EquippedSkill3.SkillData.TriggerName);
-                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
-                    _animator.SetTrigger(_hashTriggerSkill3);
-                    break;
-                case 3:
-                    _hashTriggerSkill4 = Animator.StringToHash(SkillManager.Instance.EquippedSkill4.SkillData.TriggerName);
-                    _playerSound.Play(SkillManager.Instance.EquippedSkill1.SkillData.PlayerState);
-                    _animator.SetTrigger(_hashTriggerSkill4);
-                    break;
-            }
 
+            _hashTriggerSkill = Animator.StringToHash(SkillManager.Instance.EquippedSkills[skillNumber].SkillData.TriggerName);
+            _playerSound.Play(SkillManager.Instance.EquippedSkills[skillNumber].SkillData.PlayerState);
+            _animator.SetTrigger(_hashTriggerSkill);
+                  
+            
         }
         public void TakeDamage(Damage damage, bool ApproveAnimation)
         {
