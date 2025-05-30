@@ -88,7 +88,7 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         Debug.Log($"{item.Data.ItemName} Added");
         GameManager.Instance.player.ApplyEquipment(StatType.MaxHealth,item.MaxHealth);
-        GameManager.Instance.player.ApplyEquipment(StatType.AttackPower,item.AttackPower);
+        GameManager.Instance.player.ApplyEquipment(StatType.AttackPower,item.AttackPower);                   
         GameManager.Instance.player.ApplyEquipment(StatType.Defense,item.Defense);
         GameManager.Instance.player.ApplyEquipment(StatType.Speed,item.Speed);
         GameManager.Instance.player.ApplyEquipment(StatType.AttackSpeed,item.AttackSpeed);
