@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EliteEnemy : Enemy, IDamageable
@@ -7,8 +8,11 @@ public class EliteEnemy : Enemy, IDamageable
     private int _attackType = 0; // 실제 AttackType 값을 저장할 private 백킹 필드
 
     public float OriginalValue = 0.5f;
-    
+    public bool IsAttacking = false;
+    public float AttackTimer = 0f;
+
     // public int AttackTypeNumber = 2;
+
     public int AttackType
     {
         get { return _attackType; }
@@ -30,11 +34,11 @@ public class EliteEnemy : Enemy, IDamageable
     }
 
 
-    public void TakeDamage(Damage damage)
+    public override void TakeDamage(Damage damage)
     {
-        SoundManager.Instance.Play(SoundType.Elite_male_Hit);
-        
         base.TakeDamage(damage);
+
+        SoundManager.Instance.Play(SoundType.Elite_male_Hit);
     }
 
     protected ElliteStateMachine _eliteStateMachine;
@@ -44,27 +48,27 @@ public class EliteEnemy : Enemy, IDamageable
         _eliteStateMachine = GetComponent<ElliteStateMachine>();
         if (_eliteStateMachine == null)
         {
-           Debug.LogWarning($"{gameObject.name}의 StateMachine이 없습니다.");
+            Debug.LogWarning($"{gameObject.name}의 StateMachine이 없습니다.");
         }
 
         if (_animator != null)
-            {
-                _animator.SetInteger("AttackType", _attackType);
-            }
-            else
-            {
-                Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
-            }
+        {
+            _animator.SetInteger("AttackType", _attackType);
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
+        }
     }
 
-    
-    
-    
+
+
+
     protected virtual void Update()
     {
         if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh) // isOnNavMesh 추가
         {
-            _animator.SetFloat("Velocity",  _navMeshAgent.velocity.magnitude);
+            _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);
         }
     }
 }

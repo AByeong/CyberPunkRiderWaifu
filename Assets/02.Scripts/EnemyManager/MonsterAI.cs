@@ -82,7 +82,7 @@ public class MonsterAI : MonoBehaviour
         if (Enemy != null)
         {
             Enemy.Target = player.gameObject;
-           Enemy.Pool = pool;
+            Enemy.Pool = pool;
         }
         else
         {
@@ -107,7 +107,7 @@ public class MonsterAI : MonoBehaviour
             OnExitTier1(); // Tier1에서 나갈 때 파생 클래스가 처리할 내용 (예: 포메이션 슬롯 해제)
         }
 
-        navMeshAgent.isStopped = false; // 기본적으로 이동 상태로 설정
+        // navMeshAgent.isStopped = false; // 기본적으로 이동 상태로 설정
 
         switch (CurrentTier)
         {

@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 8097379986340055428}
   - component: {fileID: 5252955424619335002}
   - component: {fileID: 3564118245039200704}
-  - component: {fileID: 8621727571898490721}
   - component: {fileID: 670941019872839500}
   - component: {fileID: 157215724222229353}
   - component: {fileID: 3184633984302917899}
@@ -223,29 +222,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 0}
   m_Enabled: 1
---- !u!114 &8621727571898490721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3016843131154389009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffb4097539f236d4a9e8bc285ad11873, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaterialName: Paperman
-  _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
-  Pool: {fileID: 0}
-  VerticalVelocity: {x: 0, y: 0, z: 0}
-  targetMaterialName: KyleRobot
-  mainColorPropertyName: _Color
-  highlightVValue: 2
-  normalVValue: 0.8
-  hitFlashEffectDuration: 0.3
-  _attackType: 0
-  OriginalValue: 0.3
 --- !u!114 &670941019872839500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,17 +234,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff04b30f49d24341bb86f4910725489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaterialName: 
+  MaterialName: Paperman
   _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
+  DamagePopupPosition: {fileID: 0}
+  DamagePopup: {fileID: 0}
+  WorldSpaceCanvas: {fileID: 0}
+  DamagePopupPosition: {fileID: 0}
+  DamagePopup: {fileID: 0}
+  WorldSpaceCanvas: {fileID: 0}
   targetMaterialName: Paperman
   mainColorPropertyName: _Color
   highlightVValue: 2
   normalVValue: 0.8
   hitFlashEffectDuration: 0.3
   _attackType: 0
-  OriginalValue: 0.5
+  OriginalValue: 0.3
   SummonObject: {fileID: 1023497570757360046, guid: 63d6a4f8c6bf69f43b580baee774afd7, type: 3}
   SummonTransform: {fileID: 6671257276421727992}
   SummonTime: 5

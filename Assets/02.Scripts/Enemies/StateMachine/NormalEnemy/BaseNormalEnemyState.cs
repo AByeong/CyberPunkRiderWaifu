@@ -12,7 +12,7 @@ public class BaseNormalEnemyState : MonoState
 
     public virtual void Update()
     {
-        Owner.Target = GameManager.Instance.player.gameObject;
+        // Owner.Target = GameManager.Instance.player.gameObject;
         
         if (Owner.CurrentHealthPoint <= 0 && !SuperMachine.IsCurrentState<DeadState>())
         {

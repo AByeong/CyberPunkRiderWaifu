@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-// NUnit.Framework는 일반적으로 유닛 테스트용이므로 MonoBehaviour 스크립트에서는 제거해도 괜찮습니다.
-// using NUnit.Framework; 
 using UnityEngine;
 using UnityEngine.VFX;
 

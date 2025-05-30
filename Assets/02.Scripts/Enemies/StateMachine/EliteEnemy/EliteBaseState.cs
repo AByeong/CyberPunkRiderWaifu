@@ -10,6 +10,7 @@ public class EliteBaseState : MonoState
         }
     }
 
+    
     public virtual void Update()
     {
         if (Owner.CurrentHealthPoint <= 0 && !SuperMachine.IsCurrentState<EliteDeadState>())

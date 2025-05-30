@@ -139,8 +139,6 @@ public class StageManager : MonoBehaviour
 
     public void MoveNextStage()
     {
-        
-
         EnemyManager.Instance.DespawnALL();
         AddSpawners(_nextStageIndex);
         EnemyManager.Instance.SetBossSpawner(SubStageList[_nextStageIndex].BossSpawner);
