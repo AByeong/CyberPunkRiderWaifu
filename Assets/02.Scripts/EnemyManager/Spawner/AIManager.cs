@@ -81,8 +81,12 @@ public class AIManager : MonoBehaviour
     /// </summary>
     public void InitializeSpawnedMonster(MonsterAI monster, ObjectPool pool) // ObjectPool 타입은 프로젝트에 맞게 사용
     {
-        if (monster == null) return;
-        Debug.Log("몬스터 있지용");
+        if (monster == null)
+        {
+            Debug.LogError($"{gameObject.name} :: 몬스터 없지용");
+            return;
+        }
+        
 
         if (playerTransform != null)
         {

@@ -12,6 +12,7 @@ public class BossPhase1 : EliteEnemy
     public ParticleSystem BulletHitVFX;
     public GameObject WarningVFX;
 
+    [Header ("Parameters")]
     [SerializeField] private float _hitDelay;
     [SerializeField] private float _granadeRadius;
     [SerializeField] private float _missileRadius;
@@ -29,7 +30,6 @@ public class BossPhase1 : EliteEnemy
     protected override void Awake()
     {
         base.Awake();
-
 
         _attack0Damage = new Damage()
         {
@@ -108,6 +108,7 @@ public class BossPhase1 : EliteEnemy
     
     public void LaserEnd()
     {
+        Debug.Log("LaserEnd!!!!!!");
         Destroy(laser);
         // 레이저 종료 (코루틴 종료)
         if (laserCoroutine != null)

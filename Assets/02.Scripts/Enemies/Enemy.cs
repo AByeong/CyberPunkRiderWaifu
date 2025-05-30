@@ -98,7 +98,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     }
 
 
-    public void TakeDamage(Damage damage)
+    public virtual void TakeDamage(Damage damage)
     {
         IsHit = true;
 
