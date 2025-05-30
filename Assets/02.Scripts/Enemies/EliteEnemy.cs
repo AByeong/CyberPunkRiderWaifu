@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class EliteEnemy : Enemy, IDamageable
@@ -11,7 +12,7 @@ public class EliteEnemy : Enemy, IDamageable
     public bool IsAttacking = false;
     public float AttackTimer = 0f;
 
-    // public int AttackTypeNumber = 2;
+     public int AttackTypeNumber = 2;
 
     public int AttackType
     {
@@ -66,8 +67,12 @@ public class EliteEnemy : Enemy, IDamageable
     {
         IsAttacking = false;
         AttackTimer = 0;
+        
+        
+        Debug.Log($"{this.name}의 타이머가 초기화됨");
     }
 
+    
     protected virtual void Update()
     {
         

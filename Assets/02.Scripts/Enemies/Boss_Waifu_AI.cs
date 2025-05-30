@@ -5,10 +5,10 @@ public class Boss_Waifu_AI : EliteEnemy
 {
 
     [SerializeField] private float runCooldownDuration = 3.0f;
-[SerializeField] private Collider _swordCollider;
+    [SerializeField] private Collider _swordCollider;
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
-
+private Animator animator;
     public  void AttackStart()
     {
         IsAttacking = true;
@@ -18,11 +18,21 @@ public class Boss_Waifu_AI : EliteEnemy
     {
         
         IsAttacking = false;
-        _eliteStateMachine.ChangeState<EliteIdleState>();
         
     }
     
-    
+    public void ResetIsAttackAndTimer()
+    {
+        ResetAttackTimer();
+    }
+
+    protected override void Awake()
+    {
+        animator = GetComponent<Animator>();
+        
+        base.Awake();
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -53,6 +63,7 @@ public class Boss_Waifu_AI : EliteEnemy
 
 public void JumpAttack()
 {
+    //animator.applyRootMotion = true;
     SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
     _eliteStateMachine.ChangeState<EliteAttackState>();
   
@@ -82,8 +93,15 @@ public void JumpAttack()
     }
 
 
-    
-    
+    public void Spell()
+    {
+        animator.applyRootMotion = true;
+    }
+
+    public void SpellEnd()
+    {
+        animator.applyRootMotion = false;
+    }
     
     public void Running()
     {
@@ -100,6 +118,8 @@ public void JumpAttack()
         if(_collider != null) _collider.enabled = true; // 콜라이더가 있는 경우에만 활성화
         isCoolingDown = true;
         currentCooldownTime = runCooldownDuration;
+        animator.applyRootMotion = false;
+
     }
 
 
@@ -113,6 +133,8 @@ public void JumpAttack()
         _swordCollider.enabled = false;
     }
 
+
+    
     
     
     

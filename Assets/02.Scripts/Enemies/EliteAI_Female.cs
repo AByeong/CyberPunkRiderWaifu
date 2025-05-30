@@ -27,6 +27,11 @@ public class EliteAI_Female : EliteEnemy
         }
         
     }
+
+    public void ResetIsAttackAndTimer()
+    {
+        ResetAttackTimer();
+    }
     private void LookAtTarget()
     {
 
