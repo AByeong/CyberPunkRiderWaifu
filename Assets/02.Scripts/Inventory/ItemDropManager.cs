@@ -1,15 +1,23 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 // 전역 Enum 선언
 public enum DropItemType { Item, Etc, Gold }
 
 public class ItemDropManager : Singleton<ItemDropManager>
 {
+    public ObjectPool Pool;
     // 등급 Enum
     private enum DropGrade { Normal, Rare, Unique }
+    // 프리팹 순서대로 Enum
+    private enum VFXType { Normal, Rare, Unique, Etc}
+
+    private VFXType _prefabIndex = VFXType.Normal;
+
 
     // 각 타입별 VFX 프리팹
     public GameObject EquipmentNormalVFX;
@@ -17,6 +25,23 @@ public class ItemDropManager : Singleton<ItemDropManager>
     public GameObject EquipmentUniqueVFX;
     public GameObject EtcVFX;
     public GameObject GoldVFX;
+
+    
+    protected override void Awake()
+    {
+        base.Awake();
+        Pool = GetComponent<ObjectPool>();
+    }
+
+    private void Start()
+    {
+        if (Pool == null)
+        {
+            Debug.LogError("ItemDropManager에 Pool 없음");
+            this.enabled = false; // 스크립트 비활성화
+            return;
+        }
+    }
 
     // Enemy에서 DropItemType 리스트를 넘기면 처리
     public void DropItems(Dictionary<DropItemType, int> dropPlan, Vector3 origin, Vector3 forward)
@@ -49,7 +74,11 @@ public class ItemDropManager : Singleton<ItemDropManager>
 
                 if (vfx != null)
                 {
-                    GameObject fx = Instantiate(vfx, origin, Quaternion.identity);
+                    
+                    GameObject fx = Pool.GetObject((int)_prefabIndex);
+                    fx.transform.position = origin;
+                    fx.transform.rotation = Quaternion.identity;
+                    fx.GetComponent<ItemObject>().Init();
                     fx.transform.DOJump(spawnPos, 0.7f, 1, 0.4f).SetEase(Ease.OutQuad);
                 }
                 yield return new WaitForSeconds(0.3f);
@@ -60,9 +89,21 @@ public class ItemDropManager : Singleton<ItemDropManager>
     private DropGrade GetRandomGrade()
     {
         float rand = Random.value;
-        if (rand < 0.7f) return DropGrade.Normal;
-        if (rand < 0.95f) return DropGrade.Rare;
-        return DropGrade.Unique;
+        if (rand < 0.7f)
+        {
+            _prefabIndex = VFXType.Normal;
+            return DropGrade.Normal;
+        }
+        else if (rand < 0.95f)
+        {
+            _prefabIndex = VFXType.Rare;
+            return DropGrade.Rare;
+        }
+        else
+        {
+            _prefabIndex = VFXType.Unique;
+            return DropGrade.Unique;
+        }
     }
 
     private GameObject GetVFXByTypeAndGrade(DropItemType type, DropGrade grade)

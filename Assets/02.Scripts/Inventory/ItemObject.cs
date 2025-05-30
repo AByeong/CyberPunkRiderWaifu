@@ -29,7 +29,8 @@ public class ItemObject : MonoBehaviour
                 _particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             if (_audioSource != null)
                 _audioSource.Stop();
-            Destroy(transform.root.gameObject, 0.1f);
+            //Destroy(transform.root.gameObject, 0.1f);
+            gameObject.SetActive(false);
             
             //InventoryManager.Instance.
             // Gold는 추후 UI 생기면 거기에 +
@@ -42,6 +43,13 @@ public class ItemObject : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
 
         CreateRandomItem();
+    }
+
+    public void Init()
+    {
+        CreateRandomItem();
+        _particleSystem.Play(true);
+        _audioSource.Play();
     }
 
     private void CreateRandomItem()

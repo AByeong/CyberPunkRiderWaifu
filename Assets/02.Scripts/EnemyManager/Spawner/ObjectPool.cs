@@ -13,7 +13,7 @@ public class ObjectPool : MonoBehaviour
     public int initialPoolSize = 20;
     public bool allowPoolToGrow = true;
 
-    private List<GameObject> loadedPrefab; // 로드된 원본 프리팹을 캐싱할 변수
+    private List<GameObject> loadedPrefab = new List<GameObject>(); // 로드된 원본 프리팹을 캐싱할 변수
 
     private List<GameObject> allPooledObjects = new List<GameObject>();
     private Queue<GameObject> availableObjects = new Queue<GameObject>();
