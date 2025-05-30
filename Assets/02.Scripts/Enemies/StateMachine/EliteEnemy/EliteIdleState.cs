@@ -16,7 +16,7 @@ public class EliteIdleState : EliteBaseState
 
     public override void Update()
     {
-        Owner.AttackTimer += Time.deltaTime;
+        
         base.Update();
 
         // if (Owner.Target == null)

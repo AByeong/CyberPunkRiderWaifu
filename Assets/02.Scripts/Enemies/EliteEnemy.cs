@@ -62,10 +62,21 @@ public class EliteEnemy : Enemy, IDamageable
     }
 
 
-
+    public void ResetAttackTimer()
+    {
+        IsAttacking = false;
+        AttackTimer = 0;
+    }
 
     protected virtual void Update()
     {
+        
+        
+        if (AttackTimer < EnemyData.AttackCoolDown && !IsAttacking)
+        {
+            AttackTimer += Time.deltaTime;
+        }
+        
         if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh) // isOnNavMesh 추가
         {
             _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);

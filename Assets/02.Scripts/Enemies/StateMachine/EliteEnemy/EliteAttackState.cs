@@ -27,12 +27,12 @@ public class EliteAttackState : EliteBaseState
             return;
         }
 
-        Owner.AttackTimer += Time.deltaTime;
-        if (Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown)
+        
+        if (Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown && !Owner.IsAttacking)
         {
+            Owner.IsAttacking = true;
             Owner.AttackType = Random.Range(0, 3);
             Owner.Animator.SetTrigger("OnAttack");
-            Owner.AttackTimer = 0;
         }
         
         
