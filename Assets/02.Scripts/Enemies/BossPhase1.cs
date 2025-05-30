@@ -99,7 +99,7 @@ public class BossPhase1 : EliteEnemy
     // 패턴 2
     public void StartLaser()
     {
-        laser = Instantiate(LaserPrefab, transform.position, Quaternion.identity);
+        laser = Instantiate(LaserPrefab, transform.position, transform.rotation);
         laser.transform.parent = transform;
 
         laserCoroutine = StartCoroutine(FireLaser());
@@ -171,7 +171,7 @@ public class BossPhase1 : EliteEnemy
             .SetEase(Ease.InOutQuad)
             .OnComplete(() =>
             {
-                ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);
+                ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, transform.rotation);
                 Destroy(missile);
 
                 Collider[] colliders = Physics.OverlapSphere(targetPosition, _missileRadius);
