@@ -13,47 +13,54 @@ public class UI_ShopSlot : MonoBehaviour
 
     public void Start()
     {
-        Price = int.Parse(PriceText.ToString());
+        Price = int.Parse(PriceText.text);
     }
 
     public void OnSellItems()
     {
+        if (CurrencyManager.Instance.Gold < Price)
+        {
+            Debug.Log("돈이 없어서 상점에서 아이템을 못사 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+            return;
+        }
+
+        if (UI_InventoryPopup.Instance.IsInventoryFull() == true)
+        {
+            Debug.Log("가방이 꽉차서 상점에서 아이템을 못사 ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+            return;
+        }
+
+        Item item = null;
         switch (SlotType)
         {
             case EShopSlotType.Head:
-                Item item = ItemCreateManager.Instance.CreateHead();
-                if (CurrencyManager.Instance.Gold < Price)
-                {
-                    Debug.Log("돈이 없어서 상점에서 아이템을 못사 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
-                    return;
-                }
-                if (InventoryManager.Instance.Add(item) == false)
-                {
-                    Debug.Log("가방이 꽉차서 상점에서 아이템을 못사 ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-                    return;
-                }
+                item = ItemCreateManager.Instance.CreateHead();
                 break;
             case EShopSlotType.Armor:
+                item = ItemCreateManager.Instance.CreateArmor();
                 break;
             case EShopSlotType.Boots:
+                item = ItemCreateManager.Instance.CreateBoots();
                 break;
             case EShopSlotType.Weapon:
+                item = ItemCreateManager.Instance.CreateWeapon();
                 break;
             case EShopSlotType.Chip:
+                item = ItemCreateManager.Instance.CreateChip();
                 break;
             case EShopSlotType.Item1:
+                // 소모아이템 1 추기
                 break;
             case EShopSlotType.Item2:
+                // 소모아이템 2 추가
                 break;
-            case EShopSlotType.Sell:
-                break;
-            case EShopSlotType.Count:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
-        Price *= 2;
-        
+
+        if (InventoryManager.Instance.Add(item) == true)
+        {
+            Price *= 2;
+            PriceText.text = Price.ToString();
+        }
     }
 }
 
