@@ -65,8 +65,8 @@ public class EliteEnemy : Enemy, IDamageable
 
     public void ResetAttackTimer()
     {
-        IsAttacking = false;
-        AttackTimer = 0;
+        //IsAttacking = false;
+        //AttackTimer = 0;
         
         
         Debug.Log($"{this.name}의 타이머가 초기화됨");
