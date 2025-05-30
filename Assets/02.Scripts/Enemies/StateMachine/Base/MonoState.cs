@@ -9,6 +9,7 @@ namespace RobustFSM.Base
     {
         public string StateName { get; internal set; }
 
+        
         public IFSM Machine { get; internal set; }
         public IFSM SuperMachine { get; internal set; }
 

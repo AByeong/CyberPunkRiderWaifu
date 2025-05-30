@@ -130,10 +130,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentTier: 2
   Enemy: {fileID: 8621727571898490721}
-  Tier1_Speed: 3.5
-  minPlayerDistance: 0.3
-  desiredPlayerDistance: 1
-  Tier2_Speed: 3.5
+  DefaultTier1Speed: 3.5
+  DefaultTier2Speed: 3.5
+  DefaultTier1Acceleration: 8
+  DefaultTier2Acceleration: 5
   logicUpdateInterval: 0.2
   nextIndividualLogicUpdateTime: 0
 --- !u!65 &5252955424619335002
@@ -200,10 +200,17 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: 596c02d69001e6b4c92741762cafb73b, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
-  DamageType: 0
+  DamagePopupPosition: {fileID: 0}
+  DamagePopup: {fileID: 0}
+  WorldSpaceCanvas: {fileID: 0}
+  targetMaterialName: KyleRobot
+  mainColorPropertyName: _Color
+  highlightVValue: 2
+  normalVValue: 0.8
+  hitFlashEffectDuration: 0.3
   _attackType: 0
-  AttackTypeNumber: 2
-  EliteAnimator: {fileID: 3184633984302917899}
+  OriginalValue: 0.5
+  IsAttacking: 0
 --- !u!114 &-8350040400276831494
 MonoBehaviour:
   m_ObjectHideFlags: 0

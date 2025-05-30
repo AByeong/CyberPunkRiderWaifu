@@ -3,15 +3,26 @@ using UnityEngine;
 
 public class Boss_Waifu_AI : EliteEnemy
 {
-   
-    
-    public float StampRange;
-    
+
     [SerializeField] private float runCooldownDuration = 3.0f;
 [SerializeField] private Collider _swordCollider;
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
 
+    public  void AttackStart()
+    {
+        IsAttacking = true;
+    }
+
+    public  void AttackEnd()
+    {
+        
+        IsAttacking = false;
+        _eliteStateMachine.ChangeState<EliteIdleState>();
+        
+    }
+    
+    
     protected override void Update()
     {
         base.Update();
@@ -35,21 +46,12 @@ public class Boss_Waifu_AI : EliteEnemy
         transform.forward = direction;
     }
  
-
-
-public void EyeTurnOn()
-{
     
-    LookAtTarget();
-
-}
-
-public void EyeTurnOff()
-{
-}
 
 
-public void KingStompAttack()
+
+
+public void JumpAttack()
 {
     SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
     _eliteStateMachine.ChangeState<EliteAttackState>();
@@ -57,9 +59,10 @@ public void KingStompAttack()
 }
 
 
-    public GameObject StompVFX;
-    public void StompAttack()
+    public void Nanmu()
     {
+        
+        Debug.Log("난무 시작");
         SoundManager.Instance.Play(SoundType.Elite_Electricity);
         LookAtTarget();
 
@@ -69,7 +72,7 @@ public void KingStompAttack()
 
 
 
-    public void TornadoAttack()
+    public void SpinAttack()
     {
         SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
         LookAtTarget();
@@ -79,10 +82,7 @@ public void KingStompAttack()
     }
 
 
-    public void TornadoAttackEnd()
-    {
-        
-    }
+    
     
     
     public void Running()
