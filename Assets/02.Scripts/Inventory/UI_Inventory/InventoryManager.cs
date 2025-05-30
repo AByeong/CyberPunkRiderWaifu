@@ -22,6 +22,8 @@ public class InventoryManager : Singleton<InventoryManager>
         return _items.FindAll(item => item.IsEquipped);
     }
 
+    public int SlotCount = 36;
+    public bool IsInventoryFull => _items.Count == SlotCount;
 
     public void Start()
     {
@@ -52,7 +54,7 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
-    public void Add(Item item)
+    public bool Add(Item item)
     {
         _items.Add(item);
         OnDataChanged?.Invoke();
@@ -62,6 +64,50 @@ public class InventoryManager : Singleton<InventoryManager>
     {
         
         OnEquipChanged?.Invoke();
+        if (UI_InventoryPopup.Instance.IsInventoryFull() == false)
+        {
+            _items.Add(item);
+            OnDataChanged?.Invoke();
+            return true;
+        }
+        else
+        {
+            Debug.Log("인벤토리 꽉참ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+            return false;
+        }
+    }
+
+    public void Remove(Item item)
+    {
+        if (item == null)
+        {
+            Debug.LogWarning("삭제하려는 아이템이 null입니다.");
+            return;
+        }
+    
+        bool removed = _items.Remove(item);
+    
+        if (removed)
+        {
+            Debug.Log($"{item.Data.ItemName} 아이템이 인벤토리에서 제거되었습니다.");
+            OnDataChanged?.Invoke();
+        }
+        else
+        {
+            Debug.LogWarning($"{item.Data.ItemName} 아이템을 인벤토리에서 찾을 수 없습니다.");
+        }
+    }
+    public void AddStat(Item item)
+    {
+        Debug.Log($"{item.Data.ItemName} Added");
+        GameManager.Instance.player.ApplyEquipment(StatType.MaxHealth,item.MaxHealth);
+        GameManager.Instance.player.ApplyEquipment(StatType.AttackPower,item.AttackPower);                   
+        GameManager.Instance.player.ApplyEquipment(StatType.Defense,item.Defense);
+        GameManager.Instance.player.ApplyEquipment(StatType.Speed,item.Speed);
+        GameManager.Instance.player.ApplyEquipment(StatType.AttackSpeed,item.AttackSpeed);
+        GameManager.Instance.player.ApplyEquipment(StatType.CritChance,item.CritChance);
+        GameManager.Instance.player.ApplyEquipment(StatType.CritDamage,item.CritDamage);
+        Debug.Log($"playerStat 참조 안됨, ItemSpeed : {item.Speed}"); // 플레이어 Stat 참조 안됨
     }
     
     private void Save()
