@@ -2,11 +2,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 public class EliteAttackState : EliteBaseState
-{
-    public float _attackTimer;
-
-    
-    
+{    
     public override void OnEnter()
     {
         base.OnEnter();
@@ -31,8 +27,8 @@ public class EliteAttackState : EliteBaseState
             return;
         }
 
-        _attackTimer += Time.deltaTime;
-        if (_attackTimer >= Owner.EnemyData.AttackCoolDown)
+        Owner.AttackTimer += Time.deltaTime;
+        if (Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown)
         {
             Owner.AttackType = Random.Range(0, 3);
             Owner.Animator.SetTrigger("OnAttack");

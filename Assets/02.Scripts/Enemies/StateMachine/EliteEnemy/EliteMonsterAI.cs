@@ -39,7 +39,7 @@ public class EliteMonsterAI : MonsterAI
         if (distanceToPlayer <= desiredAttackDistance)
         {
             // 플레이어에게 충분히 가까이 다가갔으므로, 공격 로직을 시작하고 이동을 멈춥니다.
-            navMeshAgent.isStopped = true;
+            // navMeshAgent.isStopped = true;
             // 여기에서 공격 애니메이션 재생, 데미지 계산 등의 공격 로직을 호출
             // 예: AttackPlayer();
             // 몬스터의 시야를 플레이어에게 고정
@@ -50,7 +50,7 @@ public class EliteMonsterAI : MonsterAI
         else
         {
             // 아직 공격 거리가 아니므로 플레이어에게 이동합니다.
-            navMeshAgent.isStopped = false;
+            // navMeshAgent.isStopped = false;
             if (navMeshAgent.destination != playerTransform.position)
             {
                 navMeshAgent.SetDestination(playerTransform.position);
