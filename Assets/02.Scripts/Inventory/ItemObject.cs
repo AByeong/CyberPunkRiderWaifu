@@ -20,7 +20,6 @@ public class ItemObject : MonoBehaviour
             if(item == null)
                 Debug.LogError("Item이 Null임");
 
-            Debug.Log("Item 습득 ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ");
             InventoryManager.Instance.Add(item);
             
             _isTaked = true;
