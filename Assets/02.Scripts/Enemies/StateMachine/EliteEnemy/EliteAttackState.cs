@@ -6,6 +6,9 @@ public class EliteAttackState : EliteBaseState
     {
         base.OnEnter();
         Owner.NavMeshAgent.enabled = false;
+        Owner.AttackType = Random.Range(0, Owner.AttackTypeNumber);
+        Owner.Animator.SetBool("IsAttack", true);
+        Debug.Log($"{Owner.AttackType}의 패턴으로 공격합니다.");
     }
     
 
@@ -17,13 +20,6 @@ public class EliteAttackState : EliteBaseState
         {
             SuperMachine.ChangeState<EliteIdleState>();
             return;
-        }
-
-
-        if (Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown)
-        {
-            Owner.AttackType = Random.Range(0, Owner.AttackTypeNumber);
-            Owner.Animator.SetTrigger("OnAttack");
         }
     }
 

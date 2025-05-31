@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class BustShotSMB : StateMachineBehaviour
+public class MissileSwarm : StateMachineBehaviour
 {
     public float AttackTime;
 
     private BossPhase1 _bossPhase1;
     private ElliteStateMachine _stateMachine;
     private float _timer;
+
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -33,6 +34,7 @@ public class BustShotSMB : StateMachineBehaviour
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateExit(animator, stateInfo, layerIndex);
+
         _bossPhase1.AttackTimer = 0;
         _timer = 0;
     }

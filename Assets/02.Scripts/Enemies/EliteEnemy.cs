@@ -2,15 +2,12 @@ using UnityEngine;
 
 public class EliteEnemy : Enemy, IDamageable
 {
-    // 기존 public int AttackType = 0; 대신 아래와 같이 변경
-    [SerializeField] // 인스펙터에서 초기값을 설정하고 보기 위함
-    private int _attackType = 0; // 실제 AttackType 값을 저장할 private 백킹 필드
-
-    public float OriginalValue = 0.5f;
     public float AttackTimer = 0f;
-
     public int AttackTypeNumber;
 
+    protected ElliteStateMachine _eliteStateMachine;
+    
+    [SerializeField] private int _attackType = 0;
     public int AttackType
     {
         get { return _attackType; }
@@ -30,8 +27,6 @@ public class EliteEnemy : Enemy, IDamageable
             }
         }
     }
-
-    protected ElliteStateMachine _eliteStateMachine;
 
 
     public override void TakeDamage(Damage damage)
@@ -66,7 +61,7 @@ public class EliteEnemy : Enemy, IDamageable
             AttackTimer += Time.deltaTime;
         }
         
-        if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh) // isOnNavMesh 추가
+        if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh)
         {
             _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);
         }
