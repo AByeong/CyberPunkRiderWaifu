@@ -27,33 +27,33 @@ public class Missile : MonoBehaviour
         _damage.From = gameObject;
     }
 
-    public void SetTarget(GameObject target)
-    {
-        targetPosition = target.transform.position;
-    }
+    // public void SetTarget(GameObject target)
+    // {
+    //     targetPosition = target.transform.position;
+    // }
 
-    public void LaunchMissile(float velocity)
-    {
-        Vector3 startPosition = transform.position;
-        Vector3 previousPos = startPosition;
+    // public void LaunchMissile(float velocity)
+    // {
+    //     Vector3 startPosition = transform.position;
+    //     Vector3 previousPos = startPosition;
 
-        Vector3 midPoint = (startPosition + targetPosition) / 2;
-        Vector3 direction = (targetPosition - startPosition).normalized;
-        Vector3 upLike = Vector3.Cross(direction, Random.onUnitSphere).normalized;
-        Vector3 control = midPoint + upLike * ArcHeight;
+    //     Vector3 midPoint = (startPosition + targetPosition) / 2;
+    //     Vector3 direction = (targetPosition - startPosition).normalized;
+    //     Vector3 upLike = Vector3.Cross(direction, Random.onUnitSphere).normalized;
+    //     Vector3 control = midPoint + upLike * ArcHeight;
 
-        DOTween.To(() => 0f, t =>
-        {
-            Vector3 newPos = CalculateQuadraticBezierPoint(t, startPosition, control, targetPosition);
-            transform.position = newPos;
+    //     DOTween.To(() => 0f, t =>
+    //     {
+    //         Vector3 newPos = CalculateQuadraticBezierPoint(t, startPosition, control, targetPosition);
+    //         transform.position = newPos;
 
-            Vector3 moveDir = (newPos - previousPos).normalized;
-            if (moveDir != Vector3.zero) gameObject.transform.forward = moveDir;
+    //         Vector3 moveDir = (newPos - previousPos).normalized;
+    //         if (moveDir != Vector3.zero) gameObject.transform.forward = moveDir;
 
-            previousPos = newPos;
-        }, 1f, velocity)
-        .SetEase(Ease.InOutQuad);
-    }
+    //         previousPos = newPos;
+    //     }, 1f, velocity)
+    //     .SetEase(Ease.InOutQuad);
+    // }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -82,10 +82,10 @@ public class Missile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
-    {
-        // 2차 베지어 공식: (1 - t)^2 * P0 + 2(1 - t)t * P1 + t^2 * P2
-        float u = 1 - t;
-        return u * u * p0 + 2 * u * t * p1 + t * t * p2;
-    }
+    // private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
+    // {
+    //     // 2차 베지어 공식: (1 - t)^2 * P0 + 2(1 - t)t * P1 + t^2 * P2
+    //     float u = 1 - t;
+    //     return u * u * p0 + 2 * u * t * p1 + t * t * p2;
+    // }
 }

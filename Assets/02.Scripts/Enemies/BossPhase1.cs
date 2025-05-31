@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class BossPhase1 : EliteEnemy
@@ -11,11 +12,12 @@ public class BossPhase1 : EliteEnemy
     public ParticleSystem BulletHitVFX;
     public GameObject WarningVFX;
 
-    [Header ("Parameters")]
+    [Header("Parameters")]
     [SerializeField] private float _hitDelay;
     [SerializeField] private float _missileHitTime;
     [SerializeField] private float _granadeRadius;
     [SerializeField] private float _yPosOffset = 1.5f;
+    [SerializeField] private float _arcHeight = 10f;
 
 
     private Damage _attack0Damage;
@@ -23,7 +25,7 @@ public class BossPhase1 : EliteEnemy
     private Damage _attack2Damage;
     private float rotateSpeed = 30f;
 
-    
+
 
     protected override void Awake()
     {
@@ -97,7 +99,7 @@ public class BossPhase1 : EliteEnemy
                 collider.GetComponent<PlayerHit>().TakeDamage(_attack0Damage);
             }
 
-            if(collider.tag == "NormalEnemy")
+            if (collider.tag == "NormalEnemy")
             {
                 _enemyDamage = _attack0Damage;
                 _enemyDamage.DamageValue = 0;
@@ -120,11 +122,35 @@ public class BossPhase1 : EliteEnemy
     // 패턴 3
     public void MissileSwamp()
     {
+        Vector3 targetPosition = Target.transform.position;
         Vector3 startPosition = transform.position + Vector3.up * _yPosOffset + Vector3.back * 0.2f;
+        Vector3 previousPos = startPosition;
+
+        Vector3 midPoint = (startPosition + targetPosition) / 2;
+        Vector3 direction = (targetPosition - startPosition).normalized;
+        Vector3 upLike = Vector3.Cross(direction, Random.onUnitSphere).normalized;
+        Vector3 control = midPoint + upLike * _arcHeight;
 
         Missile missile = Instantiate(MissilePrefab, startPosition, transform.rotation);
-        missile.SetTarget(Target);
         missile.SetDamage(_attack2Damage);
-        missile.LaunchMissile(_missileHitTime);
+
+        DOTween.To(() => 0f, t =>
+        {
+            Vector3 newPos = CalculateQuadraticBezierPoint(t, startPosition, control, targetPosition);
+            missile.transform.position = newPos;
+
+            Vector3 moveDir = (newPos - previousPos).normalized;
+            if (moveDir != Vector3.zero) missile.transform.forward = moveDir;
+
+            previousPos = newPos;
+        }, 1f, _hitDelay)
+        .SetEase(Ease.InOutQuad);
+    }
+    
+    private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
+    {
+        // 2차 베지어 공식: (1 - t)^2 * P0 + 2(1 - t)t * P1 + t^2 * P2
+        float u = 1 - t;
+        return u * u * p0 + 2 * u * t * p1 + t * t * p2;
     }
 }

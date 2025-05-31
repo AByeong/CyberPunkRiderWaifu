@@ -83,6 +83,8 @@ public class GridGeneration : MonoBehaviour
 
     private int _totalSpawnerCount;
 
+    private float[] Roations = { 0, 90, 180, 270 };
+
 
     // 1. NxM크기의 2차원 배열 생성
     // 2. 경계 검출
@@ -95,7 +97,7 @@ public class GridGeneration : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
 
     private void DebugGrid()
@@ -609,8 +611,9 @@ public class GridGeneration : MonoBehaviour
                     case (int)EGirdType.Pattern:
                         {
 
-                            GameObject prop = Instantiate(PropPrefabs[Random.Range(0, PropPrefabs.Length - 1)], transform);
+                            GameObject prop = Instantiate(PropPrefabs[Random.Range(0, PropPrefabs.Length)], transform);
                             prop.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                            prop.transform.eulerAngles = new Vector3(0, Roations[Random.Range(0, Roations.Length)], 0);
                             break;
                         }
                 }
