@@ -124,6 +124,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         _takedDamage = damage;
 
         PlayHitParticle();
+        Debug.Log($"{this.name}이 {damage.DamageValue}만큼 데미지를 ㅣㅇㅂ음");
         // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
         Vector3 worldPos = DamagePopupPosition.position;
 

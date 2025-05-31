@@ -8,6 +8,7 @@ public class OnAttackBehaviour : StateMachineBehaviour
     
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        Debug.Log("들어옴");
         base.OnStateEnter(animator, stateInfo, layerIndex);
         Owner = animator.gameObject.GetComponent<EliteEnemy>();
 
@@ -20,13 +21,16 @@ public class OnAttackBehaviour : StateMachineBehaviour
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateUpdate(animator, stateInfo, layerIndex);
-        
+        Debug.Log("나감");
+
         if (stateInfo.normalizedTime >= 1f)
         {
             // Owner 스크립트의 속성을 변경합니다.
             Owner.IsAttacking = false;
             Owner.AttackTimer = 0;
             Owner.AttackType = -1;
+            
+            
         }
         
         
