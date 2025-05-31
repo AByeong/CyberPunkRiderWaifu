@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace JY
@@ -21,6 +22,7 @@ namespace JY
 
         public float MaxForwardSpeed;
         public float AttackPower;
+        public float MaxHealth;
         public float Gravity = 20f;
         public float JumpSpeed = 15f;
         public float MaxTurnSpeed = 1200f;
@@ -34,7 +36,7 @@ namespace JY
         public float DashCooldown;
         public float DashDuration = 0.2f;
         public bool NoGravity;
-
+        
         public IStatsProvider Stat { get; private set; }
 
         private readonly int _hashAirAttack = Animator.StringToHash("AirAttack");
@@ -122,6 +124,9 @@ namespace JY
         private float _verticalSpeed;
         private bool _wasInRootMotionState;
         private bool IsMoveInput => !Mathf.Approximately(_input.MoveInput.sqrMagnitude, 0f);
+        private bool _isLanding = false;
+        private bool _wasInAir = false;
+
         private void Awake()
         {
             _input = GetComponent<PlayerInput>();
@@ -215,7 +220,7 @@ namespace JY
         private void OnEnable()
         {
             EquipMeleeWeapon(false);
-
+            InventoryManager.Instance.OnEquipChanged += RefreshStat;
             _renderers = GetComponentsInChildren<Renderer>();
         }
         private void OnDisable()
@@ -313,6 +318,20 @@ namespace JY
             if (!_groundCheck.IsGrounded)
             {
                 _animator.SetFloat(_hashAirborneVerticalSpeed, _verticalSpeed);
+                _wasInAir = true;
+            }
+
+            // 랜딩 감지 (공중에 있다가 착지한 순간만)
+            if (_wasInAir && _groundCheck.IsGrounded)
+            {
+                _isLanding = true;
+                // _playerSound.Play(EPlayerState.Landing);
+                Debug.Log("점프 후 착지 감지!");
+                _wasInAir = false;
+            }
+            else
+            {
+                _isLanding = false;
             }
 
             _animator.SetBool(_hashGrounded, _groundCheck.IsGrounded);
@@ -323,18 +342,14 @@ namespace JY
             IsAirCombo = IsAirSkill() || _isAirborneAttacking;
         }
 
-        public void ApplyEquipment(StatType statType, float value)
+        public IStatsProvider ApplyEquipment(IStatsProvider newStat, StatType statType, float value)
         {
-            Stat = new StatModifierDecorator(Stat, statType, value);
-            RefreshStat();
-        }
-        public void RemoveEquipment(StatType statType, float value)
-        {
-            Stat = new StatModifierDecorator(Stat, statType, -value);
-            RefreshStat();
+            return new StatModifierDecorator(newStat, statType, value);
+            // RefreshStat();
         }
         public void Dash()
         {
+            _playerSound.Play(EPlayerState.Dash);
             _animator.SetTrigger(_hashRoll);
             _animator.CrossFade(_hashRoll, 0.05f);
             _isDashing = true;
@@ -665,13 +680,35 @@ namespace JY
             // Set the HurtFromX and HurtFromY parameters of the animator based on the direction of the damage.
             _animator.SetFloat(_hashHurtFromX, localHurt.x);
             _animator.SetFloat(_hashHurtFromY, localHurt.z);
+            
+            _playerSound.Play(EPlayerState.Hit);
 
         }
         public void RefreshStat()
         {
-            AttackPower = Stat.GetStat(StatType.AttackPower);
-            MaxForwardSpeed = Stat.GetStat(StatType.Speed);
+            // 스탯을 디폴트 초기화
+            IStatsProvider defaultStat = Stat;
+            List<Item> equippedItems = InventoryManager.Instance.GetEquippedItems();
+            foreach(Item item in equippedItems)
+            {
+                defaultStat = ApplyEquipment(defaultStat,StatType.MaxHealth,item.MaxHealth);
+                defaultStat = ApplyEquipment(defaultStat,StatType.AttackPower,item.AttackPower);
+                defaultStat = ApplyEquipment(defaultStat,StatType.Defense,item.Defense);
+                defaultStat = ApplyEquipment(defaultStat,StatType.Speed,item.Speed);
+                defaultStat = ApplyEquipment(defaultStat,StatType.AttackSpeed,item.AttackSpeed);
+                defaultStat = ApplyEquipment(defaultStat,StatType.CritChance,item.CritChance);
+                defaultStat = ApplyEquipment(defaultStat,StatType.CritDamage,item.CritDamage);
+            }
+            
+            AttackPower = defaultStat.GetStat(StatType.AttackPower);
+            MaxForwardSpeed = defaultStat.GetStat(StatType.Speed);
+            MaxHealth = defaultStat.GetStat(StatType.Health);
+            
+        }
+
+        public void PlayAttackSound()
+        {
+            _playerSound.Play(EPlayerState.Attack);
         }
     }
-
 }

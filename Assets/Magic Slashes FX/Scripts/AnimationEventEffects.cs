@@ -41,7 +41,7 @@ public class AnimationEventEffects : MonoBehaviour {
     void Start() {
     }
             
-    void InstantiateEffect(int EffectNumber)
+    public void InstantiateEffect(int EffectNumber)
     {
         if(Effects == null || Effects.Length <= EffectNumber)
         {
@@ -49,7 +49,6 @@ public class AnimationEventEffects : MonoBehaviour {
         }
 
         var instance = Instantiate(Effects[EffectNumber].Effect, Effects[EffectNumber].StartPositionRotation.position, Effects[EffectNumber].StartPositionRotation.rotation);
-
         if (Effects[EffectNumber].UseLocalPosition)
         {
             instance.transform.parent = Effects[EffectNumber].StartPositionRotation.transform;

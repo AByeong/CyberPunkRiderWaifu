@@ -2863,6 +2863,7 @@ MonoBehaviour:
   MaxAirAttackGraceTime: 0.3
   MaxForwardSpeed: 12.87
   AttackPower: 0
+  MaxHealth: 0
   Gravity: 22
   JumpSpeed: 10
   MaxTurnSpeed: 1200
@@ -2951,7 +2952,7 @@ MonoBehaviour:
   Effects:
   - Effect: {fileID: 1115641076847360, guid: 547d34b469a15124fb3bcd14b268a4c2, type: 3}
     StartPositionRotation: {fileID: 334718271421324623}
-    DestroyAfter: 2
+    DestroyAfter: 1.5
     UseLocalPosition: 0
   - Effect: {fileID: 1949624779417528, guid: d960a2ebda3d9f4468e4b0acb382f290, type: 3}
     StartPositionRotation: {fileID: 269197031616518299}
@@ -2991,7 +2992,7 @@ MonoBehaviour:
     UseLocalPosition: 1
   - Effect: {fileID: 1427184144938852, guid: c24617d00f7310443818e37ae0356b85, type: 3}
     StartPositionRotation: {fileID: 4718906866176134130}
-    DestroyAfter: 0.5
+    DestroyAfter: 1
     UseLocalPosition: 0
   - Effect: {fileID: 7044946091230436963, guid: 1b66b73b6956b4540a57e2f5c0261179, type: 3}
     StartPositionRotation: {fileID: 0}
@@ -3108,11 +3109,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SoundComponents:
   - state: 0
-    clip: {fileID: 8300000, guid: 37f46ed8b1f8eb84b9da0b915181040e, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 37f46ed8b1f8eb84b9da0b915181040e, type: 3}
+  - state: 1
+    clip:
+    - {fileID: 8300000, guid: 52fdf6fc522833841b80bbbef8807b40, type: 3}
+  - state: 2
+    clip:
+    - {fileID: 8300000, guid: 0c38d9a9d324ba543b466bc209b2bc77, type: 3}
+    - {fileID: 8300000, guid: 7a9d580c3a3eb5c4c8a08cbf73036186, type: 3}
+    - {fileID: 8300000, guid: 4bc18de1b5e01584a8f93e1c7914b97a, type: 3}
+    - {fileID: 8300000, guid: b5cdb11f3a4523a4aa93546e43c14f9b, type: 3}
+  - state: 3
+    clip:
+    - {fileID: 8300000, guid: 3676470444246f942b6b406053101484, type: 3}
+    - {fileID: 8300000, guid: 382d9a7944e06ff418d5caaa6972ed78, type: 3}
+    - {fileID: 8300000, guid: 6d77f48daeeca6e409efbd396e6244ee, type: 3}
+  - state: 5
+    clip:
+    - {fileID: 8300000, guid: 675dcbff305e60041b2d4ca8c5318dbc, type: 3}
+    - {fileID: 8300000, guid: ea3fcc8df8c969d478214d662f94cb26, type: 3}
+    - {fileID: 8300000, guid: 5d539b288e16b0b408ce7d6f61a313e4, type: 3}
+    - {fileID: 8300000, guid: cc8dd8892d7e89e409c44f41c2d76ae9, type: 3}
+  - state: 4
+    clip:
+    - {fileID: 8300000, guid: 1bac9c47735d7c848b4fc01189df18d7, type: 3}
   - state: 6
-    clip: {fileID: 8300000, guid: e5b45a96bc5720f4e928b4e69c7993ef, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 552abbd2f4dc7a6408c9631884776f2a, type: 3}
+    - {fileID: 8300000, guid: 038ea79b1ffb78b4d97a03e514b365b2, type: 3}
+    - {fileID: 8300000, guid: e1a85b904f8b775408fb488ef7493269, type: 3}
+    - {fileID: 8300000, guid: e5b45a96bc5720f4e928b4e69c7993ef, type: 3}
+    - {fileID: 8300000, guid: 4b19427059433c74d9dc60a7a5b19d25, type: 3}
   - state: 7
-    clip: {fileID: 8300000, guid: e5b45a96bc5720f4e928b4e69c7993ef, type: 3}
+    clip:
+    - {fileID: 8300000, guid: 552abbd2f4dc7a6408c9631884776f2a, type: 3}
+    - {fileID: 8300000, guid: 038ea79b1ffb78b4d97a03e514b365b2, type: 3}
+    - {fileID: 8300000, guid: e1a85b904f8b775408fb488ef7493269, type: 3}
+    - {fileID: 8300000, guid: e5b45a96bc5720f4e928b4e69c7993ef, type: 3}
+    - {fileID: 8300000, guid: 4b19427059433c74d9dc60a7a5b19d25, type: 3}
+  - state: 8
+    clip:
+    - {fileID: 8300000, guid: 552abbd2f4dc7a6408c9631884776f2a, type: 3}
+    - {fileID: 8300000, guid: 038ea79b1ffb78b4d97a03e514b365b2, type: 3}
+    - {fileID: 8300000, guid: e1a85b904f8b775408fb488ef7493269, type: 3}
+    - {fileID: 8300000, guid: e5b45a96bc5720f4e928b4e69c7993ef, type: 3}
+    - {fileID: 8300000, guid: 4b19427059433c74d9dc60a7a5b19d25, type: 3}
+  - state: 9
+    clip:
+    - {fileID: 8300000, guid: 552abbd2f4dc7a6408c9631884776f2a, type: 3}
+    - {fileID: 8300000, guid: 038ea79b1ffb78b4d97a03e514b365b2, type: 3}
+    - {fileID: 8300000, guid: e1a85b904f8b775408fb488ef7493269, type: 3}
+    - {fileID: 8300000, guid: e5b45a96bc5720f4e928b4e69c7993ef, type: 3}
+    - {fileID: 8300000, guid: 4b19427059433c74d9dc60a7a5b19d25, type: 3}
   AudioSource: {fileID: 7666723668371251163}
 --- !u!1 &2985504770410040406
 GameObject:

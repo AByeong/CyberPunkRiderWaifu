@@ -702,6 +702,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroy: 1
   player: {fileID: 1452895831}
+  WorldCanvas: {fileID: 1286368921}
 --- !u!1 &440088715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,11 +1990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroy: 1
-  EquipmentNormalVFX: {fileID: 4794875759502162923, guid: f51b227dfe314b64c8ab0880a1926f1b, type: 3}
-  EquipmentRareVFX: {fileID: 5043167619198549530, guid: 2f2d4e6b133dd204b98d767461befc6d, type: 3}
-  EquipmentUniqueVFX: {fileID: 7235906724420313109, guid: b4f9efd16e8b5c04c91abcf7f00f5166, type: 3}
-  EtcVFX: {fileID: 7581467683277396823, guid: e9a61902ec4cb8f42b1b2a59fe27cf07, type: 3}
-  GoldVFX: {fileID: 7581467683277396823, guid: e9a61902ec4cb8f42b1b2a59fe27cf07, type: 3}
+  Pool: {fileID: 0}
 --- !u!1001 &594320662
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4439,6 +4436,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1286368922}
+  - component: {fileID: 1286368923}
   m_Layer: 5
   m_Name: GameObject
   m_TagString: Untagged
@@ -4465,6 +4463,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1286368923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286368921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c86da7341e1db345a603d9df4b9c17c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1316442576
 GameObject:
   m_ObjectHideFlags: 0
@@ -6678,9 +6688,21 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1002825554517236157, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1002825554517236157, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
+      value: 76a9ad5c1dfe014499d95fe9479508f1
+      objectReference: {fileID: 0}
     - target: {fileID: 1525435272508644698, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_Name
       value: PrisonStage
+      objectReference: {fileID: 0}
+    - target: {fileID: 1578097333513460886, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: numberOfMonstersToSpawn
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2120317658669282881, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -6738,6 +6760,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3401843225300315567, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: numberOfMonstersToSpawn
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3477159453968503396, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -6777,6 +6803,22 @@ PrefabInstance:
     - target: {fileID: 3877496160432129892, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3979354465310910596, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3979354465310910596, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
+      value: 76a9ad5c1dfe014499d95fe9479508f1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3979354465310910596, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_EditorAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697633399487538596, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: numberOfMonstersToSpawn
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4801446017730537604, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -6829,6 +6871,10 @@ PrefabInstance:
     - target: {fileID: 5370075766612008769, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5431999910717785202, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: numberOfMonstersToSpawn
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 6189526761607042415, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -6973,6 +7019,14 @@ PrefabInstance:
     - target: {fileID: 8097478716043345910, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8247667787049869670, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: numberOfMonstersToSpawn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8926725973569737885, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: numberOfMonstersToSpawn
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
