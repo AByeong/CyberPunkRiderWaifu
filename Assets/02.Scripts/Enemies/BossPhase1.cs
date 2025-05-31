@@ -18,6 +18,7 @@ public class BossPhase1 : EliteEnemy
     [SerializeField] private float _granadeRadius;
     [SerializeField] private float _yPosOffset = 1.5f;
     [SerializeField] private float _arcHeight = 10f;
+    [SerializeField] private float _missileRadius = 4f;
 
 
     private Damage _attack0Damage;
@@ -144,7 +145,31 @@ public class BossPhase1 : EliteEnemy
 
             previousPos = newPos;
         }, 1f, _hitDelay)
-        .SetEase(Ease.InOutQuad);
+        .SetEase(Ease.InOutQuad)
+        .OnComplete(() =>
+        {
+            ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);
+
+
+            Collider[] colliders = Physics.OverlapSphere(missile.transform.position, _missileRadius);
+            foreach (Collider collider in colliders)
+            {
+                if (collider.tag == "Player")
+                {
+                    collider.GetComponent<PlayerHit>().TakeDamage(_attack2Damage);
+                }
+
+                if (collider.tag == "NoramlEnemy")
+                {
+                    _enemyDamage = _attack2Damage;
+                    _enemyDamage.DamageValue = 0;
+                    _enemyDamage.DamageType = EDamageType.Airborne;
+                    collider.GetComponent<PlayerHit>().TakeDamage(_attack2Damage);
+                }
+            }
+            
+            Destroy(missile);
+        });
     }
     
     private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)

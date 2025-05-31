@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
@@ -27,34 +26,6 @@ public class Missile : MonoBehaviour
         _damage.From = gameObject;
     }
 
-    // public void SetTarget(GameObject target)
-    // {
-    //     targetPosition = target.transform.position;
-    // }
-
-    // public void LaunchMissile(float velocity)
-    // {
-    //     Vector3 startPosition = transform.position;
-    //     Vector3 previousPos = startPosition;
-
-    //     Vector3 midPoint = (startPosition + targetPosition) / 2;
-    //     Vector3 direction = (targetPosition - startPosition).normalized;
-    //     Vector3 upLike = Vector3.Cross(direction, Random.onUnitSphere).normalized;
-    //     Vector3 control = midPoint + upLike * ArcHeight;
-
-    //     DOTween.To(() => 0f, t =>
-    //     {
-    //         Vector3 newPos = CalculateQuadraticBezierPoint(t, startPosition, control, targetPosition);
-    //         transform.position = newPos;
-
-    //         Vector3 moveDir = (newPos - previousPos).normalized;
-    //         if (moveDir != Vector3.zero) gameObject.transform.forward = moveDir;
-
-    //         previousPos = newPos;
-    //     }, 1f, velocity)
-    //     .SetEase(Ease.InOutQuad);
-    // }
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Boss" || other.tag == "Skill")
@@ -64,7 +35,7 @@ public class Missile : MonoBehaviour
 
         Instantiate(ExplosionVFX, gameObject.transform.position, Quaternion.identity);
 
-        Collider[] colliders = Physics.OverlapSphere(targetPosition, DamageRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, DamageRadius);
         foreach (Collider collider in colliders)
         {
             if (collider.tag == "Player")
