@@ -10,6 +10,7 @@ public class PopupManager : MonoBehaviour
    public GameObject SettingsPopup;
    public GameObject InventoryPopup;
    public GameObject SkillPopup;
+   public GameObject ShopPopup;
    public AnswerPopup AnswerPopup;
    
    public void CloseLastPopup()

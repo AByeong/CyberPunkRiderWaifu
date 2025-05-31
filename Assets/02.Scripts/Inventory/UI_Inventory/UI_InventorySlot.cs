@@ -60,22 +60,6 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
                 Debug.Log($"to: {targetSlot.gameObject.name}");
 
                 UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
-
-                // if(targetSlot.SlotType == SlotType.Inventory)
-                // {
-                //     Debug.Log("targetSlot == Inventory");
-                //     UI_InventoryPopup.Instance.SwapSlotItem(targetSlot);
-                // }
-                // else if (targetSlot.SlotType == SlotType.Equipment)
-                // {
-                //     Debug.Log("targetSlot == Equipment");
-                //     UI_InventoryPopup.Instance.EquipItem((UI_EquipmentSlot)targetSlot);
-                // }
-                // else if (targetSlot.SlotType == SlotType.Chip)
-                // {
-                //     Debug.Log("targetSlot == Chip");
-                //     UI_InventoryPopup.Instance.SetChip((UI_ChipSlot)targetSlot);
-                // }
                 break;
             }
         }
@@ -102,7 +86,10 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     }
     protected virtual void ClearItem()
     {
-        IconImageUI.sprite = null;
+        if (IconImageUI != null)
+        {
+            IconImageUI.sprite = null;    
+        }
         Item = null;
     }
 
@@ -112,6 +99,9 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
         if (!HasItem) return;
 
-        IconImageUI.sprite = Item.Data.Icon;
+        if (IconImageUI != null)
+        {
+            IconImageUI.sprite = Item.Data.Icon;
+        }
     }
 }

@@ -15,6 +15,7 @@ public class UIManager : Singleton<UIManager>
     private void Update()
     {
         InventoryPopup();
+        ShopPopup();
         SkillPopup();
         DeliveryPopup();
     }
@@ -106,9 +107,27 @@ public class UIManager : Singleton<UIManager>
             PlayerInput.ReleaseControl();
             if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
             {
-                Cursor.lockState = CursorLockMode.Confined; // 커서를 화면 중앙에 고정
-                Cursor.visible = true; // 커서 숨김
+                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.visible = true;
                 PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
+            }
+            else
+            {
+                PopupManager.CloseLastPopup();
+            }
+        }
+    }
+
+    private void ShopPopup()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            PlayerInput.ReleaseControl();
+            if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
+            {
+                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.visible = true;
+                PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
             }
             else
             {
