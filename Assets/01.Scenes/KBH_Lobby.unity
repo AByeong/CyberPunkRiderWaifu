@@ -1324,7 +1324,17 @@ MonoBehaviour:
   mat: {fileID: 2100000, guid: 505f2d32b5117cc46a26b2abef81397f, type: 2}
   baseColor: {r: 0, g: 4.8470616, b: 6.8235292, a: 1}
   intensity: 5
-  steps: []
+  steps:
+  - duration: 3
+    isOn: 1
+  - duration: 0.1
+    isOn: 0
+  - duration: 0.1
+    isOn: 1
+  - duration: 0.05
+    isOn: 0
+  - duration: 0.05
+    isOn: 1
 --- !u!114 &283631513 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8589209733165009053, guid: 66c884dc31b3c8d449e4e67643e0da16, type: 3}
