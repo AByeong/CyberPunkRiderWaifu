@@ -21,7 +21,7 @@ namespace JY
         protected bool _isSkill2;
         protected bool _isSkill3;
         protected bool _isSkill4;
-
+        protected bool _isUltimate;
         protected Vector2 _movement;
         public Vector2 MoveInput =>
             // if (playerControllerInputBlocked || _isExternalInputBlocked)
@@ -44,6 +44,8 @@ namespace JY
         public bool Skill3 => _isSkill3 && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
         public bool Skill4 => _isSkill4 && !playerControllerInputBlocked && !_isExternalInputBlocked;
+
+        public bool Ultimate => _isUltimate && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
         private void Update()
         {
@@ -105,6 +107,17 @@ namespace JY
                 _AttackWaitCoroutine = StartCoroutine(Skill4Wait());
             }
             _isPause = Input.GetKeyDown(KeyCode.Escape);
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                if (_AttackWaitCoroutine != null)
+                {
+                    StopCoroutine(_AttackWaitCoroutine);
+                }
+
+                _AttackWaitCoroutine = StartCoroutine(UltimateWait());
+            }
+
             if (_isPause)
             {
                 GainControl();
@@ -160,6 +173,15 @@ namespace JY
             yield return _AttackInputWait;
 
             _isSkill4 = false;
+        }
+
+        private IEnumerator UltimateWait()
+        {
+            _isUltimate = true;
+            Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            yield return _AttackInputWait;
+
+            _isUltimate = false;
         }
         private IEnumerator RollWait()
         {

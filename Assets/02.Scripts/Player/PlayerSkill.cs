@@ -1,5 +1,8 @@
 ﻿using JY;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Timeline;
+
 public class PlayerSkill : MonoBehaviour
 {
     private PlayerInput _input;
@@ -7,6 +10,9 @@ public class PlayerSkill : MonoBehaviour
     private int _keyIndex = -1;
     private PlayerController _player;
     private StretchColliderOnly _stretchColliderOnly;
+
+    [Header("Ultimate ")] public PlayableDirector UltimatePD;
+    public TimelineAsset UltimateTL;
     private void Start()
     {
         _input = GetComponent<PlayerInput>();
@@ -65,5 +71,17 @@ public class PlayerSkill : MonoBehaviour
                 }
             }
         }
+
+        if (_input.Ultimate)
+        {
+            Ultimate();
+        }
+    }
+
+    public void Ultimate()
+    {
+        Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!@##@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        UltimatePD.Play(UltimateTL);
+        _input.GainControl();
     }
 }
