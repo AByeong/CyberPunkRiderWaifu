@@ -26,6 +26,7 @@ public class OnAttackBehaviour : StateMachineBehaviour
             // Owner 스크립트의 속성을 변경합니다.
             Owner.IsAttacking = false;
             Owner.AttackTimer = 0;
+            Owner.AttackType = -1;
         }
         
         

@@ -7,7 +7,10 @@ public class EliteAttackState : EliteBaseState
     {
         base.OnEnter();
         Owner.NavMeshAgent.enabled = false;
-
+        if (Owner.AttackType == -1)
+        {
+            Owner.AttackType = Random.Range(0,Owner.AttackTypeNumber-1);
+        }
 
     }
 
@@ -34,21 +37,7 @@ public class EliteAttackState : EliteBaseState
 
         if (Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown && !Owner.IsAttacking)
         {
-            Owner.AttackType = Random.Range(0,Owner.AttackTypeNumber-1);
-
-            // if (Owner.EnemyData.EnemyType == EEnemyType.Waifu)
-            // {
-            //     if (Owner.AttackType == Owner.AttackTypeNumber - 1)//맨 마지막 공격이라면
-            //     {
-            //         //10프로의 확률로 필살기가 날아갑니다.
-            //         int random = Random.Range(0, 100);
-            //         if (random >= 10)
-            //         {
-            //             Owner.AttackType = Random.Range(0,Owner.AttackTypeNumber-2);
-            //         }
-            //         
-            //     }
-            // }
+            
             
             
             Owner.Animator.SetTrigger("OnAttack");
