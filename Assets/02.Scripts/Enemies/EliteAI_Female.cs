@@ -112,7 +112,6 @@ public class EliteAI_Female : EliteEnemy
         if (_collider != null) _collider.enabled = true; // 콜라이더가 있는 경우에만 활성화
         isCoolingDown = true;
         currentCooldownTime = runCooldownDuration;
-        _eliteStateMachine.ChangeState<AttackState>();
     }
 
 
