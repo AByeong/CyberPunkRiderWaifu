@@ -26,6 +26,7 @@ public class BossPhase1 : EliteEnemy
     private Damage _attack2Damage;
     private float rotateSpeed = 30f;
 
+    private bool _isPhase1End = false;
 
 
     protected override void Awake()
@@ -72,6 +73,17 @@ public class BossPhase1 : EliteEnemy
             Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
         }
+
+        if (CurrentHealthPoint <= 0 && !_isPhase1End)
+        {
+            OnDie();
+        }
+    }
+
+    public override void OnDie()
+    {
+        _isPhase1End = true;
+        EnemyManager.Instance.SpawnBossPhase2(transform.position);
     }
 
     // 패턴 1

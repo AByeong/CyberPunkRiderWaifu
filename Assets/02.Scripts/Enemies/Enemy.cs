@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,7 +31,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public GameObject Target { get; set; }
     public EnemyDataSO EnemyData => _enemyData;
-    public int CurrentHealthPoint { get; private set; }
+    public int CurrentHealthPoint { get; protected set; }
 
     public Animator Animator => _animator;
     public NavMeshAgent NavMeshAgent => _navMeshAgent;
@@ -38,6 +39,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public Transform DamagePopupPosition;
     public GameObject DamagePopup;
     public GameObject WorldSpaceCanvas;
+
 
     protected virtual void Awake()
     {
@@ -142,6 +144,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         List<GameObject> drops = new List<GameObject>();
         // TODO
         return drops;
+    }
+
+    public virtual void OnDie()
+    {
+        
     }
 
 

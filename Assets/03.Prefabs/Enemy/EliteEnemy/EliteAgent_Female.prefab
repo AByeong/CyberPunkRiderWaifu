@@ -247,7 +247,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 3016843131154389009}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -279,7 +279,8 @@ MonoBehaviour:
   DamagePopupPosition: {fileID: 7471480071347027222}
   DamagePopup: {fileID: 2101629379635105609, guid: bf0f131c53c73e84a811f58eb7818f01, type: 3}
   WorldSpaceCanvas: {fileID: 0}
-  targetMaterialName: KyleRobot
+  targetMaterialNames:
+  - KyleRobot
   mainColorPropertyName: _Color
   highlightVValue: 2
   normalVValue: 0.8
