@@ -11,6 +11,17 @@ public class UI_ShopSlot : MonoBehaviour
     public TextMeshProUGUI PriceText;
     public int Price { get; private set; }
 
+    private ItemRarity MakeRandomRarity()
+    {
+        // 10% 확률로 유니크, 20% 확률로 레어, 나머지는 노말
+        int randomValue = UnityEngine.Random.Range(0, 100);
+        if (randomValue < 10)
+            return ItemRarity.Unique;
+        else if (randomValue < 30)
+            return ItemRarity.Rare;
+        else
+            return ItemRarity.Normal;
+    }
     public void Start()
     {
         Price = int.Parse(PriceText.text);
@@ -34,19 +45,19 @@ public class UI_ShopSlot : MonoBehaviour
         switch (SlotType)
         {
             case EShopSlotType.Head:
-                item = ItemCreateManager.Instance.CreateHead();
+                item = ItemCreateManager.Instance.CreateHead(MakeRandomRarity());
                 break;
             case EShopSlotType.Armor:
-                item = ItemCreateManager.Instance.CreateArmor();
+                item = ItemCreateManager.Instance.CreateArmor(MakeRandomRarity());
                 break;
             case EShopSlotType.Boots:
-                item = ItemCreateManager.Instance.CreateBoots();
+                item = ItemCreateManager.Instance.CreateBoots(MakeRandomRarity());
                 break;
             case EShopSlotType.Weapon:
-                item = ItemCreateManager.Instance.CreateWeapon();
+                item = ItemCreateManager.Instance.CreateWeapon(MakeRandomRarity());
                 break;
             case EShopSlotType.Chip:
-                item = ItemCreateManager.Instance.CreateChip();
+                item = ItemCreateManager.Instance.CreateChip(MakeRandomRarity());
                 break;
             case EShopSlotType.Item1:
                 // 소모아이템 1 추기
