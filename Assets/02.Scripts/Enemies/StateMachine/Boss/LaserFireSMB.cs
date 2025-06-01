@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LaserFireSMB : StateMachineBehaviour
 {
-    public float AttackDuration;
+    public float AttackDuration = 3f;
 
 
     private BossPhase1 _bossPhase1;

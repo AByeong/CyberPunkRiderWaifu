@@ -6451,6 +6451,7 @@ MonoBehaviour:
   _normalMonsterSpawners: []
   _eliteMonsterSpawners: []
   _bossMonsterSpawner: {fileID: 0}
+  _bossPhase2Spawner: {fileID: 0}
 --- !u!1 &2053189430
 GameObject:
   m_ObjectHideFlags: 0
@@ -6661,6 +6662,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 556703717312804971, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: initialPoolSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 556703717312804971, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: prefabToPoolRef.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -6749,6 +6754,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3401843225300315567, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: spawnRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3401843225300315567, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: numberOfMonstersToSpawn
       value: 0
       objectReference: {fileID: 0}
@@ -6782,7 +6791,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3818222916956109993, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
-      value: 6fdc8d67fd22dae4fa4e635a8bf58564
+      value: f1741bf7431abbd48af1fa227078051c
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818222916956109993, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_EditorAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3877496160432129892, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -6841,8 +6854,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5235112880883208287, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: spawnRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235112880883208287, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5370075766612008769, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -6861,8 +6878,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5431999910717785202, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: spawnRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5431999910717785202, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 1
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6011760751300641113, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: prefabToPoolRef.Array.size

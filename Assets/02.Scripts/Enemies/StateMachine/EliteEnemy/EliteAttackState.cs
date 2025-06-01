@@ -16,7 +16,7 @@ public class EliteAttackState : EliteBaseState
     {
         base.Update();
         float distance = Vector3.Distance(Owner.transform.position, Owner.Target.transform.position);
-        if (distance > Owner.EnemyData.AttackDistance)
+        if (distance > Owner.EnemyData.AttackDistance && Owner.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f)
         {
             SuperMachine.ChangeState<EliteIdleState>();
             return;
