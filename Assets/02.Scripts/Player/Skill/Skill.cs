@@ -12,6 +12,7 @@ public class Skill
     public Skill()
     {
         Index = -1;
+        _cooldownTimer = SkillData.CoolTime;
     }
     public void UpdateCooldown(float deltaTime)
     {

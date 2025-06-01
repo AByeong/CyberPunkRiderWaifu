@@ -53,7 +53,7 @@ namespace JY
 
         public bool Skill4 => _isSkill4 && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
-        public bool Ultimate => _isUltimate && !playerControllerInputBlocked && !_isExternalInputBlocked;
+   public bool Ultimate => _isUltimate && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
         private void Update()
         {
