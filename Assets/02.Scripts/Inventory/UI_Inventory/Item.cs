@@ -3,6 +3,17 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class CubeStat
+{
+    public StatType StatType;
+    public float Value;
+
+    public CubeStat(StatType statType, float value)
+    {
+        StatType = statType;
+        Value = value;
+    }
+}
 public class Item
 {
     public readonly ItemBaseDataSO Data;
@@ -24,7 +35,7 @@ public class Item
     }
         
 
-public void SetSlotIndex(SlotType slotType, int slotIndex)
+    public void SetSlotIndex(SlotType slotType, int slotIndex)
     {
         _slotType = slotType;
         _slotIndex = slotIndex;
@@ -52,56 +63,30 @@ public void SetSlotIndex(SlotType slotType, int slotIndex)
 
     public SetItemType SetItemType;
 
-    //public List<float> ReturnEquipmentOption()
-    //{
-    //    if(Data is EquipmentDataSO data)
-    //    {
-    //        if(data.EquipmentType == EquipmentType.Weapon)
-    //        {
-    //            return new List<float>
-    //            {
-    //                AttackPower,
-    //                AttackSpeed,
-    //                CritChance,
-    //                CritDamage
-    //            };
-    //        }
-    //        else if (data.EquipmentType == EquipmentType.Armor)
-    //        {
-    //            return new List<float>
-    //            {
-    //                Defense
-    //            };
-    //        }
-    //        else if (data.EquipmentType == EquipmentType.Head)
-    //        {
-    //            return new List<float>
-    //            {
-    //                MaxHealth
-    //            };
-    //        }
-    //        else if(data.EquipmentType == EquipmentType.Boots)
-    //        {
-    //            return new List<float>
-    //            { 
-    //                Speed
-    //            };
-    //        }
-    //    }
-    //    else if(Data is ChipDataSO chipdata)
-    //    {
-    //        return new List<float>
-    //        {
-    //            SkillRange,
-    //            ReduceCooldown
-    //        };
-    //    }
-    //    Debug.LogError("뭘 반환하라는거야?");
-    //    return null;
-    //}
+    //public Dictionary<StatType, float> CubeStats = new Dictionary<StatType, float>();
+    public List<CubeStat> CubeStats = new List<CubeStat>();
+
     // Chip 옵션
-    public float SkillRange = 0.0f;
-    public float ReduceCooldown = 0.0f;
+    public float SkillRange
+    {
+        get
+        {
+            if(Data is ChipDataSO chipData)
+                return chipData.SkillRange;
+            return 0.0f; // 기본값
+        }
+        set { }
+    }
+    public float ReduceCooldown
+    {
+        get
+        {
+            if (Data is ChipDataSO chipData)
+                return chipData.ReduceCooldown;
+            return 0.0f; // 기본값
+        }
+        set { }
+    }
 
     public Item(ItemBaseDataSO data,  ItemSaveData saveData = null)
     {

@@ -128,6 +128,8 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
                 Debug.LogError("무기 생성 Type이 잘못됐음");
                 break;
         }
+        MakeRandomCubeStats(item);
+
         return item;
     }
 
@@ -148,6 +150,60 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
         float finalValue = min + offset; // 예: 80 + 24.8 = 104.8
 
         return finalValue;
+    }
+    private void MakeRandomCubeStats(Item item)
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            float value = 0.0f;
+            StatType statType = MakeRandomStatType();
+            switch (item.Data.ItemRarity)
+            {
+                case ItemRarity.Normal:
+                    value = 0.09f;
+                    break;
+                case ItemRarity.Rare:
+                    value = 0.12f;
+                    break;
+                case ItemRarity.Unique:
+                    value = 0.21f;
+                    break;
+            }
+            item.CubeStats.Add(new CubeStat(statType, value));
+        }
+    }
+    private StatType MakeRandomStatType()
+    {
+        int randomNumber = UnityEngine.Random.Range(0, 140);
+
+        if (randomNumber < 20)
+        {
+            return StatType.MaxHealth;
+        }
+        else if (randomNumber < 40)
+        {
+            return StatType.AttackPower;
+        }
+        else if (randomNumber < 60)
+        {
+            return StatType.Defense;
+        }
+        else if (randomNumber < 80)
+        {
+            return StatType.Speed;
+        }
+        else if (randomNumber < 100)
+        {
+            return StatType.AttackSpeed;
+        }
+        else if (randomNumber < 120)
+        {
+            return StatType.CritChance;
+        }
+        else
+        {
+            return StatType.CritDamage;
+        }
     }
 
     private SetItemType MakeRandomSetItemType()
