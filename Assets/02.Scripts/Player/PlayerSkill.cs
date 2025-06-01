@@ -10,7 +10,7 @@ public class PlayerSkill : MonoBehaviour
     private int _keyIndex = -1;
     private PlayerController _player;
     private StretchColliderOnly _stretchColliderOnly;
-
+    public GameObject ActingPlayer;
     [Header("Ultimate ")] public PlayableDirector UltimatePD;
     public TimelineAsset UltimateTL;
     private void Start()
@@ -88,6 +88,7 @@ public class PlayerSkill : MonoBehaviour
             // 여기에 컷씬 종료 후 실행할 코드 작성
             _input.GainControl();
             // _input.playerControllerInputBlocked = false;
+            ActingPlayer.transform.localPosition = Vector3.zero;
         }
     }
 
