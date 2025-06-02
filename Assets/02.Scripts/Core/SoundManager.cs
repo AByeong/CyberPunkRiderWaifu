@@ -108,17 +108,17 @@ public class SoundManager : Singleton<SoundManager>
             // }
         }
         
-        foreach(SoundStruct soundComponent in Sounds)
-        {
-           
-
-            if (soundComponent.state == state)
-            {
-                if (soundComponent.clip == null) return;
-                Source.PlayOneShot(soundComponent.clip);
-                return;
-            }
-        }
+        // foreach(SoundStruct soundComponent in Sounds)
+        // {
+        //    
+        //
+        //     if (soundComponent.state == state)
+        //     {
+        //         if (soundComponent.clip == null) return;
+        //         Source.PlayOneShot(soundComponent.clip);
+        //         return;
+        //     }
+        // }
 
     }
     

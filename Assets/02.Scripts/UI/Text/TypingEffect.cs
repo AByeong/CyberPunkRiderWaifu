@@ -13,7 +13,7 @@ public class TypingEffect : MonoBehaviour
 
     [Header("Color Gradient")]
     public Gradient gradient;
-
+    
     private TextMeshProUGUI textUI;
     private Coroutine typingCoroutine;
 
@@ -39,32 +39,38 @@ public class TypingEffect : MonoBehaviour
     {
         int totalLength = fullText.Length;
 
+        // 타이핑 시작 전에 투명도 1로 복원
+        textUI.alpha = 1f;
+
         for (int i = 0; i < totalLength; i++)
         {
             char c = fullText[i];
             textUI.text += c;
 
-            // 문자 위치 비율
             float t = totalLength > 1 ? i / (float)(totalLength - 1) : 0f;
             Color charColor = gradient.Evaluate(t);
 
-            // 처음엔 흰색
             textUI.color = Color.white;
             textUI.transform.localScale = Vector3.one * fontScaleStart;
 
-            // 색상 애니메이션: 흰색 → gradient color
             textUI.DOColor(charColor, fontSizeDuration)
                 .SetEase(Ease.OutQuad)
                 .SetTarget(this);
 
-            // 스케일 애니메이션
             textUI.transform.DOScale(Vector3.one * fontScaleEnd, fontSizeDuration)
                 .SetEase(Ease.OutQuad)
                 .SetTarget(this);
-
+            
             yield return new WaitForSeconds(delay);
         }
+        
+        // 타이핑 완료 후 텍스트 전체를 서서히 페이드아웃
+        yield return new WaitForSeconds(0.5f); // 사라지기 전 잠깐 대기 (선택적)
+        textUI.DOFade(0f, 1f)
+            .SetEase(Ease.OutQuad)
+            .SetTarget(this);
 
         typingCoroutine = null;
     }
+
 }
