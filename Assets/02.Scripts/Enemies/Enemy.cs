@@ -194,7 +194,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     private void CacheRenderersAndInitialColors()
     {
-        Debug.LogError($"{gameObject.name} :: Cache Renderer");
         // MaterialName이 설정되어 있고 targetMaterialNames에 아직 없다면 추가
         if (!string.IsNullOrEmpty(MaterialName) && !targetMaterialNames.Contains(MaterialName))
         {
@@ -215,7 +214,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             if (rend != null && rend.sharedMaterials != null)
             {
-                Debug.LogError($"{gameObject.name} :: {rend} / {rend.sharedMaterials}");
                 for (int i = 0; i < rend.sharedMaterials.Length; i++)
                 {
                     Material mat = rend.sharedMaterials[i];
@@ -226,7 +224,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
                         {
                             if (mat.name.Contains(targetName))
                             {
-                                Debug.LogError($"{gameObject.name} :: {mat} is go");
                                 // 해당 머티리얼의 초기 색상을 저장
                                 _targetedRenderersData.Add(new RendererMaterialData
                                 {
