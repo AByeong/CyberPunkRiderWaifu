@@ -76,6 +76,8 @@ public class KillTracker : MonoBehaviour
            
        }
 
+       
+       
        if (IsMissionCompleted())
        {
            Debug.Log("Mission Completed");
@@ -85,6 +87,7 @@ public class KillTracker : MonoBehaviour
 
        IncreaseTotalKillCount();
        UIManager.Instance.StageMainUI.RefreshKillTracking();
+       UIManager.Instance.StageMainUI.RefreshProgressbar();
        
    }
 

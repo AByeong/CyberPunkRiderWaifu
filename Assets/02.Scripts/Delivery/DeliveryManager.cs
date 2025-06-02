@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeliveryManager : Singleton<DeliveryManager>
@@ -103,6 +104,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
             KillTracker.KillTrakerInit();
             
             StageManager.MoveNextStage();
+            UIManager.Instance.StageMainUI.Refresh();
 
 
         }

@@ -5,12 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 public class StageMainUI : MonoBehaviour
 {
-    [Header("메인 UI")]
-    public Slider ProgressSlider;
+    [Header("아이콘")]
+
     public Icon[] SkillIcons;
     public Icon[] ItemIcons;
     public Icon finisherIcon;
 
+    [Header("진행바")]
+    public Slider ProgressSlider;
+    
     
     [Header("HP")]
     public Slider HPSlider;
@@ -45,6 +48,7 @@ public class StageMainUI : MonoBehaviour
         QuestBarClear();
         RefreshKillTracking();
         RefreshHPbar();
+        RefreshProgressbar();
         ActivateStage(DeliveryManager.Instance.CurrentSector);
         
     }
@@ -84,11 +88,26 @@ public class StageMainUI : MonoBehaviour
         ItemIcons[index].StartCooltime();
     }
 
+    public void RefreshProgressbar()
+    {
+        
+        ProgressSlider.maxValue = DeliveryManager.Instance.KillTracker.MissionKillCount.Normal + DeliveryManager.Instance.KillTracker.MissionKillCount.Elite + DeliveryManager.Instance.KillTracker.MissionKillCount.Boss + DeliveryManager.Instance.KillTracker.MissionKillCount.Normal;
+        ProgressSlider.value = DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal + DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite + DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss + DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal;
+        
+    }
+    
     public void FinisherIconLoad()
     {
         finisherIcon.StartCooltime();
     }
 
+    public void Refresh()
+    {
+        RefreshProgressbar();
+        RefreshKillTracking();
+        RefreshHPbar();
+        
+    }
     public void RefreshHPbar()
     {
         HPSlider.maxValue = GameManager.Instance.player.MaxHealth;
