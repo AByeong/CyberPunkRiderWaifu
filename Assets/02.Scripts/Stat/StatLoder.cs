@@ -9,6 +9,13 @@ public static class StatLoader
     public static async Task<Stat> LoadFromCSVAsync(string relativePath)
     {
         string fullPath = Path.Combine(Application.streamingAssetsPath, relativePath);
+
+        // Mac이나 PC 환경에서는 file:// 접두어 필요
+        if (!fullPath.StartsWith("http") && !fullPath.StartsWith("file://"))
+        {
+            fullPath = "file://" + fullPath;
+        }
+
         UnityWebRequest request = UnityWebRequest.Get(fullPath);
 
         UnityWebRequestAsyncOperation operation = request.SendWebRequest();

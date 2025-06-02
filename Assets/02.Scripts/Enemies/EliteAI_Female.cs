@@ -1,9 +1,7 @@
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class EliteAI_Female : EliteEnemy
 {
-
     public TrailRenderer EyeTrail;
     public float StampRange;
     public Transform StampPosition; // 현재 StampStep에서는 사용되지 않지만, 기즈모에서 활용 가능
@@ -15,7 +13,7 @@ public class EliteAI_Female : EliteEnemy
     protected override void Update()
     {
         base.Update();
-        
+
         if (isCoolingDown)
         {
             currentCooldownTime -= Time.deltaTime;
@@ -25,15 +23,10 @@ public class EliteAI_Female : EliteEnemy
                 currentCooldownTime = 0f;
             }
         }
-        
-    }
-    private void LookAtTarget()
-    {
 
-        Vector3 direction = (GameManager.Instance.player.transform.position - transform.position).normalized;
-        direction.y = 0f; // 수평만 회전하도록
-        transform.forward = direction;
     }
+
+    // 이동 공격
     public void StampStep()
     {
         if (_navMeshAgent.velocity.magnitude < 4f)
@@ -43,19 +36,18 @@ public class EliteAI_Female : EliteEnemy
 
         Vector3 sphereCenter = StampPosition.position;
         Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
-        
+
         SoundManager.Instance.Play(SoundType.Elite_Female_Step);
         LookAtTarget();
-        
-        
+
+
         foreach (Collider hitCollider in detectedColliders)
         {
-            if (hitCollider.tag == "Elite") continue;
+            if (hitCollider.tag == "Elite" || hitCollider.tag == "Boss") continue;
 
-            IDamageable damageable = hitCollider.GetComponent<IDamageable>();
-            if (damageable != null)
+            IDamageable damageable;
+            if (hitCollider.TryGetComponent<IDamageable>(out damageable))
             {
-               // Debug.Log($"[StampStep] Applying NoDamageButAir to: {hitCollider.gameObject.name}");
                 Damage damage = new Damage();
                 damage.DamageValue = 0;
                 damage.DamageType = EDamageType.Airborne;
@@ -64,86 +56,88 @@ public class EliteAI_Female : EliteEnemy
                 damageable.TakeDamage(damage);
             }
         }
-       // Debug.Log($"[StampStep] Total {affectedCount} IDamageable objects affected.");
     }
 
 
-
-public void EyeTurnOn()
-{
-    if (!EyeTrail.enabled)
+    // 특수 패턴
+    public GameObject KingStompVFX;
+    public void KingStompAttack()
     {
-        SoundManager.Instance.Play(SoundType.Elite_Female_Detect);
+        SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
+        KingStompVFX.SetActive(true);
+        KingStompVFX.GetComponent<ParticleSystem>().Play();
     }
-    LookAtTarget();
 
-    EyeTrail.gameObject.SetActive(true);
-}
-
-public void EyeTurnOff()
-{
-    EyeTrail.gameObject.SetActive(false);
-}
-
-
-public GameObject KingStompVFX;
-public void KingStompAttack()
-{
-    SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
-    _eliteStateMachine.ChangeState<EliteAttackState>();
-    KingStompVFX.SetActive(true);
-    KingStompVFX.GetComponent<ParticleSystem>().Play();
-}
-
-
+    // 패턴1
     public GameObject StompVFX;
     public void StompAttack()
     {
         SoundManager.Instance.Play(SoundType.Elite_Electricity);
         LookAtTarget();
-
-        _eliteStateMachine.ChangeState<EliteAttackState>();
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
     }
 
-    public GameObject TornadoVFX;
 
+
+    //  패턴2
+    public GameObject TornadoVFX;
     public void TornadoAttack()
     {
         SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
         LookAtTarget();
-
-        _eliteStateMachine.ChangeState<EliteAttackState>();
         TornadoVFX.SetActive(true);
         TornadoVFX.GetComponent<ParticleSystem>().Play();
     }
-
 
     public void TornadoAttackEnd()
     {
         TornadoVFX.SetActive(false);
         TornadoVFX.GetComponent<ParticleSystem>().Stop();
     }
-    
-    
+
+
     public void Running()
     {
         if (!isCoolingDown)
         {
             _animator.SetBool("Running", true);
-            if(_collider != null) _collider.enabled = false; // 콜라이더가 있는 경우에만 비활성화
+            if (_collider != null) _collider.enabled = false; // 콜라이더가 있는 경우에만 비활성화
         }
     }
 
     public void NotRunning()
     {
         _animator.SetBool("Running", false);
-        if(_collider != null) _collider.enabled = true; // 콜라이더가 있는 경우에만 활성화
+        if (_collider != null) _collider.enabled = true; // 콜라이더가 있는 경우에만 활성화
         isCoolingDown = true;
         currentCooldownTime = runCooldownDuration;
     }
 
+
+    private void LookAtTarget()
+    {
+
+        Vector3 direction = (GameManager.Instance.player.transform.position - transform.position).normalized;
+        direction.y = 0f; // 수평만 회전하도록
+        transform.forward = direction;
+    }
+
+    public void EyeTurnOn()
+    {
+        if (!EyeTrail.enabled)
+        {
+            SoundManager.Instance.Play(SoundType.Elite_Female_Detect);
+        }
+        LookAtTarget();
+
+        EyeTrail.gameObject.SetActive(true);
+    }
+
+    public void EyeTurnOff()
+    {
+        EyeTrail.gameObject.SetActive(false);
+    }
 
 }
 

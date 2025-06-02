@@ -1,18 +1,13 @@
-using System;
 using UnityEngine;
 
 public class EliteEnemy : Enemy, IDamageable
 {
-    // 기존 public int AttackType = 0; 대신 아래와 같이 변경
-    [SerializeField] // 인스펙터에서 초기값을 설정하고 보기 위함
-    private int _attackType = 0; // 실제 AttackType 값을 저장할 private 백킹 필드
-
-    public float OriginalValue = 0.5f;
-    public bool IsAttacking = false;
     public float AttackTimer = 0f;
+    public int AttackTypeNumber;
 
-    // public int AttackTypeNumber = 2;
-
+    protected ElliteStateMachine _eliteStateMachine;
+    
+    [SerializeField] private int _attackType = 0;
     public int AttackType
     {
         get { return _attackType; }
@@ -41,8 +36,6 @@ public class EliteEnemy : Enemy, IDamageable
         SoundManager.Instance.Play(SoundType.Elite_male_Hit);
     }
 
-    protected ElliteStateMachine _eliteStateMachine;
-
     private void Start()
     {
         _eliteStateMachine = GetComponent<ElliteStateMachine>();
@@ -60,13 +53,15 @@ public class EliteEnemy : Enemy, IDamageable
             Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
         }
     }
-
-
-
-
+    
     protected virtual void Update()
     {
-        if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh) // isOnNavMesh 추가
+        if (AttackTimer < EnemyData.AttackCoolDown && !_eliteStateMachine.IsCurrentState<AttackState>())
+        {
+            AttackTimer += Time.deltaTime;
+        }
+        
+        if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh)
         {
             _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);
         }

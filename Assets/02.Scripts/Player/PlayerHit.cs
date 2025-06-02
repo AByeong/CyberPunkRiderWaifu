@@ -7,7 +7,7 @@ public class PlayerHit : MonoBehaviour, IDamageable
     
     
 
-    [SerializeField] private float _hitAnimationCoolTime = 1f;
+    [SerializeField] private float _hitAnimationCoolTime = 0.1f;
     [SerializeField]private bool _isKnockedBackable = true;
     [SerializeField]private float _knockbackTimer = 0;
     private PlayerController _playerController;
@@ -35,6 +35,7 @@ public class PlayerHit : MonoBehaviour, IDamageable
     
     public void TakeDamage(Damage damage)
     {
+        Debug.Log("맞음");
         if (_isKnockedBackable)
         {
             _isKnockedBackable = false;

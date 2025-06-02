@@ -19,7 +19,8 @@ namespace JY
         private const float GroundAcceleration = 20f;
         private const float GroundDeceleration = 25f;
         public float MaxAirAttackGraceTime = 0.3f;
-
+        
+        public EDamageType DamageType;
         public float MaxForwardSpeed;
         public float AttackPower;
         public float MaxHealth;
@@ -340,6 +341,11 @@ namespace JY
             }
 
             _animator.SetBool(_hashGrounded, _groundCheck.IsGrounded);
+        }
+
+        public void SetDamageType(int damageType)
+        {
+            DamageType = (EDamageType)damageType;
         }
         private void CheckIsAirCombo()
         {

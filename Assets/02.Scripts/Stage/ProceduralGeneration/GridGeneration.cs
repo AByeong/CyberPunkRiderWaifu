@@ -34,21 +34,25 @@ public enum SpawnerType
 
 public class GridGeneration : MonoBehaviour
 {
+    [Header("Prefabs")]
     public GameObject FencePrefab;
     public GameObject FenceCornerPrefab;
     public GameObject FenceDoorPrefab;
     public GameObject PathPrefab;
+    public GameObject FloorPrefab;
     public GameObject[] PropPrefabs;
 
-    // public MonsterSpawner[] Spawners;
-
+    [Header("Module Size Offset")]
+    public float PositionOffset; // 에셋 크기
+    
+    [Header("Spawners")]
     public MonsterSpawner[] NormalSpawner;
     public MonsterSpawner[] EliteSpawner;
     public MonsterSpawner BossSpawner;
+    public MonsterSpawner BossPhase2Spawner;
 
-    public float PositionOffset; // 에셋 크기
 
-
+    [Header("Parmeters")]
     public int width = 20;
     public int height = 20;
     public int entryCount = 2;
@@ -61,10 +65,12 @@ public class GridGeneration : MonoBehaviour
     public int Elite0SpanwerCount;
     public int Elite1SpanwerCount;
     public int BossSpawnerCount;
+
     private int _normalSpawnerCreated = 0;
     private int _elite0SpawnerCreated = 0;
     private int _elite1SpawnerCreated = 0;
     private int _bossSpawnerCreated = 0;
+    private int _totalSpawnerCount;
 
     private int[,] grid;
     private List<Vector2Int> _exitsPos = new List<Vector2Int>();
@@ -73,15 +79,7 @@ public class GridGeneration : MonoBehaviour
     [SerializeField] private List<GameObject> _exits = new List<GameObject>();
     [SerializeField] private List<GameObject> _entries = new List<GameObject>();
 
-    // [SerializeField] private List<MonsterSpawner> _normalSpawners = new List<MonsterSpawner>();
-    // [SerializeField] private List<MonsterSpawner> _eliteSpawners = new List<MonsterSpawner>();
-    // [SerializeField] private MonsterSpawner _bossSpawner;
-    
-    // public List<MonsterSpawner> NormalSpawners => _normalSpawners;
-    // public List<MonsterSpawner> EliteSpawners => _eliteSpawners;
-    // public MonsterSpawner BossSpawner => _bossSpawner;
-
-    private int _totalSpawnerCount;
+    private float[] Roations = { 0, 90, 180, 270 };
 
 
     // 1. NxM크기의 2차원 배열 생성
@@ -95,7 +93,7 @@ public class GridGeneration : MonoBehaviour
 
     private void Awake()
     {
-        
+
     }
 
     private void DebugGrid()
@@ -552,68 +550,81 @@ public class GridGeneration : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                switch (grid[i, j])
+                if (grid[i, j] == (int)EGirdType.Activate || grid[i, j] == (int)EGirdType.Pattern || grid[i, j] == (int)EGirdType.Spawner || grid[i, j] == (int)EGirdType.CornerBorder)
                 {
-                    case (int)EGirdType.Border:
-                        {
-                            GameObject fence = Instantiate(FencePrefab, transform);
-                            fence.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
-                            fence.transform.rotation = GetFenceRotation(i, j);
-                            break;
-                        }
-
-                    case (int)EGirdType.CornerBorder:
-                        {
-                            GameObject fenceCorenr = Instantiate(FenceCornerPrefab, transform);
-                            fenceCorenr.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
-                            fenceCorenr.transform.rotation = GetCornerFenceRotation(i, j);
-                            break;
-                        }
-
-                    case (int)EGirdType.Enrty:
-                        {
-                            GameObject fencedoor = Instantiate(FenceDoorPrefab, transform);
-                            fencedoor.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-                            fencedoor.transform.rotation = GetFenceDoorRotation(i, j);
-                            _entries.Add(fencedoor);
-                            break;
-                        }
-
-                    case (int)EGirdType.Exit:
-                        {
-                            GameObject fencedoor = Instantiate(FenceDoorPrefab, transform);
-                            fencedoor.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-                            fencedoor.transform.rotation = GetFenceDoorRotation(i, j);
-                            _exits.Add(fencedoor);
-                            break;
-                        }
-
-                    case (int)EGirdType.Path:
-                        {
-                            GameObject path = Instantiate(PathPrefab, transform);
-                            path.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-                            break;
-                        }
-
-                    case (int)EGirdType.Spawner:
-                        {
-                            var result = GetNextSpawnerPrefab();
-                            if (result.HasValue)
-                            {
-                                var (spawner, type) = result.Value;
-                                spawner.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-                            }
-                            break;
-                        }
-
-                    case (int)EGirdType.Pattern:
-                        {
-
-                            GameObject prop = Instantiate(PropPrefabs[Random.Range(0, PropPrefabs.Length - 1)], transform);
-                            prop.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
-                            break;
-                        }
+                    GameObject floor = Instantiate(FloorPrefab, transform);
+                    floor.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
                 }
+
+                switch (grid[i, j])
+                    {
+                        case (int)EGirdType.Border:
+                            {
+                                GameObject fence = Instantiate(FencePrefab, transform);
+                                fence.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                                fence.transform.rotation = GetFenceRotation(i, j);
+                                break;
+                            }
+
+                        case (int)EGirdType.CornerBorder:
+                            {
+                                GameObject fenceCorenr = Instantiate(FenceCornerPrefab, transform);
+                                fenceCorenr.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                                fenceCorenr.transform.rotation = GetCornerFenceRotation(i, j);
+                                break;
+                            }
+
+                        case (int)EGirdType.Enrty:
+                            {
+                                GameObject fencedoor = Instantiate(FenceDoorPrefab, transform);
+                                fencedoor.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                                fencedoor.transform.rotation = GetFenceDoorRotation(i, j);
+                                _entries.Add(fencedoor);
+
+                                GameObject path = Instantiate(PathPrefab, transform);
+                                path.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                                break;
+                            }
+
+                        case (int)EGirdType.Exit:
+                            {
+                                GameObject fencedoor = Instantiate(FenceDoorPrefab, transform);
+                                fencedoor.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                                fencedoor.transform.rotation = GetFenceDoorRotation(i, j);
+                                _exits.Add(fencedoor);
+
+                                GameObject path = Instantiate(PathPrefab, transform);
+                                path.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                                break;
+                            }
+
+                        case (int)EGirdType.Path:
+                            {
+                                GameObject path = Instantiate(PathPrefab, transform);
+                                path.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                                break;
+                            }
+
+                        case (int)EGirdType.Spawner:
+                            {
+                                var result = GetNextSpawnerPrefab();
+                                if (result.HasValue)
+                                {
+                                    var (spawner, type) = result.Value;
+                                    spawner.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                                }
+                                break;
+                            }
+
+                        case (int)EGirdType.Pattern:
+                            {
+
+                                GameObject prop = Instantiate(PropPrefabs[Random.Range(0, PropPrefabs.Length)], transform);
+                                prop.transform.position = transform.position + new Vector3(i * PositionOffset, transform.position.y, j * PositionOffset);
+                                prop.transform.eulerAngles = new Vector3(0, Roations[Random.Range(0, Roations.Length)], 0);
+                                break;
+                            }
+                    }
             }
         }
     }

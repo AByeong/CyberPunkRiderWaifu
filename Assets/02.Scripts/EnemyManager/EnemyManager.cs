@@ -14,8 +14,12 @@ public class EnemyManager : Singleton<EnemyManager>
    private MonsterSpawner _bossMonsterSpawner;
    public MonsterSpawner BossMonsterSpawner => _bossMonsterSpawner;
 
+   [SerializeField]
+   private MonsterSpawner _bossPhase2Spawner;
+   public MonsterSpawner BossPhase2Spawner => _bossPhase2Spawner;
 
-   public void SetNormalSpwner(MonsterSpawner[] spawners)
+
+    public void SetNormalSpwner(MonsterSpawner[] spawners)
    {
       _normalMonsterSpawners = spawners;
    }
@@ -28,6 +32,11 @@ public class EnemyManager : Singleton<EnemyManager>
    public void SetBossSpawner(MonsterSpawner spawner)
    {
       _bossMonsterSpawner = spawner;
+   }
+
+   public void SetBossPhase2Spawner(MonsterSpawner spawner)
+   {
+      _bossPhase2Spawner = spawner;
    }
 
 
@@ -64,6 +73,11 @@ public class EnemyManager : Singleton<EnemyManager>
       _bossMonsterSpawner.StartSpawning();
    }
 
+   public void SpawnBossPhase2(Vector3 bossPos)
+   {
+      _bossPhase2Spawner.SpawnMonsterAt(bossPos);
+   }
+
 
    public void DespawnALL()
    {
@@ -88,9 +102,9 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                enemy.Pool.ReturnObject(enemy.gameObject);
             }
-         }   
+         }
       }
-      
+
    }
    
 }

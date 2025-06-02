@@ -1,5 +1,3 @@
-using System.Buffers;
-using System.Collections;
 using UnityEngine;
 
 public class EliteAI_Male : EliteEnemy
@@ -50,7 +48,6 @@ public class EliteAI_Male : EliteEnemy
             IDamageable damageable = hitCollider.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                // Debug.Log($"[StampStep] Applying NoDamageButAir to: {hitCollider.gameObject.name}");
                 Damage damage = new Damage();
                 damage.DamageValue = 0;
                 damage.DamageType = EDamageType.Normal;
@@ -59,10 +56,6 @@ public class EliteAI_Male : EliteEnemy
                 damageable.TakeDamage(damage);
             }
         }
-        
-        
-        
-        
         KickVFX.SetActive(true);
         KickVFX.transform.position = KickTransfrom.position;
         KickVFX.GetComponent<ParticleSystem>().Play();

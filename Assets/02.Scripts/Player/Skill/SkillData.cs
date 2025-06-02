@@ -10,6 +10,7 @@ public class SkillData
     public float CoolTime;
     public bool IsUpgraded;
     public bool IsGroundSkill;
+    public EDamageType DamageType;
     public float SkillRange;
     public float SkillDamage;
     public Sprite Icon;

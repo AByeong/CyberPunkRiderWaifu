@@ -50,15 +50,17 @@ public class StageManager : MonoBehaviour
         MovePlayerToStartPosition(startPoint);
         AddSpawners(_currentStageIndex);
         StartCoroutine(WaitForPool());
+        EnemyManager.Instance.SetBossPhase2Spawner(SubStageList[_currentStageIndex].BossPhase2Spawner); 
 
         _isClear = false;
     }
 
     IEnumerator WaitForPool()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         EnemyManager.Instance.InitSpawn();
+        
     }
 
 
@@ -142,6 +144,7 @@ public class StageManager : MonoBehaviour
         EnemyManager.Instance.DespawnALL();
         AddSpawners(_nextStageIndex);
         EnemyManager.Instance.SetBossSpawner(SubStageList[_nextStageIndex].BossSpawner);
+        EnemyManager.Instance.SetBossPhase2Spawner(SubStageList[_nextStageIndex].BossPhase2Spawner);
         EnemyManager.Instance.InitSpawn();
 
 
