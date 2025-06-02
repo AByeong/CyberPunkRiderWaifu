@@ -9,16 +9,16 @@
         {
             return;
         }
-        TargetSkill.TrySetChipOption(item.Data as ChipDataSO);
+        TargetSkill.TrySetChipOption();
         
     }
 
     protected override void ClearItem()
     {
-        if (Item != null)
-        {
-            TargetSkill.TryClearChipOption(Item.Data as ChipDataSO);
-        }
+        // if (Item != null)
+        // {
+        //     TargetSkill.TryClearChipOption(Item.Data as ChipDataSO);
+        // }
         base.ClearItem();
     }
 }

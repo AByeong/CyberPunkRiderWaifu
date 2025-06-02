@@ -1,5 +1,4 @@
 ﻿using UnityEngine.EventSystems;
-
 public class UI_EquipSkill : UI_Skill
 {
     public UI_ChipSlot[] ChipSlots;
@@ -14,46 +13,26 @@ public class UI_EquipSkill : UI_Skill
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void TrySetChipOption(ChipDataSO chipDataSO)
+    public void TrySetChipOption()
     {
         if (SkillManager.Instance.EquippedSkills[Index] == null) return;
-
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipDataSO.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipDataSO.SkillRange;
-    }
-
-    public void TryClearChipOption(ChipDataSO chipDataSO)
-    {
-        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
-
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipDataSO.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipDataSO.SkillRange;
+        ResetBaseSkill(SkillBase);
+        foreach(UI_ChipSlot chipSlot in ChipSlots)
+        {
+            if (chipSlot.Item != null)
+            {
+                Skill.SkillData.CoolTime *= (chipSlot.Item.Data as ChipDataSO).ReduceCooldown;
+                Skill.SkillData.SkillRange += (chipSlot.Item.Data as ChipDataSO).SkillRange;
+            }
+        }
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)
     {
         base.SetSkill(skillToEquip, isActive);
-        foreach(UI_ChipSlot chipSlot in ChipSlots)
-        {
-            if (chipSlot.HasItem)
-            {
-                TrySetChipOption(chipSlot.Item.Data as ChipDataSO);
-            }
-        }
+        TrySetChipOption();
     }
-
-    public override void RemoveSkill()
-    {
-        base.RemoveSkill();
-
-        foreach(UI_ChipSlot chipSlot in ChipSlots)
-        {
-            if (chipSlot.HasItem)
-            {
-                TryClearChipOption(chipSlot.Item.Data as ChipDataSO);
-            }
-        }
-    }
+    
     public override void OnPointerEnter(PointerEventData eventData)
     {
         UI_SkillInspector.Instance.Hovered(Skill);
