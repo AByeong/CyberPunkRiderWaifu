@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 108647883172664022}
   - component: {fileID: 114137523491813714}
   - component: {fileID: 7701632516531507550}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 4417147795836934}
   - component: {fileID: 198347220953093608}
   - component: {fileID: 199716644122620728}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: ColorRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5124,7 +5124,7 @@ GameObject:
   - component: {fileID: 4111404903333418}
   - component: {fileID: 198098535660894940}
   - component: {fileID: 199377669501820962}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RedQuads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10027,7 +10027,7 @@ GameObject:
   - component: {fileID: 4954341944014632}
   - component: {fileID: 198358127100567982}
   - component: {fileID: 199754922110781738}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BlackRing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14930,7 +14930,7 @@ GameObject:
   - component: {fileID: 4825886718253372}
   - component: {fileID: 198978063784634942}
   - component: {fileID: 199219227188263126}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RedParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19831,7 +19831,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4083041229271872}
-  m_Layer: 0
+  - component: {fileID: 8662832888982108476}
+  - component: {fileID: 2891246461997923752}
+  - component: {fileID: 683825737740740456}
+  m_Layer: 11
   m_Name: Eff1_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19859,6 +19862,67 @@ Transform:
   - {fileID: 4734071839124424}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8662832888982108476
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819066416490906}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &2891246461997923752
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819066416490906}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &683825737740740456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819066416490906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c61570627196b40a46765b31e8a2e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Index: 3
 --- !u!1 &1995060427059300
 GameObject:
   m_ObjectHideFlags: 0
@@ -19870,7 +19934,7 @@ GameObject:
   - component: {fileID: 4885910737332480}
   - component: {fileID: 198615237755257114}
   - component: {fileID: 199693932013676654}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: BlackParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
