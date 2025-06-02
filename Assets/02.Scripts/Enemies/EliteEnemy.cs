@@ -32,7 +32,7 @@ public class EliteEnemy : Enemy, IDamageable
     public override void TakeDamage(Damage damage)
     {
         base.TakeDamage(damage);
-
+        if(damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         SoundManager.Instance.Play(SoundType.Elite_male_Hit);
     }
 

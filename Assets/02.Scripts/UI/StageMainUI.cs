@@ -1,20 +1,32 @@
+using JY;
 using TMPro;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 public class StageMainUI : MonoBehaviour
 {
     [Header("메인 UI")]
-    public Slider HPSlider;
     public Slider ProgressSlider;
     public Icon[] SkillIcons;
     public Icon[] ItemIcons;
     public Icon finisherIcon;
 
+    
+    [Header("HP")]
+    public Slider HPSlider;
+    public TextMeshProUGUI TextHP;
+    
+    
     [Header("퀘스트 바")]
     public QuestBar NormalQuestBar;
     public QuestBar EliteQuestBar;
     public QuestBar BossQuestBar;
     public QuestBar ElevatorQuestBar;
+    
+    
+    [Header("스테이지 진행도")]
+    public Image[] StageIcons;
+    [SerializeField] private Color _acrivateColor;
     
     public void StageMainInit()
     {
@@ -30,11 +42,10 @@ public class StageMainUI : MonoBehaviour
             SkillIconSet(i);
         }
         
-        NormalQuestBar.gameObject.SetActive(false);
-        EliteQuestBar.gameObject.SetActive(false);
-        BossQuestBar.gameObject.SetActive(false);
-        ElevatorQuestBar.gameObject.SetActive(false);
-        
+        QuestBarClear();
+        RefreshKillTracking();
+        RefreshHPbar();
+        ActivateStage(DeliveryManager.Instance.CurrentSector);
         
     }
 
@@ -49,6 +60,19 @@ public class StageMainUI : MonoBehaviour
         
     }
 
+    public void ActivateStage(int stage)
+    {
+        for (int i = 0; i < StageIcons.Length; i++)
+        {
+            if(i == stage) StageIcons[i].color = _acrivateColor;
+        else
+        {
+            StageIcons[i].color = Color.white;
+        }
+            
+        }
+    }
+    
     public void SkillIconLoad(int index)
     {
         Debug.Log(SkillManager.Instance.EquippedSkills[index].SkillData.SkillName);
@@ -65,29 +89,59 @@ public class StageMainUI : MonoBehaviour
         finisherIcon.StartCooltime();
     }
 
+    public void RefreshHPbar()
+    {
+        HPSlider.maxValue = GameManager.Instance.player.MaxHealth;
+        HPSlider.value = GameManager.Instance.player.CurrentHealth;
+        Debug.Log(GameManager.Instance.player.CurrentHealth);
+        TextHP.text = $"{GameManager.Instance.player.CurrentHealth}/{GameManager.Instance.player.MaxHealth}";
+    }
+    
+    public void QuestBarClear()
+    {
+        NormalQuestBar.gameObject.SetActive(false);
+        EliteQuestBar.gameObject.SetActive(false);
+        BossQuestBar.gameObject.SetActive(false);
+        ElevatorQuestBar.gameObject.SetActive(false);
+    }
+    
     public void RefreshKillTracking()
     {
+        if (DeliveryManager.Instance.KillTracker.MissionKillCount.Normal > 0 )
+        {
+            NormalQuestBar.Appear();
+        }
         
         if (NormalQuestBar.gameObject.activeInHierarchy)
         {
-            NormalQuestBar.CurrentKill.text = DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal.ToString();
+            NormalQuestBar.Set(DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal, DeliveryManager.Instance.KillTracker.MissionKillCount.Normal,"일반 몬스터 처치", "여기 들어오시면 안 돼요!");
         }
-
+        
+        if (DeliveryManager.Instance.KillTracker.MissionKillCount.Elite > 0)
+        {
+            EliteQuestBar.Appear();
+        }
         if (EliteQuestBar.gameObject.activeInHierarchy)
         {
-            EliteQuestBar.CurrentKill.text = DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite.ToString();
+            EliteQuestBar.Set(DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite, DeliveryManager.Instance.KillTracker.MissionKillCount.Elite, "엘리트 몬스터 처치", "긴급상황! 긴급상황!");
         }
-
+        
+            
+        
+        if (DeliveryManager.Instance.KillTracker.MissionKillCount.Boss > 0 )
+        {
+            BossQuestBar.Appear();
+        }
         if (BossQuestBar.gameObject.activeInHierarchy)
         {
-            BossQuestBar.CurrentKill.text = DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss.ToString();
+            BossQuestBar.Set(DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss, DeliveryManager.Instance.KillTracker.MissionKillCount.Boss,"보스 처치", "서장님 도와줘요!");
         }
 
-        if (DeliveryManager.Instance.KillTracker.IsMissionCompleted())
-        {
-            ElevatorQuestBar.gameObject.SetActive(true);
-        }
-       
+    }
 
+    public void RefreshUltimateGaze()
+    {
+        finisherIcon.Loading.fillAmount =
+            (float)DeliveryManager.Instance.UltimateGaze / (float)DeliveryManager.Instance.TargetUltimate;
     }
 }

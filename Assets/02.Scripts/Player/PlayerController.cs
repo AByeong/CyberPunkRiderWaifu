@@ -24,6 +24,7 @@ namespace JY
         public float MaxForwardSpeed;
         public float AttackPower;
         public float MaxHealth;
+        public float CurrentHealth;
         public float Gravity = 20f;
         public float JumpSpeed = 15f;
         public float MaxTurnSpeed = 1200f;
@@ -148,6 +149,9 @@ namespace JY
         {
             Stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
             RefreshStat();
+            CurrentHealth = MaxHealth;
+            UIManager.Instance.StageMainUI.RefreshHPbar();
+
         }
         
         private void Update()
@@ -696,6 +700,9 @@ namespace JY
             _animator.SetFloat(_hashHurtFromY, localHurt.z);
             
             _playerSound.Play(EPlayerState.Hit);
+            CurrentHealth -= damage.DamageValue;
+            UIManager.Instance.StageMainUI.RefreshHPbar();
+            
 
         }
         public void RefreshStat()
@@ -718,6 +725,7 @@ namespace JY
             MaxForwardSpeed = defaultStat.GetStat(StatType.Speed);
             MaxHealth = defaultStat.GetStat(StatType.Health);
             
+
         }
 
         public void PlayAttackSound()

@@ -128,6 +128,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         PlayHitParticle();
         Debug.Log($"{this.name}이 {damage.DamageValue}만큼 데미지를 ㅣㅇㅂ음");
+        if(damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
         Vector3 worldPos = DamagePopupPosition.position;
 

@@ -5,7 +5,6 @@ public class GameManager : Singleton<GameManager>
 {
     public PlayerController player;
     public GameObject WorldCanvas;
-
     
     private void Start()
     {
