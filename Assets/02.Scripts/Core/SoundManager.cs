@@ -100,12 +100,12 @@ public class SoundManager : Singleton<SoundManager>
     {
         if (state == SoundType.NormalEnemy_Hit)
         {
-            if (!NormalEnemySource.isPlaying)
-            {
-                //노말 몬스터는 따로 사운드 출력
-                NormalEnemySource.Play();
-                return;
-            }
+            // if (!NormalEnemySource.isPlaying)
+            // {
+            //     //노말 몬스터는 따로 사운드 출력
+            //     NormalEnemySource.Play();
+            //     return;
+            // }
         }
         
         foreach(SoundStruct soundComponent in Sounds)

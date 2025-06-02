@@ -24,9 +24,9 @@ public class VFXAttack : MonoBehaviour
         {
             Damage damage = new Damage();
             damage.DamageForce = 1f; // Weapon Damage Table 있으면 수정
-            damage.DamageType = EDamageType.Normal; // 추후 타입 추가
-            Debug.Log(SkillManager.Instance.DataList.SkillData[Index].SkillName);
-            Debug.Log(_player);
+            damage.DamageType = SkillManager.Instance.DataList.SkillData[Index].DamageType; // 추후 타입 추가
+            // Debug.Log(SkillManager.Instance.DataList.SkillData[Index].SkillName);
+            // Debug.Log(_player);
             damage.DamageValue = (int)(_player.AttackPower * SkillManager.Instance.DataList.SkillData[Index].SkillDamage);
             damage.From = transform.root.gameObject;
             damageable.TakeDamage(damage);         
