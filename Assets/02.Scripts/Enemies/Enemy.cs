@@ -40,6 +40,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public GameObject DamagePopup;
     public GameObject WorldSpaceCanvas;
 
+    protected Damage _enemyDamage;
+
 
     protected virtual void Awake()
     {
@@ -60,6 +62,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             Debug.LogWarning($"{gameObject.name} Collider가 없습니다");
         }
+
+        _enemyDamage = new Damage()
+        {
+            DamageValue = 0,
+            DamageType = EDamageType.Airborne,
+            DamageForce = 1f,
+            AirRiseAmount = 1f,
+            From = gameObject
+        };
+
         WorldSpaceCanvas = GameManager.Instance.WorldCanvas;
     }
 
@@ -149,6 +161,45 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public virtual void OnDie()
     {
         
+    }
+
+    protected virtual void Attack(Vector3 attackPos, float attackRadius, Damage damage, bool isEnemyHit = false)
+    {
+        Collider[] detectedColliders = Physics.OverlapSphere(attackPos, attackRadius);
+        foreach (Collider hitCollider in detectedColliders)
+        {
+
+            if (hitCollider.tag == "NormalEnemy" && isEnemyHit)
+            {
+                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                {
+                    _enemyDamage = damage;
+                    _enemyDamage.DamageValue = 0;
+                    
+                    if (_enemyDamage.DamageType != EDamageType.Airborne)
+                    {
+                        _enemyDamage.DamageType = EDamageType.Airborne;
+                    }
+
+                    if (_enemyDamage.AirRiseAmount == 0)
+                    {
+                        _enemyDamage.AirRiseAmount = 2f;
+                    }
+
+                    damageable.TakeDamage(_enemyDamage);
+                }
+
+                continue;
+            }
+
+            if (hitCollider.tag == "Player")
+            {
+                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                {
+                    damageable.TakeDamage(damage);
+                }
+            }
+        }
     }
 
 

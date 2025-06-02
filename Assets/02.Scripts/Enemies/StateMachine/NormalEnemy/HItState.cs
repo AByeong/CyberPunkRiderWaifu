@@ -41,10 +41,10 @@ public class HItState : BaseNormalEnemyState
         Owner.IsHit = false;
         _hitTimer = 0f;
 
-        if (Owner.TakedDamage.From.CompareTag("Player"))
-        {
-            // SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
-        }
+        // if (Owner.TakedDamage.From.CompareTag("Player"))
+        // {
+        //     // SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
+        // }
 
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 

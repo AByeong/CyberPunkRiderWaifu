@@ -87,7 +87,6 @@ public class BossPhase1 : EliteEnemy
     }
 
     // 패턴 1
-    private Damage _enemyDamage;
     public void BustShot()
     {
         StartCoroutine(ShotFire(Target.transform.position));
@@ -104,22 +103,7 @@ public class BossPhase1 : EliteEnemy
         ParticleSystem hitVFX = Instantiate(BulletHitVFX, targetPosition, Quaternion.identity);
         hitVFX.Play();
 
-        Collider[] colliders = Physics.OverlapSphere(targetPosition, _granadeRadius);
-        foreach (Collider collider in colliders)
-        {
-            if (collider.tag == "Player")
-            {
-                collider.GetComponent<PlayerHit>().TakeDamage(_attack0Damage);
-            }
-
-            if (collider.tag == "NormalEnemy")
-            {
-                _enemyDamage = _attack0Damage;
-                _enemyDamage.DamageValue = 0;
-                _enemyDamage.DamageType = EDamageType.Airborne;
-                collider.GetComponent<Enemy>().TakeDamage(_enemyDamage);
-            }
-        }
+        Attack(targetPosition, _granadeRadius, _attack0Damage, true);
     }
 
 
@@ -157,31 +141,15 @@ public class BossPhase1 : EliteEnemy
 
             previousPos = newPos;
         }, 1f, _hitDelay)
-        .SetEase(Ease.InOutQuad)
-        .OnComplete(() =>
-        {
-            ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);
+        .SetEase(Ease.InOutQuad);
+        // .OnComplete(() =>
+        // {
+        //     ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);
 
-
-            Collider[] colliders = Physics.OverlapSphere(missile.transform.position, _missileRadius);
-            foreach (Collider collider in colliders)
-            {
-                if (collider.tag == "Player")
-                {
-                    collider.GetComponent<PlayerHit>().TakeDamage(_attack2Damage);
-                }
-
-                if (collider.tag == "NoramlEnemy")
-                {
-                    _enemyDamage = _attack2Damage;
-                    _enemyDamage.DamageValue = 0;
-                    _enemyDamage.DamageType = EDamageType.Airborne;
-                    collider.GetComponent<PlayerHit>().TakeDamage(_attack2Damage);
-                }
-            }
+        //     Attack(missile.transform.position, _missileRadius, _attack2Damage, true);
             
-            Destroy(missile);
-        });
+        //     Destroy(missile);
+        // });
     }
     
     private Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2)
