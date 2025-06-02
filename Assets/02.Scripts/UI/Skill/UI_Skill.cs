@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
-public class UI_Skill : MonoBehaviour
+public class UI_Skill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Button Button;
     public Image Icon;
@@ -19,5 +20,15 @@ public class UI_Skill : MonoBehaviour
         Skill = null;
         Icon.sprite = null;
         Button.interactable = false;
+    }
+
+    public virtual void OnPointerEnter(PointerEventData eventData)
+    {
+        UI_SkillInspector.Instance.Hovered(Skill);
+    }
+
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        UI_SkillInspector.Instance.Exit();
     }
 }

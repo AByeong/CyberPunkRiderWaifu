@@ -24,7 +24,7 @@ public class UI_ShopSlot : MonoBehaviour
     }
     public void Start()
     {
-        Price = int.Parse(PriceText.text);
+        Price = 1000;
     }
 
     public void OnSellItems()

@@ -1,4 +1,6 @@
-﻿public class UI_EquipSkill : UI_Skill
+﻿using UnityEngine.EventSystems;
+
+public class UI_EquipSkill : UI_Skill
 {
     public UI_ChipSlot[] ChipSlots;
     public int Index = -1;
@@ -51,5 +53,14 @@
                 TryClearChipOption(chipSlot.Item.Data as ChipDataSO);
             }
         }
+    }
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        UI_SkillInspector.Instance.Hovered(Skill);
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        UI_SkillInspector.Instance.Exit();
     }
 }
