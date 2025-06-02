@@ -6,6 +6,7 @@ public class EliteIdleState : EliteBaseState
     {
         base.OnEnter();
         Owner.NavMeshAgent.enabled = true;
+        Owner.Collider.enabled = true;
         Owner.Animator.SetBool("IsAttack", false);
         Owner.AttackTimer = 0;
     }
