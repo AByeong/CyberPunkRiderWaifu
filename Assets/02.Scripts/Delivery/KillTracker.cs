@@ -30,30 +30,21 @@ public class KillTracker : MonoBehaviour
    public KillCount CurrentKillCount;
    public KillCount MissionKillCount;
    public int TotalKillCount = 0;
+
+
+   
+   
+   
    public void KillTrakerInit()
    {
        Debug.Log("KillTraker Init");
-       UIManager.Instance.StageMainUI.KillTrackingText.color = Color.white;
-       UIManager.Instance.StageMainUI.RefreshKillTracking(KillTrackString());
+       UIManager.Instance.StageMainUI.RefreshKillTracking();
        
-       //지금 미션에서의 킬카운트 가져오기
+       
+       
    }
 
-   private string KillTrackString()
-   {
-       int normal = GetCurrentKillCount(EnemyType.Normal);
-       int elite = GetCurrentKillCount(EnemyType.Elite);
-       int boss = GetCurrentKillCount(EnemyType.Boss);
-       string Message = "";
-
-
-       Message = ((MissionKillCount.Normal > 0) ? $"일반 적 : {normal}/{MissionKillCount.Normal}\n" : "")+
-                 ((MissionKillCount.Elite > 0) ? $"엘리트 적 : {elite}/{MissionKillCount.Elite}\n" : "")+
-                 ((MissionKillCount.Boss > 0) ? $"보스 : {boss}/{MissionKillCount.Boss}\n" : "");
-
-//    Debug.Log(Message);
-       return Message;
-   }
+   
 
    public void ResetCurrentKillCount()
    {
@@ -61,6 +52,9 @@ public class KillTracker : MonoBehaviour
        CurrentKillCount.Elite = 0;
        CurrentKillCount.Boss = 0;
    }
+   
+   
+   
    public void IncreaseKillCount(EnemyType type)
    {
        switch (type)
@@ -82,17 +76,18 @@ public class KillTracker : MonoBehaviour
            
        }
 
+       
+       
        if (IsMissionCompleted())
        {
            Debug.Log("Mission Completed");
            DeliveryManager.Instance.CompleteCurrentSection();
            
-
-           
        }
 
        IncreaseTotalKillCount();
-       UIManager.Instance.StageMainUI.RefreshKillTracking(KillTrackString());
+       UIManager.Instance.StageMainUI.RefreshKillTracking();
+       UIManager.Instance.StageMainUI.RefreshProgressbar();
        
    }
 
@@ -159,5 +154,7 @@ public class KillTracker : MonoBehaviour
        
        
    }
+
+  
    
 }

@@ -15,13 +15,11 @@ public class Icon : MonoBehaviour
     private Image[] ColorChangeable;
 
     public Image IconImage;
-    [SerializeField]
-    private Image Loading;
+    public Image Loading;
 
     [Header("사용자 지정")]
     public float RestrictCondition; //쿨타임 계에서는 쿨타임을 기입, 스택 계에서는 잡아야하는 몬스터의 수를 기입
     public Sprite IconImageSprite;
-    public Color FrameColor;
 
     private bool _isLoading;
     public Action CoolTimeEndAction;
@@ -30,11 +28,7 @@ public class Icon : MonoBehaviour
 public IconType CoolOrStack;
     private void Awake()
     {
-        foreach(Image frame in ColorChangeable)
-        {
-            frame.color = FrameColor;
-
-        }
+        
         IconImage.sprite = IconImageSprite;
         switch (CoolOrStack)
         {

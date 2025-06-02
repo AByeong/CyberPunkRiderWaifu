@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EliteEnemy : Enemy, IDamageable
 {
+    [Header("[Elite Parameters]")]
     public float AttackTimer = 0f;
     public int AttackTypeNumber;
 
@@ -32,12 +33,19 @@ public class EliteEnemy : Enemy, IDamageable
     public override void TakeDamage(Damage damage)
     {
         base.TakeDamage(damage);
-
+        if(damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         SoundManager.Instance.Play(SoundType.Elite_male_Hit);
+
+        
+
+        
+        
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+        
         _eliteStateMachine = GetComponent<ElliteStateMachine>();
         if (_eliteStateMachine == null)
         {
