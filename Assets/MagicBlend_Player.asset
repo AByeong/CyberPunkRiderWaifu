@@ -1,0 +1,338 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cea8c2a1237b4b5b8bbfd16a4f12cc26, type: 3}
+  m_Name: MagicBlend_Player
+  m_EditorClassIdentifier: 
+  rigAsset: {fileID: 11400000, guid: 462144554617d6540b7e90b56c1e6095, type: 2}
+  blendTime: 0
+  blendCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  basePose: {fileID: 7400000, guid: 85a8de981e2dbe349b15f842c378b6d3, type: 2}
+  overlayPose: {fileID: 1458528725453567762, guid: aa99cece8e9a04248ba6fa76842403cc, type: 3}
+  overrideOverlays: []
+  overlaySpeed: 8.05
+  isAnimation: 1
+  layeredBlends:
+  - layer:
+      chainName: LowerBody
+      elementChain:
+      - name: J_Bip_L_UpperLeg
+        index: 99
+        isVirtual: 0
+      - name: J_Bip_L_LowerLeg
+        index: 100
+        isVirtual: 0
+      - name: J_Bip_L_Foot
+        index: 101
+        isVirtual: 0
+      - name: J_Bip_L_ToeBase
+        index: 102
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtBack_01
+        index: 103
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtBack_end_01
+        index: 104
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtBack_02
+        index: 105
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtBack_end_02
+        index: 106
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtBack_03
+        index: 107
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtBack_end_03
+        index: 108
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtFront_01
+        index: 109
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtFront_end_01
+        index: 110
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtFront_02
+        index: 111
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtFront_end_02
+        index: 112
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtFront_03
+        index: 113
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtFront_end_03
+        index: 114
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide1_01
+        index: 115
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide2_01
+        index: 116
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide2_end_01
+        index: 117
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide1_02
+        index: 118
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide2_02
+        index: 119
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide2_end_02
+        index: 120
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide1_03
+        index: 121
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide2_03
+        index: 122
+        isVirtual: 0
+      - name: J_Sec_L_CoatSkirtSide2_end_03
+        index: 123
+        isVirtual: 0
+      - name: J_Bip_R_UpperLeg
+        index: 124
+        isVirtual: 0
+      - name: J_Bip_R_LowerLeg
+        index: 125
+        isVirtual: 0
+      - name: J_Bip_R_Foot
+        index: 126
+        isVirtual: 0
+      - name: J_Bip_R_ToeBase
+        index: 127
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtBack_01
+        index: 128
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtBack_end_01
+        index: 129
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtBack_02
+        index: 130
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtBack_end_02
+        index: 131
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtBack_03
+        index: 132
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtBack_end_03
+        index: 133
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtFront_01
+        index: 134
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtFront_end_01
+        index: 135
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtFront_02
+        index: 136
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtFront_end_02
+        index: 137
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtFront_03
+        index: 138
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtFront_end_03
+        index: 139
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide1_01
+        index: 140
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide2_01
+        index: 141
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide2_end_01
+        index: 142
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide1_02
+        index: 143
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide2_02
+        index: 144
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide2_end_02
+        index: 145
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide1_03
+        index: 146
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide2_03
+        index: 147
+        isVirtual: 0
+      - name: J_Sec_R_CoatSkirtSide2_end_03
+        index: 148
+        isVirtual: 0
+    baseWeight: 0.166
+    additiveWeight: 0.848
+    localWeight: 0.318
+  - layer:
+      chainName: Spine
+      elementChain:
+      - name: J_Bip_C_Spine
+        index: 2
+        isVirtual: 0
+      - name: J_Bip_C_Chest
+        index: 3
+        isVirtual: 0
+      - name: J_Bip_C_UpperChest
+        index: 4
+        isVirtual: 0
+    baseWeight: 0.369
+    additiveWeight: 0.631
+    localWeight: 0.677
+  - layer:
+      chainName: Head
+      elementChain:
+      - name: J_Bip_C_Neck
+        index: 5
+        isVirtual: 0
+      - name: J_Bip_C_Head
+        index: 6
+        isVirtual: 0
+    baseWeight: 0.747
+    additiveWeight: 0.788
+    localWeight: 0.765
+  - layer:
+      chainName: Arms
+      elementChain:
+      - name: J_Bip_L_Shoulder
+        index: 57
+        isVirtual: 0
+      - name: J_Bip_L_UpperArm
+        index: 58
+        isVirtual: 0
+      - name: J_Bip_L_LowerArm
+        index: 59
+        isVirtual: 0
+      - name: J_Bip_L_Hand
+        index: 60
+        isVirtual: 0
+      - name: J_Bip_R_Shoulder
+        index: 76
+        isVirtual: 0
+      - name: J_Bip_R_UpperArm
+        index: 77
+        isVirtual: 0
+      - name: J_Bip_R_LowerArm
+        index: 78
+        isVirtual: 0
+      - name: J_Bip_R_Hand
+        index: 79
+        isVirtual: 0
+    baseWeight: 0.811
+    additiveWeight: 0.659
+    localWeight: 0.539
+  - layer:
+      chainName: Fingers
+      elementChain:
+      - name: J_Bip_L_Index1
+        index: 61
+        isVirtual: 0
+      - name: J_Bip_L_Index2
+        index: 62
+        isVirtual: 0
+      - name: J_Bip_L_Index3
+        index: 63
+        isVirtual: 0
+      - name: J_Bip_L_Middle1
+        index: 67
+        isVirtual: 0
+      - name: J_Bip_L_Middle2
+        index: 68
+        isVirtual: 0
+      - name: J_Bip_L_Middle3
+        index: 69
+        isVirtual: 0
+      - name: J_Bip_L_Ring1
+        index: 70
+        isVirtual: 0
+      - name: J_Bip_L_Ring2
+        index: 71
+        isVirtual: 0
+      - name: J_Bip_L_Ring3
+        index: 72
+        isVirtual: 0
+      - name: J_Bip_L_Thumb1
+        index: 73
+        isVirtual: 0
+      - name: J_Bip_L_Thumb2
+        index: 74
+        isVirtual: 0
+      - name: J_Bip_L_Thumb3
+        index: 75
+        isVirtual: 0
+      - name: J_Bip_R_Index1
+        index: 80
+        isVirtual: 0
+      - name: J_Bip_R_Index2
+        index: 81
+        isVirtual: 0
+      - name: J_Bip_R_Index3
+        index: 82
+        isVirtual: 0
+      - name: J_Bip_R_Middle1
+        index: 86
+        isVirtual: 0
+      - name: J_Bip_R_Middle2
+        index: 87
+        isVirtual: 0
+      - name: J_Bip_R_Middle3
+        index: 88
+        isVirtual: 0
+      - name: J_Bip_R_Ring1
+        index: 89
+        isVirtual: 0
+      - name: J_Bip_R_Ring2
+        index: 90
+        isVirtual: 0
+      - name: J_Bip_R_Ring3
+        index: 91
+        isVirtual: 0
+      - name: J_Bip_R_Thumb1
+        index: 92
+        isVirtual: 0
+      - name: J_Bip_R_Thumb2
+        index: 93
+        isVirtual: 0
+      - name: J_Bip_R_Thumb3
+        index: 94
+        isVirtual: 0
+    baseWeight: 0
+    additiveWeight: 0
+    localWeight: 0
+  globalWeight: 1

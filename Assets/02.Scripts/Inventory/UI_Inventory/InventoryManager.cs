@@ -118,18 +118,56 @@ public class InventoryManager : Singleton<InventoryManager>
 
     private void Load()
     {
-        string json =  PlayerPrefs.GetString("Inventory", "");
-        if (string.IsNullOrEmpty(json)) return;
-        ItemSaveDataList saveDataList = JsonConvert.DeserializeObject<ItemSaveDataList>(json, new JsonSerializerSettings
+        string json = PlayerPrefs.GetString("Inventory", "");
+        if (string.IsNullOrEmpty(json)) 
         {
-            TypeNameHandling = TypeNameHandling.Auto
-        });
+            Debug.Log("저장된 인벤토리 데이터가 없습니다.");
+            return;
+        }
 
-        foreach (ItemSaveData saveData in saveDataList.SaveDatas)
+        try
         {
-            Debug.Log(saveData.ItemSOIndex);
-            Item item = new Item(soDatas[saveData.ItemSOIndex], saveData);
-            Add(item);
+            ItemSaveDataList saveDataList = JsonConvert.DeserializeObject<ItemSaveDataList>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+
+            if (saveDataList == null || saveDataList.SaveDatas == null)
+            {
+                Debug.LogError("저장 데이터 역직렬화 실패");
+                return;
+            }
+
+            // 기존 아이템들을 먼저 정리 (필요한 경우)
+            // _items.Clear();
+
+            foreach (ItemSaveData saveData in saveDataList.SaveDatas)
+            {
+                // 인덱스 유효성 검사
+                if (saveData.ItemSOIndex < 0 || saveData.ItemSOIndex >= soDatas.Count)
+                {
+                    Debug.LogError($"잘못된 ItemSOIndex: {saveData.ItemSOIndex}, soDatas 크기: {soDatas.Count}");
+                    continue;
+                }
+
+                Debug.Log($"아이템 로드 중: ItemSOIndex = {saveData.ItemSOIndex}");
+            
+                try
+                {
+                    Item item = new Item(soDatas[saveData.ItemSOIndex], saveData);
+                    Add(item);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"아이템 생성 실패: {e.Message}");
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"인벤토리 로드 실패: {e.Message}");
+            // 필요한 경우 기본값으로 초기화
+            // InitializeDefaultInventory();
         }
     }
 }
