@@ -1007,7 +1007,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dontDestroy: 1
   player: {fileID: 1452895831}
-  WorldCanvas: {fileID: 1286368921}
+  WorldCanvas: {fileID: 0}
 --- !u!1 &440088715
 GameObject:
   m_ObjectHideFlags: 0
@@ -4811,7 +4811,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1286368922}
-  - component: {fileID: 1286368923}
   m_Layer: 5
   m_Name: GameObject
   m_TagString: Untagged
@@ -4838,18 +4837,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1286368923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1286368921}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c86da7341e1db345a603d9df4b9c17c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1316442576
 GameObject:
   m_ObjectHideFlags: 0
@@ -5060,7 +5047,7 @@ MonoBehaviour:
   CinemachineCam: {fileID: 1818427125}
   Player: {fileID: 1452895832}
   ExitPortal: {fileID: 0}
-  SpawnDistance: 2
+  SpawnDistance: 5
   _isClear: 0
   _nextStageIndex: 0
 --- !u!4 &1452413126
@@ -5486,6 +5473,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 4394483128234561876, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
+      propertyPath: m_SceneBindings.Array.data[0].value
+      value: 
+      objectReference: {fileID: 260305133}
     - target: {fileID: 4483115220471250896, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -6836,6 +6827,7 @@ MonoBehaviour:
   _normalMonsterSpawners: []
   _eliteMonsterSpawners: []
   _bossMonsterSpawner: {fileID: 0}
+  _bossPhase2Spawner: {fileID: 0}
 --- !u!1 &2053189430
 GameObject:
   m_ObjectHideFlags: 0
@@ -7045,6 +7037,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 556703717312804971, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: initialPoolSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 556703717312804971, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 556703717312804971, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
+      value: 6fdc8d67fd22dae4fa4e635a8bf58564
+      objectReference: {fileID: 0}
     - target: {fileID: 747061108332892193, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40.4
@@ -7065,21 +7069,9 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1002825554517236157, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
-      propertyPath: prefabToPoolRef.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1002825554517236157, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
-      propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
-      value: 76a9ad5c1dfe014499d95fe9479508f1
-      objectReference: {fileID: 0}
     - target: {fileID: 1525435272508644698, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_Name
       value: PrisonStage
-      objectReference: {fileID: 0}
-    - target: {fileID: 1578097333513460886, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
-      propertyPath: numberOfMonstersToSpawn
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2120317658669282881, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -7138,6 +7130,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3401843225300315567, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: spawnRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3401843225300315567, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: numberOfMonstersToSpawn
       value: 0
       objectReference: {fileID: 0}
@@ -7165,6 +7161,18 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3818222916956109993, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818222916956109993, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
+      value: f1741bf7431abbd48af1fa227078051c
+      objectReference: {fileID: 0}
+    - target: {fileID: 3818222916956109993, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_EditorAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3877496160432129892, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05
@@ -7188,14 +7196,6 @@ PrefabInstance:
     - target: {fileID: 3979354465310910596, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
       value: 76a9ad5c1dfe014499d95fe9479508f1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3979354465310910596, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
-      propertyPath: prefabToPoolRef.Array.data[0].m_EditorAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4697633399487538596, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
-      propertyPath: numberOfMonstersToSpawn
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4801446017730537604, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -7230,8 +7230,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5235112880883208287, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: spawnRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5235112880883208287, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5370075766612008769, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -7250,8 +7254,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5431999910717785202, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: spawnRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5431999910717785202, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 40
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011760751300641113, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6011760751300641113, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
+      value: 042f053437a57ce41aaf6d288efdd4a2
       objectReference: {fileID: 0}
     - target: {fileID: 6189526761607042415, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
@@ -7396,14 +7412,6 @@ PrefabInstance:
     - target: {fileID: 8097478716043345910, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8247667787049869670, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
-      propertyPath: numberOfMonstersToSpawn
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8926725973569737885, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
-      propertyPath: numberOfMonstersToSpawn
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

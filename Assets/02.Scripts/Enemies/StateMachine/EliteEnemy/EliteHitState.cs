@@ -35,11 +35,8 @@ public class EliteHitState : EliteBaseState
     public override void OnEnter()
     {
         base.OnEnter();
+
         _hitTimer = 0f;
-
-
-        
-        
         
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 

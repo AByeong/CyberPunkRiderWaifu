@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Boss_Waifu_AI : EliteEnemy
@@ -32,10 +31,10 @@ public class Boss_Waifu_AI : EliteEnemy
         debugAttackRange = 5f; // Set for Gizmo visualization
     }
     
-    public void ResetIsAttackAndTimer()
-    {
-        ResetAttackTimer();
-    }
+    // public void ResetIsAttackAndTimer()
+    // {
+    //     ResetAttackTimer();
+    // }
 
     protected override void Awake()
     {

@@ -43,7 +43,7 @@ public class HItState : BaseNormalEnemyState
 
         if (Owner.TakedDamage.From.CompareTag("Player"))
         {
-            SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
+            // SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
         }
 
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
