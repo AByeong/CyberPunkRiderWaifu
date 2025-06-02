@@ -10,6 +10,22 @@ public class EliteAI_Female : EliteEnemy
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
 
+    private Damage _enemyDamage;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _enemyDamage = new Damage()
+        {
+            DamageValue = 0,
+            DamageType = EDamageType.Airborne,
+            DamageForce = 2f,
+            From = gameObject
+        };
+        
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -35,25 +51,25 @@ public class EliteAI_Female : EliteEnemy
         }
 
         Vector3 sphereCenter = StampPosition.position;
-        Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
 
         SoundManager.Instance.Play(SoundType.Elite_Female_Step);
         LookAtTarget();
 
 
+        Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
+
+
+        int numbers = 0;
         foreach (Collider hitCollider in detectedColliders)
         {
-            if (hitCollider.tag == "Elite" || hitCollider.tag == "Boss") continue;
-
-            IDamageable damageable;
-            if (hitCollider.TryGetComponent<IDamageable>(out damageable))
+            
+            if (hitCollider.tag == "NormalEnemy" || hitCollider.tag == "Player")
             {
-                Damage damage = new Damage();
-                damage.DamageValue = 0;
-                damage.DamageType = EDamageType.Airborne;
-                damage.DamageForce = 2f;
-                damage.From = this.gameObject;
-                damageable.TakeDamage(damage);
+                ++numbers;
+                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                {
+                    damageable.TakeDamage(_enemyDamage);
+                }
             }
         }
     }
@@ -102,14 +118,12 @@ public class EliteAI_Female : EliteEnemy
         if (!isCoolingDown)
         {
             _animator.SetBool("Running", true);
-            if (_collider != null) _collider.enabled = false; // 콜라이더가 있는 경우에만 비활성화
         }
     }
 
     public void NotRunning()
     {
         _animator.SetBool("Running", false);
-        if (_collider != null) _collider.enabled = true; // 콜라이더가 있는 경우에만 활성화
         isCoolingDown = true;
         currentCooldownTime = runCooldownDuration;
     }

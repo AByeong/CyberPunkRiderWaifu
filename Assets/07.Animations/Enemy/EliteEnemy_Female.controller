@@ -105,6 +105,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: IsAttack
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Running
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -9079147231068754742}
   m_Solo: 0
@@ -179,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ComboChance: 0.5
+  Duration: 1.16
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0

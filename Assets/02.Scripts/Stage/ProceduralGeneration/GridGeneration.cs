@@ -36,10 +36,12 @@ public class GridGeneration : MonoBehaviour
 {
     [Header("Prefabs")]
     public GameObject FencePrefab;
+    public GameObject[] FencevariationPrefabs;
     public GameObject FenceCornerPrefab;
     public GameObject FenceDoorPrefab;
     public GameObject PathPrefab;
     public GameObject FloorPrefab;
+    public GameObject CeilingPrefab;
     public GameObject[] PropPrefabs;
 
     [Header("Module Size Offset")]
@@ -60,6 +62,7 @@ public class GridGeneration : MonoBehaviour
     public int maskMargin = 2; // 맵 가장자리에서 안쪽으로 마스킹할 너비
     public int pathProximityRadius = 5; // 경로에서 일정 거리 이상 떨어진 Activate 셀을 제거할 기준 거리
     public float PatternDensity = 0.1f;
+    public float WallVariationChance = 0.1f;
 
     public int NormalSpawnerCount;
     public int Elite0SpanwerCount;
@@ -550,6 +553,12 @@ public class GridGeneration : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
+                if (grid[i, j] != (int)EGirdType.Blank)
+                {
+                    GameObject ceiling = Instantiate(CeilingPrefab, transform);
+                    ceiling.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                }
+
                 if (grid[i, j] == (int)EGirdType.Activate || grid[i, j] == (int)EGirdType.Pattern || grid[i, j] == (int)EGirdType.Spawner || grid[i, j] == (int)EGirdType.CornerBorder)
                 {
                     GameObject floor = Instantiate(FloorPrefab, transform);
@@ -560,9 +569,18 @@ public class GridGeneration : MonoBehaviour
                     {
                         case (int)EGirdType.Border:
                             {
-                                GameObject fence = Instantiate(FencePrefab, transform);
+                                GameObject fence = null;
+                                if (Random.Range(0f, 1f) <= WallVariationChance)
+                                {
+                                    fence = Instantiate(FencevariationPrefabs[Random.Range(0, FencevariationPrefabs.Length)], transform);
+                                }
+                                else
+                                {
+                                    fence = Instantiate(FencePrefab, transform);
+                                }
                                 fence.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
                                 fence.transform.rotation = GetFenceRotation(i, j);
+                                
                                 break;
                             }
 
@@ -665,28 +683,28 @@ public class GridGeneration : MonoBehaviour
         // 왼쪽 이웃이 Blank -> 펜스는 오른쪽 (+X)을 바라봐야 함
         if (x - 1 >= 0 && grid[x - 1, y] == (int)EGirdType.Blank)
         {
-            return Quaternion.Euler(-90, 90, 0);
+            return Quaternion.Euler(0, 90, 0);
         }
         // 오른쪽 이웃이 Blank -> 펜스는 왼쪽 (-X)을 바라봐야 함
         if (x + 1 < width && grid[x + 1, y] == (int)EGirdType.Blank)
         {
-            return Quaternion.Euler(-90, -90, 0);
+            return Quaternion.Euler(0, -90, 0);
         }
 
         // 아래쪽 이웃이 Blank -> 펜스는 위쪽 (+Z)을 바라봐야 함
         if (y - 1 >= 0 && grid[x, y - 1] == (int)EGirdType.Blank)
         {
-            return Quaternion.Euler(-90, 0, 0);
+            return Quaternion.Euler(0, 0, 0);
         }
         // 위쪽 이웃이 Blank -> 펜스는 아래쪽 (-Z)을 바라봐야 함
         if (y + 1 < height && grid[x, y + 1] == (int)EGirdType.Blank)
         {
-            return Quaternion.Euler(-90, 180, 0);
+            return Quaternion.Euler(0, 180, 0);
         }
 
         // 만약 어떤 이유로 Blank 이웃을 찾지 못한다면 기본 회전을 반환
         Debug.LogWarning($"Border cell at ({x}, {y}) has no cardinal Blank neighbor. Defaulting to identity rotation.");
-        return Quaternion.Euler(0, 0, 0); // 기본 회전 (0,0,0)
+        return Quaternion.Euler(-90, 0, 0); // 기본 회전 (0,0,0)
     }
 
     private Quaternion GetCornerFenceRotation(int x, int y)
@@ -698,22 +716,22 @@ public class GridGeneration : MonoBehaviour
 
         if (borderNorth && borderWest) // 북서 코너 (맵의 안쪽은 남동쪽)
         {
-            return Quaternion.Euler(-90, 0, 0); // 0도 회전 (기본 방향)
+            return Quaternion.Euler(0, 0, 0); // 0도 회전 (기본 방향)
         }
         else if (borderNorth && borderEast) // 북동 코너 (맵의 안쪽은 남서쪽)
         {
-            return Quaternion.Euler(-90, 90, 0); // 90도 회전
+            return Quaternion.Euler(0, 90, 0); // 90도 회전
         }
         else if (borderSouth && borderEast) // 남동 코너 (맵의 안쪽은 북서쪽)
         {
-            return Quaternion.Euler(-90, 180, 0); // 180도 회전
+            return Quaternion.Euler(0, 180, 0); // 180도 회전
         }
         else if (borderSouth && borderWest) // 남서 코너 (맵의 안쪽은 북동쪽)
         {
-            return Quaternion.Euler(-90, 270, 0); // 270도 회전
+            return Quaternion.Euler(0, 270, 0); // 270도 회전
         }
 
-        return Quaternion.Euler(0, 0, 0);
+        return Quaternion.Euler(-90, 0, 0);
     }
 
     private Quaternion GetFenceDoorRotation(int x, int y)

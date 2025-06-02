@@ -13,7 +13,7 @@ public class EliteDeadState : EliteBaseState
         // Owner.Animator.SetTrigger("OnDead");
         Owner.Animator.SetFloat("DownType", Random.Range(0, 3));
         Owner.Animator.SetTrigger("OnDown");
-        Owner.GetComponent<Collider>().enabled = false;
+        Owner.Collider.enabled = false;
 
         switch (Owner.EnemyData.EnemyType)
         {

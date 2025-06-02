@@ -30,11 +30,6 @@ public class Boss_Waifu_AI : EliteEnemy
         Attack(20, 10);
         debugAttackRange = 5f; // Set for Gizmo visualization
     }
-    
-    // public void ResetIsAttackAndTimer()
-    // {
-    //     ResetAttackTimer();
-    // }
 
     protected override void Awake()
     {

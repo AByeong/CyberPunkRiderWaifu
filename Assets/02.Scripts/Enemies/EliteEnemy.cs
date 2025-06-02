@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EliteEnemy : Enemy, IDamageable
 {
+    [Header("[Elite Parameters]")]
     public float AttackTimer = 0f;
     public int AttackTypeNumber;
 
@@ -41,8 +42,10 @@ public class EliteEnemy : Enemy, IDamageable
         
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+        
         _eliteStateMachine = GetComponent<ElliteStateMachine>();
         if (_eliteStateMachine == null)
         {
