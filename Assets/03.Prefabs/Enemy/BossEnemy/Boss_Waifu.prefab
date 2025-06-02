@@ -2939,14 +2939,13 @@ MonoBehaviour:
   highlightVValue: 2
   normalVValue: 0.8
   hitFlashEffectDuration: 0.3
-  _attackType: 0
-  OriginalValue: 0.5
-  IsAttacking: 0
   AttackTimer: 0
   AttackTypeNumber: 3
+  _attackType: 0
   runCooldownDuration: 3
   _swordCollider: {fileID: 4666924378746562443}
   _katana: {fileID: 7657798586636438201}
+  debugAttackRange: 0
 --- !u!114 &8669644209295390855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3104,9 +3103,9 @@ MonoBehaviour:
   - Effect: {fileID: 1646871050452766, guid: 95b3ea755bc01f344a99fccc5f4702f8, type: 3}
     StartPositionRotation: {fileID: 6152073998993566187}
     DestroyAfter: 6
-    UseLocalPosition: 0
-    isParent: 1
-    Parent: {fileID: 1845003869140558324}
+    UseLocalPosition: 1
+    isParent: 0
+    Parent: {fileID: 0}
   - Effect: {fileID: 1646871050452766, guid: 95b3ea755bc01f344a99fccc5f4702f8, type: 3}
     StartPositionRotation: {fileID: 6152073998993566187}
     DestroyAfter: 6
@@ -3116,15 +3115,15 @@ MonoBehaviour:
   - Effect: {fileID: 1683321806259216, guid: 170cd7184503c124895727d3348aa99a, type: 3}
     StartPositionRotation: {fileID: 7299114961307584388}
     DestroyAfter: 4
-    UseLocalPosition: 0
-    isParent: 1
-    Parent: {fileID: 1845003869140558324}
+    UseLocalPosition: 1
+    isParent: 0
+    Parent: {fileID: 0}
   - Effect: {fileID: 1648509489993130, guid: 8a0c2ade089d4c44fbdf861f7bcd7be6, type: 3}
     StartPositionRotation: {fileID: 7354453410316249416}
     DestroyAfter: 4
-    UseLocalPosition: 0
-    isParent: 1
-    Parent: {fileID: 1845003869140558324}
+    UseLocalPosition: 1
+    isParent: 0
+    Parent: {fileID: 0}
   - Effect: {fileID: 1184443940743768, guid: 6f0dcb0cbac32e147aaa2047bff67f61, type: 3}
     StartPositionRotation: {fileID: 5976526402081851113}
     DestroyAfter: 7

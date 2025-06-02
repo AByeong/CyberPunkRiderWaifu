@@ -18,10 +18,10 @@ public class AnimationEventEffects : MonoBehaviour {
     public class EffectInfo
     {
         public GameObject Effect;
+        public bool isParent = false;
         public Transform StartPositionRotation;
         public float DestroyAfter = 10;
         public bool UseLocalPosition = true;
-        public bool isParent = false;
         public Transform Parent = null;
     }
 

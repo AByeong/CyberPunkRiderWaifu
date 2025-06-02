@@ -1,0 +1,1028 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c9c04639ae548bdb0a8e927492d029d, type: 3}
+  m_Name: Rig_Player
+  m_EditorClassIdentifier: 
+  targetAnimator: {fileID: 0}
+  inputConfig: {fileID: 0}
+  rigHierarchy:
+  - name: Root
+    index: 0
+    isVirtual: 0
+  - name: J_Bip_C_Hips
+    index: 1
+    isVirtual: 0
+  - name: J_Bip_C_Spine
+    index: 2
+    isVirtual: 0
+  - name: J_Bip_C_Chest
+    index: 3
+    isVirtual: 0
+  - name: J_Bip_C_UpperChest
+    index: 4
+    isVirtual: 0
+  - name: J_Bip_C_Neck
+    index: 5
+    isVirtual: 0
+  - name: J_Bip_C_Head
+    index: 6
+    isVirtual: 0
+  - name: J_Adj_L_FaceEye
+    index: 7
+    isVirtual: 0
+  - name: J_Adj_R_FaceEye
+    index: 8
+    isVirtual: 0
+  - name: J_Sec_Hair1_01
+    index: 9
+    isVirtual: 0
+  - name: J_Sec_Hair2_01
+    index: 10
+    isVirtual: 0
+  - name: J_Sec_Hair3_01
+    index: 11
+    isVirtual: 0
+  - name: J_Sec_Hair1_02
+    index: 12
+    isVirtual: 0
+  - name: J_Sec_Hair2_02
+    index: 13
+    isVirtual: 0
+  - name: J_Sec_Hair3_02
+    index: 14
+    isVirtual: 0
+  - name: J_Sec_Hair1_03
+    index: 15
+    isVirtual: 0
+  - name: J_Sec_Hair2_03
+    index: 16
+    isVirtual: 0
+  - name: J_Sec_Hair3_03
+    index: 17
+    isVirtual: 0
+  - name: J_Sec_Hair1_04
+    index: 18
+    isVirtual: 0
+  - name: J_Sec_Hair2_04
+    index: 19
+    isVirtual: 0
+  - name: J_Sec_Hair3_04
+    index: 20
+    isVirtual: 0
+  - name: J_Sec_Hair1_05
+    index: 21
+    isVirtual: 0
+  - name: J_Sec_Hair2_05
+    index: 22
+    isVirtual: 0
+  - name: J_Sec_Hair3_05
+    index: 23
+    isVirtual: 0
+  - name: J_Sec_Hair1_06
+    index: 24
+    isVirtual: 0
+  - name: J_Sec_Hair2_06
+    index: 25
+    isVirtual: 0
+  - name: J_Sec_Hair3_06
+    index: 26
+    isVirtual: 0
+  - name: J_Sec_Hair1_07
+    index: 27
+    isVirtual: 0
+  - name: J_Sec_Hair2_07
+    index: 28
+    isVirtual: 0
+  - name: J_Sec_Hair3_07
+    index: 29
+    isVirtual: 0
+  - name: J_Sec_Hair1_08
+    index: 30
+    isVirtual: 0
+  - name: J_Sec_Hair2_08
+    index: 31
+    isVirtual: 0
+  - name: J_Sec_Hair3_08
+    index: 32
+    isVirtual: 0
+  - name: J_Sec_Hair1_09
+    index: 33
+    isVirtual: 0
+  - name: J_Sec_Hair2_09
+    index: 34
+    isVirtual: 0
+  - name: J_Sec_Hair3_09
+    index: 35
+    isVirtual: 0
+  - name: J_Sec_Hair1_10
+    index: 36
+    isVirtual: 0
+  - name: J_Sec_Hair2_10
+    index: 37
+    isVirtual: 0
+  - name: J_Sec_Hair3_10
+    index: 38
+    isVirtual: 0
+  - name: J_Sec_Hair1_11
+    index: 39
+    isVirtual: 0
+  - name: J_Sec_Hair2_11
+    index: 40
+    isVirtual: 0
+  - name: J_Sec_Hair3_11
+    index: 41
+    isVirtual: 0
+  - name: J_Sec_Hair1_12
+    index: 42
+    isVirtual: 0
+  - name: J_Sec_Hair2_12
+    index: 43
+    isVirtual: 0
+  - name: J_Sec_Hair3_12
+    index: 44
+    isVirtual: 0
+  - name: J_Sec_Hair1_13
+    index: 45
+    isVirtual: 0
+  - name: J_Sec_Hair2_13
+    index: 46
+    isVirtual: 0
+  - name: J_Sec_Hair3_13
+    index: 47
+    isVirtual: 0
+  - name: J_Sec_Hair1_14
+    index: 48
+    isVirtual: 0
+  - name: J_Sec_Hair2_14
+    index: 49
+    isVirtual: 0
+  - name: J_Sec_Hair3_14
+    index: 50
+    isVirtual: 0
+  - name: J_Sec_Hair1_15
+    index: 51
+    isVirtual: 0
+  - name: J_Sec_Hair2_15
+    index: 52
+    isVirtual: 0
+  - name: J_Sec_Hair3_15
+    index: 53
+    isVirtual: 0
+  - name: J_Sec_Hair1_16
+    index: 54
+    isVirtual: 0
+  - name: J_Sec_Hair2_16
+    index: 55
+    isVirtual: 0
+  - name: J_Sec_Hair3_16
+    index: 56
+    isVirtual: 0
+  - name: J_Bip_L_Shoulder
+    index: 57
+    isVirtual: 0
+  - name: J_Bip_L_UpperArm
+    index: 58
+    isVirtual: 0
+  - name: J_Bip_L_LowerArm
+    index: 59
+    isVirtual: 0
+  - name: J_Bip_L_Hand
+    index: 60
+    isVirtual: 0
+  - name: J_Bip_L_Index1
+    index: 61
+    isVirtual: 0
+  - name: J_Bip_L_Index2
+    index: 62
+    isVirtual: 0
+  - name: J_Bip_L_Index3
+    index: 63
+    isVirtual: 0
+  - name: J_Bip_L_Little1
+    index: 64
+    isVirtual: 0
+  - name: J_Bip_L_Little2
+    index: 65
+    isVirtual: 0
+  - name: J_Bip_L_Little3
+    index: 66
+    isVirtual: 0
+  - name: J_Bip_L_Middle1
+    index: 67
+    isVirtual: 0
+  - name: J_Bip_L_Middle2
+    index: 68
+    isVirtual: 0
+  - name: J_Bip_L_Middle3
+    index: 69
+    isVirtual: 0
+  - name: J_Bip_L_Ring1
+    index: 70
+    isVirtual: 0
+  - name: J_Bip_L_Ring2
+    index: 71
+    isVirtual: 0
+  - name: J_Bip_L_Ring3
+    index: 72
+    isVirtual: 0
+  - name: J_Bip_L_Thumb1
+    index: 73
+    isVirtual: 0
+  - name: J_Bip_L_Thumb2
+    index: 74
+    isVirtual: 0
+  - name: J_Bip_L_Thumb3
+    index: 75
+    isVirtual: 0
+  - name: J_Bip_R_Shoulder
+    index: 76
+    isVirtual: 0
+  - name: J_Bip_R_UpperArm
+    index: 77
+    isVirtual: 0
+  - name: J_Bip_R_LowerArm
+    index: 78
+    isVirtual: 0
+  - name: J_Bip_R_Hand
+    index: 79
+    isVirtual: 0
+  - name: J_Bip_R_Index1
+    index: 80
+    isVirtual: 0
+  - name: J_Bip_R_Index2
+    index: 81
+    isVirtual: 0
+  - name: J_Bip_R_Index3
+    index: 82
+    isVirtual: 0
+  - name: J_Bip_R_Little1
+    index: 83
+    isVirtual: 0
+  - name: J_Bip_R_Little2
+    index: 84
+    isVirtual: 0
+  - name: J_Bip_R_Little3
+    index: 85
+    isVirtual: 0
+  - name: J_Bip_R_Middle1
+    index: 86
+    isVirtual: 0
+  - name: J_Bip_R_Middle2
+    index: 87
+    isVirtual: 0
+  - name: J_Bip_R_Middle3
+    index: 88
+    isVirtual: 0
+  - name: J_Bip_R_Ring1
+    index: 89
+    isVirtual: 0
+  - name: J_Bip_R_Ring2
+    index: 90
+    isVirtual: 0
+  - name: J_Bip_R_Ring3
+    index: 91
+    isVirtual: 0
+  - name: J_Bip_R_Thumb1
+    index: 92
+    isVirtual: 0
+  - name: J_Bip_R_Thumb2
+    index: 93
+    isVirtual: 0
+  - name: J_Bip_R_Thumb3
+    index: 94
+    isVirtual: 0
+  - name: J_Sec_L_Bust1
+    index: 95
+    isVirtual: 0
+  - name: J_Sec_L_Bust2
+    index: 96
+    isVirtual: 0
+  - name: J_Sec_R_Bust1
+    index: 97
+    isVirtual: 0
+  - name: J_Sec_R_Bust2
+    index: 98
+    isVirtual: 0
+  - name: J_Bip_L_UpperLeg
+    index: 99
+    isVirtual: 0
+  - name: J_Bip_L_LowerLeg
+    index: 100
+    isVirtual: 0
+  - name: J_Bip_L_Foot
+    index: 101
+    isVirtual: 0
+  - name: J_Bip_L_ToeBase
+    index: 102
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtBack_01
+    index: 103
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtBack_end_01
+    index: 104
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtBack_02
+    index: 105
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtBack_end_02
+    index: 106
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtBack_03
+    index: 107
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtBack_end_03
+    index: 108
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtFront_01
+    index: 109
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtFront_end_01
+    index: 110
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtFront_02
+    index: 111
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtFront_end_02
+    index: 112
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtFront_03
+    index: 113
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtFront_end_03
+    index: 114
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide1_01
+    index: 115
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide2_01
+    index: 116
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide2_end_01
+    index: 117
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide1_02
+    index: 118
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide2_02
+    index: 119
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide2_end_02
+    index: 120
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide1_03
+    index: 121
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide2_03
+    index: 122
+    isVirtual: 0
+  - name: J_Sec_L_CoatSkirtSide2_end_03
+    index: 123
+    isVirtual: 0
+  - name: J_Bip_R_UpperLeg
+    index: 124
+    isVirtual: 0
+  - name: J_Bip_R_LowerLeg
+    index: 125
+    isVirtual: 0
+  - name: J_Bip_R_Foot
+    index: 126
+    isVirtual: 0
+  - name: J_Bip_R_ToeBase
+    index: 127
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtBack_01
+    index: 128
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtBack_end_01
+    index: 129
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtBack_02
+    index: 130
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtBack_end_02
+    index: 131
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtBack_03
+    index: 132
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtBack_end_03
+    index: 133
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtFront_01
+    index: 134
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtFront_end_01
+    index: 135
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtFront_02
+    index: 136
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtFront_end_02
+    index: 137
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtFront_03
+    index: 138
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtFront_end_03
+    index: 139
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide1_01
+    index: 140
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide2_01
+    index: 141
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide2_end_01
+    index: 142
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide1_02
+    index: 143
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide2_02
+    index: 144
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide2_end_02
+    index: 145
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide1_03
+    index: 146
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide2_03
+    index: 147
+    isVirtual: 0
+  - name: J_Sec_R_CoatSkirtSide2_end_03
+    index: 148
+    isVirtual: 0
+  rigElementChains:
+  - chainName: Root
+    elementChain:
+    - name: Root
+      index: 0
+      isVirtual: 0
+    - name: J_Bip_C_Hips
+      index: 1
+      isVirtual: 0
+  - chainName: J_Bip_C_Spine
+    elementChain:
+    - name: J_Bip_C_Spine
+      index: 2
+      isVirtual: 0
+    - name: J_Bip_C_Chest
+      index: 3
+      isVirtual: 0
+    - name: J_Bip_C_UpperChest
+      index: 4
+      isVirtual: 0
+  - chainName: J_Bip_C_Neck
+    elementChain:
+    - name: J_Bip_C_Neck
+      index: 5
+      isVirtual: 0
+    - name: J_Bip_C_Head
+      index: 6
+      isVirtual: 0
+  - chainName: J_Adj_L_FaceEye
+    elementChain:
+    - name: J_Adj_L_FaceEye
+      index: 7
+      isVirtual: 0
+  - chainName: J_Adj_R_FaceEye
+    elementChain:
+    - name: J_Adj_R_FaceEye
+      index: 8
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_01
+    elementChain:
+    - name: J_Sec_Hair1_01
+      index: 9
+      isVirtual: 0
+    - name: J_Sec_Hair2_01
+      index: 10
+      isVirtual: 0
+    - name: J_Sec_Hair3_01
+      index: 11
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_02
+    elementChain:
+    - name: J_Sec_Hair1_02
+      index: 12
+      isVirtual: 0
+    - name: J_Sec_Hair2_02
+      index: 13
+      isVirtual: 0
+    - name: J_Sec_Hair3_02
+      index: 14
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_03
+    elementChain:
+    - name: J_Sec_Hair1_03
+      index: 15
+      isVirtual: 0
+    - name: J_Sec_Hair2_03
+      index: 16
+      isVirtual: 0
+    - name: J_Sec_Hair3_03
+      index: 17
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_04
+    elementChain:
+    - name: J_Sec_Hair1_04
+      index: 18
+      isVirtual: 0
+    - name: J_Sec_Hair2_04
+      index: 19
+      isVirtual: 0
+    - name: J_Sec_Hair3_04
+      index: 20
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_05
+    elementChain:
+    - name: J_Sec_Hair1_05
+      index: 21
+      isVirtual: 0
+    - name: J_Sec_Hair2_05
+      index: 22
+      isVirtual: 0
+    - name: J_Sec_Hair3_05
+      index: 23
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_06
+    elementChain:
+    - name: J_Sec_Hair1_06
+      index: 24
+      isVirtual: 0
+    - name: J_Sec_Hair2_06
+      index: 25
+      isVirtual: 0
+    - name: J_Sec_Hair3_06
+      index: 26
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_07
+    elementChain:
+    - name: J_Sec_Hair1_07
+      index: 27
+      isVirtual: 0
+    - name: J_Sec_Hair2_07
+      index: 28
+      isVirtual: 0
+    - name: J_Sec_Hair3_07
+      index: 29
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_08
+    elementChain:
+    - name: J_Sec_Hair1_08
+      index: 30
+      isVirtual: 0
+    - name: J_Sec_Hair2_08
+      index: 31
+      isVirtual: 0
+    - name: J_Sec_Hair3_08
+      index: 32
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_09
+    elementChain:
+    - name: J_Sec_Hair1_09
+      index: 33
+      isVirtual: 0
+    - name: J_Sec_Hair2_09
+      index: 34
+      isVirtual: 0
+    - name: J_Sec_Hair3_09
+      index: 35
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_10
+    elementChain:
+    - name: J_Sec_Hair1_10
+      index: 36
+      isVirtual: 0
+    - name: J_Sec_Hair2_10
+      index: 37
+      isVirtual: 0
+    - name: J_Sec_Hair3_10
+      index: 38
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_11
+    elementChain:
+    - name: J_Sec_Hair1_11
+      index: 39
+      isVirtual: 0
+    - name: J_Sec_Hair2_11
+      index: 40
+      isVirtual: 0
+    - name: J_Sec_Hair3_11
+      index: 41
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_12
+    elementChain:
+    - name: J_Sec_Hair1_12
+      index: 42
+      isVirtual: 0
+    - name: J_Sec_Hair2_12
+      index: 43
+      isVirtual: 0
+    - name: J_Sec_Hair3_12
+      index: 44
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_13
+    elementChain:
+    - name: J_Sec_Hair1_13
+      index: 45
+      isVirtual: 0
+    - name: J_Sec_Hair2_13
+      index: 46
+      isVirtual: 0
+    - name: J_Sec_Hair3_13
+      index: 47
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_14
+    elementChain:
+    - name: J_Sec_Hair1_14
+      index: 48
+      isVirtual: 0
+    - name: J_Sec_Hair2_14
+      index: 49
+      isVirtual: 0
+    - name: J_Sec_Hair3_14
+      index: 50
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_15
+    elementChain:
+    - name: J_Sec_Hair1_15
+      index: 51
+      isVirtual: 0
+    - name: J_Sec_Hair2_15
+      index: 52
+      isVirtual: 0
+    - name: J_Sec_Hair3_15
+      index: 53
+      isVirtual: 0
+  - chainName: J_Sec_Hair1_16
+    elementChain:
+    - name: J_Sec_Hair1_16
+      index: 54
+      isVirtual: 0
+    - name: J_Sec_Hair2_16
+      index: 55
+      isVirtual: 0
+    - name: J_Sec_Hair3_16
+      index: 56
+      isVirtual: 0
+  - chainName: J_Bip_L_Shoulder
+    elementChain:
+    - name: J_Bip_L_Shoulder
+      index: 57
+      isVirtual: 0
+    - name: J_Bip_L_UpperArm
+      index: 58
+      isVirtual: 0
+    - name: J_Bip_L_LowerArm
+      index: 59
+      isVirtual: 0
+    - name: J_Bip_L_Hand
+      index: 60
+      isVirtual: 0
+  - chainName: J_Bip_L_Index1
+    elementChain:
+    - name: J_Bip_L_Index1
+      index: 61
+      isVirtual: 0
+    - name: J_Bip_L_Index2
+      index: 62
+      isVirtual: 0
+    - name: J_Bip_L_Index3
+      index: 63
+      isVirtual: 0
+  - chainName: J_Bip_L_Little1
+    elementChain:
+    - name: J_Bip_L_Little1
+      index: 64
+      isVirtual: 0
+    - name: J_Bip_L_Little2
+      index: 65
+      isVirtual: 0
+    - name: J_Bip_L_Little3
+      index: 66
+      isVirtual: 0
+  - chainName: J_Bip_L_Middle1
+    elementChain:
+    - name: J_Bip_L_Middle1
+      index: 67
+      isVirtual: 0
+    - name: J_Bip_L_Middle2
+      index: 68
+      isVirtual: 0
+    - name: J_Bip_L_Middle3
+      index: 69
+      isVirtual: 0
+  - chainName: J_Bip_L_Ring1
+    elementChain:
+    - name: J_Bip_L_Ring1
+      index: 70
+      isVirtual: 0
+    - name: J_Bip_L_Ring2
+      index: 71
+      isVirtual: 0
+    - name: J_Bip_L_Ring3
+      index: 72
+      isVirtual: 0
+  - chainName: J_Bip_L_Thumb1
+    elementChain:
+    - name: J_Bip_L_Thumb1
+      index: 73
+      isVirtual: 0
+    - name: J_Bip_L_Thumb2
+      index: 74
+      isVirtual: 0
+    - name: J_Bip_L_Thumb3
+      index: 75
+      isVirtual: 0
+  - chainName: J_Bip_R_Shoulder
+    elementChain:
+    - name: J_Bip_R_Shoulder
+      index: 76
+      isVirtual: 0
+    - name: J_Bip_R_UpperArm
+      index: 77
+      isVirtual: 0
+    - name: J_Bip_R_LowerArm
+      index: 78
+      isVirtual: 0
+    - name: J_Bip_R_Hand
+      index: 79
+      isVirtual: 0
+  - chainName: J_Bip_R_Index1
+    elementChain:
+    - name: J_Bip_R_Index1
+      index: 80
+      isVirtual: 0
+    - name: J_Bip_R_Index2
+      index: 81
+      isVirtual: 0
+    - name: J_Bip_R_Index3
+      index: 82
+      isVirtual: 0
+  - chainName: J_Bip_R_Little1
+    elementChain:
+    - name: J_Bip_R_Little1
+      index: 83
+      isVirtual: 0
+    - name: J_Bip_R_Little2
+      index: 84
+      isVirtual: 0
+    - name: J_Bip_R_Little3
+      index: 85
+      isVirtual: 0
+  - chainName: J_Bip_R_Middle1
+    elementChain:
+    - name: J_Bip_R_Middle1
+      index: 86
+      isVirtual: 0
+    - name: J_Bip_R_Middle2
+      index: 87
+      isVirtual: 0
+    - name: J_Bip_R_Middle3
+      index: 88
+      isVirtual: 0
+  - chainName: J_Bip_R_Ring1
+    elementChain:
+    - name: J_Bip_R_Ring1
+      index: 89
+      isVirtual: 0
+    - name: J_Bip_R_Ring2
+      index: 90
+      isVirtual: 0
+    - name: J_Bip_R_Ring3
+      index: 91
+      isVirtual: 0
+  - chainName: J_Bip_R_Thumb1
+    elementChain:
+    - name: J_Bip_R_Thumb1
+      index: 92
+      isVirtual: 0
+    - name: J_Bip_R_Thumb2
+      index: 93
+      isVirtual: 0
+    - name: J_Bip_R_Thumb3
+      index: 94
+      isVirtual: 0
+  - chainName: J_Sec_L_Bust1
+    elementChain:
+    - name: J_Sec_L_Bust1
+      index: 95
+      isVirtual: 0
+    - name: J_Sec_L_Bust2
+      index: 96
+      isVirtual: 0
+  - chainName: J_Sec_R_Bust1
+    elementChain:
+    - name: J_Sec_R_Bust1
+      index: 97
+      isVirtual: 0
+    - name: J_Sec_R_Bust2
+      index: 98
+      isVirtual: 0
+  - chainName: J_Bip_L_UpperLeg
+    elementChain:
+    - name: J_Bip_L_UpperLeg
+      index: 99
+      isVirtual: 0
+    - name: J_Bip_L_LowerLeg
+      index: 100
+      isVirtual: 0
+  - chainName: J_Bip_L_Foot
+    elementChain:
+    - name: J_Bip_L_Foot
+      index: 101
+      isVirtual: 0
+    - name: J_Bip_L_ToeBase
+      index: 102
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtBack_01
+    elementChain:
+    - name: J_Sec_L_CoatSkirtBack_01
+      index: 103
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtBack_end_01
+      index: 104
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtBack_02
+    elementChain:
+    - name: J_Sec_L_CoatSkirtBack_02
+      index: 105
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtBack_end_02
+      index: 106
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtBack_03
+    elementChain:
+    - name: J_Sec_L_CoatSkirtBack_03
+      index: 107
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtBack_end_03
+      index: 108
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtFront_01
+    elementChain:
+    - name: J_Sec_L_CoatSkirtFront_01
+      index: 109
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtFront_end_01
+      index: 110
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtFront_02
+    elementChain:
+    - name: J_Sec_L_CoatSkirtFront_02
+      index: 111
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtFront_end_02
+      index: 112
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtFront_03
+    elementChain:
+    - name: J_Sec_L_CoatSkirtFront_03
+      index: 113
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtFront_end_03
+      index: 114
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtSide1_01
+    elementChain:
+    - name: J_Sec_L_CoatSkirtSide1_01
+      index: 115
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtSide2_01
+      index: 116
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtSide2_end_01
+      index: 117
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtSide1_02
+    elementChain:
+    - name: J_Sec_L_CoatSkirtSide1_02
+      index: 118
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtSide2_02
+      index: 119
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtSide2_end_02
+      index: 120
+      isVirtual: 0
+  - chainName: J_Sec_L_CoatSkirtSide1_03
+    elementChain:
+    - name: J_Sec_L_CoatSkirtSide1_03
+      index: 121
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtSide2_03
+      index: 122
+      isVirtual: 0
+    - name: J_Sec_L_CoatSkirtSide2_end_03
+      index: 123
+      isVirtual: 0
+  - chainName: J_Bip_R_UpperLeg
+    elementChain:
+    - name: J_Bip_R_UpperLeg
+      index: 124
+      isVirtual: 0
+    - name: J_Bip_R_LowerLeg
+      index: 125
+      isVirtual: 0
+  - chainName: J_Bip_R_Foot
+    elementChain:
+    - name: J_Bip_R_Foot
+      index: 126
+      isVirtual: 0
+    - name: J_Bip_R_ToeBase
+      index: 127
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtBack_01
+    elementChain:
+    - name: J_Sec_R_CoatSkirtBack_01
+      index: 128
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtBack_end_01
+      index: 129
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtBack_02
+    elementChain:
+    - name: J_Sec_R_CoatSkirtBack_02
+      index: 130
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtBack_end_02
+      index: 131
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtBack_03
+    elementChain:
+    - name: J_Sec_R_CoatSkirtBack_03
+      index: 132
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtBack_end_03
+      index: 133
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtFront_01
+    elementChain:
+    - name: J_Sec_R_CoatSkirtFront_01
+      index: 134
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtFront_end_01
+      index: 135
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtFront_02
+    elementChain:
+    - name: J_Sec_R_CoatSkirtFront_02
+      index: 136
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtFront_end_02
+      index: 137
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtFront_03
+    elementChain:
+    - name: J_Sec_R_CoatSkirtFront_03
+      index: 138
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtFront_end_03
+      index: 139
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtSide1_01
+    elementChain:
+    - name: J_Sec_R_CoatSkirtSide1_01
+      index: 140
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtSide2_01
+      index: 141
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtSide2_end_01
+      index: 142
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtSide1_02
+    elementChain:
+    - name: J_Sec_R_CoatSkirtSide1_02
+      index: 143
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtSide2_02
+      index: 144
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtSide2_end_02
+      index: 145
+      isVirtual: 0
+  - chainName: J_Sec_R_CoatSkirtSide1_03
+    elementChain:
+    - name: J_Sec_R_CoatSkirtSide1_03
+      index: 146
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtSide2_03
+      index: 147
+      isVirtual: 0
+    - name: J_Sec_R_CoatSkirtSide2_end_03
+      index: 148
+      isVirtual: 0
+  rigCurves: []
+  rigDepths: 00000000010000000200000003000000040000000500000006000000070000000700000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000007000000080000000900000005000000060000000700000008000000090000000a0000000b000000090000000a0000000b000000090000000a0000000b000000090000000a0000000b000000090000000a0000000b00000005000000060000000700000008000000090000000a0000000b000000090000000a0000000b000000090000000a0000000b000000090000000a0000000b000000090000000a0000000b000000050000000600000005000000060000000200000003000000040000000500000004000000050000000400000005000000040000000500000004000000050000000400000005000000040000000500000004000000050000000600000004000000050000000600000004000000050000000600000002000000030000000400000005000000040000000500000004000000050000000400000005000000040000000500000004000000050000000400000005000000040000000500000006000000040000000500000006000000040000000500000006000000
