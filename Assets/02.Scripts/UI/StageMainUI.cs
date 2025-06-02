@@ -88,12 +88,27 @@ public class StageMainUI : MonoBehaviour
         ItemIcons[index].StartCooltime();
     }
 
+    public void RefreshProgressbar(int current, int max)
+    {
+        ProgressSlider.maxValue = max;
+        ProgressSlider.value = current;
+
+    }
+
     public void RefreshProgressbar()
     {
+        if (DeliveryManager.Instance.KillTracker.MissionKillCount.Boss != 0)
         
-        ProgressSlider.maxValue = DeliveryManager.Instance.KillTracker.MissionKillCount.Normal + DeliveryManager.Instance.KillTracker.MissionKillCount.Elite + DeliveryManager.Instance.KillTracker.MissionKillCount.Boss + DeliveryManager.Instance.KillTracker.MissionKillCount.Normal;
-        ProgressSlider.value = DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal + DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite + DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss + DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal;
-        
+        {
+            ProgressSlider.maxValue = DeliveryManager.Instance.KillTracker.MissionKillCount.Normal +
+                                      DeliveryManager.Instance.KillTracker.MissionKillCount.Elite +
+                                      DeliveryManager.Instance.KillTracker.MissionKillCount.Boss +
+                                      DeliveryManager.Instance.KillTracker.MissionKillCount.Normal;
+            ProgressSlider.value = DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal +
+                                   DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite +
+                                   DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss +
+                                   DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal;
+        }
     }
     
     public void FinisherIconLoad()

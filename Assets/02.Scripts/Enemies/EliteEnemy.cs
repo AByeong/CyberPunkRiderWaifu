@@ -34,6 +34,11 @@ public class EliteEnemy : Enemy, IDamageable
         base.TakeDamage(damage);
         if(damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         SoundManager.Instance.Play(SoundType.Elite_male_Hit);
+
+        
+
+        
+        
     }
 
     private void Start()
