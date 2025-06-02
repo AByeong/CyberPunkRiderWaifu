@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 [Serializable]
 public class SkillUIManager : Popup
@@ -49,9 +50,13 @@ public class SkillUIManager : Popup
         // 장착된 스킬 인덱스를 기준으로 Available/Equipped UI 상태 갱신
         for (int i = 0; i < SkillManager.Instance.EquippedSkills.Count; i++)
         {
-            Skill equipped = SkillManager.Instance.EquippedSkills[i];
+            // Skill equipped = SkillManager.Instance.EquippedSkills[i];
 
-            if (equipped != null)
+            Skill equipped = new Skill();
+            equipped.Index = SkillManager.Instance.EquippedSkills[i] != null ? SkillManager.Instance.EquippedSkills[i].Index : -1;
+            equipped.SkillData = SkillManager.Instance.EquippedSkills[i]?.SkillData.Clone();
+            
+            if (equipped.Index != -1)
             {
                 // AvailableSkills에서 동일한 스킬은 비활성화
                 if (equipped.Index >= 0 && equipped.Index < AvailableSkills.Count)
@@ -79,8 +84,11 @@ public class SkillUIManager : Popup
 
     public void EquipSkill(int skillIndex)
     {
-        Skill skillToEquip = AvailableSkills[skillIndex].Skill;
-
+        // Skill skillToEquip = AvailableSkills[skillIndex].Skill;
+        Skill skillToEquip = new Skill();
+        skillToEquip.Index = AvailableSkills[skillIndex].Skill.Index;
+        skillToEquip.SkillData = AvailableSkills[skillIndex].Skill.SkillData.Clone();
+        
         for (int i = 0; i < SkillManager.Instance.EquippedSkills.Count; i++)
         {
             if (!SkillManager.Instance.EquippedSkillsBool[i]) // 빈 슬롯

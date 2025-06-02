@@ -26,7 +26,7 @@ public class UI_SkillInspector : Singleton<UI_SkillInspector>
         SkillNameText.text = skill.SkillData.SkillName;
         SkillEffectText.text = $"{skill.SkillData.SkillDamage}배\n\n";
         SkillEffectText.text += $"{Mathf.RoundToInt(skill.SkillData.SkillRange) * 100}%\n\n";
-        SkillEffectText.text += $"{skill.SkillData.CoolTime}초";
+        SkillEffectText.text += $"{skill.SkillData.CoolTime:F2}초";
         SkillIcon.sprite = skill.SkillData.Icon;
         _isHovered = true;
         UpdateInspectorPanelPosition();

@@ -103,8 +103,8 @@ public class UI_ItemInspector : Singleton<UI_ItemInspector>
         {
             ItemNameText.text = "스킬칩";
             StatNameText.text = "스킬범위증가\n쿨타임감소";
-            StatValueText.text = $"{Mathf.RoundToInt(item.SkillRange * 100)}\n";
-            StatValueText.text += string.Format("{0:N2}", item.ReduceCooldown);
+            StatValueText.text = $"{Mathf.RoundToInt(item.SkillRange )}\n";
+            StatValueText.text += $"{100 - Mathf.RoundToInt(item.ReduceCooldown * 100)}%" ;
             Debug.Log($"Cooldown = {item.ReduceCooldown}");
         }
 
