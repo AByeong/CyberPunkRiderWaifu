@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public enum SlotType // 인스펙터에서 설정
     Chip
 }
 
-public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public SlotType SlotType;
 
@@ -19,14 +20,7 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
     public bool HasItem => Item != null;
 
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-
-    }
+    
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -40,7 +34,18 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     {
 
     }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (HasItem == false) return;
+        Debug.Log("포인트엔텅ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+        UI_ItemInspector.Instance.Hovered(Item);
 
+    }
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("나각ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ");
+        UI_ItemInspector.Instance.HoverExit();
+    }
 
     public virtual void OnDrop(PointerEventData eventData)
     {
@@ -104,4 +109,5 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
             IconImageUI.sprite = Item.Data.Icon;
         }
     }
+
 }

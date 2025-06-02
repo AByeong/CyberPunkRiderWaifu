@@ -12,6 +12,7 @@ public class Skill
     public Skill()
     {
         Index = -1;
+        _cooldownTimer = 100;
     }
     public void UpdateCooldown(float deltaTime)
     {

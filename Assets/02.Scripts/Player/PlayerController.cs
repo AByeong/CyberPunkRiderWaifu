@@ -19,7 +19,8 @@ namespace JY
         private const float GroundAcceleration = 20f;
         private const float GroundDeceleration = 25f;
         public float MaxAirAttackGraceTime = 0.3f;
-
+        
+        public EDamageType DamageType;
         public float MaxForwardSpeed;
         public float AttackPower;
         public float MaxHealth;
@@ -83,6 +84,11 @@ namespace JY
         private readonly int _hashSkill8 = Animator.StringToHash("Skill8");
         private readonly int _hashStateTime = Animator.StringToHash("StateTime");
         private readonly int _hashTimeoutToIdle = Animator.StringToHash("TimeoutToIdle");
+        private readonly int _hashAirCombo1 = Animator.StringToHash("AirCombo1");
+        private readonly int _hashAirCombo2 = Animator.StringToHash("AirCombo2");
+        private readonly int _hashAirCombo3 = Animator.StringToHash("AirCombo3");
+        private readonly int _hashAirCombo4 = Animator.StringToHash("AirCombo4");
+        
         private readonly int _hashUpper = Animator.StringToHash("Upper");
         private readonly Collider[] _overlapResult = new Collider[8];
         private float _airAttackGraceTime;
@@ -336,6 +342,11 @@ namespace JY
 
             _animator.SetBool(_hashGrounded, _groundCheck.IsGrounded);
         }
+
+        public void SetDamageType(int damageType)
+        {
+            DamageType = (EDamageType)damageType;
+        }
         private void CheckIsAirCombo()
         {
 
@@ -385,6 +396,10 @@ namespace JY
             equipped |= _nextStateInfo.shortNameHash == _hashEllenCombo4 || _currentStateInfo.shortNameHash == _hashEllenCombo4;
             // 올려치기 공격
             equipped |= _nextStateInfo.shortNameHash == _hashUpper || _currentStateInfo.shortNameHash == _hashUpper;
+            equipped |= _nextStateInfo.shortNameHash == _hashAirCombo1 || _currentStateInfo.shortNameHash == _hashAirCombo1;
+            equipped |= _nextStateInfo.shortNameHash == _hashAirCombo2 || _currentStateInfo.shortNameHash == _hashAirCombo2;
+            equipped |= _nextStateInfo.shortNameHash == _hashAirCombo3 || _currentStateInfo.shortNameHash == _hashAirCombo3;
+            equipped |= _nextStateInfo.shortNameHash == _hashAirCombo4 || _currentStateInfo.shortNameHash == _hashAirCombo4;
 
 
             // 스킬 상태일 때 
@@ -396,7 +411,6 @@ namespace JY
             equipped |= _nextStateInfo.shortNameHash == _hashSkill6 || _currentStateInfo.shortNameHash == _hashSkill6;
             equipped |= _nextStateInfo.shortNameHash == _hashSkill7 || _currentStateInfo.shortNameHash == _hashSkill7;
             equipped |= _nextStateInfo.shortNameHash == _hashSkill8 || _currentStateInfo.shortNameHash == _hashSkill8;
-
             // 구르기 중일 때
             equipped |= _nextStateInfo.shortNameHash == _hashRoll || _currentStateInfo.shortNameHash == _hashRoll;
 

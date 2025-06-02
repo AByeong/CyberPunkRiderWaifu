@@ -10,7 +10,7 @@ public class PlayerSkill : MonoBehaviour
     private int _keyIndex = -1;
     private PlayerController _player;
     private StretchColliderOnly _stretchColliderOnly;
-
+    public GameObject ActingPlayer;
     [Header("Ultimate ")] public PlayableDirector UltimatePD;
     public TimelineAsset UltimateTL;
     private void Start()
@@ -18,6 +18,8 @@ public class PlayerSkill : MonoBehaviour
         _input = GetComponent<PlayerInput>();
         _player = GetComponent<PlayerController>();
         _stretchColliderOnly = GetComponentInChildren<StretchColliderOnly>();
+
+        UltimatePD.stopped += OnTimelineFinished;
     }
 
     private void Update()
@@ -78,10 +80,23 @@ public class PlayerSkill : MonoBehaviour
         }
     }
 
+    private void OnTimelineFinished(PlayableDirector pd)
+    {
+        if (pd == UltimatePD)
+        {
+            Debug.Log("Timeline has ended!");
+            // 여기에 컷씬 종료 후 실행할 코드 작성
+            _input.GainControl();
+            // _input.playerControllerInputBlocked = false;
+            ActingPlayer.transform.localPosition = Vector3.zero;
+        }
+    }
+
     public void Ultimate()
     {
-        Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!@##@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        _input.ReleaseControl();
+        _input.playerControllerInputBlocked = true;
         UltimatePD.Play(UltimateTL);
-        _input.GainControl();
+       
     }
 }

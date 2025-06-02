@@ -41,8 +41,8 @@ ModelImporter:
       name: attack05
       takeName: attack05
       internalID: 5457690334268165388
-      firstFrame: 0
-      lastFrame: 28
+      firstFrame: 3.1
+      lastFrame: 23.5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -61,7 +61,56 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000000000001000000010000000100000000000000
       curves: []
-      events: []
+      events:
+      - time: 0.22216608
+        functionName: EnableAttackColliders
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.3611392
+        functionName: InstantiateEffect
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b8e9d17796fd47c46976ba2f17284603, type: 3}
+        floatParameter: 0
+        intParameter: 13
+        messageOptions: 0
+      - time: 0.50973684
+        functionName: InstantiateEffect
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b8e9d17796fd47c46976ba2f17284603, type: 3}
+        floatParameter: 0
+        intParameter: 14
+        messageOptions: 0
+      - time: 0.5798225
+        functionName: DisableAttackColliders
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6815879
+        functionName: EnableAttackColliders
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
+        floatParameter: 15
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7919624
+        functionName: InstantiateEffect
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: b8e9d17796fd47c46976ba2f17284603, type: 3}
+        floatParameter: 0
+        intParameter: 15
+        messageOptions: 0
+      - time: 0.8922652
+        functionName: DisableAttackColliders
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 2a111bbca0e43bc43bdce01a65150b5e, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

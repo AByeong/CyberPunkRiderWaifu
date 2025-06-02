@@ -23,11 +23,19 @@ namespace JY
         protected bool _isSkill4;
         protected bool _isUltimate;
         protected Vector2 _movement;
-        public Vector2 MoveInput =>
-            // if (playerControllerInputBlocked || _isExternalInputBlocked)
-            //     return Vector2.zero;
-            _movement;
 
+        public Vector2 MoveInput
+        {
+            get
+            {
+                if (playerControllerInputBlocked || _isExternalInputBlocked)
+                {
+                    return Vector2.zero;
+                }
+
+                return _movement;
+            }
+        }
         public bool JumpInput => _isJump && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
         public bool Attack => _isAttack && !playerControllerInputBlocked && !_isExternalInputBlocked;
@@ -45,7 +53,7 @@ namespace JY
 
         public bool Skill4 => _isSkill4 && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
-        public bool Ultimate => _isUltimate && !playerControllerInputBlocked && !_isExternalInputBlocked;
+   public bool Ultimate => _isUltimate && !playerControllerInputBlocked && !_isExternalInputBlocked;
 
         private void Update()
         {

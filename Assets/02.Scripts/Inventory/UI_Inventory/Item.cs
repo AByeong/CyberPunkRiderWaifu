@@ -1,16 +1,39 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+public class CubeStat
+{
+    public StatType StatType;
+    public float Value;
+
+    public CubeStat(StatType statType, float value)
+    {
+        StatType = statType;
+        Value = value;
+    }
+}
 public class Item
 {
     public readonly ItemBaseDataSO Data;
 
     public bool IsEquipped;
-    
+
     private int _slotIndex = -1;
     private SlotType _slotType = SlotType.Inventory;
     public int SlotIndex => _slotIndex;
     public SlotType SlotType => _slotType;
+
+    public EquipmentType EquipmentType 
+    {
+        get {
+            if (Data is EquipmentDataSO equipmentData)
+                return equipmentData.EquipmentType;
+            return EquipmentType.Weapon; // 기본값
+        }
+    }
+        
 
     public void SetSlotIndex(SlotType slotType, int slotIndex)
     {
@@ -39,9 +62,31 @@ public class Item
     public float CritDamage = 0.0f;
 
     public SetItemType SetItemType;
+
+    //public Dictionary<StatType, float> CubeStats = new Dictionary<StatType, float>();
+    public List<CubeStat> CubeStats = new List<CubeStat>();
+
     // Chip 옵션
-    public float SkillRange = 0.0f;
-    public float ReduceCooldown = 0.0f;
+    public float SkillRange
+    {
+        get
+        {
+            if(Data is ChipDataSO chipData)
+                return chipData.SkillRange;
+            return 0.0f; // 기본값
+        }
+        set { }
+    }
+    public float ReduceCooldown
+    {
+        get
+        {
+            if (Data is ChipDataSO chipData)
+                return chipData.ReduceCooldown;
+            return 0.0f; // 기본값
+        }
+        set { }
+    }
 
     public Item(ItemBaseDataSO data,  ItemSaveData saveData = null)
     {
