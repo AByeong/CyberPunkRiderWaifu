@@ -10,8 +10,12 @@ public class StageMainUI : MonoBehaviour
     public Icon[] ItemIcons;
     public Icon finisherIcon;
 
-    public TextMeshProUGUI KillTrackingText;
-
+    [Header("퀘스트 바")]
+    public QuestBar NormalQuestBar;
+    public QuestBar EliteQuestBar;
+    public QuestBar BossQuestBar;
+    public QuestBar ElevatorQuestBar;
+    
     public void StageMainInit()
     {
         Debug.Log("MainUI Init");
@@ -25,6 +29,13 @@ public class StageMainUI : MonoBehaviour
         {
             SkillIconSet(i);
         }
+        
+        NormalQuestBar.gameObject.SetActive(false);
+        EliteQuestBar.gameObject.SetActive(false);
+        BossQuestBar.gameObject.SetActive(false);
+        ElevatorQuestBar.gameObject.SetActive(false);
+        
+        
     }
 
     private void SkillIconSet(int index)
@@ -54,12 +65,29 @@ public class StageMainUI : MonoBehaviour
         finisherIcon.StartCooltime();
     }
 
-    public void RefreshKillTracking(string message)
+    public void RefreshKillTracking()
     {
         
-        KillTrackingText.text = message;
-        ProgressSlider.value = DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total) / (float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
-        finisherIcon.StackChange(DeliveryManager.Instance.KillTracker.TotalKillCount);
+        if (NormalQuestBar.gameObject.activeInHierarchy)
+        {
+            NormalQuestBar.CurrentKill.text = DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal.ToString();
+        }
+
+        if (EliteQuestBar.gameObject.activeInHierarchy)
+        {
+            EliteQuestBar.CurrentKill.text = DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite.ToString();
+        }
+
+        if (BossQuestBar.gameObject.activeInHierarchy)
+        {
+            BossQuestBar.CurrentKill.text = DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss.ToString();
+        }
+
+        if (DeliveryManager.Instance.KillTracker.IsMissionCompleted())
+        {
+            ElevatorQuestBar.gameObject.SetActive(true);
+        }
+       
 
     }
 }

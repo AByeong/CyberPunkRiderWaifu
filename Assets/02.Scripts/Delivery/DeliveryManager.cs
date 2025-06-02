@@ -13,6 +13,9 @@ public class DeliveryManager : Singleton<DeliveryManager>
     
     
     
+    
+    
+    
     protected override void Awake()
     {
         base.Awake();
@@ -52,8 +55,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
     {
         //현재는 바로 바뀌지만 나중에는 완료와 전환 사이에 넣을 수 있다.
         OnCompleteSector?.Invoke();
-        UIManager.Instance.StageMainUI.KillTrackingText.color = Color.cyan;
-        
+        UIManager.Instance.StageMainUI.RefreshKillTracking();
         //LoadNextSection();
     }
 
