@@ -51,58 +51,58 @@ public class UI_ItemInspector : Singleton<UI_ItemInspector>
                 switch (cubeStat.StatType)
                 {
                     case StatType.MaxHealth:
-                        CubeStatText.text += $"ÃÖ´ë»ı¸í·Â {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
+                        CubeStatText.text += $"ìµœëŒ€ìƒëª…ë ¥ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                     case StatType.AttackPower:
-                        CubeStatText.text += $"°ø°İ·Â {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
+                        CubeStatText.text += $"ê³µê²©ë ¥ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                     case StatType.Defense:
-                        CubeStatText.text += $"¹æ¾î·Â {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
+                        CubeStatText.text += $"ë°©ì–´ë ¥ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                     case StatType.Speed:
-                        CubeStatText.text += $"ÀÌµ¿¼Óµµ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
+                        CubeStatText.text += $"ì´ë™ì†ë„ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                     case StatType.AttackSpeed:
-                        CubeStatText.text += $"°ø°İ¼Óµµ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
+                        CubeStatText.text += $"ê³µê²©ì†ë„ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                     case StatType.CritChance:
-                        CubeStatText.text += $"Ä¡¸íÅ¸ È®·ü {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
+                        CubeStatText.text += $"ì¹˜ëª…íƒ€ í™•ë¥  {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                     case StatType.CritDamage:
-                        CubeStatText.text += $"Ä¡¸íÅ¸ ¹èÀ² {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
+                        CubeStatText.text += $"ì¹˜ëª…íƒ€ ë°°ìœ¨ {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                 }
-                Debug.Log("UI_CubeStattext È£Ãâ¤·¤·¤·¤·¤·¤·¤·¤·¤·");
+                Debug.Log("UI_CubeStattext í˜¸ì¶œã…‡ã…‡ã…‡ã…‡ã…‡ã…‡ã…‡ã…‡ã…‡");
             }
             switch (equipData.EquipmentType)
             {
                 case EquipmentType.Weapon:
-                    ItemNameText.text = "¹«±â";
-                    StatNameText.text = "°ø°İ·Â\n°ø°İ¼Óµµ\nÄ¡¸íÅ¸ È®·ü\nÄ¡¸íÅ¸ ¹èÀ²";
+                    ItemNameText.text = "ë¬´ê¸°";
+                    StatNameText.text = "ê³µê²©ë ¥\nê³µê²©ì†ë„\nì¹˜ëª…íƒ€ í™•ë¥ \nì¹˜ëª…íƒ€ ë°°ìœ¨";
                     StatValueText.text = $"{(int)item.AttackPower}\n{Mathf.RoundToInt(item.AttackSpeed * 100)}\n{Mathf.RoundToInt(item.CritChance * 100)}\n{Mathf.RoundToInt(item.CritDamage * 100)}";
-                    // TODO : CubeStat ÀÛ¼º, ¼¼Æ® È¿°ú ÀÛ¼º
+                    // TODO : CubeStat ì‘ì„±, ì„¸íŠ¸ íš¨ê³¼ ì‘ì„±
                     break;
                 case EquipmentType.Armor:
-                    ItemNameText.text = "°©¿Ê";
-                    StatNameText.text = "¹æ¾î·Â";
+                    ItemNameText.text = "ê°‘ì˜·";
+                    StatNameText.text = "ë°©ì–´ë ¥";
                     StatValueText.text = $"{Mathf.RoundToInt(item.Defense * 100)}";
                     break;
                 case EquipmentType.Head:
-                    ItemNameText.text = "Åõ±¸";
-                    StatNameText.text = "ÃÖ´ë»ı¸í·Â";
+                    ItemNameText.text = "íˆ¬êµ¬";
+                    StatNameText.text = "ìµœëŒ€ìƒëª…ë ¥";
                     StatValueText.text = $"{(int)item.MaxHealth}";
                     break;
                 case EquipmentType.Boots:
-                    ItemNameText.text = "½Å¹ß";
-                    StatNameText.text = "ÀÌµ¿¼Óµµ";
+                    ItemNameText.text = "ì‹ ë°œ";
+                    StatNameText.text = "ì´ë™ì†ë„";
                     StatValueText.text = $"{(int)item.Speed}";
                     break;
             }
         }
         else if (item.Data is ChipDataSO chipData)
         {
-            ItemNameText.text = "½ºÅ³Ä¨";
-            StatNameText.text = "½ºÅ³¹üÀ§Áõ°¡\nÄğÅ¸ÀÓ°¨¼Ò";
+            ItemNameText.text = "ìŠ¤í‚¬ì¹©";
+            StatNameText.text = "ìŠ¤í‚¬ë²”ìœ„ì¦ê°€\nì¿¨íƒ€ì„ê°ì†Œ";
             StatValueText.text = $"{Mathf.RoundToInt(item.SkillRange * 100)}\n";
             StatValueText.text += string.Format("{0:N2}", item.ReduceCooldown);
             Debug.Log($"Cooldown = {item.ReduceCooldown}");
@@ -143,7 +143,7 @@ public class UI_ItemInspector : Singleton<UI_ItemInspector>
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRectTransform,
              Input.mousePosition, null, out anchoredPos);
 
-        // ±âº» À§Ä¡¿¡ ¿ÀÇÁ¼Â Ãß°¡ (¸¶¿ì½º Æ÷ÀÎÅÍ¿¡¼­ 40, 40¸¸Å­ ¶³¾î¶ß¸²)
+        // ê¸°ë³¸ ìœ„ì¹˜ì— ì˜¤í”„ì…‹ ì¶”ê°€ (ë§ˆìš°ìŠ¤ í¬ì¸í„°ì—ì„œ 40, 40ë§Œí¼ ë–¨ì–´ëœ¨ë¦¼)
         Vector2 finalPos = anchoredPos + new Vector2(-150, 0);
 
         _inspectorPanelRectTransform.anchoredPosition = finalPos;

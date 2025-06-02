@@ -1,5 +1,11 @@
 using System;
 using UnityEngine;
+
+public enum SkillRange
+{
+    
+}
+
 [Serializable]
 public class SkillData
 {
@@ -14,4 +20,5 @@ public class SkillData
     public float SkillRange;
     public float SkillDamage;
     public Sprite Icon;
+    public string SkillDescription;
 }
