@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DeliveryManager : Singleton<DeliveryManager>
@@ -10,6 +11,21 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public int CompleteSector;
     public StageManager StageManager;
     public Action OnCompleteSector;
+
+    private int _ultimateGaze;
+    public int UltimateGaze
+    {
+        get => _ultimateGaze;
+        set
+        {
+            _ultimateGaze = Mathf.Min(value, TargetUltimate);
+            UIManager.Instance.StageMainUI.RefreshUltimateGaze();
+        }
+        // 넘으면 자동으로 제한
+    }
+
+    public int TargetUltimate = 100;
+    
     
     
     
@@ -36,7 +52,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
     public void StartDelivery()
     {
         
-        UIManager.Instance.UIInit();//UI 초기화
+        
         
         KillTracker.MissionKillCount = CurrentMissionData.DeliverystageData[CurrentSector].TargetKillCount;
         CompleteSector = CurrentMissionData.DeliverystageData.Count;
@@ -45,6 +61,9 @@ public class DeliveryManager : Singleton<DeliveryManager>
 
         
         SoundManager.Instance.PlayBGM(SoundType.BGM_DeliveryStage);
+        UltimateGaze = 0;
+        
+        UIManager.Instance.UIInit();//UI 초기화
         Debug.Log("Starting delivery");
     }
 
@@ -52,8 +71,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
     {
         //현재는 바로 바뀌지만 나중에는 완료와 전환 사이에 넣을 수 있다.
         OnCompleteSector?.Invoke();
-        UIManager.Instance.StageMainUI.KillTrackingText.color = Color.cyan;
         
+        
+        UIManager.Instance.StageMainUI.ElevatorQuestBar.Appear();
+       
         //LoadNextSection();
     }
 
@@ -62,8 +83,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
     {
         
         
-        
+        UIManager.Instance.StageMainUI.QuestBarClear();
+
         CurrentSector++;
+        UIManager.Instance.StageMainUI.ActivateStage(CurrentSector);
         
         Debug.Log($"클리어까지 {CompleteSector - CurrentSector}만큼 남았습니다");
         
@@ -81,6 +104,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
             KillTracker.KillTrakerInit();
             
             StageManager.MoveNextStage();
+            UIManager.Instance.StageMainUI.Refresh();
 
 
         }

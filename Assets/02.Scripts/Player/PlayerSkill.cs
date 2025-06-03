@@ -89,14 +89,20 @@ public class PlayerSkill : MonoBehaviour
             _input.GainControl();
             // _input.playerControllerInputBlocked = false;
             ActingPlayer.transform.localPosition = Vector3.zero;
+            DeliveryManager.Instance.UltimateGaze = 0;
+
         }
     }
 
     public void Ultimate()
     {
-        _input.ReleaseControl();
-        _input.playerControllerInputBlocked = true;
-        UltimatePD.Play(UltimateTL);
-       
+        if (DeliveryManager.Instance.UltimateGaze == DeliveryManager.Instance.TargetUltimate)
+        {
+            _input.ReleaseControl();
+            _input.playerControllerInputBlocked = true;
+            UltimatePD.Play(UltimateTL);
+
+        }
+
     }
 }

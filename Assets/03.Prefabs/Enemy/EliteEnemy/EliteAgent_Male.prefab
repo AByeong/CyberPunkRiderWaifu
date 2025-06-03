@@ -235,23 +235,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eff04b30f49d24341bb86f4910725489, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaterialName: Paperman
   _enemyData: {fileID: 11400000, guid: 0c909c876a354c54aa25bce7c2020b77, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
   DamagePopupPosition: {fileID: 4391874345956298896}
   DamagePopup: {fileID: 2101629379635105609, guid: bf0f131c53c73e84a811f58eb7818f01, type: 3}
   WorldSpaceCanvas: {fileID: 0}
-  targetMaterialName: Paperman
+  MaterialName: ' Paperman'
+  targetMaterialNames:
+  - Paperman
   mainColorPropertyName: _Color
   highlightVValue: 2
   normalVValue: 0.8
   hitFlashEffectDuration: 0.3
-  _attackType: 0
-  OriginalValue: 0.3
-  IsAttacking: 0
   AttackTimer: 0
   AttackTypeNumber: 3
+  _attackType: 0
   SummonObject: {fileID: 1023497570757360046, guid: 63d6a4f8c6bf69f43b580baee774afd7, type: 3}
   SummonTransform: {fileID: 6671257276421727992}
   SummonTime: 5

@@ -58,7 +58,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_UseGeometry: 0
+  m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
   m_IgnoreNavMeshAgent: 1
@@ -114,11 +114,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fdd19788e6eabb40aa5dddc437bda3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FencePrefab: {fileID: 6972638511155213023, guid: 0d2cdbf9bf5f95949b6bad656a9d51f7, type: 3}
-  FenceCornerPrefab: {fileID: 3256509001040247792, guid: a5df200f74f488047971f72e3016d910, type: 3}
-  FenceDoorPrefab: {fileID: 5586760097463135165, guid: 24e656e8bf74803439cd12e7c237a68c, type: 3}
-  PathPrefab: {fileID: 1806687383309366, guid: a6ebefc6379f8ee4b896ab380b29fc0a, type: 3}
-  FloorPrefab: {fileID: 1701271045096226, guid: 319654c2e964dd344aad68612d1d64dd, type: 3}
+  FencePrefab: {fileID: 5147659195205420275, guid: e73ec8c550fb9194c9326f586fcdf8d6, type: 3}
+  FencevariationPrefabs:
+  - {fileID: 5147659195205420275, guid: 164a31fb9298f5f40bc48c9ecef03a3f, type: 3}
+  - {fileID: 5147659195205420275, guid: 5a793f681894bce4db5bf99acf71337e, type: 3}
+  - {fileID: 5147659195205420275, guid: 0a17ee0ec19e6e74dbf02babaffa0475, type: 3}
+  FenceCornerPrefab: {fileID: 7037435453621607695, guid: b0cd7ef229b16f04da303bfe9c3528c8, type: 3}
+  FenceDoorPrefab: {fileID: 6124882537594497113, guid: 1e6d76dc228033f429977445757a4e91, type: 3}
+  PathPrefab: {fileID: 6277829624193887770, guid: 4529125e80b9ee2448242505bc23c0bb, type: 3}
+  FloorPrefab: {fileID: 7094020945443663886, guid: 1813e2195c342094387ea5f3d32995b3, type: 3}
+  CeilingPrefab: {fileID: 2192106312272183185, guid: 206f704b5132d2a4aa02796a432f787f, type: 3}
   PropPrefabs:
   - {fileID: 73112474352544496, guid: 1556db079e1443b48bb0eb921a397f2e, type: 3}
   - {fileID: 8186112790766809357, guid: 6d3829cfb3845f045b860472d63d80fc, type: 3}
@@ -140,6 +145,7 @@ MonoBehaviour:
   maskMargin: 2
   pathProximityRadius: 5
   PatternDensity: 0.3
+  WallVariationChance: 0.2
   NormalSpawnerCount: 1
   Elite0SpanwerCount: 1
   Elite1SpanwerCount: 1

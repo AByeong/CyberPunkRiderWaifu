@@ -62,6 +62,20 @@ public class BossPhase1 : EliteEnemy
 
     }
 
+    private void Start()
+    {
+        UIManager.Instance.StageMainUI.RefreshProgressbar(CurrentHealthPoint, this.EnemyData.HealthPoint);
+
+    }
+
+
+    public override void TakeDamage(Damage damage)
+    {
+        base.TakeDamage(damage);
+        UIManager.Instance.StageMainUI.RefreshProgressbar(CurrentHealthPoint, this.EnemyData.HealthPoint);
+
+    }
+
     protected override void Update()
     {
         base.Update();

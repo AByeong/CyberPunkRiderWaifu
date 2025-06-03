@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
-    public string MaterialName; // 이 변수는 이제 단일 머티리얼 이름이 아닌, targetMaterialNames에 추가될 기본값으로 활용
     [SerializeField]
     private EnemyDataSO _enemyData;
     public ObjectPool Pool;
@@ -63,7 +63,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         WorldSpaceCanvas = GameManager.Instance.WorldCanvas;
     }
 
-    private async void Start()
+    protected virtual async void Start()
     {
         _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
         _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
@@ -95,7 +95,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         // CacheRenderersAndInitialColors는 Start 또는 Initialize에서 이미 호출되었다고 가정합니다.
         // 하지만 혹시 모를 경우를 대비하여 다시 호출할 수 있습니다. (성능에 영향)
-        // CacheRenderersAndInitialColors(); 
+        // CacheRenderersAndInitialColors();
 
         if (_targetedRenderersData.Count == 0) // 캐시된 렌더러 데이터가 없으면 경고 후 종료
         {
@@ -128,6 +128,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         PlayHitParticle();
         Debug.Log($"{this.name}이 {damage.DamageValue}만큼 데미지를 ㅣㅇㅂ음");
+        if(damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
         Vector3 worldPos = DamagePopupPosition.position;
 
@@ -135,6 +136,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         GameObject popup = Instantiate(DamagePopup, GameManager.Instance.WorldCanvas.transform);
         popup.transform.position = worldPos;
         popup.GetComponentInChildren<TypingEffect>().Typing(damage.DamageValue.ToString());
+    
         // 선택: 파괴 또는 애니메이션
         Destroy(popup, 1.5f);
     }
@@ -158,6 +160,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     private Coroutine _hitFlashCoroutine;
 
     [Header("Hit Flash Material Effect")]
+    public string MaterialName; // 이 변수는 이제 단일 머티리얼 이름이 아닌, targetMaterialNames에 추가될 기본값으로 활용
+
     [Tooltip("효과를 적용할 머티리얼의 이름 목록. 각 렌더러의 머티리얼 중 이 목록에 포함된 이름(contains)을 가진 머티리얼에 효과 적용.")]
     public List<string> targetMaterialNames = new List<string> { "KyleRobot" }; // 기본값 예시
 
