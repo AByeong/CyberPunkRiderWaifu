@@ -49,6 +49,14 @@ public class SkillManager : Singleton<SkillManager>
         }
     }
 
+    public void AllSkillCooltimeZero()
+    {
+        foreach (Skill skill in EquippedSkills)
+        {
+            skill.ClearCooltime();
+        }
+    }
+
     public bool UseSkill(KeyCode key, out int keyNumber)
     {
         keyNumber = key switch

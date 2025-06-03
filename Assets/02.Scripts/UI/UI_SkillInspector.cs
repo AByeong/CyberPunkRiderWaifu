@@ -47,8 +47,5 @@ public class UI_SkillInspector : Singleton<UI_SkillInspector>
         Vector2 finalPos = anchoredPos + new Vector2(220, -220);
 
         _inspectorPanelRectTransform.anchoredPosition = finalPos;
-        Debug.Log("ffffffffffffffffffffffffffffff");
     }
-
-
 }

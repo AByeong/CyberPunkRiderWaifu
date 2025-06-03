@@ -14,46 +14,34 @@ public class UI_EquipSkill : UI_Skill
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void TrySetChipOption(ChipDataSO chipDataSO)
+
+    public void RefreshChipEffects()
     {
-        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
+        if (SkillBase == null)
+        {
+            return;
+        }
 
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime *= chipDataSO.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange *= chipDataSO.SkillRange;
-    }
+        // 1. 스킬을 초기 상태로 리셋
+        ResetBaseSkill(SkillBase);
 
-    public void TryClearChipOption(ChipDataSO chipDataSO)
-    {
-        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
-
-        SkillManager.Instance.EquippedSkills[Index].SkillData.CoolTime /= chipDataSO.ReduceCooldown;
-        SkillManager.Instance.EquippedSkills[Index].SkillData.SkillRange /= chipDataSO.SkillRange;
+        // 2. 모든 장착된 칩의 효과를 누적 적용
+        foreach (UI_ChipSlot chipSlot in ChipSlots)
+        {
+            if (chipSlot.Item != null && chipSlot.Item.Data is ChipDataSO chipData)
+            {
+                Skill.SkillData.CoolTime *= chipData.ReduceCooldown;
+                Skill.SkillData.SkillRange += chipData.SkillRange;
+            }
+        }
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)
     {
         base.SetSkill(skillToEquip, isActive);
-        foreach(UI_ChipSlot chipSlot in ChipSlots)
-        {
-            if (chipSlot.HasItem)
-            {
-                TrySetChipOption(chipSlot.Item.Data as ChipDataSO);
-            }
-        }
+        RefreshChipEffects();
     }
-
-    public override void RemoveSkill()
-    {
-        base.RemoveSkill();
-
-        foreach(UI_ChipSlot chipSlot in ChipSlots)
-        {
-            if (chipSlot.HasItem)
-            {
-                TryClearChipOption(chipSlot.Item.Data as ChipDataSO);
-            }
-        }
-    }
+    
     public override void OnPointerEnter(PointerEventData eventData)
     {
         UI_SkillInspector.Instance.Hovered(Skill);

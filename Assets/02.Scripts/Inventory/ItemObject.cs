@@ -9,16 +9,46 @@ public class ItemObject : MonoBehaviour
     private ParticleSystem _particleSystem;
     private AudioSource _audioSource;
     public ItemRarity Rarity;
+    public DropItemType DropType;
+
+    private int _gold = 0;
+    private bool _consumableItem1 = false;
+    private bool _consumableItem2 = false;
+    private bool _consumableItem3 = false;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") == true)
         {
-            // Equipment, Chip, Etc 일 경우 (Etc는 추가될 소비아이템) -> 소비아이템 인벤에 들어오는 형식 아니면 추후 수정
             if(item == null)
                 Debug.LogError("Item이 Null임");
-
-            if (InventoryManager.Instance.Add(item) == true)
+            // Equipment, Chip, Etc 일 경우 (Etc는 추가될 소비아이템) -> 소비아이템 인벤에 들어오는 형식 아니면 추후 수정
+            if (DropType == DropItemType.Etc)
             {
+                
+                if (_consumableItem1 == true)
+                {
+                    
+                }
+                else if (_consumableItem2 == true)
+                {
+                    
+                }
+                else if (_consumableItem3 == true)
+                {
+                    
+                }
+            }
+            else if (DropType == DropItemType.Gold)
+            {
+                if (_gold != 0)
+                {
+                    CurrencyManager.Instance.Add(CurrencyType.Gold, _gold);
+                }
+            }
+            else
+            {
+                InventoryManager.Instance.Add(item);
+            }
 
                 // 파티클과 사운드 중지
                 if (_particleSystem != null)
@@ -30,7 +60,6 @@ public class ItemObject : MonoBehaviour
             
                 //InventoryManager.Instance.
                 // Gold는 추후 UI 생기면 거기에 +
-            }
         }
     }
     private void Start()
@@ -40,12 +69,48 @@ public class ItemObject : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public void Init()
+    public void Init(DropItemType type)
     {
+        DropType = type;
         gameObject.SetActive(true);
-        CreateRandomItem();
+        if (DropType == DropItemType.Item)
+        {
+            CreateRandomItem();    
+        }
+
+        else
+        {
+            _gold = 0;
+            _consumableItem1 = false;
+            _consumableItem2 = false;
+            _consumableItem3 = false;
+            CreateEtcItem();
+        }
+
         //_particleSystem.Play(true);
         //_audioSource.Play();
+    }
+
+    private void CreateEtcItem()
+    {
+        int randomNumber = UnityEngine.Random.Range(0, 10);
+
+        if (randomNumber < 2)
+        {
+            _gold = UnityEngine.Random.Range(200, 400);
+        }
+        else if (randomNumber < 4)
+        {
+            _consumableItem1 = true;
+        }
+        else if (randomNumber < 6)
+        {
+            _consumableItem2 = true;
+        }
+        else if (randomNumber < 8)
+        {
+            _consumableItem3 = true;
+        }
     }
 
     private void CreateRandomItem()

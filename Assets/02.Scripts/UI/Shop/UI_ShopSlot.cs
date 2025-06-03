@@ -2,8 +2,9 @@ using System;
 using TMPro;
 using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UI_ShopSlot : MonoBehaviour
+public class UI_ShopSlot : MonoBehaviour, IDropHandler
 {
     public EShopSlotType SlotType;
     public Button SlotButton;
@@ -27,6 +28,12 @@ public class UI_ShopSlot : MonoBehaviour
         Price = 1000;
     }
 
+    public void SellItem(Item item)
+    {
+        CurrencyManager.Instance.Add(CurrencyType.Gold, 1000);
+        InventoryManager.Instance.Remove(item);
+        Debug.Log($"골드 : {CurrencyManager.Instance.Gold}");
+    }
     public void OnSellItems()
     {
         if (CurrencyManager.Instance.Gold < Price)
@@ -61,17 +68,37 @@ public class UI_ShopSlot : MonoBehaviour
                 break;
             case EShopSlotType.Item1:
                 // 소모아이템 1 추기
+                ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.HPRecovery, 1);
                 break;
             case EShopSlotType.Item2:
                 // 소모아이템 2 추가
+                ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.UltCooldown, 1);
+                break;
+            case EShopSlotType.Item3:
+                ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.AllSkillCooldown, 1);
                 break;
         }
+        CurrencyManager.Instance.TryConsume(CurrencyType.Gold, Price);
+        Price *= 2;
+        PriceText.text = Price.ToString();
+        if (item == null) return;
 
-        if (InventoryManager.Instance.Add(item) == true)
+        InventoryManager.Instance.Add(item);
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (SlotType != EShopSlotType.Sell) return;
+        
+        UI_InventorySlot draggedSlot = eventData.pointerDrag?.GetComponent<UI_InventorySlot>();
+
+        if (draggedSlot != null)
         {
-            Price *= 2;
-            PriceText.text = Price.ToString();
-            CurrencyManager.Instance.TryConsume(CurrencyType.Gold, Price);
+            if(draggedSlot.HasItem == true)
+            {
+                draggedSlot.IsSold = true;
+                SellItem(draggedSlot.Item);
+            }
         }
     }
 }

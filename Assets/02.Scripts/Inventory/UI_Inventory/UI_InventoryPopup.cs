@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using JY;
+using TMPro;
 
 public class UI_InventoryPopup : Popup
 {
@@ -17,7 +18,8 @@ public class UI_InventoryPopup : Popup
     
     public UI_InventorySlot DragSlot;
     private UI_InventorySlot _fromSlot;
-    
+
+    public TextMeshProUGUI GoldText;
     
     private bool _isDrag = false;
     private bool _isSwapEquipment = false;
@@ -321,5 +323,7 @@ public class UI_InventoryPopup : Popup
             _slots[emptyIndex].SetItem(item);
             item.SetSlotIndex(SlotType.Inventory, emptyIndex);
         }
+
+        GoldText.text = $"{CurrencyManager.Instance.Gold.ToString()}골드";
     }
 }
