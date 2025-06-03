@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EliteDeadState : EliteBaseState
@@ -17,10 +18,6 @@ public class EliteDeadState : EliteBaseState
 
         switch (Owner.EnemyData.EnemyType)
         {
-            case EEnemyType.Normal:
-                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
-                break;
-
             case EEnemyType.Elite:
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Elite);
                 break;
@@ -29,6 +26,9 @@ public class EliteDeadState : EliteBaseState
                 DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Boss);
                 break;
         }
+
+        Dictionary<DropItemType, int> dropPlan = Owner.GetDrops();
+        ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
     }
 
     public override void Update()

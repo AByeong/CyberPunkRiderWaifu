@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -26,8 +25,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected Collider _collider;
 
     private IStatsProvider _stat;
-    // TODO
-    // private DropTable _dropTable;
 
     public GameObject Target { get; set; }
     public EnemyDataSO EnemyData => _enemyData;
@@ -151,10 +148,32 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Destroy(popup, 1.5f);
     }
 
-    public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정
+    public Dictionary<DropItemType, int> GetDrops()
     {
-        List<GameObject> drops = new List<GameObject>();
-        // TODO
+        Dictionary<DropItemType, int> drops = new Dictionary<DropItemType, int>();
+        drops.Add(DropItemType.Gold, 0);
+        drops.Add(DropItemType.Etc, 0);
+        drops.Add(DropItemType.Item, 0);
+
+        drops[DropItemType.Gold] =  UnityEngine.Random.Range(EnemyData.MinGoldDrop, EnemyData.MaxGoldDrop);
+
+        for (int i = 0; i < EnemyData.MaxETCDropAmount; i++)
+        {
+            if (UnityEngine.Random.Range(0, 1f) <= EnemyData.ETCDropChance)
+            {
+                ++drops[DropItemType.Etc];
+            }    
+        }
+
+        for (int i = 0; i < EnemyData.MaxItemDropAmount; i++)
+        {
+            if (UnityEngine.Random.Range(0, 1f) <= EnemyData.ItemDropChance)
+            {
+                ++drops[DropItemType.Item];
+            }    
+        }
+        
+
         return drops;
     }
 

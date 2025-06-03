@@ -12,4 +12,11 @@ public class EnemyDataSO : ScriptableObject
     public float StaggerTime;
     public float DownTime;
     public int InAirThreshold;
+
+    public int MinGoldDrop;
+    public int MaxGoldDrop;
+    public int MaxETCDropAmount;
+    public float ETCDropChance;
+    public int MaxItemDropAmount;
+    public float ItemDropChance;
 }
