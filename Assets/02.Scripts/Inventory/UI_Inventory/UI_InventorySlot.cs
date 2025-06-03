@@ -19,12 +19,14 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     public Item Item;
 
     public bool HasItem => Item != null;
+    public bool IsSold = false;
     public void OnBeginDrag(PointerEventData eventData)
     {
         UI_InventoryPopup.Instance.StartDragSlot(this);
         Color color = IconImageUI.color;
         color.a = 0.5f;
         IconImageUI.color = color;
+        IsSold = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -71,13 +73,19 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         color.a = 1.0f;
         IconImageUI.color = color;
 
+        if (IsSold == true) return;
+
         if (eventData.pointerEnter == null)
         {
-            if (HasItem)
-            {
-                InventoryManager.Instance.Remove(Item);
-            }
+            UI_CheckDropItem.Instance.TryDropItem(this);    
         }
+        // if (eventData.pointerEnter == null)
+        // {
+        //     if (HasItem)
+        //     {
+        //         InventoryManager.Instance.Remove(Item);
+        //     }
+        // }
     }
 
     public virtual void SetItem(Item item)

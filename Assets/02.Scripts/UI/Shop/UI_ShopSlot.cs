@@ -92,6 +92,7 @@ public class UI_ShopSlot : MonoBehaviour, IDropHandler
         {
             if(draggedSlot.HasItem == true)
             {
+                draggedSlot.IsSold = true;
                 SellItem(draggedSlot.Item);
             }
         }
