@@ -26,6 +26,8 @@ public class SkillManager : Singleton<SkillManager>
             Skill skill = new Skill {SkillData = skillData, Index = i++};
             Skills.Add(skill);
         }
+
+        Skills.RemoveAt(Skills.Count - 1);
         // 완전히 초기화
         EquippedSkills = new List<Skill>();
         EquippedSkillsBool = new List<bool>();
