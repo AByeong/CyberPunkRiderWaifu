@@ -44,6 +44,11 @@ public class GridGeneration : MonoBehaviour
     public GameObject CeilingPrefab;
     public GameObject[] PropPrefabs;
 
+    [Header("[Minimap Prefabs]")]
+    public GameObject GroundMiniMapPrefab;
+    public GameObject PathMiniMapPrefab;
+
+
     [Header("Module Size Offset")]
     public float PositionOffset; // 에셋 크기
     
@@ -557,6 +562,17 @@ public class GridGeneration : MonoBehaviour
                 {
                     GameObject ceiling = Instantiate(CeilingPrefab, transform);
                     ceiling.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+
+                    if (grid[i, j] == (int)EGirdType.Path)
+                    {
+                        GameObject pathMinimap = Instantiate(PathMiniMapPrefab, transform);
+                        pathMinimap.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                    }
+                    else
+                    {
+                        GameObject groundMinimap = Instantiate(GroundMiniMapPrefab, transform);
+                        groundMinimap.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                    }
                 }
 
                 if (grid[i, j] == (int)EGirdType.Activate || grid[i, j] == (int)EGirdType.Pattern || grid[i, j] == (int)EGirdType.Spawner || grid[i, j] == (int)EGirdType.CornerBorder)
