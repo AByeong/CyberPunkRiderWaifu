@@ -4,16 +4,7 @@ public class UI_EquipSkill : UI_Skill
 {
     public UI_ChipSlot[] ChipSlots;
     public int Index = -1;
-    private void Start()
-    {
-        if (Index < 0)
-            return;
 
-        if (SkillManager.Instance.EquippedSkills[Index] != null)
-        {
-            SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
-        }
-    }
 
     public void RefreshChipEffects()
     {
