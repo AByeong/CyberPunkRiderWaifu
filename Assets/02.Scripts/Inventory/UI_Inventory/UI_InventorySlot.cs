@@ -19,9 +19,6 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     public Item Item;
 
     public bool HasItem => Item != null;
-
-    
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         UI_InventoryPopup.Instance.StartDragSlot(this);
@@ -37,13 +34,11 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (HasItem == false) return;
-        Debug.Log("포인트엔텅ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
         UI_ItemInspector.Instance.Hovered(Item);
 
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("나각ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ");
         UI_ItemInspector.Instance.HoverExit();
     }
 
@@ -55,7 +50,6 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
 
         List<RaycastResult> raycastResults = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, raycastResults);
-
 
         foreach(RaycastResult result in raycastResults)
         {
@@ -76,6 +70,14 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         Color color = IconImageUI.color;
         color.a = 1.0f;
         IconImageUI.color = color;
+
+        if (eventData.pointerEnter == null)
+        {
+            if (HasItem)
+            {
+                InventoryManager.Instance.Remove(Item);
+            }
+        }
     }
 
     public virtual void SetItem(Item item)

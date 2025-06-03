@@ -2,8 +2,9 @@ using System;
 using TMPro;
 using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class UI_ShopSlot : MonoBehaviour
+public class UI_ShopSlot : MonoBehaviour, IDropHandler
 {
     public EShopSlotType SlotType;
     public Button SlotButton;
@@ -27,6 +28,12 @@ public class UI_ShopSlot : MonoBehaviour
         Price = 1000;
     }
 
+    public void SellItem(Item item)
+    {
+        CurrencyManager.Instance.Add(CurrencyType.Gold, 1000);
+        InventoryManager.Instance.Remove(item);
+        Debug.Log($"골드 : {CurrencyManager.Instance.Gold}");
+    }
     public void OnSellItems()
     {
         if (CurrencyManager.Instance.Gold < Price)
@@ -72,6 +79,21 @@ public class UI_ShopSlot : MonoBehaviour
             Price *= 2;
             PriceText.text = Price.ToString();
             CurrencyManager.Instance.TryConsume(CurrencyType.Gold, Price);
+        }
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        if (SlotType != EShopSlotType.Sell) return;
+        
+        UI_InventorySlot draggedSlot = eventData.pointerDrag?.GetComponent<UI_InventorySlot>();
+
+        if (draggedSlot != null)
+        {
+            if(draggedSlot.HasItem == true)
+            {
+                SellItem(draggedSlot.Item);
+            }
         }
     }
 }

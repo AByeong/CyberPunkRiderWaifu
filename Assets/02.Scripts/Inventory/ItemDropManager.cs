@@ -20,9 +20,6 @@ public class ItemDropManager : Singleton<ItemDropManager>
 
 
     // 각 타입별 VFX 프리팹
-
-
-    
     protected override void Awake()
     {
         base.Awake();

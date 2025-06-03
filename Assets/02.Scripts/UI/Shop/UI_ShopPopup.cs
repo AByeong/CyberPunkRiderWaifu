@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.AppUI.UI;
 using UnityEngine;
 
+
 public enum EShopSlotType
 {
     Head,
@@ -31,4 +32,6 @@ public class UI_ShopPopup : Popup
             slot.PriceText.text = $"{slot.Price.ToString()}";
         }
     }
+
+   
 }
