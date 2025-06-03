@@ -35,7 +35,8 @@ public enum SoundType
         
         BGM_OfficeStage,
         BGM_DeliveryStage,
-        BGM_BossStage
+        BGM_BossStage,
+        BGM_Boss2Stage
         
 }
 

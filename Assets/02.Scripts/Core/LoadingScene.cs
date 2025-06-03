@@ -48,9 +48,16 @@ public class LoadingScene : MonoBehaviour
          if (isReadyToActivate && Input.GetKeyDown(KeyCode.Space))
          {
             Debug.Log($"[{Time.time}] 스페이스바 입력 확인, 씬 전환 시작!");
-            asyncOperation.allowSceneActivation = true;
+            Skip();
          }
       }
+
+
+      public void Skip()
+      {
+         asyncOperation.allowSceneActivation = true;
+      }
+      
    }
 
 
