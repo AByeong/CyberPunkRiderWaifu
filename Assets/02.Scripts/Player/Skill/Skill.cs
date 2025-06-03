@@ -24,6 +24,11 @@ public class Skill
         return _cooldownTimer >= SkillData.CoolTime;
     }
 
+    public void ClearCooltime()
+    {
+        _cooldownTimer = 1000;
+    }
+
     public void Use()
     {
         _cooldownTimer = 0f;

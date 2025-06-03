@@ -68,18 +68,22 @@ public class UI_ShopSlot : MonoBehaviour, IDropHandler
                 break;
             case EShopSlotType.Item1:
                 // 소모아이템 1 추기
+                ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.HPRecovery, 1);
                 break;
             case EShopSlotType.Item2:
                 // 소모아이템 2 추가
+                ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.UltCooldown, 1);
+                break;
+            case EShopSlotType.Item3:
+                ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.AllSkillCooldown, 1);
                 break;
         }
+        CurrencyManager.Instance.TryConsume(CurrencyType.Gold, Price);
+        Price *= 2;
+        PriceText.text = Price.ToString();
+        if (item == null) return;
 
-        if (InventoryManager.Instance.Add(item) == true)
-        {
-            Price *= 2;
-            PriceText.text = Price.ToString();
-            CurrencyManager.Instance.TryConsume(CurrencyType.Gold, Price);
-        }
+        InventoryManager.Instance.Add(item);
     }
 
     public void OnDrop(PointerEventData eventData)
