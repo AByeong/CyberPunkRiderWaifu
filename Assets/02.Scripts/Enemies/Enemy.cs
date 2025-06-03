@@ -182,7 +182,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         
     }
 
-    protected virtual void Attack(Vector3 attackPos, float attackRadius, Damage damage, bool isEnemyHit = false)
+    public virtual void Attack(Vector3 attackPos, float attackRadius, Damage damage, bool isEnemyHit = false)
     {
         Collider[] detectedColliders = Physics.OverlapSphere(attackPos, attackRadius);
         foreach (Collider hitCollider in detectedColliders)

@@ -5,15 +5,20 @@ public class EliteAI_Female : EliteEnemy
     public TrailRenderer EyeTrail;
     public float StampRange;
     public Transform StampPosition; // 현재 StampStep에서는 사용되지 않지만, 기즈모에서 활용 가능
+    public float TornadoRange;
     [SerializeField] private float runCooldownDuration = 3.0f;
 
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
 
 
+    public Damage TorandoDamage => _tornadoDamage;
     private Damage _tornadoDamage;
     private Damage _stompDamage;
     private Damage _kingStopmDamage;
+
+    public bool IsTornado => _isTornado;
+    private bool _isTornado = false;
 
     protected override void Awake()
     {
@@ -108,6 +113,8 @@ public class EliteAI_Female : EliteEnemy
     public GameObject TornadoVFX;
     public void TornadoAttack()
     {
+        _isTornado = true;
+
         LookAtTarget();
 
         SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
@@ -118,6 +125,8 @@ public class EliteAI_Female : EliteEnemy
 
     public void TornadoAttackEnd()
     {
+        _isTornado = false;
+
         TornadoVFX.SetActive(false);
         TornadoVFX.GetComponent<ParticleSystem>().Stop();
     }
