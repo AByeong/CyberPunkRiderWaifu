@@ -5,20 +5,18 @@
     public override void SetItem(Item item)
     {
         base.SetItem(item);
-        if (item == null || TargetSkill == null)
+        if (TargetSkill != null)
         {
-            return;
+            TargetSkill.RefreshChipEffects();
         }
-        TargetSkill.TrySetChipOption();
-        
     }
 
     protected override void ClearItem()
     {
-        // if (Item != null)
-        // {
-        //     TargetSkill.TryClearChipOption(Item.Data as ChipDataSO);
-        // }
         base.ClearItem();
+        if (TargetSkill != null)
+        {
+            TargetSkill.RefreshChipEffects();
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using UnityEngine.EventSystems;
+
 public class UI_EquipSkill : UI_Skill
 {
     public UI_ChipSlot[] ChipSlots;
@@ -13,16 +14,24 @@ public class UI_EquipSkill : UI_Skill
             SetSkill(SkillManager.Instance.EquippedSkills[Index], true);
         }
     }
-    public void TrySetChipOption()
+
+    public void RefreshChipEffects()
     {
-        if (SkillManager.Instance.EquippedSkills[Index] == null) return;
-        ResetBaseSkill(SkillBase);
-        foreach(UI_ChipSlot chipSlot in ChipSlots)
+        if (SkillBase == null)
         {
-            if (chipSlot.Item != null)
+            return;
+        }
+
+        // 1. 스킬을 초기 상태로 리셋
+        ResetBaseSkill(SkillBase);
+
+        // 2. 모든 장착된 칩의 효과를 누적 적용
+        foreach (UI_ChipSlot chipSlot in ChipSlots)
+        {
+            if (chipSlot.Item != null && chipSlot.Item.Data is ChipDataSO chipData)
             {
-                Skill.SkillData.CoolTime *= (chipSlot.Item.Data as ChipDataSO).ReduceCooldown;
-                Skill.SkillData.SkillRange += (chipSlot.Item.Data as ChipDataSO).SkillRange;
+                Skill.SkillData.CoolTime *= chipData.ReduceCooldown;
+                Skill.SkillData.SkillRange += chipData.SkillRange;
             }
         }
     }
@@ -30,7 +39,7 @@ public class UI_EquipSkill : UI_Skill
     public override void SetSkill(Skill skillToEquip, bool isActive)
     {
         base.SetSkill(skillToEquip, isActive);
-        TrySetChipOption();
+        RefreshChipEffects();
     }
     
     public override void OnPointerEnter(PointerEventData eventData)
