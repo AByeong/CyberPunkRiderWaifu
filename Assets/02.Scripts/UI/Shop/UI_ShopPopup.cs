@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.AppUI.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum EShopSlotType
@@ -20,10 +21,32 @@ public enum EShopSlotType
 public class UI_ShopPopup : Popup
 {
     public List<UI_ShopSlot> ShopSlots;
+    public Image BuyButtonImage;
+    public Image SellButtonImage;
+    public Sprite OnSprite;
+    public Sprite OffSprite;
 
+    public GameObject BuyPanel;
+    public GameObject SellPanel;
     private void Start()
     {
         // PriceReset();
+    }
+
+    public void OnBuyButtonClick()
+    {
+        BuyButtonImage.sprite = OnSprite;
+        SellButtonImage.sprite = OffSprite;
+        BuyPanel.SetActive(true);
+        SellPanel.SetActive(false);
+    }
+
+    public void OnSellButtonClick()
+    {
+        SellButtonImage.sprite = OnSprite;
+        BuyButtonImage.sprite = OffSprite;
+        BuyPanel.SetActive(false);
+        SellPanel.SetActive(true);
     }
 
     public void PriceReset()
