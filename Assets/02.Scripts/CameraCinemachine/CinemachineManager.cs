@@ -31,9 +31,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         Director.Play(TimelinePreferences[(int)cinemaName]);
         
         
-        PlayerCamera.GetComponent<Camera>().cullingMask = LayerMask.NameToLayer("Cinemachine");
-
-        
+        Camera.main.cullingMask = 1 << LayerMask.NameToLayer("Cinemachine");
     }
     
     public void AnimationEnd()
@@ -42,7 +40,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         //멈춰있던 시간을 돌리고, 플레이어 카메라를 키고 레이어를 everything으로 한다.
         Time.timeScale = 1;
         PlayerCamera.gameObject.SetActive(true);
-        PlayerCamera.GetComponent<Camera>().cullingMask = ~LayerMask.GetMask("MiniMap");
+        Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
         UIManager.Instance.StageMainUI.gameObject.SetActive(true);
 
 

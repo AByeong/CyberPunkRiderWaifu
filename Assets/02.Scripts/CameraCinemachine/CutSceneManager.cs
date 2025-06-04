@@ -22,10 +22,13 @@ public class CutSceneManager : MonoBehaviour
 
     private IEnumerator LoadLobby()
     {
+        Time.timeScale = 1f;
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("KBJ_Lobby", LoadSceneMode.Single);
         while (!asyncOperation.isDone)
         {
             yield return null;
         }
+
+        
     }
 }
