@@ -156,9 +156,9 @@ RectTransform:
   - {fileID: 542367700722039865}
   m_Father: {fileID: 5286133802254591303}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 120, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6778975064953389821
@@ -399,9 +399,9 @@ RectTransform:
   - {fileID: 2285463633568251841}
   m_Father: {fileID: 8832216469145665842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 120, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6671546287794351675
@@ -575,6 +575,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 4
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 7928510504760103610}
 --- !u!1 &584266340056334623
 GameObject:
@@ -1088,7 +1098,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6912812371680989451
 MonoBehaviour:
@@ -1163,9 +1173,9 @@ RectTransform:
   - {fileID: 4229282897870245107}
   m_Father: {fileID: 283151252403874209}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 99.5, y: -150}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2911961814942542166
@@ -1347,8 +1357,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6477355700747578667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.23250002}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1479,6 +1489,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 7
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 8173701245224775937}
 --- !u!1 &1019084141909155465
 GameObject:
@@ -1993,7 +2013,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2129727928055136002}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8679691841213599852}
+        m_TargetAssemblyTypeName: UI_ShopPopup, Assembly-CSharp
+        m_MethodName: OnSellButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1860512650785656916
 GameObject:
   m_ObjectHideFlags: 0
@@ -2165,9 +2197,9 @@ RectTransform:
   - {fileID: 2336520667938725473}
   m_Father: {fileID: 2655453513061031712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6217029974657406706
@@ -2462,6 +2494,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 0
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 2158283094089654422}
 --- !u!1 &2127846103534626834
 GameObject:
@@ -2588,9 +2630,9 @@ RectTransform:
   - {fileID: 3967081598985540375}
   m_Father: {fileID: 150456635016493479}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 120, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1816309949771528046
@@ -2764,6 +2806,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 2
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 3567109142148674796}
 --- !u!1 &2480407409921567562
 GameObject:
@@ -2783,7 +2835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1783904272350643708
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2870,6 +2922,12 @@ MonoBehaviour:
   - {fileID: 7591416442447649611}
   - {fileID: 5003708316140920652}
   - {fileID: 5407978968387416300}
+  BuyButtonImage: {fileID: 4845368343906285540}
+  SellButtonImage: {fileID: 2129727928055136002}
+  OnSprite: {fileID: 21300000, guid: 8ebed5356d7e6ed4ea88af5095203f06, type: 3}
+  OffSprite: {fileID: 21300000, guid: f7cbf49ffb9b71b4fab5b4d4d2931fac, type: 3}
+  BuyPanel: {fileID: 8633522576501710552}
+  SellPanel: {fileID: 8014341918695391917}
 --- !u!1 &2612862347829119434
 GameObject:
   m_ObjectHideFlags: 0
@@ -2905,9 +2963,9 @@ RectTransform:
   - {fileID: 4602854242511704527}
   m_Father: {fileID: 5286133802254591303}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8954268986399634728
@@ -3420,9 +3478,9 @@ RectTransform:
   - {fileID: 7221400533546929861}
   m_Father: {fileID: 2655453513061031712}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 120, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7967378841127782244
@@ -3748,7 +3806,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4845368343906285540}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8679691841213599852}
+        m_TargetAssemblyTypeName: UI_ShopPopup, Assembly-CSharp
+        m_MethodName: OnBuyButtonClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4157756477313110582
 GameObject:
   m_ObjectHideFlags: 0
@@ -3782,9 +3852,9 @@ RectTransform:
   - {fileID: 2716157737362588956}
   m_Father: {fileID: 283151252403874209}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 99.5, y: -750}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &3169476922270410
@@ -4114,6 +4184,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 1
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 4665747722863363122}
 --- !u!1 &4328836271580671064
 GameObject:
@@ -4284,9 +4364,9 @@ RectTransform:
   - {fileID: 2157616996781688060}
   m_Father: {fileID: 283151252403874209}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 99.5, y: -450}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &7516520972917972263
@@ -4935,6 +5015,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 6
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 5393620756509895733}
 --- !u!1 &5569044203199686915
 GameObject:
@@ -4969,9 +5059,9 @@ RectTransform:
   - {fileID: 8436286018433166460}
   m_Father: {fileID: 283151252403874209}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 99.5, y: -1050}
   m_SizeDelta: {x: 500, y: 300}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &7116933647271944795
@@ -5089,6 +5179,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 5
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 6854320834223736363}
 --- !u!1 &6368237191799773290
 GameObject:
@@ -5382,9 +5482,9 @@ RectTransform:
   - {fileID: 8238775325406166047}
   m_Father: {fileID: 8832216469145665842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3843292630327128119
@@ -5954,6 +6054,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 8
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 0}
 --- !u!1 &8295814804881505244
 GameObject:
@@ -6026,9 +6136,9 @@ RectTransform:
   - {fileID: 2668571438276653272}
   m_Father: {fileID: 150456635016493479}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380, y: -150}
   m_SizeDelta: {x: 233, y: 267}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4819654959424437105
@@ -6239,4 +6349,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlotType: 3
+  SellingItem:
+    IsEquipped: 0
+    MaxHealth: 0
+    AttackPower: 0
+    Defense: 0
+    Speed: 0
+    AttackSpeed: 0
+    CritChance: 0
+    CritDamage: 0
+    SetItemType: 0
   PriceText: {fileID: 6032145063931006667}
