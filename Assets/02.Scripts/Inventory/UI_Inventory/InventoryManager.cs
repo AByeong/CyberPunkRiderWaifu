@@ -60,8 +60,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public bool Add(Item item)
     {
-        _items.Add(item);
-        OnDataChanged?.Invoke();
+        // _items.Add(item);
+        // OnDataChanged?.Invoke();
         
         if (UI_InventoryPopup.Instance.IsInventoryFull() == false)
         {
@@ -71,7 +71,6 @@ public class InventoryManager : Singleton<InventoryManager>
         }
         else
         {
-            Debug.Log("인벤토리 꽉참ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
             return false;
         }
     }

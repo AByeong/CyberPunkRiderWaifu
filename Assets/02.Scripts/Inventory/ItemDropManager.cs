@@ -20,9 +20,6 @@ public class ItemDropManager : Singleton<ItemDropManager>
 
 
     // 각 타입별 VFX 프리팹
-
-
-    
     protected override void Awake()
     {
         base.Awake();
@@ -83,7 +80,7 @@ public class ItemDropManager : Singleton<ItemDropManager>
                     GameObject fx = Pool.GetObject((int)_prefabIndex);
                     fx.transform.position = origin;
                     fx.transform.rotation = Quaternion.identity;
-                    fx.GetComponent<ItemObject>().Init();
+                    fx.GetComponent<ItemObject>().Init(type);
                     fx.transform.DOJump(spawnPos, 0.7f, 1, 0.4f).SetEase(Ease.OutQuad);
                 }
                 yield return new WaitForSeconds(0.3f);
