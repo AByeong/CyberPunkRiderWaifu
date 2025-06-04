@@ -22,7 +22,6 @@ public class AnimationEventEffects : MonoBehaviour {
         public Transform StartPositionRotation;
         public float DestroyAfter = 10;
         public bool UseLocalPosition = true;
-        public Transform Parent = null;
     }
 
     //   // Update is called once per frame
@@ -56,10 +55,6 @@ public class AnimationEventEffects : MonoBehaviour {
             instance.transform.localRotation = new Quaternion();
         }
 
-        if (Effects[EffectNumber].isParent && Effects[EffectNumber].Parent != null)
-        {
-            instance.transform.parent = Effects[EffectNumber].Parent.transform;
-        }
         Destroy(instance, Effects[EffectNumber].DestroyAfter);
     }
 }

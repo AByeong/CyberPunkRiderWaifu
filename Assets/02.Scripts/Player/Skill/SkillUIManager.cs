@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+
 [Serializable]
 public class SkillUIManager : Popup
 {
@@ -10,7 +10,7 @@ public class SkillUIManager : Popup
 
     private void Start()
     {
-        Init();
+       
     }
 
     private void Update()
@@ -20,6 +20,7 @@ public class SkillUIManager : Popup
 
     public override void OpenPopup()
     {
+        Init();
         Show();
         base.OpenPopup();
     }
