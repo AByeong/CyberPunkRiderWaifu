@@ -55,8 +55,8 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    
-    
+
+
     private void DeliveryPopup()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -78,7 +78,7 @@ public class UIManager : Singleton<UIManager>
             }
 
 
-        
+
         }
     }
 
@@ -89,7 +89,7 @@ public class UIManager : Singleton<UIManager>
             PlayerInput.ReleaseControl();
             if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
             {
-                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
                 PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
             }
@@ -103,21 +103,21 @@ public class UIManager : Singleton<UIManager>
     public void LobbyShop()
     {
         PlayerInput.ReleaseControl();
-        
+
         if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
         }
-        
+
         if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
         }
-        
+
     }
 
 
@@ -131,7 +131,7 @@ public class UIManager : Singleton<UIManager>
         }
         if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
         }
@@ -144,7 +144,7 @@ public class UIManager : Singleton<UIManager>
             PlayerInput.ReleaseControl();
             if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
             {
-                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
                 PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
             }
@@ -178,5 +178,23 @@ public class UIManager : Singleton<UIManager>
     public void PlayerReplay()
     {
         PlayerInput.playerControllerInputBlocked = true;
+    }
+
+    public void DeactivateMainUI()
+    {
+        if (StageMainUI == null)
+        {
+            Debug.LogError($"{gameObject.name} :: Stage Main UI가 없습니다!!");
+        }
+        StageMainUI.gameObject.SetActive(false);
+    }
+
+    public void ActivateMainUI()
+    {
+        if (StageMainUI == null)
+        {
+            Debug.LogError($"{gameObject.name} :: Stage Main UI가 없습니다!!");
+        }
+        StageMainUI.gameObject.SetActive(true);
     }
 }
