@@ -537,41 +537,37 @@ namespace JY
         private void SetTargetRotation()
         {
             Vector2 moveInput = _input.MoveInput;
-            Vector3 localMovementDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
-
-            float cameraYRotation = Camera.main.transform.eulerAngles.y;
-
-            Vector3 moveDirection = Quaternion.Euler(0f, cameraYRotation, 0f) * localMovementDirection;
-
-            Quaternion targetRotation;
-
-            if (Mathf.Approximately(Vector3.Dot(localMovementDirection, Vector3.forward), -1.0f))
+            if (moveInput.sqrMagnitude < 0.01f)
             {
-                targetRotation = Quaternion.LookRotation(Quaternion.Euler(0f, cameraYRotation, 0f) * -Vector3.forward);
-            }
-            else
-            {
-
-                if (moveDirection != Vector3.zero)
-                {
-                    targetRotation = Quaternion.LookRotation(moveDirection);
-                }
-                else
-                {
-
-                    targetRotation = Quaternion.identity;
-                }
-
+                return;
             }
 
-            Vector3 resultingForward = targetRotation * Vector3.forward;
+            // 카메라의 전방 방향을 기준으로 입력 방향 계산
+            Vector3 cameraForward = Camera.main.transform.forward;
+            Vector3 cameraRight = Camera.main.transform.right;
+            
+            // y축 회전값만 사용
+            cameraForward.y = 0;
+            cameraRight.y = 0;
+            cameraForward.Normalize();
+            cameraRight.Normalize();
 
+            // 카메라 기준으로 이동 방향 계산
+            Vector3 moveDirection = cameraRight * moveInput.x + cameraForward * moveInput.y;
+            moveDirection.Normalize();
+
+            if (moveDirection != Vector3.zero)
+            {
+                _targetRotation = Quaternion.LookRotation(moveDirection);
+            }
+
+            // 공격 중일 때의 회전 로직
             if (_inAttack)
             {
                 Vector3 centre = transform.position + transform.forward * 2.0f + transform.up;
                 Vector3 halfExtents = new Vector3(3.0f, 1.0f, 2.0f);
                 int layerMask = 1 << LayerMask.NameToLayer("Enemy");
-                int count = Physics.OverlapBoxNonAlloc(centre, halfExtents, _overlapResult, targetRotation, layerMask);
+                int count = Physics.OverlapBoxNonAlloc(centre, halfExtents, _overlapResult, _targetRotation, layerMask);
 
                 float closestDot = 0.0f;
                 Vector3 closestForward = Vector3.zero;
@@ -583,7 +579,7 @@ namespace JY
                     playerToEnemy.y = 0;
                     playerToEnemy.Normalize();
 
-                    float d = Vector3.Dot(resultingForward, playerToEnemy);
+                    float d = Vector3.Dot(moveDirection, playerToEnemy);
 
                     if (d > MinEnemyDotCoeff && d > closestDot)
                     {
@@ -595,16 +591,14 @@ namespace JY
 
                 if (closest != -1)
                 {
-                    resultingForward = closestForward;
-                    transform.rotation = Quaternion.LookRotation(resultingForward); // 즉시 회전
+                    _targetRotation = Quaternion.LookRotation(closestForward);
                 }
             }
 
             float angleCurrent = Mathf.Atan2(transform.forward.x, transform.forward.z) * Mathf.Rad2Deg;
-            float targetAngle = Mathf.Atan2(resultingForward.x, resultingForward.z) * Mathf.Rad2Deg;
+            float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
 
             _angleDiff = Mathf.DeltaAngle(angleCurrent, targetAngle);
-            _targetRotation = targetRotation;
         }
 
 
@@ -624,10 +618,19 @@ namespace JY
 
             _animator.SetFloat(_hashAngleDeltaRad, _angleDiff * Mathf.Deg2Rad);
 
-            Vector3 localInput = new Vector3(_input.MoveInput.x, 0f, _input.MoveInput.y);
-            float groundedTurnSpeed = Mathf.Lerp(MaxTurnSpeed, MinTurnSpeed, _forwardSpeed / _desiredForwardSpeed);
-            float actualTurnSpeed = _isGrounded ? groundedTurnSpeed : Vector3.Angle(transform.forward, localInput) * InverseOneEighty * AirborneTurnSpeedProportion * groundedTurnSpeed;
-            _targetRotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, actualTurnSpeed * Time.deltaTime);
+            // 회전 속도 계산 개선
+            float turnSpeedMultiplier = 1f;
+            if (!_isGrounded)
+            {
+                turnSpeedMultiplier = 0.5f; // 공중에서는 회전 속도 감소
+            }
+            else if (IsInCombo)
+            {
+                turnSpeedMultiplier = 0.7f; // 공격 중에는 회전 속도 감소
+            }
+
+            float currentTurnSpeed = Mathf.Lerp(MinTurnSpeed, MaxTurnSpeed, _forwardSpeed / MaxForwardSpeed) * turnSpeedMultiplier;
+            _targetRotation = Quaternion.RotateTowards(transform.rotation, _targetRotation, currentTurnSpeed * Time.deltaTime);
 
             transform.rotation = _targetRotation;
         }
