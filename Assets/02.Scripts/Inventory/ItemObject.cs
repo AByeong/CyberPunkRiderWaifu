@@ -27,15 +27,15 @@ public class ItemObject : MonoBehaviour
                 
                 if (_consumableItem1 == true)
                 {
-                    
+                    ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.HPRecovery, 1);
                 }
                 else if (_consumableItem2 == true)
                 {
-                    
+                    ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.UltCooldown, 1);
                 }
                 else if (_consumableItem3 == true)
                 {
-                    
+                    ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.AllSkillCooldown, 1);
                 }
             }
             else if (DropType == DropItemType.Gold)
@@ -56,6 +56,7 @@ public class ItemObject : MonoBehaviour
                 if (_audioSource != null)
                     _audioSource.Stop();
                 //Destroy(transform.root.gameObject, 0.1f);
+                SoundManager.Instance.Play(SoundType.ItemRootingSound);
                 gameObject.SetActive(false);
             
                 //InventoryManager.Instance.
