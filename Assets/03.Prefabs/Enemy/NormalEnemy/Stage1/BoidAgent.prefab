@@ -380,6 +380,7 @@ Transform:
   m_Children:
   - {fileID: 1459524087799009121}
   - {fileID: 3504270062352540899}
+  - {fileID: 8531751267406802590}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2563987164733640846
@@ -541,13 +542,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec07b0bfea113a54c989ad95d40b10e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaterialName: KyleRobot
   _enemyData: {fileID: 11400000, guid: 0ac7dd1b3081a324480d0cf452f49ed6, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
   DamagePopupPosition: {fileID: 3504270062352540899}
   DamagePopup: {fileID: 2101629379635105609, guid: bf0f131c53c73e84a811f58eb7818f01, type: 3}
   WorldSpaceCanvas: {fileID: 0}
+  MaterialName: KyleRobot
   targetMaterialNames:
   - KyleRobot
   mainColorPropertyName: _Color
@@ -1434,6 +1435,68 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7810004493034644487, guid: 73ffbc06802a247cfb1b26f4ee67eba8, type: 3}
   m_PrefabInstance: {fileID: 1426510859972094090}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7299726024665260989
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1845003869140558324}
+    m_Modifications:
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7287357041388938927, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+      propertyPath: m_Name
+      value: MinimapIcon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+--- !u!4 &8531751267406802590 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1381207296081497379, guid: 7ce78faef980fc1409226121d9317e21, type: 3}
+  m_PrefabInstance: {fileID: 7299726024665260989}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8615012327990115906
 PrefabInstance:

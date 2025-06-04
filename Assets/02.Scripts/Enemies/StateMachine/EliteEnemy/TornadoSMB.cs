@@ -16,10 +16,15 @@ public class TornadoSMB : StateMachineBehaviour
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         base.OnStateUpdate(animator, stateInfo, layerIndex);
+        if (_eliteFemale.IsTornado)
+        {
+            _eliteFemale.Attack(_eliteFemale.transform.position, _eliteFemale.TornadoRange, _eliteFemale.TorandoDamage, true);    
+        }
+        
         if (stateInfo.normalizedTime >= 0.9f)
-            {
-                _stateMachine.ChangeState<EliteIdleState>();
-            }
+        {
+            _stateMachine.ChangeState<EliteIdleState>();
+        }
     }
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

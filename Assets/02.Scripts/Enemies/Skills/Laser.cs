@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
+    [Header("[Parameters]")]
+    public BossPhase1 Owner;
     [SerializeField] private float _preDelay = 1f;
     [SerializeField] private float _postDelay = 0.5f;
+
     private Vector3 center;
     private Vector3 halfExtents;
     private Quaternion rot;
@@ -19,23 +22,25 @@ public class Laser : MonoBehaviour
     };
 
     private Damage _enemyDamage =  new Damage()
-        {
-            DamageType = EDamageType.Airborne,
-            DamageValue = 0,
-            DamageForce = 1f,
-            AirRiseAmount = 0f
-        };
+    {
+        DamageType = EDamageType.Airborne,
+        DamageValue = 0,
+        DamageForce = 1f,
+        AirRiseAmount = 2f
+    };
 
     private float timer;
-    
+
     public void SetDamage(Damage damage)
     {
         _playerDamage = damage;
         _playerDamage.From = gameObject;
 
         _enemyDamage = damage;
-        _enemyDamage.From = gameObject;
         _enemyDamage.DamageValue = 0;
+        _enemyDamage.DamageType = EDamageType.Airborne;
+        _enemyDamage.AirRiseAmount = 2f;
+        _enemyDamage.From = gameObject;
     }
 
     private void OnEnable()
@@ -60,14 +65,15 @@ public class Laser : MonoBehaviour
             Collider[] hits = Physics.OverlapBox(center, halfExtents, rot);
             foreach (var col in hits)
             {
+                IDamageable damageable = col.GetComponent<IDamageable>();
                 if (col.tag == "Player")
                 {
-                    col.GetComponent<PlayerHit>()?.TakeDamage(_playerDamage);
+                    damageable.TakeDamage(_playerDamage);
                 }
 
                 if(col.tag == "NormalEnemy")
                 {
-                    col.GetComponent<Enemy>()?.TakeDamage(_enemyDamage);
+                    damageable.TakeDamage(_enemyDamage);
                 }
             }
         }
