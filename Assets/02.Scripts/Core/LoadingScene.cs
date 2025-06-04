@@ -39,10 +39,10 @@ public class LoadingScene : MonoBehaviour
       void Update()
       {
          // 현재 씬 이름 지속 출력 (디버깅용)
-         if (Time.frameCount % 60 == 0)
-         {
-            Debug.Log($"[{Time.time}] 현재 활성화된 씬: {SceneManager.GetActiveScene().name}");
-         }
+         // if (Time.frameCount % 60 == 0)
+         // {
+         //    Debug.Log($"[{Time.time}] 현재 활성화된 씬: {SceneManager.GetActiveScene().name}");
+         // }
 
          // 스페이스바 입력 시 씬 전환
          if (isReadyToActivate && Input.GetKeyDown(KeyCode.Space))

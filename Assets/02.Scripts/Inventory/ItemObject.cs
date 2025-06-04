@@ -41,6 +41,7 @@ public class ItemObject : MonoBehaviour
                 if (_gold != 0)
                 {
                     CurrencyManager.Instance.Add(CurrencyType.Gold, _gold);
+                    DeliveryManager.Instance.GoldCount += _gold;
                     UI_InventoryPopup.Instance.RefreshGold();
                 }
             }

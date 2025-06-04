@@ -26,6 +26,11 @@ public class StageMainUI : MonoBehaviour
     public QuestBar BossQuestBar;
     public QuestBar ElevatorQuestBar;
     
+    [Header("소모 아이템")]
+    public TextMeshProUGUI HPNumber;
+    public TextMeshProUGUI UltimateNumber;
+    public TextMeshProUGUI CooltimeNumber;
+    
     
     [Header("스테이지 진행도")]
     public Image[] StageIcons;
@@ -50,7 +55,9 @@ public class StageMainUI : MonoBehaviour
         RefreshHPbar();
         RefreshProgressbar();
         ActivateStage(DeliveryManager.Instance.CurrentSector);
-        
+        RefreshItem();
+        ConsumableItemManager.Instance.UI = this;
+
     }
 
     private void SkillIconSet(int index)
@@ -95,6 +102,14 @@ public class StageMainUI : MonoBehaviour
 
     }
 
+    public void RefreshItem()
+    {
+        HPNumber.text = ConsumableItemManager.Instance.ConsumableItems[0].ToString();
+        UltimateNumber.text = ConsumableItemManager.Instance.ConsumableItems[1].ToString();
+        CooltimeNumber.text = ConsumableItemManager.Instance.ConsumableItems[2].ToString();
+
+    }
+
     public void RefreshProgressbar()
     {
         if (DeliveryManager.Instance.KillTracker.MissionKillCount.Boss != 0)
@@ -121,13 +136,14 @@ public class StageMainUI : MonoBehaviour
         RefreshProgressbar();
         RefreshKillTracking();
         RefreshHPbar();
+        RefreshItem();
         
     }
     public void RefreshHPbar()
     {
         HPSlider.maxValue = GameManager.Instance.player.MaxHealth;
         HPSlider.value = GameManager.Instance.player.CurrentHealth;
-        Debug.Log(GameManager.Instance.player.CurrentHealth);
+        // Debug.Log(GameManager.Instance.player.CurrentHealth);
         TextHP.text = $"{GameManager.Instance.player.CurrentHealth}/{GameManager.Instance.player.MaxHealth}";
     }
     

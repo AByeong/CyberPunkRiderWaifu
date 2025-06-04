@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class DeliveryManager : Singleton<DeliveryManager>
 {
+    [Header("이번 배달에서 얻은 재화들")]
+    public int KillCount = 0;
+    public int GoldCount = 0;
+    
+    
+    
     public DeliveryMissionDataSO CurrentMissionData;
     public KillTracker KillTracker;
     public EnemyManager EnemyManager;
@@ -64,6 +70,10 @@ public class DeliveryManager : Singleton<DeliveryManager>
         UltimateGaze = 0;
         
         UIManager.Instance.UIInit();//UI 초기화
+
+        GoldCount = 0;
+        KillCount = 0;
+        
         Debug.Log("Starting delivery");
     }
 

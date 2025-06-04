@@ -1,11 +1,12 @@
 using UnityEngine;
 using System;
+using TMPro;
 using UnityEngine.UI;
 
 public class DeliveryPopup : Popup
 {
     public Button EscapeButton;
-
+    public TextMeshProUGUI MoneyText;
     private void Start()
     {
         EscapeButton.onClick.AddListener(() => {
@@ -27,6 +28,9 @@ public class DeliveryPopup : Popup
     {
        
         UIManager.Instance.ESCisClose = true;
+        
+        MoneyText.text =  "<color=green>$</color>"+CurrencyManager.Instance.Gold.ToString();
+        
         base.OpenPopup(); 
     }
 

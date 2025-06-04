@@ -8,6 +8,7 @@ public class EliteAI_Male : EliteEnemy
     public float SummonTime;
     public GameObject SummonEffect;
 
+    [Header("[Kick/Stopm Parameter]")]
     public Transform KickTransfrom;
     [SerializeField] private float _kickRange = 4f;
     [SerializeField] private float _stompRange = 3f;
@@ -19,7 +20,7 @@ public class EliteAI_Male : EliteEnemy
     {
         base.Awake();
 
-        Damage _kickDamage = new Damage()
+        _kickDamage = new Damage()
         {
             DamageValue = 10,
             DamageType = EDamageType.Airborne,
@@ -28,7 +29,7 @@ public class EliteAI_Male : EliteEnemy
             From = gameObject
         };
 
-        Damage _stompDamage = new Damage()
+        _stompDamage = new Damage()
         {
             DamageValue = 10,
             DamageType = EDamageType.Normal,

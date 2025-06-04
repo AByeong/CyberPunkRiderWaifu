@@ -7,7 +7,7 @@ public class EliteEnemy : Enemy, IDamageable
     public int AttackTypeNumber;
 
     protected ElliteStateMachine _eliteStateMachine;
-    
+
     [SerializeField] private int _attackType = 0;
     public int AttackType
     {
@@ -33,23 +33,18 @@ public class EliteEnemy : Enemy, IDamageable
     public override void TakeDamage(Damage damage)
     {
         base.TakeDamage(damage);
-        if(damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
+        if (damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         SoundManager.Instance.Play(SoundType.Elite_male_Hit);
-
-        
-
-        
-        
     }
 
     protected override void Start()
     {
         base.Start();
-        
+
         _eliteStateMachine = GetComponent<ElliteStateMachine>();
         if (_eliteStateMachine == null)
         {
-            Debug.LogWarning($"{gameObject.name}의 StateMachine이 없습니다.");
+            Debug.LogError($"{gameObject.name}의 StateMachine이 없습니다.");
         }
 
         if (_animator != null)
@@ -61,14 +56,14 @@ public class EliteEnemy : Enemy, IDamageable
             Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
         }
     }
-    
+
     protected virtual void Update()
     {
-        if (AttackTimer < EnemyData.AttackCoolDown && !_eliteStateMachine.IsCurrentState<AttackState>())
+        if (AttackTimer < EnemyData.AttackCoolDown && !_eliteStateMachine.IsCurrentState<EliteAttackState>())
         {
             AttackTimer += Time.deltaTime;
         }
-        
+
         if (_animator != null && _navMeshAgent != null && _navMeshAgent.isOnNavMesh)
         {
             _animator.SetFloat("Velocity", _navMeshAgent.velocity.magnitude);

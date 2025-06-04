@@ -2814,6 +2814,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 405989908594165931}
   - {fileID: 560594944872195061}
   - {fileID: 2400929633674172794}
   - {fileID: 4908993165342895857}
@@ -2917,8 +2918,8 @@ MonoBehaviour:
   _enemyData: {fileID: 11400000, guid: d5bd71305fd76ac4e98c1c4e2f1c20ba, type: 2}
   Pool: {fileID: 0}
   VerticalVelocity: {x: 0, y: 0, z: 0}
-  DamagePopupPosition: {fileID: 0}
-  DamagePopup: {fileID: 0}
+  DamagePopupPosition: {fileID: 405989908594165931}
+  DamagePopup: {fileID: 2101629379635105609, guid: bf0f131c53c73e84a811f58eb7818f01, type: 3}
   WorldSpaceCanvas: {fileID: 0}
   MaterialName: 
   targetMaterialNames:
@@ -3070,67 +3071,56 @@ MonoBehaviour:
     StartPositionRotation: {fileID: 2400929633674172794}
     DestroyAfter: 4
     UseLocalPosition: 0
-    Parent: {fileID: 0}
   - Effect: {fileID: 1514118954617016, guid: 8ab0c24e220c01e47aa412f3d83028c3, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 4908993165342895857}
     DestroyAfter: 4
     UseLocalPosition: 0
-    Parent: {fileID: 0}
   - Effect: {fileID: 1003445430884636, guid: 5f0ccaa603e3d6d459ebddc5267257ef, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 6018115099064810923}
     DestroyAfter: 4
     UseLocalPosition: 0
-    Parent: {fileID: 0}
   - Effect: {fileID: 1514118954617016, guid: 8ab0c24e220c01e47aa412f3d83028c3, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 2123577322719265075}
     DestroyAfter: 4
     UseLocalPosition: 0
-    Parent: {fileID: 0}
   - Effect: {fileID: 1003445430884636, guid: 5f0ccaa603e3d6d459ebddc5267257ef, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 6161288373523894523}
     DestroyAfter: 4
     UseLocalPosition: 0
-    Parent: {fileID: 0}
   - Effect: {fileID: 1399728257479852, guid: 9dd86e50d1377fb47be3dbbe58c77ddc, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 8317666346018688792}
     DestroyAfter: 8
     UseLocalPosition: 0
-    Parent: {fileID: 0}
   - Effect: {fileID: 1646871050452766, guid: 95b3ea755bc01f344a99fccc5f4702f8, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 6152073998993566187}
     DestroyAfter: 6
     UseLocalPosition: 1
-    Parent: {fileID: 0}
   - Effect: {fileID: 1646871050452766, guid: 95b3ea755bc01f344a99fccc5f4702f8, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 6152073998993566187}
     DestroyAfter: 6
     UseLocalPosition: 0
-    Parent: {fileID: 0}
   - Effect: {fileID: 1683321806259216, guid: 170cd7184503c124895727d3348aa99a, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 7299114961307584388}
     DestroyAfter: 4
     UseLocalPosition: 1
-    Parent: {fileID: 0}
   - Effect: {fileID: 1648509489993130, guid: 8a0c2ade089d4c44fbdf861f7bcd7be6, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 7354453410316249416}
     DestroyAfter: 4
     UseLocalPosition: 1
-    Parent: {fileID: 0}
   - Effect: {fileID: 1184443940743768, guid: 6f0dcb0cbac32e147aaa2047bff67f61, type: 3}
     isParent: 0
     StartPositionRotation: {fileID: 5976526402081851113}
     DestroyAfter: 7
     UseLocalPosition: 0
-    Parent: {fileID: 0}
 --- !u!1 &3055127125362676874
 GameObject:
   m_ObjectHideFlags: 0
@@ -5897,6 +5887,37 @@ Transform:
   m_Children:
   - {fileID: 3572770599076228490}
   m_Father: {fileID: 3943534967923614815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8037935706882485932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 405989908594165931}
+  m_Layer: 3
+  m_Name: DamageTextPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &405989908594165931
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8037935706882485932}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.43, y: 0.282, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845003869140558324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8157011125681677481
 GameObject:

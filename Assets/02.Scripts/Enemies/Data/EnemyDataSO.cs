@@ -13,8 +13,8 @@ public class EnemyDataSO : ScriptableObject
     public float DownTime;
     public int InAirThreshold;
 
-    public int MinGoldDrop;
-    public int MaxGoldDrop;
+    public int MaxGoldDropAmount;
+    public float GoldDropChance;
     public int MaxETCDropAmount;
     public float ETCDropChance;
     public int MaxItemDropAmount;

@@ -37,6 +37,7 @@ public class EliteDeadState : EliteBaseState
         _deadTimer += Time.deltaTime;
         if (_deadTimer >= 3f)
         {
+            DeliveryManager.Instance.KillCount++;
             Owner.Pool.ReturnObject(Owner.gameObject);
         }
     }
