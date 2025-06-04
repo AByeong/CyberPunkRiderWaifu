@@ -180,8 +180,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
                 ++drops[DropItemType.Item];
             }    
         }
-        Debug.Log($"{gameObject} :: gold={drops[DropItemType.Gold]} | ETC={drops[DropItemType.Etc]} | Items={drops[DropItemType.Item]}");
-
         return drops;
     }
 

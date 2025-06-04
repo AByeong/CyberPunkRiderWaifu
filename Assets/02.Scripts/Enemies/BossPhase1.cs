@@ -62,10 +62,10 @@ public class BossPhase1 : EliteEnemy
 
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         UIManager.Instance.StageMainUI.RefreshProgressbar(CurrentHealthPoint, this.EnemyData.HealthPoint);
-
     }
 
 

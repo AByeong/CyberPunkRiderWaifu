@@ -49,7 +49,7 @@ public class EliteEnemy : Enemy, IDamageable
         _eliteStateMachine = GetComponent<ElliteStateMachine>();
         if (_eliteStateMachine == null)
         {
-            Debug.LogWarning($"{gameObject.name}의 StateMachine이 없습니다.");
+            Debug.LogError($"{gameObject.name}의 StateMachine이 없습니다.");
         }
 
         if (_animator != null)
@@ -64,7 +64,7 @@ public class EliteEnemy : Enemy, IDamageable
     
     protected virtual void Update()
     {
-        if (AttackTimer < EnemyData.AttackCoolDown && !_eliteStateMachine.IsCurrentState<AttackState>())
+        if (AttackTimer < EnemyData.AttackCoolDown && !_eliteStateMachine.IsCurrentState<EliteAttackState>())
         {
             AttackTimer += Time.deltaTime;
         }
