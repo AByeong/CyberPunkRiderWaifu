@@ -127,7 +127,7 @@ public class StageMainUI : MonoBehaviour
     {
         HPSlider.maxValue = GameManager.Instance.player.MaxHealth;
         HPSlider.value = GameManager.Instance.player.CurrentHealth;
-        Debug.Log(GameManager.Instance.player.CurrentHealth);
+        // Debug.Log(GameManager.Instance.player.CurrentHealth);
         TextHP.text = $"{GameManager.Instance.player.CurrentHealth}/{GameManager.Instance.player.MaxHealth}";
     }
     

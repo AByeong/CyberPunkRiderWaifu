@@ -150,8 +150,11 @@ namespace JY
             Stat = await StatLoader.LoadFromCSVAsync("PlayerStat.csv");
             RefreshStat();
             CurrentHealth = MaxHealth;
-            UIManager.Instance.StageMainUI.RefreshHPbar();
 
+            if (UIManager.Instance.StageMainUI != null)
+            {
+                UIManager.Instance.StageMainUI.RefreshHPbar();
+            }
         }
         
         private void Update()
@@ -702,8 +705,6 @@ namespace JY
             _playerSound.Play(EPlayerState.Hit);
             CurrentHealth -= damage.DamageValue;
             UIManager.Instance.StageMainUI.RefreshHPbar();
-            
-
         }
         public void RefreshStat()
         {

@@ -157,7 +157,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         drops.Add(DropItemType.Etc, 0);
         drops.Add(DropItemType.Item, 0);
 
-        drops[DropItemType.Gold] =  UnityEngine.Random.Range(EnemyData.MinGoldDrop, EnemyData.MaxGoldDrop);
+        for (int i = 0; i < EnemyData.MaxGoldDropAmount; i++)
+        {
+            if (UnityEngine.Random.Range(0, 1f) <= EnemyData.GoldDropChance)
+            {
+                ++drops[DropItemType.Gold];
+            }    
+        }
 
         for (int i = 0; i < EnemyData.MaxETCDropAmount; i++)
         {
@@ -174,7 +180,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
                 ++drops[DropItemType.Item];
             }    
         }
-        
+        Debug.Log($"{gameObject} :: gold={drops[DropItemType.Gold]} | ETC={drops[DropItemType.Etc]} | Items={drops[DropItemType.Item]}");
 
         return drops;
     }
