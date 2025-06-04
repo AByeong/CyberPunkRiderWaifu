@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 public enum CinemaName
 {
@@ -38,24 +40,70 @@ public class CinemachineManager : Singleton<CinemachineManager>
         Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
         
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     public void ShowBossAppear()
     {
         Debug.Log("보스 시네머신 시작");
+        StartCoroutine(LoadCutScene("KBJ_Boss1Appear"));
+        EnemyManager.Instance.SpawnBoss();
+    }
 
-        
-        AnimationStart(CinemaName.BossAppear);
+    public void ShowBossPhase2Appear()
+    {
+        Debug.Log("보스 2페이즈 시네머신 시작");
+        StartCoroutine(LoadCutScene("KBJ_Boss2Appear"));
+    }
+
+    public void ShowEndiding()
+    {
+        StartCoroutine(LoadCutScene("KBJ_DueongunClear"));
+    }
+
+    // public void EndBossAppear()
+    // {
+    //     EnemyManager.Instance.SpawnBoss();
+    //     AnimationEnd();
+    // }
+
+    public void EndCutScene(string sceneName)
+    {
+        StartCoroutine(UnloadCutScene(sceneName));
+    }
+
+    private IEnumerator LoadCutScene(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
+        Time.timeScale = 0;
+        PlayerCamera.gameObject.SetActive(false);
+        Debug.Log($"{sceneName}을 재생합니다.");
+        // TODO
+        // 컷씬 실행 트리거
+    }
+
+    private IEnumerator UnloadCutScene(string sceneName)
+    {
+        AsyncOperation asyncUnload = SceneManager.UnloadSceneAsync(sceneName);
+
+        while (!asyncUnload.isDone)
+        {
+            yield return null;
+        }
+
+        AnimationEnd();
+        Debug.Log($"{sceneName} :: 언로드 완료");
     }
     
-    public void EndBossAppear()
-    {
-        EnemyManager.Instance.SpawnBoss();
-        AnimationEnd();
-    }
+
     
 
     

@@ -96,7 +96,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             StopCoroutine(_hitFlashCoroutine);
             _hitFlashCoroutine = null;
             // 초기 색상으로 복구 (Initialize 시점에는 이미 복구되어 있어야 하나, 안전장치)
-            ApplyOriginalColorsToAllRenderers(); 
+            ApplyOriginalColorsToAllRenderers();
         }
     }
 
@@ -126,6 +126,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             SetAllRenderersColorToVValue(normalVValue); // 모든 대상 렌더러에 적용
         }
     }
+    
+    
 
 
     public virtual void TakeDamage(Damage damage)
@@ -137,7 +139,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         PlayHitParticle();
         Debug.Log($"{this.name}이 {damage.DamageValue}만큼 데미지를 ㅣㅇㅂ음");
-        if(damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
+        if (damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
         Vector3 worldPos = DamagePopupPosition.position;
 
@@ -145,7 +147,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         GameObject popup = Instantiate(DamagePopup, GameManager.Instance.WorldCanvas.transform);
         popup.transform.position = worldPos;
         popup.GetComponentInChildren<TypingEffect>().Typing(damage.DamageValue.ToString());
-    
+
         // 선택: 파괴 또는 애니메이션
         Destroy(popup, 1.5f);
     }
@@ -157,7 +159,13 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         drops.Add(DropItemType.Etc, 0);
         drops.Add(DropItemType.Item, 0);
 
-        drops[DropItemType.Gold] =  UnityEngine.Random.Range(EnemyData.MinGoldDrop, EnemyData.MaxGoldDrop);
+        for (int i = 0; i < EnemyData.MaxGoldDropAmount; i++)
+        {
+            if (UnityEngine.Random.Range(0, 1f) <= EnemyData.GoldDropChance)
+            {
+                ++drops[DropItemType.Gold];
+            }    
+        }
 
         for (int i = 0; i < EnemyData.MaxETCDropAmount; i++)
         {
@@ -174,8 +182,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
                 ++drops[DropItemType.Item];
             }    
         }
-        
-
         return drops;
     }
 

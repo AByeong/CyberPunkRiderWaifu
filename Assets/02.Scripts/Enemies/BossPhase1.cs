@@ -62,10 +62,10 @@ public class BossPhase1 : EliteEnemy
 
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         UIManager.Instance.StageMainUI.RefreshProgressbar(CurrentHealthPoint, this.EnemyData.HealthPoint);
-
     }
 
 
@@ -98,6 +98,7 @@ public class BossPhase1 : EliteEnemy
     {
         _isPhase1End = true;
         EnemyManager.Instance.SpawnBossPhase2(transform.position);
+        CinemachineManager.Instance.ShowBossPhase2Appear();
     }
 
     // 패턴 1

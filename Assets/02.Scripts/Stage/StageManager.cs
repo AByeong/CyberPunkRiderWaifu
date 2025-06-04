@@ -75,10 +75,10 @@ public class StageManager : MonoBehaviour
     public void GenerateSubStage(int stageIndex)
     {
 
-        if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector - 1)
-        {
-            CinemachineManager.Instance.ShowBossAppear();
-        }
+        // if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector - 1)
+        // {
+        //     CinemachineManager.Instance.ShowBossAppear();
+        // }
 
 
         if (SubStageList.Count == 0 || SubStageList == null)

@@ -13,6 +13,8 @@ public class Boss_Waifu_AI : EliteEnemy
     // Add a serialized field for attack range visualization
     [SerializeField] private float debugAttackRange = 0f;
 
+    private bool _isPhase2End = false;
+
     public void SpinAttack()
     {
         Attack(20, 10);
@@ -40,7 +42,7 @@ public class Boss_Waifu_AI : EliteEnemy
     protected override void Update()
     {
         base.Update();
-        
+
         if (isCoolingDown)
         {
             currentCooldownTime -= Time.deltaTime;
@@ -50,6 +52,17 @@ public class Boss_Waifu_AI : EliteEnemy
                 currentCooldownTime = 0f;
             }
         }
+        
+        if (CurrentHealthPoint <= 0 && !_isPhase2End)
+        {
+            OnDie();
+        }
+    }
+
+    public override void OnDie()
+    {
+        _isPhase2End = true;
+        CinemachineManager.Instance.ShowEndiding();
     }
 
     private void LookAtTarget()

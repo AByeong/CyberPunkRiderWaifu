@@ -335,7 +335,7 @@ Camera:
     height: 1
   near clip plane: 0.2
   far clip plane: 500
-  field of view: 60.000004
+  field of view: 15.8
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -3901,11 +3901,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808338805229348025, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Splines.Array.data[0].m_Knots.Array.data[2].Rotation.value.x
-      value: -0.13806795
+      value: -0.13806796
       objectReference: {fileID: 0}
     - target: {fileID: 3808338805229348025, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Splines.Array.data[0].m_Knots.Array.data[2].Rotation.value.z
-      value: -0.057031527
+      value: -0.057031523
       objectReference: {fileID: 0}
     - target: {fileID: 3826300610362762809, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Layer
@@ -4014,6 +4014,10 @@ PrefabInstance:
     - target: {fileID: 4344156371766870490, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4363942963011895885, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
+      propertyPath: _groundLayer.m_Bits
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 4394483128234561876, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_SceneBindings.Array.data[0].value
@@ -5826,7 +5830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 556703717312804971, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
-      value: 8e6cbb8983545bc43b256db959929b98
+      value: 6fdc8d67fd22dae4fa4e635a8bf58564
       objectReference: {fileID: 0}
     - target: {fileID: 747061108332892193, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6038,7 +6042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5431999910717785202, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: numberOfMonstersToSpawn
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5560391530939881755, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_IsActive
@@ -6195,6 +6199,10 @@ PrefabInstance:
     - target: {fileID: 8097478716043345910, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8192353840123491659, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: numberOfMonstersToSpawn
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
