@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class SkillManager : Singleton<SkillManager>
     
     public Dictionary<Skill, float> _skillCurrentCooldowns = new Dictionary<Skill, float>();
 
+    public Action OnSkillChange;
     public Skill EquippedSkill1 => EquippedSkills[0];
     public Skill EquippedSkill2 => EquippedSkills[1];
     public Skill EquippedSkill3 => EquippedSkills[2];

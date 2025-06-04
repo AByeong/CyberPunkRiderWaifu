@@ -99,6 +99,8 @@ public class SkillUIManager : Popup
 
                 EquippedSkills[i].SetSkill(skillToEquip, true);
                 AvailableSkills[skillIndex].Button.interactable = false;
+                SkillManager.Instance.OnSkillChange?.Invoke();
+
                 return;
             }
         }
@@ -118,6 +120,8 @@ public class SkillUIManager : Popup
             SkillManager.Instance.EquippedSkills[equipIndex] = null;
             SkillManager.Instance.EquippedSkillsBool[equipIndex] = false;
         }
+
+        SkillManager.Instance.OnSkillChange?.Invoke();
     }
 
     private void UpdateCooldowns(float deltaTime)
