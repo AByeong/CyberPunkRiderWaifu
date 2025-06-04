@@ -14,11 +14,11 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
     public List<int> ConsumableItems = new List<int> { 0, 0, 0 };
     public StageMainUI UI;
 
-    private PlayerController player;
     private string saveFilePath;
 
     private void Awake()
     {
+        base.Awake();
         saveFilePath = Path.Combine(Application.persistentDataPath, "consumable_items.json");
     }
 
@@ -55,21 +55,21 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
 
         if (itemIndex == (int)EConsumableItemType.HPRecovery)
         {
-            if (player.CurrentHealth >= Mathf.RoundToInt(player.MaxHealth))
+            if (GameManager.Instance.player.CurrentHealth >= Mathf.RoundToInt(GameManager.Instance.player.MaxHealth))
             {
                 Debug.Log("체력 만땅인데용ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
                 return;
             }
             Debug.Log("체력 회복");
-            if (player.CurrentHealth >= Mathf.RoundToInt(player.MaxHealth * 0.8f))
+            if (GameManager.Instance.player.CurrentHealth >= Mathf.RoundToInt(GameManager.Instance.player.MaxHealth * 0.8f))
             {
                 // CurrentHealth가 MaxHealth의 80%보다 높을 때의 처리
-                player.CurrentHealth = player.MaxHealth;
+                GameManager.Instance.player.CurrentHealth = GameManager.Instance.player.MaxHealth;
             }
             else
             {
-                int regenValue = Mathf.RoundToInt(player.MaxHealth * 0.2f);
-                player.CurrentHealth += regenValue;
+                int regenValue = Mathf.RoundToInt(GameManager.Instance.player.MaxHealth * 0.2f);
+                GameManager.Instance.player.CurrentHealth += regenValue;
             }
             
             UIManager.Instance.StageMainUI.RefreshHPbar();
@@ -93,6 +93,7 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
         }
 
         ConsumableItems[itemIndex] -= 1;
+        UI.RefreshItem();
         Save();
     }
 
@@ -137,7 +138,6 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
 
     void Start()
     {
-        player = GameManager.Instance.player;
         Load();
     }
 

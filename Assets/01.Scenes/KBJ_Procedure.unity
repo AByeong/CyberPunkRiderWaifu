@@ -335,7 +335,7 @@ Camera:
     height: 1
   near clip plane: 0.2
   far clip plane: 500
-  field of view: 15.8
+  field of view: 60.000004
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -579,6 +579,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroy: 1
+  KillCount: 0
+  GoldCount: 0
   CurrentMissionData: {fileID: 11400000, guid: a7396948c0d10404fa25b793b55baaae, type: 2}
   KillTracker: {fileID: 440088718}
   EnemyManager: {fileID: 1950479158}
@@ -3426,8 +3428,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeliveryPopup: {fileID: 1993006855}
   SettingsPopup: {fileID: 4943264107889923260, guid: 0b03c3e40fa889f43b5b42a51959a8eb, type: 3}
-  InventoryPopup: {fileID: 2065401381}
-  SkillPopup: {fileID: 2065401380}
+  InventoryPopup: {fileID: 0}
+  SkillPopup: {fileID: 0}
   ShopPopup: {fileID: 0}
   AnswerPopup: {fileID: 2065401378}
 --- !u!4 &1286008858
@@ -5367,16 +5369,6 @@ MonoBehaviour:
 --- !u!224 &2065401379 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5925994406349305284, guid: 34d8e4c7bb8bc9c4d82622773fd7c856, type: 3}
-  m_PrefabInstance: {fileID: 2065401377}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2065401380 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1570641208334271877, guid: 34d8e4c7bb8bc9c4d82622773fd7c856, type: 3}
-  m_PrefabInstance: {fileID: 2065401377}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &2065401381 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2448399879612565674, guid: 34d8e4c7bb8bc9c4d82622773fd7c856, type: 3}
   m_PrefabInstance: {fileID: 2065401377}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2088133894
