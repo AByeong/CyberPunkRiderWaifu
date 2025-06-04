@@ -35,7 +35,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         //멈춰있던 시간을 돌리고, 플레이어 카메라를 키고 레이어를 everything으로 한다.
         Time.timeScale = 1;
         PlayerCamera.gameObject.SetActive(true);
-        Camera.main.cullingMask = ~0;
+        Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
         
     }
     
