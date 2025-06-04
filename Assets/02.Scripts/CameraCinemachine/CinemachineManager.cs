@@ -31,7 +31,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         Director.Play(TimelinePreferences[(int)cinemaName]);
         
         
-        Camera.main.cullingMask = Camera.main.cullingMask = LayerMask.NameToLayer("Cinemachine");
+        Camera.main.cullingMask = LayerMask.NameToLayer("Cinemachine");
 
         
     }

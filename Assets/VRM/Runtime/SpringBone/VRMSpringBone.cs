@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UniGLTF;
 using UnityEngine;
 
@@ -134,6 +135,7 @@ namespace VRM
             {
                 m_system.UpdateProcess(Time.deltaTime, Scene, Settings);
             }
+            ManualUpdate();
         }
 
         void FixedUpdate()
@@ -144,12 +146,14 @@ namespace VRM
             }
         }
 
-        public void ManualUpdate(float deltaTime)
+        public void ManualUpdate()
         {
             if (m_updateType != SpringBoneUpdateType.Manual)
             {
-                throw new System.ArgumentException("require SpringBoneUpdateType.Manual");
+                return;
+                // throw new System.ArgumentException("require SpringBoneUpdateType.Manual")
             }
+            float deltaTime = Time.unscaledDeltaTime;
             m_system.UpdateProcess(deltaTime, Scene, Settings);
         }
 

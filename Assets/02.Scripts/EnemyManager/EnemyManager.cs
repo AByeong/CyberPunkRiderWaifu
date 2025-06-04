@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
@@ -17,6 +18,19 @@ public class EnemyManager : Singleton<EnemyManager>
    [SerializeField]
    private MonsterSpawner _bossPhase2Spawner;
    public MonsterSpawner BossPhase2Spawner => _bossPhase2Spawner;
+
+   public float SpawnTimer = 30f;
+   private float _timer;
+
+   private void Update()
+   {
+      _timer += Time.deltaTime;
+      if (_timer >= SpawnTimer)
+      {
+         InitSpawn();
+         _timer = 0;
+      }
+    }
 
 
     public void SetNormalSpwner(MonsterSpawner[] spawners)
