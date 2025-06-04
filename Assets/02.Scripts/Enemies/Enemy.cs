@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -26,8 +25,6 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected Collider _collider;
 
     private IStatsProvider _stat;
-    // TODO
-    // private DropTable _dropTable;
 
     public GameObject Target { get; set; }
     public EnemyDataSO EnemyData => _enemyData;
@@ -39,6 +36,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     public Transform DamagePopupPosition;
     public GameObject DamagePopup;
     public GameObject WorldSpaceCanvas;
+
+    protected Damage _enemyDamage;
 
 
     protected virtual void Awake()
@@ -60,6 +59,16 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             Debug.LogWarning($"{gameObject.name} Collider가 없습니다");
         }
+
+        _enemyDamage = new Damage()
+        {
+            DamageValue = 0,
+            DamageType = EDamageType.Airborne,
+            DamageForce = 1f,
+            AirRiseAmount = 1f,
+            From = gameObject
+        };
+
         WorldSpaceCanvas = GameManager.Instance.WorldCanvas;
     }
 
@@ -141,16 +150,77 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Destroy(popup, 1.5f);
     }
 
-    public List<GameObject> GetDrops() // TODO: List<Item>으로 변경예정
+    public Dictionary<DropItemType, int> GetDrops()
     {
-        List<GameObject> drops = new List<GameObject>();
-        // TODO
+        Dictionary<DropItemType, int> drops = new Dictionary<DropItemType, int>();
+        drops.Add(DropItemType.Gold, 0);
+        drops.Add(DropItemType.Etc, 0);
+        drops.Add(DropItemType.Item, 0);
+
+        drops[DropItemType.Gold] =  UnityEngine.Random.Range(EnemyData.MinGoldDrop, EnemyData.MaxGoldDrop);
+
+        for (int i = 0; i < EnemyData.MaxETCDropAmount; i++)
+        {
+            if (UnityEngine.Random.Range(0, 1f) <= EnemyData.ETCDropChance)
+            {
+                ++drops[DropItemType.Etc];
+            }    
+        }
+
+        for (int i = 0; i < EnemyData.MaxItemDropAmount; i++)
+        {
+            if (UnityEngine.Random.Range(0, 1f) <= EnemyData.ItemDropChance)
+            {
+                ++drops[DropItemType.Item];
+            }    
+        }
+        
+
         return drops;
     }
 
     public virtual void OnDie()
     {
         
+    }
+
+    public virtual void Attack(Vector3 attackPos, float attackRadius, Damage damage, bool isEnemyHit = false)
+    {
+        Collider[] detectedColliders = Physics.OverlapSphere(attackPos, attackRadius);
+        foreach (Collider hitCollider in detectedColliders)
+        {
+
+            if (hitCollider.tag == "NormalEnemy" && isEnemyHit)
+            {
+                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                {
+                    _enemyDamage = damage;
+                    _enemyDamage.DamageValue = 0;
+                    
+                    if (_enemyDamage.DamageType != EDamageType.Airborne)
+                    {
+                        _enemyDamage.DamageType = EDamageType.Airborne;
+                    }
+
+                    if (_enemyDamage.AirRiseAmount == 0)
+                    {
+                        _enemyDamage.AirRiseAmount = 2f;
+                    }
+
+                    damageable.TakeDamage(_enemyDamage);
+                }
+
+                continue;
+            }
+
+            if (hitCollider.tag == "Player")
+            {
+                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                {
+                    damageable.TakeDamage(damage);
+                }
+            }
+        }
     }
 
 

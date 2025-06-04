@@ -75,13 +75,14 @@ public class Boss_Waifu_AI : EliteEnemy
             if (damageable != null)
             {
                 Damage damage = new Damage();
-                damage.DamageValue = 0;
+                damage.DamageValue = damageValue;
                 damage.DamageType = EDamageType.Airborne;
                 damage.DamageForce = 2f;
                 damage.From = this.gameObject;
                 damageable.TakeDamage(damage);
             }
-            // else if(damageable != null && hitCollider.tag == "Player")
+            
+            // else if (damageable != null && hitCollider.tag == "Player")
             // {
             //     Damage damage = new Damage();
             //     damage.DamageValue = damageValue;

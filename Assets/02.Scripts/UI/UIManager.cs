@@ -52,6 +52,8 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    
+    
     private void DeliveryPopup()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -73,30 +75,7 @@ public class UIManager : Singleton<UIManager>
             }
 
 
-            //     if (isInDelivery)
-            //     {
-            //
-            //         PlayerInput.GainControl();
-            //         if (!ESCisClose)
-            //         {
-            //             PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
-            //             if (PopupManager.PopupStack.Count > 0)
-            //             {
-            //
-            //                 GameManager.Instance.GameStop();
-            //             }
-            //         }
-            //         else
-            //         {
-            //             PopupManager.CloseLastPopup();
-            //
-            //         }
-            //     }
-            // }
-            // else
-            // {
-            //     PopupManager.CloseLastPopup();
-            //
+        
         }
     }
 
@@ -115,6 +94,43 @@ public class UIManager : Singleton<UIManager>
             {
                 PopupManager.CloseLastPopup();
             }
+        }
+    }
+
+    public void LobbyShop()
+    {
+        PlayerInput.ReleaseControl();
+        
+        if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
+        {
+            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.visible = true;
+            PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
+        }
+        
+        if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
+        {
+            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.visible = true;
+            PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
+        }
+        
+    }
+
+
+    public void LobbySkill()
+    {
+        PlayerInput.ReleaseControl();
+        if (!PopupManager.SkillPopup.gameObject.activeInHierarchy)
+        {
+
+            PopupManager.SkillPopup.GetComponent<Popup>().OpenPopup();
+        }
+        if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
+        {
+            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.visible = true;
+            PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
         }
     }
 

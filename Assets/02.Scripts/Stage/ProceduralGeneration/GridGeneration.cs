@@ -44,6 +44,11 @@ public class GridGeneration : MonoBehaviour
     public GameObject CeilingPrefab;
     public GameObject[] PropPrefabs;
 
+    [Header("[Minimap Prefabs]")]
+    public GameObject GroundMiniMapPrefab;
+    public GameObject PathMiniMapPrefab;
+
+
     [Header("Module Size Offset")]
     public float PositionOffset; // 에셋 크기
     
@@ -93,11 +98,6 @@ public class GridGeneration : MonoBehaviour
     // 6. 경계 검출
     // 7. 빈 공간 너비에 따른 랜덤패턴 생성
     // 8. 패턴들 구현
-
-    private void Awake()
-    {
-
-    }
 
     private void DebugGrid()
     {
@@ -557,6 +557,17 @@ public class GridGeneration : MonoBehaviour
                 {
                     GameObject ceiling = Instantiate(CeilingPrefab, transform);
                     ceiling.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+
+                    if (grid[i, j] == (int)EGirdType.Path || grid[i,j] == (int)EGirdType.Enrty || grid[i,j] == (int)EGirdType.Exit)
+                    {
+                        GameObject pathMinimap = Instantiate(PathMiniMapPrefab, transform);
+                        pathMinimap.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                    }
+                    else
+                    {
+                        GameObject groundMinimap = Instantiate(GroundMiniMapPrefab, transform);
+                        groundMinimap.transform.position = transform.position + new Vector3(i * PositionOffset, 0, j * PositionOffset);
+                    }
                 }
 
                 if (grid[i, j] == (int)EGirdType.Activate || grid[i, j] == (int)EGirdType.Pattern || grid[i, j] == (int)EGirdType.Spawner || grid[i, j] == (int)EGirdType.CornerBorder)
