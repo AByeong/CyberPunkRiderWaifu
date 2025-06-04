@@ -2,13 +2,40 @@ using UnityEngine;
 
 public class EliteAI_Male : EliteEnemy
 {
+    [Header("[Summon Parameter]")]
     public GameObject SummonObject;
     public Transform SummonTransform;
     public float SummonTime;
     public GameObject SummonEffect;
-    public Transform KickTransfrom;
 
-    [SerializeField] private float _kickRange = 3f;
+    public Transform KickTransfrom;
+    [SerializeField] private float _kickRange = 4f;
+    [SerializeField] private float _stompRange = 3f;
+
+    private Damage _kickDamage;
+    private Damage _stompDamage;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        Damage _kickDamage = new Damage()
+        {
+            DamageValue = 10,
+            DamageType = EDamageType.Airborne,
+            DamageForce = 10f,
+            AirRiseAmount = 2f,
+            From = gameObject
+        };
+
+        Damage _stompDamage = new Damage()
+        {
+            DamageValue = 10,
+            DamageType = EDamageType.Normal,
+            DamageForce = 0.5f,
+            From = gameObject
+        };
+    }
    
 
     private void LookAtTarget()
@@ -24,8 +51,12 @@ public class EliteAI_Male : EliteEnemy
     public GameObject StompVFX;
     public void Stomp()
     {
-        SoundManager.Instance.Play(SoundType.Elite_Electricity);
         LookAtTarget();
+
+        Attack(KickTransfrom.position, _stompRange, _stompDamage);
+
+        SoundManager.Instance.Play(SoundType.Elite_Electricity);
+
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -34,28 +65,12 @@ public class EliteAI_Male : EliteEnemy
     public GameObject KickVFX;
     public void Kick()
     {
-        SoundManager.Instance.Play(SoundType.Elite_male_Kick);
         LookAtTarget();
 
-        Vector3 sphereCenter = KickTransfrom.position;
-        Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, _kickRange);
-        
-        
-        foreach (Collider hitCollider in detectedColliders)
-        {
-            if (hitCollider.tag == "Elite") continue;
+        Attack(KickTransfrom.position, _kickRange, _kickDamage, true);
 
-            IDamageable damageable = hitCollider.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                Damage damage = new Damage();
-                damage.DamageValue = 0;
-                damage.DamageType = EDamageType.Normal;
-                damage.DamageForce = 10f;
-                damage.From = this.gameObject;
-                damageable.TakeDamage(damage);
-            }
-        }
+        SoundManager.Instance.Play(SoundType.Elite_male_Kick);
+
         KickVFX.SetActive(true);
         KickVFX.transform.position = KickTransfrom.position;
         KickVFX.GetComponent<ParticleSystem>().Play();

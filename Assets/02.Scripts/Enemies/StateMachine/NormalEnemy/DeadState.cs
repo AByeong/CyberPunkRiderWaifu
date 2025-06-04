@@ -34,14 +34,10 @@ public class DeadState : BaseNormalEnemyState
             Owner.transform.DOMove(fallPos, _fallTime).SetEase(Ease.InQuad);
             Owner.IsInAir = false;    
         }
-
+        
         DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
-        Debug.Log("Killed");
-        // 예시: 장비 2개, 칩 1개, 골드 3개 드랍
-        var dropPlan = new Dictionary<DropItemType, int>
-        {
-            { DropItemType.Gold, 3 },
-        };
+        
+        Dictionary<DropItemType, int> dropPlan = Owner.GetDrops();
         ItemDropManager.Instance.DropItems(dropPlan, transform.position, transform.forward);
     }
 

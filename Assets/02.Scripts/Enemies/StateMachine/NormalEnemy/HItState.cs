@@ -41,10 +41,10 @@ public class HItState : BaseNormalEnemyState
         Owner.IsHit = false;
         _hitTimer = 0f;
 
-        if (Owner.TakedDamage.From.CompareTag("Player"))
-        {
-            // SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
-        }
+        // if (Owner.TakedDamage.From.CompareTag("Player"))
+        // {
+        //     // SoundManager.Instance.Play(SoundType.NormalEnemy_Hit);
+        // }
 
         if (Owner.Animator != null) Owner.Animator.updateMode = AnimatorUpdateMode.UnscaledTime;
 
@@ -55,9 +55,9 @@ public class HItState : BaseNormalEnemyState
             Owner.NavMeshAgent.enabled = false;
         }
 
-        if (Owner.Target != null)
+        if (Owner.TakedDamage.From != null)
         {
-            Vector3 direction = (Owner.transform.position - Owner.Target.transform.position).normalized;
+            Vector3 direction = (Owner.transform.position -Owner.TakedDamage.From.transform.position).normalized;
             direction.y = 0;
             _knockbackDir = direction;
         }

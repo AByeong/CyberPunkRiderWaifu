@@ -5,25 +5,50 @@ public class EliteAI_Female : EliteEnemy
     public TrailRenderer EyeTrail;
     public float StampRange;
     public Transform StampPosition; // 현재 StampStep에서는 사용되지 않지만, 기즈모에서 활용 가능
+    public float TornadoRange;
     [SerializeField] private float runCooldownDuration = 3.0f;
 
     private bool isCoolingDown = false;
     private float currentCooldownTime = 0f;
 
-    private Damage _enemyDamage;
+
+    public Damage TorandoDamage => _tornadoDamage;
+    private Damage _tornadoDamage;
+    private Damage _stompDamage;
+    private Damage _kingStopmDamage;
+
+    public bool IsTornado => _isTornado;
+    private bool _isTornado = false;
 
     protected override void Awake()
     {
         base.Awake();
 
-        _enemyDamage = new Damage()
+        _tornadoDamage = new Damage()
         {
-            DamageValue = 0,
-            DamageType = EDamageType.Airborne,
-            DamageForce = 2f,
+            DamageValue = 2,
+            DamageType = EDamageType.Normal,
+            DamageForce = 0.5f,
             From = gameObject
         };
-        
+
+        _stompDamage = new Damage()
+        {
+            DamageValue = 10,
+            DamageType = EDamageType.Normal,
+            DamageForce = 0.5f,
+            From = gameObject
+        };
+
+        _kingStopmDamage = new Damage()
+        {
+            DamageValue = 20,
+            DamageType = EDamageType.Airborne,
+            DamageForce = 2f,
+            AirRiseAmount = 2f,
+            From = gameObject
+        };
+
     }
 
     protected override void Update()
@@ -39,39 +64,21 @@ public class EliteAI_Female : EliteEnemy
                 currentCooldownTime = 0f;
             }
         }
-
     }
 
     // 이동 공격
     public void StampStep()
     {
-        if (_navMeshAgent.velocity.magnitude < 4f)
+        if (_navMeshAgent.velocity.magnitude < 5f)
         {
             return;
         }
 
-        Vector3 sphereCenter = StampPosition.position;
+        Attack(StampPosition.position, StampRange, _enemyDamage, true);
 
-        SoundManager.Instance.Play(SoundType.Elite_Female_Step);
         LookAtTarget();
 
-
-        Collider[] detectedColliders = Physics.OverlapSphere(sphereCenter, StampRange);
-
-
-        int numbers = 0;
-        foreach (Collider hitCollider in detectedColliders)
-        {
-            
-            if (hitCollider.tag == "NormalEnemy" || hitCollider.tag == "Player")
-            {
-                ++numbers;
-                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
-                {
-                    damageable.TakeDamage(_enemyDamage);
-                }
-            }
-        }
+        SoundManager.Instance.Play(SoundType.Elite_Female_Step);
     }
 
 
@@ -79,7 +86,10 @@ public class EliteAI_Female : EliteEnemy
     public GameObject KingStompVFX;
     public void KingStompAttack()
     {
+        Attack(StampPosition.position, StampRange, _kingStopmDamage, true);
+
         SoundManager.Instance.Play(SoundType.Elite_Female_KingStamp);
+
         KingStompVFX.SetActive(true);
         KingStompVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -88,8 +98,11 @@ public class EliteAI_Female : EliteEnemy
     public GameObject StompVFX;
     public void StompAttack()
     {
-        SoundManager.Instance.Play(SoundType.Elite_Electricity);
         LookAtTarget();
+        Attack(StampPosition.position, StampRange, _stompDamage);
+
+        SoundManager.Instance.Play(SoundType.Elite_Electricity);
+
         StompVFX.SetActive(true);
         StompVFX.GetComponent<ParticleSystem>().Play();
     }
@@ -100,14 +113,20 @@ public class EliteAI_Female : EliteEnemy
     public GameObject TornadoVFX;
     public void TornadoAttack()
     {
-        SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
+        _isTornado = true;
+
         LookAtTarget();
+
+        SoundManager.Instance.Play(SoundType.Elite_Female_Tornado);
+
         TornadoVFX.SetActive(true);
         TornadoVFX.GetComponent<ParticleSystem>().Play();
     }
 
     public void TornadoAttackEnd()
     {
+        _isTornado = false;
+
         TornadoVFX.SetActive(false);
         TornadoVFX.GetComponent<ParticleSystem>().Stop();
     }
