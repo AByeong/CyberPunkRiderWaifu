@@ -127,27 +127,42 @@ public class InventoryManager : Singleton<InventoryManager>
 
         try
         {
-            List<Item> loadedItems = JsonConvert.DeserializeObject<List<Item>>(json, new JsonSerializerSettings
+            // 먼저 새로운 형식(직접 List<Item>)으로 로드 시도
+            if (json.StartsWith("["))
             {
-                TypeNameHandling = TypeNameHandling.Auto,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                // 새로운 형식: 직접 List<Item>
+                List<Item> loadedItems = JsonConvert.DeserializeObject<List<Item>>(json, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Auto,
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
 
-            if (loadedItems != null)
-            {
-                _items = loadedItems;
-                OnDataChanged?.Invoke();
-                Debug.Log($"인벤토리 로드 완료: {_items.Count}개 아이템");
+                if (loadedItems != null)
+                {
+                    _items = loadedItems;
+                    OnDataChanged?.Invoke();
+                    Debug.Log($"인벤토리 로드 완료 (새 형식): {_items.Count}개 아이템");
+                }
             }
             else
             {
-                Debug.LogWarning("로드된 아이템 리스트가 null입니다.");
+                // 기존 형식: ItemSaveDataList 형태
+                Debug.Log("기존 저장 형식 감지됨. 변환 중...");
+                
+                // 기존 데이터 삭제하고 새로 시작
+                PlayerPrefs.DeleteKey("Inventory");
                 InitializeDefaultInventory();
+                
+                Debug.Log("기존 데이터를 삭제했습니다. 새로운 형식으로 저장됩니다.");
             }
         }
         catch (System.Exception e)
         {
             Debug.LogError($"인벤토리 로드 실패: {e.Message}");
+            Debug.Log("저장 데이터를 초기화합니다.");
+            
+            // 문제가 있는 데이터 삭제
+            PlayerPrefs.DeleteKey("Inventory");
             InitializeDefaultInventory();
         }
     }
