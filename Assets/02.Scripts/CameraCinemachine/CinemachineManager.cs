@@ -31,7 +31,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         Director.Play(TimelinePreferences[(int)cinemaName]);
         
         
-        Camera.main.cullingMask = LayerMask.NameToLayer("Cinemachine");
+        PlayerCamera.GetComponent<Camera>().cullingMask = LayerMask.NameToLayer("Cinemachine");
 
         
     }
@@ -42,7 +42,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         //멈춰있던 시간을 돌리고, 플레이어 카메라를 키고 레이어를 everything으로 한다.
         Time.timeScale = 1;
         PlayerCamera.gameObject.SetActive(true);
-        Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
+        PlayerCamera.GetComponent<Camera>().cullingMask = ~LayerMask.GetMask("MiniMap");
         UIManager.Instance.StageMainUI.gameObject.SetActive(true);
 
 
@@ -92,7 +92,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
             yield return null;
             
         }
-        UIManager.Instance.StageMainUI.gameObject.SetActive(false);
+        
 
         Time.timeScale = 0;
         PlayerCamera.gameObject.SetActive(false);
@@ -111,7 +111,6 @@ public class CinemachineManager : Singleton<CinemachineManager>
         }
 
         AnimationEnd();
-        UIManager.Instance.StageMainUI.gameObject.SetActive(true);
         Debug.Log($"{sceneName} :: 언로드 완료");
     }
     
@@ -130,6 +129,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
     public void EndElevatorChangeAnimation()
     {
        
+        
         PlayerCamera.gameObject.SetActive(true);
         Camera.main.cullingMask = ~0;
         
