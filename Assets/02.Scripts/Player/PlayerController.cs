@@ -690,7 +690,7 @@ namespace JY
         {
 
             if (ApproveAnimation)
-                // Set the Hurt parameter of the animator.
+            // Set the Hurt parameter of the animator.
             {
                 _animator.SetTrigger(_hashHurt);
             }
@@ -704,10 +704,17 @@ namespace JY
             // Set the HurtFromX and HurtFromY parameters of the animator based on the direction of the damage.
             _animator.SetFloat(_hashHurtFromX, localHurt.x);
             _animator.SetFloat(_hashHurtFromY, localHurt.z);
-            
+
             _playerSound.Play(EPlayerState.Hit);
             CurrentHealth -= damage.DamageValue;
             UIManager.Instance.StageMainUI.RefreshHPbar();
+
+            if (CurrentHealth <= 0)
+            {
+                GameManager.Instance.GameStop();
+                SceneMover.Instance.MoveToLobby();
+                CurrentHealth = MaxHealth;
+            }
         }
         public void RefreshStat()
         {

@@ -17,18 +17,6 @@ public class CutSceneManager : MonoBehaviour
     public void EndStage()
     {
         Debug.Log($"{gameObject.name} :: SceneChanging");
-        StartCoroutine(LoadLobby());
-    }
-
-    private IEnumerator LoadLobby()
-    {
-        Time.timeScale = 1f;
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("KBJ_Lobby", LoadSceneMode.Single);
-        while (!asyncOperation.isDone)
-        {
-            yield return null;
-        }
-
-        
+        SceneMover.Instance.MoveToLobby();
     }
 }
