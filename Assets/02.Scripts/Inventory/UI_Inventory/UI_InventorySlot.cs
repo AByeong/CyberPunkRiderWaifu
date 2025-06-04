@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -69,10 +68,6 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     public void OnEndDrag(PointerEventData eventData)
     {
         UI_InventoryPopup.Instance.StopDragSlot();
-        Color color = IconImageUI.color;
-        color.a = 1.0f;
-        IconImageUI.color = color;
-
         if (IsSold == true) return;
 
         if (eventData.pointerEnter == null)
@@ -95,7 +90,7 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
             ClearItem();
             return;
         }
-
+    
         Item = item;
         Set();
     }
@@ -103,7 +98,10 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     {
         if (IconImageUI != null)
         {
-            IconImageUI.sprite = null;    
+            IconImageUI.sprite = null;
+            Color _color = IconImageUI.color;
+            _color.a = 0;
+            IconImageUI.color = _color;
         }
         Item = null;
     }
@@ -117,6 +115,9 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         if (IconImageUI != null)
         {
             IconImageUI.sprite = Item.Data.Icon;
+            Color _color = IconImageUI.color;
+            _color.a = 1;
+            IconImageUI.color = _color;
         }
     }
 

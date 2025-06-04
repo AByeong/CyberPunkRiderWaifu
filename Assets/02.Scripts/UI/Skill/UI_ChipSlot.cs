@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using UnityEngine.UI;
-using Color = UnityEngine.Color;
-
+﻿using UnityEngine.UI;
 public class UI_ChipSlot : UI_InventorySlot
 {
     public UI_EquipSkill TargetSkill;
@@ -16,10 +12,9 @@ public class UI_ChipSlot : UI_InventorySlot
     public override void SetItem(Item item)
     {
         base.SetItem(item);
+
         if (TargetSkill != null)
         {
-            if(_slotImage != null)
-                _slotImage.color = new Color(_slotImage.color.r, _slotImage.color.g, _slotImage.color.b, 1f);
             TargetSkill.RefreshChipEffects();
         }
     }
@@ -27,10 +22,9 @@ public class UI_ChipSlot : UI_InventorySlot
     protected override void ClearItem()
     {
         base.ClearItem();
+        
         if (TargetSkill != null)
         {
-            if(_slotImage != null)
-                _slotImage.color = new Color(_slotImage.color.r, _slotImage.color.g, _slotImage.color.b, 0f);
             TargetSkill.RefreshChipEffects();
         }
     }

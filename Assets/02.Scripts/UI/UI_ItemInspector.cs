@@ -72,7 +72,6 @@ public class UI_ItemInspector : Singleton<UI_ItemInspector>
                         CubeStatText.text += $"치명타 배율 {Mathf.RoundToInt(cubeStat.Value * 100)}%\n";
                         break;
                 }
-                Debug.Log("UI_CubeStattext 호출ㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
             }
             switch (equipData.EquipmentType)
             {
