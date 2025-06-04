@@ -144,7 +144,7 @@ public class UI_ItemInspector : Singleton<UI_ItemInspector>
              Input.mousePosition, null, out anchoredPos);
 
         // 기본 위치에 오프셋 추가 (마우스 포인터에서 40, 40만큼 떨어뜨림)
-        Vector2 finalPos = anchoredPos + new Vector2(-150, 0);
+        Vector2 finalPos = anchoredPos + new Vector2(-300, 0);
 
         _inspectorPanelRectTransform.anchoredPosition = finalPos;
         Debug.Log("ddddddddddddddddddddddddddddddd");
