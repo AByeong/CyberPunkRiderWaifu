@@ -56,7 +56,7 @@ public class ItemObject : MonoBehaviour
                 if (_audioSource != null)
                     _audioSource.Stop();
                 //Destroy(transform.root.gameObject, 0.1f);
-                SoundManager.Instance.Play(SoundType.ItemRootingSound);
+                // SoundManager.Instance.Play(SoundType.ItemRootingSound); //SoundType.ItemRootingSound가 없어요!!
                 gameObject.SetActive(false);
             
                 //InventoryManager.Instance.
