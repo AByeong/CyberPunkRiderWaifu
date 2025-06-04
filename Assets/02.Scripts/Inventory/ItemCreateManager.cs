@@ -22,8 +22,6 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
     public ChipDataSO RareChipDataSO;
     public ChipDataSO UniqueChipDataSO;
     
-    public ItemBaseDataSO ItemBaseDataSO;
-
     private static readonly System.Random _random = new System.Random();
     
     // 공통 장비 생성 함수
@@ -65,8 +63,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
                     item.CritDamage = MakeRandomStat(1.0f, 3.0f);
                     item.SetItemType = MakeRandomSetItemType();
                 }
-                else
-                    Debug.LogError("무기 레어도는 0~2까지만");
+
                 break;
             case EquipmentType.Armor:
                 if(rarity == ItemRarity.Normal)
@@ -244,15 +241,6 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
         else if(rarity == ItemRarity.Unique)
              item = new Item(UniqueChipDataSO);
         
-        return item;
-    }
-
-    public Item CreateEtc()
-    {
-        Item item = new Item(ItemBaseDataSO);
-
-        // 필요시 EtcData 등 추가
-
         return item;
     }
 }

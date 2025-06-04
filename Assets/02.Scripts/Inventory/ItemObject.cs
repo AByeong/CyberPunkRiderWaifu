@@ -19,8 +19,6 @@ public class ItemObject : MonoBehaviour
     {
         if (other.CompareTag("Player") == true)
         {
-            if(item == null)
-                Debug.LogError("Item이 Null임");
             // Equipment, Chip, Etc 일 경우 (Etc는 추가될 소비아이템) -> 소비아이템 인벤에 들어오는 형식 아니면 추후 수정
             if (DropType == DropItemType.Etc)
             {
@@ -43,10 +41,13 @@ public class ItemObject : MonoBehaviour
                 if (_gold != 0)
                 {
                     CurrencyManager.Instance.Add(CurrencyType.Gold, _gold);
+                    UI_InventoryPopup.Instance.RefreshGold();
                 }
             }
             else
             {
+                Debug.Log("아이템 습득ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+                Debug.Log($"{item.Data.ItemName}");
                 InventoryManager.Instance.Add(item);
             }
 
@@ -87,9 +88,6 @@ public class ItemObject : MonoBehaviour
             _consumableItem3 = false;
             CreateEtcItem();
         }
-
-        //_particleSystem.Play(true);
-        //_audioSource.Play();
     }
 
     private void CreateEtcItem()

@@ -33,6 +33,11 @@ public class UI_InventoryPopup : Popup
         InventoryManager.Instance.OnDataChanged += Refresh;
     }
 
+    public void RefreshGold()
+    {
+        GoldText.text = $"{CurrencyManager.Instance.Gold}골드";
+    }
+
     public bool IsInventoryFull()
     {
         foreach (UI_InventorySlot slot in _slots)
