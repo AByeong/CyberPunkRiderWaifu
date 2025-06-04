@@ -85,11 +85,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         CacheRenderersAndInitialColors();
     }
 
+    private void OnEnable()
+    {
+        Initialize();
+    }
+
     public virtual void Initialize()
     {
         CurrentHealthPoint = EnemyData.HealthPoint;
         IsHit = false;
         IsInAir = false;
+        _collider.enabled = true;
+        
         // Reset hit flash if it was active
         if (_hitFlashCoroutine != null)
         {

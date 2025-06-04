@@ -47,14 +47,11 @@ public class DeadState : BaseNormalEnemyState
         _deadTimer += Time.deltaTime;
         if (_deadTimer >= 3f)
         {
+            _deadTimer = 0f;
             DeliveryManager.Instance.KillCount++;
             Owner.Pool.ReturnObject(Owner.gameObject);
+            SuperMachine.ChangeState<IdleState>();
         }
     }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-        _deadTimer = 0f;
-    }
 }
