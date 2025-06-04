@@ -1,8 +1,7 @@
-using JY;
 using TMPro;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class StageMainUI : MonoBehaviour
 {
     [Header("아이콘")]
@@ -10,7 +9,7 @@ public class StageMainUI : MonoBehaviour
     public Icon[] SkillIcons;
     public Icon[] ItemIcons;
     public Icon finisherIcon;
-
+    
     [Header("진행바")]
     public Slider ProgressSlider;
     
@@ -35,20 +34,29 @@ public class StageMainUI : MonoBehaviour
     [Header("스테이지 진행도")]
     public Image[] StageIcons;
     [SerializeField] private Color _acrivateColor;
-    
+
+    private void OnEnable()
+    {
+        SkillManager.Instance.OnSkillChange += SkillIconSet;
+    }
+
+    private void OnDisable()
+    {
+        SkillManager.Instance.OnSkillChange -= SkillIconSet;
+    }
+
     public void StageMainInit()
     {
         Debug.Log("MainUI Init");
-        for (int s = 0; s < SkillIcons.Length; s++)
-        {
-            SkillIconSet(s);
-        }
+
+        SkillIconSet();
+        
         ProgressSlider.value = 0;
 
-        for (int i = 0; i < ItemIcons.Length; i++)
-        {
-            SkillIconSet(i);
-        }
+        // for (int i = 0; i < ItemIcons.Length; i++)
+        // {
+        //     SkillIconSet(i);
+        // }
         
         QuestBarClear();
         RefreshKillTracking();
@@ -60,17 +68,23 @@ public class StageMainUI : MonoBehaviour
 
     }
 
-    private void SkillIconSet(int index)
+    private void SkillIconSet()
     {
-
         for (int i = 0; i < SkillIcons.Length; i++)
         {
-            SkillIcons[i].RestrictCondition = SkillManager.Instance.EquippedSkills[i].SkillData.CoolTime;
-            SkillIcons[i].IconImage.sprite = SkillManager.Instance.EquippedSkills[i].SkillData.Icon;
+            Skill skill = SkillManager.Instance.EquippedSkills[i];
+            if (skill != null && skill.SkillData != null)
+            {
+                SkillIcons[i].RestrictCondition = skill.SkillData.CoolTime;
+                SkillIcons[i].IconImage.sprite = skill.SkillData.Icon;
+            }
+            else
+            {
+                SkillIcons[i].IconImage.sprite = null;
+                SkillIcons[i].RestrictCondition = -1;
+            }
         }
-        
     }
-
     public void ActivateStage(int stage)
     {
         for (int i = 0; i < StageIcons.Length; i++)
