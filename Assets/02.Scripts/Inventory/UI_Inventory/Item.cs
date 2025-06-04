@@ -1,8 +1,5 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-
 public class CubeStat
 {
     public StatType StatType;
@@ -14,6 +11,7 @@ public class CubeStat
         Value = value;
     }
 }
+[Serializable]
 public class Item
 {
     public readonly ItemBaseDataSO Data;

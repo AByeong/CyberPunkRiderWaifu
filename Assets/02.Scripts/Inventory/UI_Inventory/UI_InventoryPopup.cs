@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using JY;
 using TMPro;
-
+using UnityEngine;
 public class UI_InventoryPopup : Popup
 {
     public static UI_InventoryPopup Instance;
@@ -23,6 +19,10 @@ public class UI_InventoryPopup : Popup
     
     private bool _isDrag = false;
     private bool _isSwapEquipment = false;
+
+
+    [SerializeField]
+    private List<Item> items;
 
     private void Awake()
     {
@@ -308,8 +308,8 @@ public class UI_InventoryPopup : Popup
         {
             slot.SetItem(null);
         }
-        
-        List<Item> items = InventoryManager.Instance.Items;
+
+        items = InventoryManager.Instance.Items;
         
         // 인덱스 있는 아이템 먼저 채우고,
         foreach (Item item in items)

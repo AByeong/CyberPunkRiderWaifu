@@ -1,6 +1,5 @@
 using JY;
 using UnityEngine;
-using UnityEngine.Serialization;
 public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose;
@@ -10,8 +9,12 @@ public class UIManager : Singleton<UIManager>
 
     [Header("팝업")]
     public PopupManager PopupManager;
-    [FormerlySerializedAs("_playerInput")] public PlayerInput PlayerInput;
+    public PlayerInput PlayerInput;
 
+    private void Start()
+    {
+        PlayerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
+    }
     private void Update()
     {
         InventoryPopup();
