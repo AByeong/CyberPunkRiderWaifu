@@ -10,13 +10,12 @@ using UnityEngine.InputSystem;
 [System.Serializable]
 public class InventoryManager : Singleton<InventoryManager>
 {
-    //public List<ItemBaseDataSO> soDatas;
-
     private List<Item> _items = new List<Item>();
     public List<Item> Items => _items;
 
     public Action OnDataChanged;
     public Action OnEquipChanged;
+    
     public List<Item> GetEquippedItems()
     {
         return _items.FindAll(item => item.IsEquipped);
@@ -26,7 +25,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void Start()
     {
-        //Load();
+        Load(); // 게임 시작 시 로드
     }
 
     private void Update()
@@ -35,29 +34,44 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             CurrencyManager.Instance.Add(CurrencyType.Gold, 100000);
         }
+        
+        // 저장 단축키 (테스트용)
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            Save();
+            Debug.Log("인벤토리가 저장되었습니다.");
+        }
+        
+        // 로드 단축키 (테스트용)
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            Load();
+            Debug.Log("인벤토리가 로드되었습니다.");
+        }
     }
 
     public bool Add(Item item)
     {
-        // _items.Add(item);
-        // OnDataChanged?.Invoke();
-        
         if (UI_InventoryPopup.Instance.IsInventoryFull() == false)
         {
             _items.Add(item);
             OnDataChanged?.Invoke();
+            Save(); // 자동 저장
             return true;
         }
         else
         {
-            Debug.Log("가방이 꽉참ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+            Debug.Log("가방이 꽉참");
             return false;
         }
     }
+    
     public void Equip(Item item)
     {
         OnEquipChanged?.Invoke();
+        Save(); // 자동 저장
     }
+    
     public void Remove(Item item)
     {
         if (item == null)
@@ -72,85 +86,93 @@ public class InventoryManager : Singleton<InventoryManager>
         {
             Debug.Log($"{item.Data.ItemName} 아이템이 인벤토리에서 제거되었습니다.");
             OnDataChanged?.Invoke();
+            Save(); // 자동 저장
         }
         else
         {
             Debug.LogWarning($"{item.Data.ItemName} 아이템을 인벤토리에서 찾을 수 없습니다.");
         }
     }
-   
+
+    private void Save()
+    {
+        try
+        {
+            string json = JsonConvert.SerializeObject(_items, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                Formatting = Formatting.Indented,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            
+            PlayerPrefs.SetString("Inventory", json);
+            PlayerPrefs.Save();
+            
+            Debug.Log($"인벤토리 저장 완료: {_items.Count}개 아이템");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"인벤토리 저장 실패: {e.Message}");
+        }
+    }
+
+    private void Load()
+    {
+        string json = PlayerPrefs.GetString("Inventory", "");
+        if (string.IsNullOrEmpty(json)) 
+        {
+            Debug.Log("저장된 인벤토리 데이터가 없습니다.");
+            return;
+        }
+
+        try
+        {
+            List<Item> loadedItems = JsonConvert.DeserializeObject<List<Item>>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+
+            if (loadedItems != null)
+            {
+                _items = loadedItems;
+                OnDataChanged?.Invoke();
+                Debug.Log($"인벤토리 로드 완료: {_items.Count}개 아이템");
+            }
+            else
+            {
+                Debug.LogWarning("로드된 아이템 리스트가 null입니다.");
+                InitializeDefaultInventory();
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"인벤토리 로드 실패: {e.Message}");
+            InitializeDefaultInventory();
+        }
+    }
     
-    // private void Save()
-    // {
-    //     ItemSaveDataList dataList = new ItemSaveDataList();
-    //     foreach (var item in _items)
-    //     {
-    //         ItemSaveData saveData = item.ToSaveData(item.Data);
-    //         dataList.SaveDatas.Add(saveData);
-    //     }
-    //     string json = JsonConvert.SerializeObject(dataList, new JsonSerializerSettings
-    //     {
-    //         TypeNameHandling = TypeNameHandling.Auto
-    //     });
-    //     PlayerPrefs.SetString("Inventory", json);
-    // }
-    //
-    // private void Load()
-    // {
-    //     string json = PlayerPrefs.GetString("Inventory", "");
-    //     if (string.IsNullOrEmpty(json)) 
-    //     {
-    //         Debug.Log("저장된 인벤토리 데이터가 없습니다.");
-    //         return;
-    //     }
-    //
-    //     try
-    //     {
-    //         ItemSaveDataList saveDataList = JsonConvert.DeserializeObject<ItemSaveDataList>(json, new JsonSerializerSettings
-    //         {
-    //             TypeNameHandling = TypeNameHandling.Auto
-    //         });
-    //
-    //         if (saveDataList == null || saveDataList.SaveDatas == null)
-    //         {
-    //             Debug.LogError("저장 데이터 역직렬화 실패");
-    //             return;
-    //         }
-    //
-    //         // 기존 아이템들을 먼저 정리 (필요한 경우)
-    //         // _items.Clear();
-    //
-    //         foreach (ItemSaveData saveData in saveDataList.SaveDatas)
-    //         {
-    //             // 인덱스 유효성 검사
-    //             if (saveData.ItemSOIndex < 0 || saveData.ItemSOIndex >= soDatas.Count)
-    //             {
-    //                 Debug.LogError($"잘못된 ItemSOIndex: {saveData.ItemSOIndex}, soDatas 크기: {soDatas.Count}");
-    //                 continue;
-    //             }
-    //
-    //             Debug.Log($"아이템 로드 중: ItemSOIndex = {saveData.ItemSOIndex}");
-    //         
-    //             try
-    //             {
-    //                 Item item = new Item(soDatas[saveData.ItemSOIndex], saveData);
-    //                 Add(item);
-    //             }
-    //             catch (System.Exception e)
-    //             {
-    //                 Debug.LogError($"아이템 생성 실패: {e.Message}");
-    //             }
-    //         }
-    //     }
-    //     catch (System.Exception e)
-    //     {
-    //         Debug.LogError($"인벤토리 로드 실패: {e.Message}");
-    //         // 필요한 경우 기본값으로 초기화
-    //         // InitializeDefaultInventory();
-    //     }
-    // }
+    private void InitializeDefaultInventory()
+    {
+        _items.Clear();
+        Debug.Log("기본 인벤토리로 초기화되었습니다.");
+        OnDataChanged?.Invoke();
+    }
+    
+    // 수동 저장/로드 메서드 (UI에서 호출 가능)
+    public void SaveInventory() => Save();
+    public void LoadInventory() => Load();
+    
+    public void ClearInventory()
+    {
+        _items.Clear();
+        OnDataChanged?.Invoke();
+        Save();
+        Debug.Log("인벤토리가 초기화되었습니다.");
+    }
 }
 
+// 기존 SaveData 클래스들은 이제 필요 없음 (Item 클래스가 직접 직렬화됨)
 [System.Serializable]
 public class ItemSaveData
 {
@@ -159,6 +181,7 @@ public class ItemSaveData
     public int ItemSOIndex; // SO Index
     public int SlotIndex;
 }
+
 [System.Serializable]
 public class EquipmentSaveData : ItemSaveData
 {
@@ -178,9 +201,9 @@ public class ChipSaveData : ItemSaveData
     public float SkillRange;
     public float ReduceCooldown;
 }
+
 [Serializable]
 public class ItemSaveDataList
 {
    public List<ItemSaveData> SaveDatas = new List<ItemSaveData>();
 }
-
