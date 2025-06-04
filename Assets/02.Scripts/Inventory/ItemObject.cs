@@ -41,6 +41,7 @@ public class ItemObject : MonoBehaviour
                 if (_gold != 0)
                 {
                     CurrencyManager.Instance.Add(CurrencyType.Gold, _gold);
+                    DeliveryManager.Instance.GoldCount += _gold;
                     UI_InventoryPopup.Instance.RefreshGold();
                 }
             }
@@ -57,7 +58,7 @@ public class ItemObject : MonoBehaviour
                 if (_audioSource != null)
                     _audioSource.Stop();
                 //Destroy(transform.root.gameObject, 0.1f);
-                // SoundManager.Instance.Play(SoundType.ItemRootingSound); //SoundType.ItemRootingSound가 없어요!!
+                //SoundManager.Instance.Play(SoundType.ItemRootingSound);
                 gameObject.SetActive(false);
             
                 //InventoryManager.Instance.
