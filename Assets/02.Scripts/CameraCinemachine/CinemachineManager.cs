@@ -29,6 +29,11 @@ public class CinemachineManager : Singleton<CinemachineManager>
         PlayerCamera.gameObject.SetActive(false);
         Debug.Log($"{cinemaName}을 재생합니다.");
         Director.Play(TimelinePreferences[(int)cinemaName]);
+        
+        
+        Camera.main.cullingMask = Camera.main.cullingMask = LayerMask.NameToLayer("Cinemachine");
+
+        
     }
     
     public void AnimationEnd()
@@ -38,16 +43,20 @@ public class CinemachineManager : Singleton<CinemachineManager>
         Time.timeScale = 1;
         PlayerCamera.gameObject.SetActive(true);
         Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
+        UIManager.Instance.StageMainUI.gameObject.SetActive(true);
+
+
         
     }
 
-
+    
 
 
 
     public void ShowBossAppear()
     {
         Debug.Log("보스 시네머신 시작");
+        
         StartCoroutine(LoadCutScene("KBJ_Boss1Appear"));
         EnemyManager.Instance.SpawnBoss();
     }
@@ -81,7 +90,9 @@ public class CinemachineManager : Singleton<CinemachineManager>
         while (!asyncLoad.isDone)
         {
             yield return null;
+            
         }
+        UIManager.Instance.StageMainUI.gameObject.SetActive(false);
 
         Time.timeScale = 0;
         PlayerCamera.gameObject.SetActive(false);
@@ -100,6 +111,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         }
 
         AnimationEnd();
+        UIManager.Instance.StageMainUI.gameObject.SetActive(true);
         Debug.Log($"{sceneName} :: 언로드 완료");
     }
     
@@ -111,7 +123,6 @@ public class CinemachineManager : Singleton<CinemachineManager>
     public void ShowElevatorChangeAnimation()
     {
         Debug.Log("엘리베이터 시네머신 시작");
-        Camera.main.cullingMask = Camera.main.cullingMask = 1 << LayerMask.NameToLayer("Cinemachine");
 
         AnimationStart(CinemaName.ElevatorChange);
     }

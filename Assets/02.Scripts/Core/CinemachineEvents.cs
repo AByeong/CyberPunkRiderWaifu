@@ -30,6 +30,13 @@ public LoadingScene LoadingScene;
         LoadingScene.Skip();
     }
 
+    
+    public void AnimationStartSet()
+    {
+        UIManager.Instance.StageMainUI.gameObject.SetActive(false);
+
+    }
+    
     public void StopBGM()
     {
         

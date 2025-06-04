@@ -35,7 +35,7 @@ public class UI_InventoryPopup : Popup
 
     public void RefreshGold()
     {
-        GoldText.text = $"{CurrencyManager.Instance.Gold}골드";
+        GoldText.text = $"<color=green>$</color>{CurrencyManager.Instance.Gold}";
     }
 
     public bool IsInventoryFull()
