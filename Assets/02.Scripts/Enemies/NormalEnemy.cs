@@ -8,6 +8,7 @@ public class NormalEnemy : Enemy
     {
         base.Awake();
         WeaponCollider.enabled = false;
+        
     }
 
     void Update()

@@ -56,7 +56,7 @@ public class EliteEnemy : Enemy, IDamageable
             Debug.LogWarning($"{gameObject.name}의 Animator가 start 시점에 할당되지 않았습니다. AttackType 초기화 실패 가능.");
         }
     }
-
+    
     protected virtual void Update()
     {
         if (AttackTimer < EnemyData.AttackCoolDown && !_eliteStateMachine.IsCurrentState<EliteAttackState>())
