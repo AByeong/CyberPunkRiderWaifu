@@ -10,10 +10,10 @@ public class SceneMover : Singleton<SceneMover>
     private AsyncOperation asyncOperation;
     private bool isLoadingEnd = false;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
-//        DontDestroyOnLoad(this.gameObject); // 씬이 바뀌어도 파괴되지 않음
+
     }
 
     private void Start()
