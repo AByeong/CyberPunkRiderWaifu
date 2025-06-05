@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 [Serializable]
 public class SkillUIManager : Popup
 {
@@ -99,6 +98,8 @@ public class SkillUIManager : Popup
 
                 EquippedSkills[i].SetSkill(skillToEquip, true);
                 AvailableSkills[skillIndex].Button.interactable = false;
+                SkillManager.Instance.OnSkillChange?.Invoke();
+
                 return;
             }
         }
@@ -118,6 +119,8 @@ public class SkillUIManager : Popup
             SkillManager.Instance.EquippedSkills[equipIndex] = null;
             SkillManager.Instance.EquippedSkillsBool[equipIndex] = false;
         }
+
+        SkillManager.Instance.OnSkillChange?.Invoke();
     }
 
     private void UpdateCooldowns(float deltaTime)
@@ -129,5 +132,11 @@ public class SkillUIManager : Popup
                 SkillManager.Instance._skillCurrentCooldowns[skill] += deltaTime;
             }
         }
+    }
+
+    public override void ClosePopup()
+    {
+        base.ClosePopup();
+        UI_SkillInspector.Instance.Exit();
     }
 }

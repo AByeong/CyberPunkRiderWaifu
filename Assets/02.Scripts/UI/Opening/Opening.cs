@@ -36,6 +36,15 @@ public class Opening : MonoBehaviour
 
     public void GameStart()
     {
-        SceneManager.LoadScene("Loading");
+        SceneManager.LoadScene("KBJ_Lobby");
+    }
+
+    public void GameExit()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }

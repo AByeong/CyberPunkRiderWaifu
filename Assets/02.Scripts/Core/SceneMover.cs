@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneMover : Singleton<SceneMover>
 {
@@ -10,15 +11,25 @@ public class SceneMover : Singleton<SceneMover>
     private AsyncOperation asyncOperation;
     private bool isLoadingEnd = false;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
-//        DontDestroyOnLoad(this.gameObject); // 씬이 바뀌어도 파괴되지 않음
+
     }
 
     private void Start()
     {
         SoundManager.Instance.PlayBGM(SoundType.BGM_OfficeStage);
+        GameManager.Instance.OnReturnToLobby += Initialize;
+    }
+
+    public void Initialize()
+    {
+        Button startBtn;
+        if (GameObject.FindWithTag("StartButton").TryGetComponent<Button>(out startBtn))
+        {
+            startBtn.onClick.AddListener(() => ShowDungeonPopup("KBJ_Procedure"));
+        }
     }
 
     public void ShowDungeonPopup(string dungeonName)
@@ -34,9 +45,9 @@ public class SceneMover : Singleton<SceneMover>
         }, numberofbuttons: 2);
     }
 
-   
 
-   
+
+
 
     public void LoadAsyncComplete()
     {
@@ -48,5 +59,22 @@ public class SceneMover : Singleton<SceneMover>
     {
         UIManager.Instance?.PopupManager?.PopupStack?.Clear();
         SceneManager.LoadScene(sceneName);
+    }
+
+
+    public void MoveToLobby()
+    {
+        UIManager.Instance?.PopupManager?.PopupStack?.Clear();
+        StartCoroutine(LoadLobby());
+    }
+
+    private IEnumerator LoadLobby()
+    {
+        GameManager.Instance.GameReplay();
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("KBJ_Lobby", LoadSceneMode.Single);
+        while (!asyncOperation.isDone)
+        {
+            yield return null;
+        }
     }
 }

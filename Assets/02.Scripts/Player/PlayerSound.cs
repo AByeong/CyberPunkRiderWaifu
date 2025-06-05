@@ -58,7 +58,7 @@ public class PlayerSound : MonoBehaviour
 
                 for (int i = 0, j = 0; i < soundComponent.clip.Length; i++)
                 {
-                    if (i == _previousSoundIndex) continue;
+                    if (i == _previousSoundIndex || i >= soundComponent.clip.Length-1) continue;
                     newClips[j] = soundComponent.clip[i];
                     newIndices[j] = i;
                     j++;

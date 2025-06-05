@@ -31,27 +31,16 @@ public class CinemachineManager : Singleton<CinemachineManager>
         Director.Play(TimelinePreferences[(int)cinemaName]);
         
         
-        Camera.main.cullingMask = Camera.main.cullingMask = LayerMask.NameToLayer("Cinemachine");
-
-        
+        Camera.main.cullingMask = 1 << LayerMask.NameToLayer("Cinemachine");
     }
     
     public void AnimationEnd()
     {
-        
-        //멈춰있던 시간을 돌리고, 플레이어 카메라를 키고 레이어를 everything으로 한다.
         Time.timeScale = 1;
         PlayerCamera.gameObject.SetActive(true);
         Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
-        UIManager.Instance.StageMainUI.gameObject.SetActive(true);
-
-
-        
+        UIManager.Instance.ActivateMainUI();
     }
-
-    
-
-
 
     public void ShowBossAppear()
     {
@@ -92,13 +81,11 @@ public class CinemachineManager : Singleton<CinemachineManager>
             yield return null;
             
         }
-        UIManager.Instance.StageMainUI.gameObject.SetActive(false);
+        
 
         Time.timeScale = 0;
         PlayerCamera.gameObject.SetActive(false);
-        Debug.Log($"{sceneName}을 재생합니다.");
-        // TODO
-        // 컷씬 실행 트리거
+        UIManager.Instance.DeactivateMainUI();
     }
 
     private IEnumerator UnloadCutScene(string sceneName)
@@ -111,13 +98,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
         }
 
         AnimationEnd();
-        UIManager.Instance.StageMainUI.gameObject.SetActive(true);
-        Debug.Log($"{sceneName} :: 언로드 완료");
     }
-    
-
-    
-
     
 
     public void ShowElevatorChangeAnimation()
@@ -129,15 +110,13 @@ public class CinemachineManager : Singleton<CinemachineManager>
 
     public void EndElevatorChangeAnimation()
     {
-       
-        PlayerCamera.gameObject.SetActive(true);
-        Camera.main.cullingMask = ~0;
-        
-        AnimationEnd();
-        Debug.Log("엘리베이터 시네머신 종료");
-        if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector-1)
+        if (DeliveryManager.Instance.CurrentSector == DeliveryManager.Instance.CompleteSector - 1)
         {
             ShowBossAppear();
+        }
+        else
+        {
+            AnimationEnd();
         }
         
     }

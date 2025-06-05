@@ -14,6 +14,7 @@ public class UIManager : Singleton<UIManager>
     private void Start()
     {
         PlayerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
+        GameManager.Instance.OnReturnToLobby += Initialize;
     }
     private void Update()
     {
@@ -21,6 +22,15 @@ public class UIManager : Singleton<UIManager>
         ShopPopup();
         SkillPopup();
         DeliveryPopup();
+    }
+
+    public void Initialize()
+    {
+        PopupManager = FindFirstObjectByType<PopupManager>();
+        PlayerInput = FindFirstObjectByType<PlayerInput>();
+
+        isInDelivery = false;
+        isCursorLockNeed = false;
     }
 
     public void CursorLock(bool locking)
@@ -51,12 +61,13 @@ public class UIManager : Singleton<UIManager>
             else
             {
                 PopupManager.CloseLastPopup();
+                PlayerInput.GainControl();
             }
         }
     }
 
-    
-    
+
+
     private void DeliveryPopup()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -67,18 +78,14 @@ public class UIManager : Singleton<UIManager>
                 PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
                 if (PopupManager.PopupStack.Count > 0)
                 {
-
                     GameManager.Instance.GameStop();
                 }
             }
             else
             {
                 PopupManager.CloseLastPopup();
-
+                PlayerInput.GainControl();
             }
-
-
-        
         }
     }
 
@@ -89,13 +96,14 @@ public class UIManager : Singleton<UIManager>
             PlayerInput.ReleaseControl();
             if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
             {
-                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
                 PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
             }
             else
             {
                 PopupManager.CloseLastPopup();
+                PlayerInput.GainControl();
             }
         }
     }
@@ -103,21 +111,21 @@ public class UIManager : Singleton<UIManager>
     public void LobbyShop()
     {
         PlayerInput.ReleaseControl();
-        
+
         if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
         }
-        
+
         if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
         }
-        
+
     }
 
 
@@ -131,7 +139,7 @@ public class UIManager : Singleton<UIManager>
         }
         if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
         }
@@ -144,13 +152,14 @@ public class UIManager : Singleton<UIManager>
             PlayerInput.ReleaseControl();
             if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
             {
-                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
                 PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
             }
             else
             {
                 PopupManager.CloseLastPopup();
+                PlayerInput.GainControl();
             }
         }
     }
@@ -178,5 +187,23 @@ public class UIManager : Singleton<UIManager>
     public void PlayerReplay()
     {
         PlayerInput.playerControllerInputBlocked = true;
+    }
+
+    public void DeactivateMainUI()
+    {
+        if (StageMainUI == null)
+        {
+            Debug.LogError($"{gameObject.name} :: Stage Main UI가 없습니다!!");
+        }
+        StageMainUI.gameObject.SetActive(false);
+    }
+
+    public void ActivateMainUI()
+    {
+        if (StageMainUI == null)
+        {
+            Debug.LogError($"{gameObject.name} :: Stage Main UI가 없습니다!!");
+        }
+        StageMainUI.gameObject.SetActive(true);
     }
 }

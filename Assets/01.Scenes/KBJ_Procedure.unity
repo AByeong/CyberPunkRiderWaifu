@@ -2791,6 +2791,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 5463034059168146999, guid: 453736476f4911d46be118216d18a969, type: 3}
+      propertyPath: m_updateType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5927936723616800420, guid: 453736476f4911d46be118216d18a969, type: 3}
       propertyPath: m_Layer
       value: 9
@@ -3159,19 +3163,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 6d73e46297046f041968f10c2029c128, type: 2}
     m_Events:
     - m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 788030485}
-          m_TargetAssemblyTypeName: CinemachineManager, Assembly-CSharp
-          m_MethodName: EndBossAppear
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
     - m_PersistentCalls:
         m_Calls: []
     - m_PersistentCalls:
@@ -3428,8 +3420,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DeliveryPopup: {fileID: 1993006855}
   SettingsPopup: {fileID: 4943264107889923260, guid: 0b03c3e40fa889f43b5b42a51959a8eb, type: 3}
-  InventoryPopup: {fileID: 0}
-  SkillPopup: {fileID: 0}
+  InventoryPopup: {fileID: 2065401381}
+  SkillPopup: {fileID: 2065401380}
   ShopPopup: {fileID: 0}
   AnswerPopup: {fileID: 2065401378}
 --- !u!4 &1286008858
@@ -3903,11 +3895,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808338805229348025, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Splines.Array.data[0].m_Knots.Array.data[2].Rotation.value.x
-      value: -0.13806796
+      value: -0.13806795
       objectReference: {fileID: 0}
     - target: {fileID: 3808338805229348025, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Splines.Array.data[0].m_Knots.Array.data[2].Rotation.value.z
-      value: -0.057031523
+      value: -0.057031527
       objectReference: {fileID: 0}
     - target: {fileID: 3826300610362762809, guid: 5ba0319b2b1f4ed40be949eb1ce99be4, type: 3}
       propertyPath: m_Layer
@@ -4798,7 +4790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268e8684b7368934a9e9418cb5f85336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroy: 1
+  _dontDestroy: 0
   ESCisClose: 0
   isInDelivery: 1
   isCursorLockNeed: 1
@@ -4935,6 +4927,7 @@ MonoBehaviour:
   _eliteMonsterSpawners: []
   _bossMonsterSpawner: {fileID: 0}
   _bossPhase2Spawner: {fileID: 0}
+  SpawnTimer: 30
 --- !u!1001 &1993006853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5369,6 +5362,16 @@ MonoBehaviour:
 --- !u!224 &2065401379 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5925994406349305284, guid: 34d8e4c7bb8bc9c4d82622773fd7c856, type: 3}
+  m_PrefabInstance: {fileID: 2065401377}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2065401380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1221249046240821193, guid: 34d8e4c7bb8bc9c4d82622773fd7c856, type: 3}
+  m_PrefabInstance: {fileID: 2065401377}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2065401381 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8971106839924948264, guid: 34d8e4c7bb8bc9c4d82622773fd7c856, type: 3}
   m_PrefabInstance: {fileID: 2065401377}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2088133894
