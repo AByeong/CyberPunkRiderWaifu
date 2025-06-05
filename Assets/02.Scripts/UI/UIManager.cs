@@ -1,6 +1,5 @@
 using JY;
 using UnityEngine;
-using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose;
@@ -62,6 +61,7 @@ public class UIManager : Singleton<UIManager>
             else
             {
                 PopupManager.CloseLastPopup();
+                PlayerInput.GainControl();
             }
         }
     }
@@ -78,18 +78,14 @@ public class UIManager : Singleton<UIManager>
                 PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
                 if (PopupManager.PopupStack.Count > 0)
                 {
-
                     GameManager.Instance.GameStop();
                 }
             }
             else
             {
                 PopupManager.CloseLastPopup();
-
+                PlayerInput.GainControl();
             }
-
-
-
         }
     }
 
@@ -107,6 +103,7 @@ public class UIManager : Singleton<UIManager>
             else
             {
                 PopupManager.CloseLastPopup();
+                PlayerInput.GainControl();
             }
         }
     }
@@ -162,6 +159,7 @@ public class UIManager : Singleton<UIManager>
             else
             {
                 PopupManager.CloseLastPopup();
+                PlayerInput.GainControl();
             }
         }
     }
