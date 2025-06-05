@@ -90,6 +90,7 @@ public class PlayerSkill : MonoBehaviour
             // _input.playerControllerInputBlocked = false;
             ActingPlayer.transform.localPosition = Vector3.zero;
             DeliveryManager.Instance.UltimateGaze = 0;
+            _player.IsUitimate = false;
 
         }
     }
@@ -99,6 +100,7 @@ public class PlayerSkill : MonoBehaviour
         if (DeliveryManager.Instance.UltimateGaze == DeliveryManager.Instance.TargetUltimate)
         {
             _input.ReleaseControl();
+            _player.IsUitimate = true;
             _input.playerControllerInputBlocked = true;
             UltimatePD.Play(UltimateTL);
 

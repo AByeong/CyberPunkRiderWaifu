@@ -131,6 +131,7 @@ namespace JY
         private float _verticalSpeed;
         private bool _wasInRootMotionState;
         private bool IsMoveInput => !Mathf.Approximately(_input.MoveInput.sqrMagnitude, 0f);
+        public bool IsUitimate { get; set; }
         private bool _isLanding = false;
         private bool _wasInAir = false;
 
@@ -688,7 +689,7 @@ namespace JY
         }
         public void TakeDamage(Damage damage, bool ApproveAnimation)
         {
-
+            if (IsUitimate) return;
             if (ApproveAnimation)
             // Set the Hurt parameter of the animator.
             {
