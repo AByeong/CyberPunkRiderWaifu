@@ -23,7 +23,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
     public ChipDataSO UniqueChipDataSO;
     
     private static readonly System.Random _random = new System.Random();
-    
+   
     // 공통 장비 생성 함수
     private Item CreateEquipment(EquipmentType type, ItemRarity rarity = ItemRarity.Normal)
     {
@@ -35,12 +35,14 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
         // 신발 방어구 스탯 -> Speed
         // 각 장비들은 유니크면 세트효과 랜덤하게 지정됨
         // TODO : 유니크 무기는 스킬의 추가효과 만들어야함
+        string uniqueID = Guid.NewGuid().ToString();
+        
         switch (type)
         {
             case EquipmentType.Weapon:
                 if(rarity == ItemRarity.Normal)
                 {
-                    item = new Item(NormalWeaponEquipmentDataSO);
+                    item = new Item(NormalWeaponEquipmentDataSO, 3);
                     item.AttackPower = MakeRandomStat(90.0f, 110.0f);
                     item.AttackSpeed = MakeRandomStat(0.0f, 0.5f);
                     item.CritChance = MakeRandomStat(0.01f, 0.2f);
@@ -48,7 +50,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
                 }
                 else if(rarity == ItemRarity.Rare)
                 {
-                    item = new Item(RareWeaponEquipmentDataSO);
+                    item = new Item(RareWeaponEquipmentDataSO, 7);
                     item.AttackPower = MakeRandomStat(130.0f, 180.0f);
                     item.AttackSpeed = MakeRandomStat(0.2f, 1.0f);
                     item.CritChance = MakeRandomStat(0.1f, 0.3f);
@@ -56,7 +58,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
                 }
                 else if (rarity == ItemRarity.Unique)
                 {
-                    item = new Item(UniqueWeaponEquipmentDataSO);
+                    item = new Item(UniqueWeaponEquipmentDataSO, 11);
                     item.AttackPower = MakeRandomStat(200.0f, 400.0f);
                     item.AttackSpeed = MakeRandomStat(0.5f, 2.0f);
                     item.CritChance = MakeRandomStat(0.2f, 0.5f);
@@ -68,18 +70,18 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
             case EquipmentType.Armor:
                 if(rarity == ItemRarity.Normal)
                 {
-                    item = new Item(NormalArmorEquipmentDataSO);
+                    item = new Item(NormalArmorEquipmentDataSO, 0);
                     item.Defense = MakeRandomStat(0.01f, 0.1f);
                 }
                 else if(rarity == ItemRarity.Rare)
                 {
-                    item = new Item(RareArmorEquipmentDataSO);
+                    item = new Item(RareArmorEquipmentDataSO, 4);
                     item.Defense = MakeRandomStat(0.1f, 0.3f);
 
                 }
                 else if (rarity == ItemRarity.Unique)
                 {
-                    item = new Item(UniqueArmorEquipmentDataSO);
+                    item = new Item(UniqueArmorEquipmentDataSO, 8);
                     item.Defense = MakeRandomStat(0.2f, 0.5f);
                     item.SetItemType = MakeRandomSetItemType();
                 }
@@ -87,18 +89,18 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
             case EquipmentType.Head:
                 if(rarity == ItemRarity.Normal)
                 {
-                    item = new Item(NormalHeadEquipmentDataSO);
+                    item = new Item(NormalHeadEquipmentDataSO,2);
                     item.MaxHealth = MakeRandomStat(100.0f, 250.0f);
                 }
                 else if(rarity == ItemRarity.Rare)
                 {
-                    item = new Item(RareHeadEquipmentDataSO);
+                    item = new Item(RareHeadEquipmentDataSO,6);
                     item.MaxHealth = MakeRandomStat(200.0f, 400.0f);
 
                 }
                 else if (rarity == ItemRarity.Unique)
                 {
-                    item = new Item(UniqueHeadEquipmentDataSO);
+                    item = new Item(UniqueHeadEquipmentDataSO,10);
                     item.MaxHealth = MakeRandomStat(300.0f, 800.0f);
                     item.SetItemType = MakeRandomSetItemType();
                 }
@@ -106,17 +108,17 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
             case EquipmentType.Boots:
                 if(rarity == ItemRarity.Normal)
                 {
-                    item = new Item(NormalBootsEquipmentDataSO);
+                    item = new Item(NormalBootsEquipmentDataSO, 1);
                     item.Speed = MakeRandomStat(1.0f, 2.0f);
                 }
                 else if(rarity == ItemRarity.Rare)
                 {
-                    item = new Item(RareBootsEquipmentDataSO);
+                    item = new Item(RareBootsEquipmentDataSO,5);
                     item.Speed = MakeRandomStat(2.0f, 5.0f);
                 }
                 else if (rarity == ItemRarity.Unique)
                 {
-                    item = new Item(UniqueBootsEquipmentDataSO);
+                    item = new Item(UniqueBootsEquipmentDataSO,9);
                     item.Speed = MakeRandomStat(3.0f, 8.0f);
                     item.SetItemType = MakeRandomSetItemType();
                 }
@@ -126,7 +128,7 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
                 break;
         }
         MakeRandomCubeStats(item);
-
+        item.Id = uniqueID;
         return item;
     }
 
@@ -234,13 +236,45 @@ public class ItemCreateManager : Singleton<ItemCreateManager>
     public Item CreateChip(ItemRarity rarity = ItemRarity.Normal)
     {
         Item item = null;
+        string uniqueID = Guid.NewGuid().ToString();
+        
         if(rarity == ItemRarity.Normal)
-             item = new Item(NormalChipDataSO);
+             item = new Item(NormalChipDataSO,12 );
         else if(rarity == ItemRarity.Rare)
-             item = new Item(RareChipDataSO);
+             item = new Item(RareChipDataSO,13);
         else if(rarity == ItemRarity.Unique)
-             item = new Item(UniqueChipDataSO);
+             item = new Item(UniqueChipDataSO, 14);
+        item.Id = uniqueID;
         
         return item;
+    }
+    public ItemBaseDataSO GetItemDataByIndex(int index)
+    {
+        Debug.Log($"GetItemDataByIndex: {index}");
+        switch (index)
+        {
+            case 0: return NormalArmorEquipmentDataSO;
+            case 1: return NormalBootsEquipmentDataSO;
+            case 2: return NormalHeadEquipmentDataSO;
+            case 3: return NormalWeaponEquipmentDataSO;
+
+            case 4: return RareArmorEquipmentDataSO;
+            case 5: return RareBootsEquipmentDataSO;
+            case 6: return RareHeadEquipmentDataSO;
+            case 7: return RareWeaponEquipmentDataSO;
+
+            case 8: return UniqueArmorEquipmentDataSO;
+            case 9: return UniqueBootsEquipmentDataSO;
+            case 10: return UniqueHeadEquipmentDataSO;
+            case 11: return UniqueWeaponEquipmentDataSO;
+
+            case 12: return NormalChipDataSO;
+            case 13: return RareChipDataSO;
+            case 14: return UniqueChipDataSO;
+
+            default:
+                Debug.LogWarning($"Invalid index {index} passed to GetItemDataByIndex()");
+                return null;
+        }
     }
 }

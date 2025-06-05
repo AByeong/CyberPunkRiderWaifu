@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+
 public class CubeStat
 {
     public StatType StatType;
@@ -11,10 +13,24 @@ public class CubeStat
         Value = value;
     }
 }
+
+// [Serializable]
+// public class ChipItemData
+// {
+//     private string Id;
+//     
+//     public ItemRarity ItemRarity;
+//
+//     public float SkillRange;
+//     public float ReduceCooldow;
+//
+// }
 [Serializable]
 public class Item
 {
-    public readonly ItemBaseDataSO Data;
+    public string Id;
+    public int SoIndex;
+    public ItemBaseDataSO Data;
 
     public bool IsEquipped;
 
@@ -23,15 +39,16 @@ public class Item
     public int SlotIndex => _slotIndex;
     public SlotType SlotType => _slotType;
 
-    public EquipmentType EquipmentType 
+    public EquipmentType EquipmentType
     {
-        get {
+        get
+        {
             if (Data is EquipmentDataSO equipmentData)
                 return equipmentData.EquipmentType;
             return EquipmentType.Weapon; // 기본값
         }
     }
-        
+
 
     public void SetSlotIndex(SlotType slotType, int slotIndex)
     {
@@ -43,13 +60,14 @@ public class Item
         {
             IsEquipped = true;
         }
-        
+
         // 장착 해제
         if (_slotType == SlotType.Inventory)
         {
             IsEquipped = false;
         }
     }
+
     // Equipment 옵션
     public float MaxHealth = 0.0f;
     public float AttackPower = 0.0f;
@@ -60,7 +78,7 @@ public class Item
     public float CritDamage = 0.0f;
 
     public SetItemType SetItemType;
-
+    public ItemSaveData SaveData;
     //public Dictionary<StatType, float> CubeStats = new Dictionary<StatType, float>();
     public List<CubeStat> CubeStats = new List<CubeStat>();
 
@@ -69,12 +87,13 @@ public class Item
     {
         get
         {
-            if(Data is ChipDataSO chipData)
+            if (Data is ChipDataSO chipData)
                 return chipData.SkillRange;
             return 0.0f; // 기본값
         }
         set { }
     }
+
     public float ReduceCooldown
     {
         get
@@ -86,10 +105,10 @@ public class Item
         set { }
     }
 
-    public Item(ItemBaseDataSO data,  ItemSaveData saveData = null)
+    public Item(ItemBaseDataSO data = null, int soIndex = -1, ItemSaveData saveData = null)
     {
         this.Data = data;
-        
+        SoIndex = soIndex;
         if (saveData != null)
         {
             _slotIndex = saveData.SlotIndex;
@@ -104,6 +123,7 @@ public class Item
                 CritChance = equipmentSaveData.CritChance;
                 CritDamage = equipmentSaveData.CritDamage;
                 SetItemType = equipmentSaveData.SetItemType;
+                CubeStats = equipmentSaveData.CubeStats;
             }
             else if (saveData is ChipSaveData chipSaveData)
             {
@@ -111,7 +131,16 @@ public class Item
                 ReduceCooldown = chipSaveData.ReduceCooldown;
             }
         }
+
     }
+
+    public void Save()
+    {
+        string json = JsonUtility.ToJson(ToSaveData(SoIndex));
+        PlayerPrefs.SetString("Key" + Id.ToString(), json);
+        PlayerPrefs.Save();
+    }
+
     public ItemSaveData ToSaveData(int soIndex)
     {
         ItemSaveData saveData = null;
@@ -143,12 +172,33 @@ public class Item
             saveData = new ItemSaveData(); // 예외 방지
         }
 
+        saveData.Id = Id;
         saveData.ItemType = Data.ItemType;
-        saveData.ItemSOIndex = soIndex;
+        saveData.SOIndex = soIndex;
         saveData.SlotIndex = _slotIndex;
         saveData.SlotType = _slotType;
 
         return saveData;
     }
+
+    public bool Load(string Id)
+    {
+        if (PlayerPrefs.HasKey("Key" + Id))
+        {
+            Debug.Log("ItemLoad" + Id);
+            string json = PlayerPrefs.GetString("Key" + Id);
+            SaveData =  JsonUtility.FromJson<ItemSaveData>(json);
+            Data = ItemCreateManager.Instance.GetItemDataByIndex(SaveData.SOIndex);
+            Id = SaveData.Id;
+            Data.ItemType = SaveData.ItemType;
+            SoIndex = SaveData.SOIndex;
+            _slotIndex = SaveData.SlotIndex;
+            _slotType = SaveData.SlotType;
+            SetSlotIndex(_slotType,_slotIndex);
+            return true;
+        }
+        return false;
+    }
+
 }
     

@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 public enum SlotType // 인스펙터에서 설정
 {
-    Inventory, // 일반 인벤토리
+    Inventory, // 일반 인벤토리 
     Equipment, // 장비 슬롯
     Chip
 }
@@ -12,12 +12,13 @@ public enum SlotType // 인스펙터에서 설정
 public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public SlotType SlotType;
-
+    
     [Header("UI")]
     public Image IconImageUI;
     public Item Item;
 
     public bool HasItem => Item != null;
+    public bool HasLoad;
     public bool IsSold = false;
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -93,8 +94,9 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     
         Item = item;
         Set();
+        Save();
     }
-    protected virtual void ClearItem()
+    public virtual void ClearItem()
     {
         if (IconImageUI != null)
         {
@@ -102,6 +104,13 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
             Color _color = IconImageUI.color;
             _color.a = 0;
             IconImageUI.color = _color;
+        }
+        // PlayerPrefs key 초기화
+        string key = "Item" + transform.GetSiblingIndex();
+        if (PlayerPrefs.HasKey(key))
+        {
+            PlayerPrefs.DeleteKey(key);
+            PlayerPrefs.Save();
         }
         Item = null;
     }
@@ -121,4 +130,31 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
         }
     }
 
+    public void Load()
+    {
+        if (PlayerPrefs.HasKey("Item" + transform.GetSiblingIndex()))
+        {
+            string json =  PlayerPrefs.GetString("Item" + transform.GetSiblingIndex());
+            Item item = JsonUtility.FromJson<Item>(json);
+            InventoryManager.Instance.Add(item);
+            SetItem(item);
+            
+        }
+    }
+
+    public void Save()
+    {
+        string json = JsonUtility.ToJson(Item);
+        Debug.Log(json);
+        PlayerPrefs.SetString("Item" + transform.GetSiblingIndex(), json);
+        PlayerPrefs.Save();
+    }
+    
+    public void Start()
+    {
+        Item = null;
+        
+        Load();
+        Debug.Log(HasItem + "11111111111111111111111");
+    }
 }

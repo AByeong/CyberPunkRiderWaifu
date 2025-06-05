@@ -28,7 +28,6 @@ public class UI_InventoryPopup : Popup
     {
         Instance = this;
         
-        Refresh();
 
         InventoryManager.Instance.OnDataChanged += Refresh;
     }
@@ -204,7 +203,9 @@ public class UI_InventoryPopup : Popup
             {
                 // InventoryManager.Instance.RemoveStat(toSlot.Item);
             }
+            
             InventoryManager.Instance.Equip(_fromSlot.Item);
+            _fromSlot.ClearItem();
             _isSwapEquipment = false;
         }
         StopDragSlot();
@@ -309,12 +310,13 @@ public class UI_InventoryPopup : Popup
             slot.SetItem(null);
         }
 
-        items = InventoryManager.Instance.Items;
+        items = InventoryManager.Instance._items;
         
         // 인덱스 있는 아이템 먼저 채우고,
         foreach (Item item in items)
         {
             if (item.SlotIndex < 0) continue;
+            Debug.Log("인덱스 있는 아이템 먼저 채우고,");
             SetItemToSlot(item);
         }
 
@@ -322,6 +324,7 @@ public class UI_InventoryPopup : Popup
         foreach (Item item in items)
         {
             if (item.SlotIndex >= 0) continue;
+            Debug.Log("인덱스 없는 아이템은 앞에서부터 채운다.");
 
             int emptyIndex = _slots.FindIndex((slot) => !slot.HasItem);
             

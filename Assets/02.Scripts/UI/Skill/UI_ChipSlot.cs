@@ -19,7 +19,7 @@ public class UI_ChipSlot : UI_InventorySlot
         }
     }
 
-    protected override void ClearItem()
+    public override void ClearItem()
     {
         base.ClearItem();
         
