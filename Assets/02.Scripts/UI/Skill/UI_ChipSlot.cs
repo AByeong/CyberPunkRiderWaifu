@@ -28,6 +28,10 @@ public class UI_ChipSlot : UI_InventorySlot
         {
             TargetSkill.RefreshChipEffects();
         }
-        _slotImage.sprite = BaseIcon;
+        IconImageUI.sprite = BaseIcon;
+        Color _color = IconImageUI.color;
+        _color.a = 1;
+        IconImageUI.color = _color;
+        
     }
 }
