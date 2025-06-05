@@ -1,10 +1,6 @@
-using NUnit.Framework;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
 public class UI_ItemInspector : Singleton<UI_ItemInspector>
 {
     public GameObject InspectorPanel;
@@ -114,7 +110,7 @@ public class UI_ItemInspector : Singleton<UI_ItemInspector>
         UpdateInspectorPanelPosition();
     }
 
-    public void HoverExit()
+    public void Exit()
     {
         transform.position = _originPosition;
         _isHovered = false;

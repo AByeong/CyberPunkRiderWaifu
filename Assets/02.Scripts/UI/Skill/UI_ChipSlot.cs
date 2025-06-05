@@ -1,9 +1,10 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 public class UI_ChipSlot : UI_InventorySlot
 {
     public UI_EquipSkill TargetSkill;
     private Image _slotImage;
-
+    public Sprite BaseIcon;
     private void Awake()
     { 
         _slotImage = GetComponent<Image>();
@@ -27,5 +28,6 @@ public class UI_ChipSlot : UI_InventorySlot
         {
             TargetSkill.RefreshChipEffects();
         }
+        _slotImage.sprite = BaseIcon;
     }
 }
