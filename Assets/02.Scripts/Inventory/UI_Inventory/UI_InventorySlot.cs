@@ -94,7 +94,7 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     
         Item = item;
         Set();
-        Save();
+        //Save();
     }
     public virtual void ClearItem()
     {
@@ -106,12 +106,16 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
             IconImageUI.color = _color;
         }
         // PlayerPrefs key 초기화
-        string key = "Item" + transform.GetSiblingIndex();
-        if (PlayerPrefs.HasKey(key))
-        {
-            PlayerPrefs.DeleteKey(key);
-            PlayerPrefs.Save();
-        }
+        // if (transform != null)
+        // {
+        //     string key = "Item" + transform.GetSiblingIndex();
+        //     if (PlayerPrefs.HasKey(key))
+        //     {
+        //         PlayerPrefs.DeleteKey(key);
+        //         PlayerPrefs.Save();
+        //     }    
+        // }
+        
         Item = null;
     }
 
@@ -154,7 +158,7 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     {
         Item = null;
         
-        Load();
+        //Load();
         Debug.Log(HasItem + "11111111111111111111111");
     }
 }

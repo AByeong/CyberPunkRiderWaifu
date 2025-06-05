@@ -14,11 +14,10 @@ public class CurrencySaveData
 }
 
 // 재화 관리자
-public class CurrencyManager : MonoBehaviour
+public class CurrencyManager : Singleton<CurrencyManager>
 {
 
     private const string SAVE_KEY = "Currency";
-    public static CurrencyManager Instance;
     private CurrencySaveData _saveData;
 
     // public UI_Stat UI_Stat;
@@ -29,8 +28,7 @@ public class CurrencyManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-
+        base.Awake();
         Load();
     }
 

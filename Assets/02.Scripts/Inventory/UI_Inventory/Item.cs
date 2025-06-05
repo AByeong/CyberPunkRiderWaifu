@@ -156,7 +156,8 @@ public class Item
                 AttackSpeed = AttackSpeed,
                 CritChance = CritChance,
                 CritDamage = CritDamage,
-                SetItemType = SetItemType
+                SetItemType = SetItemType,
+                CubeStats = CubeStats
             };
         }
         else if (Data.ItemType == ItemType.Chip)

@@ -23,7 +23,7 @@ public class InventoryManager : Singleton<InventoryManager>
         return _items.FindAll(item => item.IsEquipped);
     }
 
-    public int SlotCount = 36;
+    public int SlotCount = 20;
 
     public void Start()
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -30,6 +31,11 @@ public class UI_InventoryPopup : Popup
         
 
         InventoryManager.Instance.OnDataChanged += Refresh;
+    }
+
+    private void Start()
+    {
+        Refresh();
     }
 
     public void RefreshGold()
