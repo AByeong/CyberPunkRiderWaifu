@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class Lobby : MonoBehaviour
@@ -18,7 +17,10 @@ public class Lobby : MonoBehaviour
         if (!_isStartDone)
         {
             _isStartDone = true;
-            GameManager.Instance.OnReturnToLobby();
+            if (GameManager.Instance.OnReturnToLobby != null)
+            {
+                GameManager.Instance.OnReturnToLobby();
+            }
         }
     }
 }
