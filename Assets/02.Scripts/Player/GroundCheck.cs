@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 #region 컴포넌트
 
@@ -9,7 +10,7 @@ public class GroundCheckComponent
 }
 
 #endregion
-public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
+public class GroundCheck : MonoBehaviour
 {
     [SerializeField] private GroundCheckComponent _component;
     [SerializeField] private float _groundCheckRadius;
@@ -18,6 +19,9 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
 
     private bool _isGroundedLast;
     public bool IsGrounded { get; private set; }
+
+    private bool _isCheckDisabled;
+
     private void Reset()
     {
         _component.CharacterController = GetComponent<CharacterController>();
@@ -25,9 +29,13 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
 
     private void Update()
     {
-        Check();
-        // SetAnimatorValue();
+        if (!_isCheckDisabled)
+        {
+            Check();
+            // SetAnimatorValue();
+        }
     }
+
     private void OnDrawGizmos()
     {
         if (_component.CharacterController == null)
@@ -43,6 +51,7 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
         Gizmos.color = IsGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(sphereOrigin, sphereRadius);
     }
+
     private void Check()
     {
         float sphereRadius = _groundCheckRadius;
@@ -55,6 +64,7 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
             _groundLayer
         );
     }
+
     private void SetAnimatorValue()
     {
         if (_isGroundedLast != IsGrounded)
@@ -63,4 +73,18 @@ public class GroundCheck : MonoBehaviour // 플레이어 땅 체크
             // _component.Animator.SetBool("IsGrounded", IsGrounded);
         }
     }
+
+    public void DisableGroundCheckForSeconds(float duration)
+    {
+        StartCoroutine(DisableCheckCoroutine(duration));
+    }
+
+    private IEnumerator DisableCheckCoroutine(float duration)
+    {
+        _isCheckDisabled = true;
+        IsGrounded = false;
+        yield return new WaitForSeconds(duration);
+        _isCheckDisabled = false;
+    }
 }
+
