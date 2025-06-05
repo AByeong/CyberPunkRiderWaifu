@@ -83,7 +83,6 @@ public class StageMainUI : MonoBehaviour
             }
             else
             {
-                SkillIcons[i].IconImage.sprite = null;
                 SkillIcons[i].RestrictCondition = -1;
             }
         }
