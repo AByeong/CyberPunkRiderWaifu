@@ -59,6 +59,7 @@ public class SceneMover : Singleton<SceneMover>
     {
         UIManager.Instance?.PopupManager?.PopupStack?.Clear();
         SceneManager.LoadScene(sceneName);
+        UIManager.Instance.BindReferences();
     }
 
 
