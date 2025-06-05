@@ -24,6 +24,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
 
     public PlayerInput PlayerInput;
 
+
     private void Start()
     {
         PlayerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
@@ -33,7 +34,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
     {
         //시간을 멈춘다, 플레이어 카메라를 끈다.
         GameManager.Instance.GameStop();
-        PlayerInput.ReleaseControl();
+        UIManager.Instance.IsCutScenePlaying = true;
         PlayerCamera.gameObject.SetActive(false);
         Debug.Log($"{cinemaName}을 재생합니다.");
         Director.Play(TimelinePreferences[(int)cinemaName]);
@@ -45,7 +46,7 @@ public class CinemachineManager : Singleton<CinemachineManager>
     public void AnimationEnd()
     {
         GameManager.Instance.GameReplay();
-        PlayerInput.GainControl();
+        UIManager.Instance.IsCutScenePlaying = false;
         PlayerCamera.gameObject.SetActive(true);
         Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
         UIManager.Instance.ActivateMainUI();
