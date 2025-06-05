@@ -22,7 +22,12 @@ public class EnemyManager : Singleton<EnemyManager>
    public float SpawnTimer = 30f;
    private float _timer;
 
-   private void Update()
+   // private void Start()
+   // {
+   //    GameManager.Instance.OnReturnToLobby += DestroyEnemyManager;
+   // }
+
+    private void Update()
    {
       _timer += Time.deltaTime;
       if (_timer >= SpawnTimer)
@@ -30,10 +35,10 @@ public class EnemyManager : Singleton<EnemyManager>
          InitSpawn();
          _timer = 0;
       }
-    }
+   }
 
 
-    public void SetNormalSpwner(MonsterSpawner[] spawners)
+   public void SetNormalSpwner(MonsterSpawner[] spawners)
    {
       _normalMonsterSpawners = spawners;
    }
@@ -119,6 +124,11 @@ public class EnemyManager : Singleton<EnemyManager>
          }
       }
 
+   }
+
+   public void DestroyEnemyManager()
+   {
+      Destroy(gameObject);
    }
    
 }

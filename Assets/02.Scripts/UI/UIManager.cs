@@ -1,5 +1,6 @@
 using JY;
 using UnityEngine;
+using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose;
@@ -14,6 +15,7 @@ public class UIManager : Singleton<UIManager>
     private void Start()
     {
         PlayerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
+        GameManager.Instance.OnReturnToLobby += Initialize;
     }
     private void Update()
     {
@@ -21,6 +23,35 @@ public class UIManager : Singleton<UIManager>
         ShopPopup();
         SkillPopup();
         DeliveryPopup();
+    }
+
+    public void Initialize()
+    {
+        PopupManager = FindFirstObjectByType<PopupManager>();
+        PlayerInput = FindFirstObjectByType<PlayerInput>();
+
+        isInDelivery = false;
+        isCursorLockNeed = false;
+
+        GameObject skillBtn = GameObject.FindWithTag("SkillButton");
+        if (skillBtn == null)
+        {
+            Debug.LogError($"{gameObject.name} :: SkillButton을 찾을 수 없습니다");
+        }
+        else
+        {
+            skillBtn.GetComponent<Button>().onClick.AddListener(LobbySkill);
+        }
+
+        GameObject shopBtn = GameObject.FindWithTag("ShopButton");
+        if (shopBtn == null)
+        {
+            Debug.LogError($"{gameObject.name} :: ShopButton을 찾을 수 없습니다");
+        }
+        else
+        {
+            shopBtn.GetComponent<Button>().onClick.AddListener(LobbyShop);
+        }
     }
 
     public void CursorLock(bool locking)
@@ -55,8 +86,8 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    
-    
+
+
     private void DeliveryPopup()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -78,7 +109,7 @@ public class UIManager : Singleton<UIManager>
             }
 
 
-        
+
         }
     }
 
@@ -89,7 +120,7 @@ public class UIManager : Singleton<UIManager>
             PlayerInput.ReleaseControl();
             if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
             {
-                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
                 PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
             }
@@ -103,21 +134,21 @@ public class UIManager : Singleton<UIManager>
     public void LobbyShop()
     {
         PlayerInput.ReleaseControl();
-        
+
         if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
         }
-        
+
         if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
         }
-        
+
     }
 
 
@@ -131,7 +162,7 @@ public class UIManager : Singleton<UIManager>
         }
         if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
         {
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             PopupManager.InventoryPopup.GetComponent<Popup>().OpenPopup();
         }
@@ -144,7 +175,7 @@ public class UIManager : Singleton<UIManager>
             PlayerInput.ReleaseControl();
             if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
             {
-                Cursor.lockState = CursorLockMode.Confined; 
+                Cursor.lockState = CursorLockMode.Confined;
                 Cursor.visible = true;
                 PopupManager.ShopPopup.GetComponent<Popup>().OpenPopup();
             }
@@ -178,5 +209,23 @@ public class UIManager : Singleton<UIManager>
     public void PlayerReplay()
     {
         PlayerInput.playerControllerInputBlocked = true;
+    }
+
+    public void DeactivateMainUI()
+    {
+        if (StageMainUI == null)
+        {
+            Debug.LogError($"{gameObject.name} :: Stage Main UI가 없습니다!!");
+        }
+        StageMainUI.gameObject.SetActive(false);
+    }
+
+    public void ActivateMainUI()
+    {
+        if (StageMainUI == null)
+        {
+            Debug.LogError($"{gameObject.name} :: Stage Main UI가 없습니다!!");
+        }
+        StageMainUI.gameObject.SetActive(true);
     }
 }

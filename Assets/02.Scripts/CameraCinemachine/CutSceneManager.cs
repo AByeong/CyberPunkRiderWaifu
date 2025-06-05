@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +16,7 @@ public class CutSceneManager : MonoBehaviour
 
     public void EndStage()
     {
-        SceneManager.LoadScene("KBJ_Lobby", LoadSceneMode.Single);
+        Debug.Log($"{gameObject.name} :: SceneChanging");
+        SceneMover.Instance.MoveToLobby();
     }
 }
