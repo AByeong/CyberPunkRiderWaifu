@@ -273,6 +273,7 @@ public class UI_InventoryPopup : Popup
         
         UIManager.Instance.ESCisClose = false;
         base.ClosePopup();
+        UI_ItemInspector.Instance.Exit();
     }
 
 

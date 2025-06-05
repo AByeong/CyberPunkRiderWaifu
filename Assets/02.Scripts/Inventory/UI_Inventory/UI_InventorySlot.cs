@@ -40,7 +40,7 @@ public class UI_InventorySlot : MonoBehaviour, IDropHandler, IBeginDragHandler, 
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        UI_ItemInspector.Instance.HoverExit();
+        UI_ItemInspector.Instance.Exit();
     }
 
     public virtual void OnDrop(PointerEventData eventData)

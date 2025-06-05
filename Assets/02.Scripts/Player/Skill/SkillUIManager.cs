@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 [Serializable]
 public class SkillUIManager : Popup
 {
@@ -133,5 +132,11 @@ public class SkillUIManager : Popup
                 SkillManager.Instance._skillCurrentCooldowns[skill] += deltaTime;
             }
         }
+    }
+
+    public override void ClosePopup()
+    {
+        base.ClosePopup();
+        UI_SkillInspector.Instance.Exit();
     }
 }
