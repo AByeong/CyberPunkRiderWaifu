@@ -26,11 +26,16 @@ public class UIManager : Singleton<UIManager>
 
     public void Initialize()
     {
-        PopupManager = FindFirstObjectByType<PopupManager>();
-        PlayerInput = FindFirstObjectByType<PlayerInput>();
+        BindReferences();
 
         isInDelivery = false;
         isCursorLockNeed = false;
+    }
+
+    public void BindReferences()
+    {
+        PopupManager = FindFirstObjectByType<PopupManager>();
+        PlayerInput = FindFirstObjectByType<PlayerInput>();
     }
 
     public void CursorLock(bool locking)
