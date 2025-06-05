@@ -133,7 +133,7 @@ public class StageManager : MonoBehaviour
         if (_isClear)
         {
             _isClear = false;
-
+            UIManager.Instance.StageMainUI.gameObject.SetActive(false);
             CinemachineManager.Instance.ShowElevatorChangeAnimation();
             DeliveryManager.Instance.LoadNextSection();
         }

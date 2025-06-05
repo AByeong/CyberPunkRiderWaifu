@@ -329,6 +329,6 @@ public class UI_InventoryPopup : Popup
             item.SetSlotIndex(SlotType.Inventory, emptyIndex);
         }
 
-        GoldText.text = $"{CurrencyManager.Instance.Gold.ToString()}골드";
+        RefreshGold();
     }
 }

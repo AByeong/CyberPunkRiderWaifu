@@ -114,6 +114,7 @@ public class DeliveryManager : Singleton<DeliveryManager>
             KillTracker.KillTrakerInit();
             
             StageManager.MoveNextStage();
+            UIManager.Instance.StageMainUI.gameObject.SetActive(true);
             UIManager.Instance.StageMainUI.Refresh();
 
 
