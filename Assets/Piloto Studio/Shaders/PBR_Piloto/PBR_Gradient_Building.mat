@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: PBR_Gradient_Building
   m_Shader: {fileID: 4800000, guid: cda243e0bc6ebe54b862d28e5eeed200, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _ADD_PRECOMPUTED_VELOCITY
@@ -23,7 +25,7 @@ Material:
     MotionVector: User
   disabledShaderPasses:
   - TransparentBackface
-  - MOTIONVECTORS
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -136,3 +138,4 @@ Material:
     - _EmissiveTint: {r: 1, g: 1, b: 1, a: 1}
     - _PanningSpeed: {r: 0.05, g: 0.1, b: 0, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
