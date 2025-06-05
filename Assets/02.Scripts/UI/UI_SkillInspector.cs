@@ -22,6 +22,11 @@ public class UI_SkillInspector : Singleton<UI_SkillInspector>
     }
     public void Hovered(Skill skill)
     {
+        if (skill == null)
+        {
+            return;
+        }
+        
         SkillDescriptionText.text = skill.SkillData.SkillDescription;
         SkillNameText.text = skill.SkillData.SkillName;
         SkillEffectText.text = $"{skill.SkillData.SkillDamage}배\n\n";

@@ -504,6 +504,7 @@ namespace JY
                 {
                     _playerSound.Play(EPlayerState.Jump);
                     _verticalSpeed = JumpSpeed;
+                    _groundCheck.DisableGroundCheckForSeconds(0.1f);
                     _readyToJump = false;
                 }
             }

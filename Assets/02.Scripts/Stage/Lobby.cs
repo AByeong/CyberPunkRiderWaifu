@@ -10,6 +10,18 @@ public class Lobby : MonoBehaviour
         {
             EnemyManager.Instance.DestroyEnemyManager();
         }
+
+        if (DeliveryManager.Instance != null)
+        {
+            Destroy(DeliveryManager.Instance.gameObject);
+        }
+
+        if (CinemachineManager.Instance != null)
+        {
+            Destroy(CinemachineManager.Instance.gameObject);
+        }
+
+        UIManager.Instance.CursorLock(false);
     }
 
     private void Update()

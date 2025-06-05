@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JY;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -20,23 +21,32 @@ public class CinemachineManager : Singleton<CinemachineManager>
     public CinemachineCamera PlayerCamera;
    
     public CinemaName CinemaName;
-   
+
+    public PlayerInput PlayerInput;
+
+
+    private void Start()
+    {
+        PlayerInput = GameObject.FindWithTag("Player").GetComponent<PlayerInput>();
+    }
 
     private void AnimationStart(CinemaName cinemaName)
     {
         //시간을 멈춘다, 플레이어 카메라를 끈다.
-        Time.timeScale = 0;
+        GameManager.Instance.GameStop();
+        UIManager.Instance.IsCutScenePlaying = true;
         PlayerCamera.gameObject.SetActive(false);
         Debug.Log($"{cinemaName}을 재생합니다.");
         Director.Play(TimelinePreferences[(int)cinemaName]);
-        
-        
+
+
         Camera.main.cullingMask = 1 << LayerMask.NameToLayer("Cinemachine");
     }
     
     public void AnimationEnd()
     {
-        Time.timeScale = 1;
+        GameManager.Instance.GameReplay();
+        UIManager.Instance.IsCutScenePlaying = false;
         PlayerCamera.gameObject.SetActive(true);
         Camera.main.cullingMask = ~LayerMask.GetMask("MiniMap");
         UIManager.Instance.ActivateMainUI();

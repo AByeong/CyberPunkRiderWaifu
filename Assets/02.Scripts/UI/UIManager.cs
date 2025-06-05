@@ -11,6 +11,8 @@ public class UIManager : Singleton<UIManager>
     public PopupManager PopupManager;
     public PlayerInput PlayerInput;
 
+    public bool IsCutScenePlaying = false;
+
     private void Start()
     {
         PlayerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
@@ -26,11 +28,17 @@ public class UIManager : Singleton<UIManager>
 
     public void Initialize()
     {
-        PopupManager = FindFirstObjectByType<PopupManager>();
-        PlayerInput = FindFirstObjectByType<PlayerInput>();
+        BindReferences();
 
         isInDelivery = false;
         isCursorLockNeed = false;
+        IsCutScenePlaying = false;
+    }
+
+    public void BindReferences()
+    {
+        PopupManager = FindFirstObjectByType<PopupManager>();
+        PlayerInput = FindFirstObjectByType<PlayerInput>();
     }
 
     public void CursorLock(bool locking)
@@ -50,7 +58,7 @@ public class UIManager : Singleton<UIManager>
 
     private void SkillPopup()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K) && !IsCutScenePlaying)
         {
             PlayerInput.ReleaseControl();
             if (!PopupManager.SkillPopup.gameObject.activeInHierarchy)
@@ -69,8 +77,8 @@ public class UIManager : Singleton<UIManager>
 
 
     private void DeliveryPopup()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
+    {   
+        if (Input.GetKeyDown(KeyCode.Escape) && !IsCutScenePlaying)
         {
             PlayerInput.GainControl();
             if (!ESCisClose && isInDelivery)
@@ -91,7 +99,7 @@ public class UIManager : Singleton<UIManager>
 
     private void InventoryPopup()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && !IsCutScenePlaying)
         {
             PlayerInput.ReleaseControl();
             if (!PopupManager.InventoryPopup.gameObject.activeInHierarchy)
@@ -147,7 +155,7 @@ public class UIManager : Singleton<UIManager>
 
     private void ShopPopup()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) && !IsCutScenePlaying)
         {
             PlayerInput.ReleaseControl();
             if (!PopupManager.ShopPopup.gameObject.activeInHierarchy)
