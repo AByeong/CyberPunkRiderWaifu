@@ -32,26 +32,6 @@ public class UIManager : Singleton<UIManager>
 
         isInDelivery = false;
         isCursorLockNeed = false;
-
-        GameObject skillBtn = GameObject.FindWithTag("SkillButton");
-        if (skillBtn == null)
-        {
-            Debug.LogError($"{gameObject.name} :: SkillButton을 찾을 수 없습니다");
-        }
-        else
-        {
-            skillBtn.GetComponent<Button>().onClick.AddListener(LobbySkill);
-        }
-
-        GameObject shopBtn = GameObject.FindWithTag("ShopButton");
-        if (shopBtn == null)
-        {
-            Debug.LogError($"{gameObject.name} :: ShopButton을 찾을 수 없습니다");
-        }
-        else
-        {
-            shopBtn.GetComponent<Button>().onClick.AddListener(LobbyShop);
-        }
     }
 
     public void CursorLock(bool locking)

@@ -8,9 +8,6 @@ public abstract class Popup : MonoBehaviour
         UIManager.Instance.PopupManager.PopupStack.Push(this); 
         SoundManager.Instance.Play(SoundType.UI_Open);
         this.gameObject.SetActive(true);
-        
-        
-        
         UIManager.Instance.CursorLock(false);
 
         //  Debug.Log($"현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
@@ -40,11 +37,6 @@ public abstract class Popup : MonoBehaviour
         
         SoundManager.Instance.Play(SoundType.UI_Close);
 
-        
-        
-        
-//        Debug.Log($"닫는순간 현재 {UIManager.Instance.PopupManager.PopupStack.Count}개의 팝업이 열려있음");
-
         if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
         {
             string popuplist = "";
@@ -59,7 +51,7 @@ public abstract class Popup : MonoBehaviour
         {
             OnPopupClosed();
         }
-
+        
         gameObject.SetActive(false);
     }
 }

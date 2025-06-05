@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class StageMainUI : MonoBehaviour
 {
     [Header("아이콘")]
@@ -35,6 +34,10 @@ public class StageMainUI : MonoBehaviour
     public Image[] StageIcons;
     [SerializeField] private Color _acrivateColor;
 
+    private void Start()
+    {
+        UIManager.Instance.StageMainUI = this;
+    }
     private void OnEnable()
     {
         SkillManager.Instance.OnSkillChange += SkillIconSet;

@@ -714,6 +714,7 @@ namespace JY
                 GameManager.Instance.GameStop();
                 SceneMover.Instance.MoveToLobby();
                 CurrentHealth = MaxHealth;
+                GameManager.Instance.GameReplay();
             }
         }
         public void RefreshStat()

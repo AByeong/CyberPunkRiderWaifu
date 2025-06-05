@@ -23,4 +23,8 @@ public class Lobby : MonoBehaviour
             }
         }
     }
+
+    public void StartGame() => SceneMover.Instance.ShowDungeonPopup("KBJ_Procedure");
+    public void Shop() => UIManager.Instance.LobbyShop();
+    public void Skill() => UIManager.Instance.LobbySkill();
 }
