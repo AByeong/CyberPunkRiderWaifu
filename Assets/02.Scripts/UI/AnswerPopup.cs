@@ -1,7 +1,5 @@
 using System;
 using TMPro;
-using Unity.UI;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class AnswerPopup : Popup
