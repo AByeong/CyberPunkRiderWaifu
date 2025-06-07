@@ -53,7 +53,7 @@ public class StageMainUI : MonoBehaviour
         Debug.Log("MainUI Init");
 
         SkillIconSet();
-        
+        ConsumableIconSet();
         ProgressSlider.value = 0;
 
         // for (int i = 0; i < ItemIcons.Length; i++)
@@ -86,6 +86,14 @@ public class StageMainUI : MonoBehaviour
                 SkillIcons[i].IconImage.sprite = null;
                 SkillIcons[i].RestrictCondition = -1;
             }
+        }
+    }
+
+    private void ConsumableIconSet()
+    {
+        for (int i = 0; i < ItemIcons.Length; i++)
+        {
+            ItemIcons[i].IconImage.sprite = ConsumableItemManager.Instance.ItemSprites[i];
         }
     }
     public void ActivateStage(int stage)
