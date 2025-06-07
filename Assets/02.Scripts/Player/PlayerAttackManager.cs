@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+
 public class PlayerAttackManager : Singleton<PlayerAttackManager>
 {
     [FormerlySerializedAs("attackColliders")]
@@ -13,7 +14,8 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
     [Tooltip("Automatically disable colliders on Awake if any are enabled.")]
     [SerializeField]
     private bool _disableOnAwake = true;
-    private StretchColliderOnly _stretchColliderOnly;
+
+    public StretchColliderOnly StretchColliderOnly;
     private void Awake()
     {
         if (_disableOnAwake)
@@ -24,7 +26,7 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
 
     private void Start()
     {
-        _stretchColliderOnly = GetComponentInChildren<StretchColliderOnly>();
+        StretchColliderOnly = GetComponentInChildren<StretchColliderOnly>();
     }
 
     public void EnableAttackColliders()
@@ -35,7 +37,7 @@ public class PlayerAttackManager : Singleton<PlayerAttackManager>
     public void DisableAttackColliders()
     {
         SetColliders(false);
-        _stretchColliderOnly.StretchDown(1);
+        StretchColliderOnly.StretchDown(1);
     }
     private void SetColliders(bool enabled)
     {

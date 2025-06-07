@@ -33,11 +33,11 @@ namespace JY
         public bool CanAttack;
         public bool IsInCombo;
         public bool IsAirCombo;
+        public bool ignoreGravity;
         [Header("Dash")]
         public float DashDistance => MaxForwardSpeed * 0.6f;
         public float DashCooldown;
         public float DashDuration = 0.2f;
-        public bool NoGravity;
         
         public IStatsProvider Stat { get; private set; }
 
@@ -348,7 +348,14 @@ namespace JY
                 _isLanding = false;
             }
 
-            _animator.SetBool(_hashGrounded, _groundCheck.IsGrounded);
+            if (!IsAirSkill())
+            {
+                _animator.SetBool(_hashGrounded, _groundCheck.IsGrounded);
+            }
+            else
+            {
+                _animator.SetBool(_hashGrounded, false);
+            }
         }
 
         public void SetDamageType(int damageType)
@@ -526,7 +533,7 @@ namespace JY
                 }
 
                 _isAirborneAttacking = !_groundCheck.IsGrounded && IsInCombo;
-                bool ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
+                ignoreGravity = IsAirSkill() || _isAirborneAttacking || _airAttackGraceTime > 0f;
                 if (!ignoreGravity)
                 {
                     _verticalSpeed -= Gravity * Time.deltaTime;
