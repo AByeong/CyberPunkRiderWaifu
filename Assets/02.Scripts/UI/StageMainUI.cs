@@ -129,7 +129,7 @@ public class StageMainUI : MonoBehaviour
 
     public void RefreshProgressbar()
     {
-        if (DeliveryManager.Instance.KillTracker.MissionKillCount.Boss != 0)
+        if (DeliveryManager.Instance.KillTracker.MissionKillCount.Boss == 0)
         
         {
             ProgressSlider.maxValue = DeliveryManager.Instance.KillTracker.MissionKillCount.Normal +
