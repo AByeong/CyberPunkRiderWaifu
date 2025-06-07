@@ -12,6 +12,11 @@ public class Sword : MonoBehaviour, IWeapon
     {
         
     }
+    private bool IsCriticalHit()
+    {
+        float rand = Random.value; // 0.0f ~ 1.0f 사이의 무작위 값
+        return rand < _playerController.CritChance;
+    }
     private void OnTriggerEnter(Collider collision)
     {
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
@@ -25,7 +30,16 @@ public class Sword : MonoBehaviour, IWeapon
             Damage damage = new Damage();
             damage.DamageForce = 1f; // Weapon Damage Table 있으면 수정
             damage.DamageType = _playerController.DamageType; // 추후 타입 추가
-            damage.DamageValue = (int)_playerController.AttackPower; // Weapon Damage Table 있으면 수정
+            if(IsCriticalHit())
+            {
+                damage.DamageValue = (int)(_playerController.AttackPower * _playerController.CritDamage); // Weapon Damage Table 있으면 수정
+                damage.DamageCriType = EDamageCriType.Critical;
+            }
+            else
+            {
+                damage.DamageValue = (int)_playerController.AttackPower; // Weapon Damage Table 있으면 수정
+                damage.DamageCriType = EDamageCriType.Normal;
+            }
             damage.From = transform.root.gameObject;
             damageable.TakeDamage(damage);          
         }
