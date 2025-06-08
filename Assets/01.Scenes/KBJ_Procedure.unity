@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 8c4bc48fcd7d5ea409b2fb27851f476a, type: 2}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: ba938ca020a0cc04cbf800fb24c800be, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -2316,6 +2316,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 3184633984302917899, guid: 6fdc8d67fd22dae4fa4e635a8bf58564, type: 3}
   m_PrefabInstance: {fileID: 594320662}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &619364605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 90902152847875798, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+  m_PrefabInstance: {fileID: 5667722410751408575}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &695501710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4434,12 +4439,50 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7951476831388019966, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
   m_PrefabInstance: {fileID: 5667722410751408575}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 619364605}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fdd19788e6eabb40aa5dddc437bda3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1761812193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619364605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a93f4bca37b754685290fb816d56cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  probeSpacing: 4
+  probeHeight: 0
+  ceilingHeight: 9
+  ceilingProbeOffset: 1
+  generateFloorProbes: 1
+  generateCeilingProbes: 1
+  generateWallProbes: 1
+  wallProbeOffset: 1
+--- !u!220 &1761812194
+LightProbeGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619364605}
+  m_Enabled: 1
+  m_SourcePositions:
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: -1}
+  - {x: 1, y: -1, z: 1}
+  - {x: 1, y: -1, z: -1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: -1, z: 1}
+  - {x: -1, y: -1, z: -1}
+  m_Dering: 1
 --- !u!1 &1778409694
 GameObject:
   m_ObjectHideFlags: 0
@@ -4747,6 +4790,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1835021868 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4292407963261825007, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+  m_PrefabInstance: {fileID: 5667722410751408575}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1889225918
 GameObject:
   m_ObjectHideFlags: 0
@@ -5375,12 +5423,50 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6091702639726566855, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
   m_PrefabInstance: {fileID: 5667722410751408575}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1835021868}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fdd19788e6eabb40aa5dddc437bda3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &296687299945365618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835021868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8a93f4bca37b754685290fb816d56cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  probeSpacing: 4
+  probeHeight: 2
+  ceilingHeight: 9
+  ceilingProbeOffset: 1
+  generateFloorProbes: 1
+  generateCeilingProbes: 1
+  generateWallProbes: 1
+  wallProbeOffset: 1
+--- !u!220 &296687299945365619
+LightProbeGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835021868}
+  m_Enabled: 1
+  m_SourcePositions:
+  - {x: 1, y: 1, z: 1}
+  - {x: 1, y: 1, z: -1}
+  - {x: 1, y: -1, z: 1}
+  - {x: 1, y: -1, z: -1}
+  - {x: -1, y: 1, z: 1}
+  - {x: -1, y: 1, z: -1}
+  - {x: -1, y: -1, z: 1}
+  - {x: -1, y: -1, z: -1}
+  m_Dering: 1
 --- !u!1001 &535085824390723176
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6967,6 +7053,10 @@ PrefabInstance:
       propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
       value: 76a9ad5c1dfe014499d95fe9479508f1
       objectReference: {fileID: 0}
+    - target: {fileID: 4292407963261825007, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4801446017730537604, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05
@@ -7043,6 +7133,10 @@ PrefabInstance:
       propertyPath: prefabToPoolRef.Array.data[0].m_AssetGUID
       value: 042f053437a57ce41aaf6d288efdd4a2
       objectReference: {fileID: 0}
+    - target: {fileID: 6091702639726566855, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: _lightProbes
+      value: 
+      objectReference: {fileID: 296687299945365618}
     - target: {fileID: 6189526761607042415, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05
@@ -7171,6 +7265,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.02
       objectReference: {fileID: 0}
+    - target: {fileID: 7951476831388019966, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      propertyPath: _lightProbes
+      value: 
+      objectReference: {fileID: 1761812193}
     - target: {fileID: 8097478716043345910, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.05
@@ -7194,7 +7292,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4292407963261825007, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 296687299945365618}
+    - targetCorrespondingSourceObject: {fileID: 4292407963261825007, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 296687299945365619}
+    - targetCorrespondingSourceObject: {fileID: 90902152847875798, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1761812193}
+    - targetCorrespondingSourceObject: {fileID: 90902152847875798, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1761812194}
   m_SourcePrefab: {fileID: 100100000, guid: 9964497b740a297429261bf3baa69ab1, type: 3}
 --- !u!1001 &5757910745627409380
 PrefabInstance:
