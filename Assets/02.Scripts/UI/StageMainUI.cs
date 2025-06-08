@@ -11,7 +11,10 @@ public class StageMainUI : MonoBehaviour
     
     [Header("진행바")]
     public Slider ProgressSlider;
-    
+    public TextMeshProUGUI ProgressText;
+    public Image FillImage;
+    public Color MissionColor;
+    public Color BossColor;
     
     [Header("HP")]
     public Slider HPSlider;
@@ -124,6 +127,8 @@ public class StageMainUI : MonoBehaviour
     {
         ProgressSlider.maxValue = max;
         ProgressSlider.value = current;
+        ProgressText.text = $"Boss HP : {(float)current / (float)max*100}%";
+        FillImage.color = MissionColor;
 
     }
 
@@ -149,6 +154,10 @@ public class StageMainUI : MonoBehaviour
                                    DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss +
                                    DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal;
         }
+
+        ProgressText.text =
+            $"Progress : {(float)DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total) / (float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total)*100}%";
+        FillImage.color = BossColor;
     }
     
     public void FinisherIconLoad()
