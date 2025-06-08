@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Text;
+using Random = UnityEngine.Random;
 
 public enum EGirdType
 {
@@ -89,6 +91,8 @@ public class GridGeneration : MonoBehaviour
 
     private float[] Roations = { 0, 90, 180, 270 };
 
+    [Header("Light Probe Generator")]
+    public LightProbeAutoGenerator _lightProbes;
 
     // 1. NxM크기의 2차원 배열 생성
     // 2. 경계 검출
@@ -98,6 +102,11 @@ public class GridGeneration : MonoBehaviour
     // 6. 경계 검출
     // 7. 빈 공간 너비에 따른 랜덤패턴 생성
     // 8. 패턴들 구현
+
+    private void Awake()
+    { 
+        _lightProbes = GetComponent<LightProbeAutoGenerator>();
+    }
 
     private void DebugGrid()
     {
@@ -141,6 +150,7 @@ public class GridGeneration : MonoBehaviour
 
         BuildMap();
 
+        _lightProbes.OnMapGenerated();
         // DebugGrid();
     }
 
@@ -162,7 +172,10 @@ public class GridGeneration : MonoBehaviour
         _elite0SpawnerCreated = 0;
         _elite1SpawnerCreated = 0;
         _bossSpawnerCreated = 0;
-
+        if (_lightProbes == null)
+        {
+            _lightProbes = GetComponent<LightProbeAutoGenerator>();
+        }
         _entriesPos.Clear();
         _entries.Clear();
 
