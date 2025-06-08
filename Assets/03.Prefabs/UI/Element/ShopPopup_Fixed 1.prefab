@@ -242,7 +242,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1674723775959205867}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3416899543942891523}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &432968354661149668
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +497,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8015403798394763214}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7591416442447649611}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &555401408621604159
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,7 +576,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: a7390b7b345edb844915c20aa389ad9d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -737,8 +761,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -874,7 +898,7 @@ MonoBehaviour:
   m_text: "\uBC30\uB538 \uB77C\uC774\uB354\uD300\uC5D0 \uAD00\uC2EC \uC788\uB098\uC694?"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5b22ae00933264343a309a714bedc120, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_sharedMaterial: {fileID: 7884861767242274395, guid: 5b22ae00933264343a309a714bedc120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -939,7 +963,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &783107292918954868
@@ -1062,8 +1086,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6514131353512906837}
   m_HandleRect: {fileID: 5195897685527782711}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.7675
+  m_Value: 0.9999996
+  m_Size: 0.7674999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1106,7 +1130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6912812371680989451
@@ -1366,8 +1390,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6477355700747578667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.23250002}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.23249997}
+  m_AnchorMax: {x: 1, y: 0.9999999}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1475,7 +1499,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 7b2a9f01285444a4cad0e168518482df, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1585,8 +1609,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC0C1\uC810"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1721,8 +1745,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uAD6C\uB9E4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2111,8 +2135,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2301,7 +2325,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3866418783992471850}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8410302781747604693}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2029340635937886197
 GameObject:
   m_ObjectHideFlags: 0
@@ -2489,7 +2525,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: efabb8a0c07b1de45965caf6fbf667c3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2743,7 +2779,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3460788253644186566}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8066688655119222394}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2325650736802715800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2810,7 +2858,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0ee8900ce8fa888489e6549979b17c01, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3085,7 +3133,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4383709471986750644}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1069672832554561234}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2737033850078938264
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,8 +3213,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3289,8 +3349,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: X
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3600,7 +3660,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1837852094873762123}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8227123765417048208}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3382658092507008434
 GameObject:
   m_ObjectHideFlags: 0
@@ -3986,8 +4058,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4197,7 +4269,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 8e644ef2551313745a49fbf3516f47f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4307,8 +4379,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4507,8 +4579,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uD310\uB9E4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4643,8 +4715,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4960,7 +5032,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 4
   m_Viewport: {fileID: 7711863539885648459}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 4199771744382898319}
@@ -5037,7 +5109,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ffc2dfd076af25b45bc727d21b0d4565, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5210,7 +5282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: efb93b9899357974ab04fa38ad3d870c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5320,8 +5392,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5631,7 +5703,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3951379008577174191}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5003708316140920652}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7015484536795489457
 GameObject:
   m_ObjectHideFlags: 0
@@ -5821,8 +5905,8 @@ MonoBehaviour:
   m_text: "\uC544\uC774\uD15C \uCC3D\uC5D0\uC11C\n\uB4DC\uB798\uADF8 \uC564 \uB4DC\uB86D\uD558\uC5EC
     \uC5C5\uB85C\uB4DC"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 5b22ae00933264343a309a714bedc120, type: 2}
+  m_sharedMaterial: {fileID: 7884861767242274395, guid: 5b22ae00933264343a309a714bedc120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5957,8 +6041,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1000
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
-  m_sharedMaterial: {fileID: -7003012135321641452, guid: dcace3e4443787845b493a9b94c51d92, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
+  m_sharedMaterial: {fileID: 8175246969506547801, guid: 8e6450b3016168e4cafb6c67eaf34203, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6294,7 +6378,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8232327715561587631}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8500310032111395042}
+        m_TargetAssemblyTypeName: UI_ShopSlot, Assembly-CSharp
+        m_MethodName: OnSellItems
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8633522576501710552
 GameObject:
   m_ObjectHideFlags: 0
@@ -6398,7 +6494,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 384927e03f6d1e648bb40a43d13fd1eb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
