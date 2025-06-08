@@ -12,7 +12,6 @@ public enum EConsumableItemType
 public class ConsumableItemManager : Singleton<ConsumableItemManager>
 {
     public List<int> ConsumableItems = new List<int> { 0, 0, 0 };
-    public List<Sprite> ItemSprites = new List<Sprite>();
     public StageMainUI UI;
 
     private string saveFilePath;
