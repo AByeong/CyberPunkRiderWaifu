@@ -145,7 +145,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         _takedDamage = damage;
 
         PlayHitParticle();
-        Debug.Log($"{this.name}이 {damage.DamageValue}만큼 데미지를 ㅣㅇㅂ음");
+        Debug.Log($"{this.name}이 {damage.DamageValue}만큼 데미지를 입음");
         if (damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
         // Vector3 damagedForceDir = (gameObject.transform.position - damage.From.transform.position).normalized;
         Vector3 worldPos = DamagePopupPosition.position;
@@ -153,8 +153,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         // Canvas 하위로 생성
         GameObject popup = Instantiate(DamagePopup, GameManager.Instance.WorldCanvas.transform);
         popup.transform.position = worldPos;
-        popup.GetComponentInChildren<TypingEffect>().Typing(damage.DamageValue.ToString());
-
+        if(damage.DamageCriType == EDamageCriType.Normal)
+        {
+            popup.GetComponentInChildren<TypingEffect>().Typing(damage.DamageValue.ToString());
+        }
+        else
+        {
+            popup.GetComponentInChildren<TypingEffect>().TypingCritical(damage.DamageValue.ToString());
+        }
         // 선택: 파괴 또는 애니메이션
         Destroy(popup, 1.5f);
     }

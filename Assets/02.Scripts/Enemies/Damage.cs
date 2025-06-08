@@ -6,11 +6,16 @@ public enum EDamageType
     Airborne,
     Down
 }
-
+public enum EDamageCriType
+{
+    Normal,
+    Critical,
+}
 public struct Damage
 {
     public GameObject From;
     public EDamageType DamageType;
+    public EDamageCriType DamageCriType;
     public float DamageForce;
     public int DamageValue;
     public float AirRiseAmount;

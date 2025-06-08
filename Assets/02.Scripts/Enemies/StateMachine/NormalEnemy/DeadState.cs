@@ -17,23 +17,28 @@ public class DeadState : BaseNormalEnemyState
         base.OnEnter();
 
         Owner.NavMeshAgent.enabled = false;
-        Owner.Animator.SetFloat("DeadType", Random.Range(0, 3));
-        Owner.Animator.SetTrigger("OnDead");
+
+        Owner.SwitchToRagdoll();
+
+        // Owner.Animator.SetFloat("DeadType", Random.Range(0, 3));
+        // Owner.Animator.SetTrigger("OnDead");
         Owner.Collider.enabled = false;
 
-        if (Owner.IsInAir)
-        {
-            float finalFallY = _defaultFallbackLandY;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(Owner.transform.position, out hit, _groundRaycastDistance, NavMesh.AllAreas))
-            {
-                finalFallY = hit.position.y + _landingYOffset;
-            }
-            Vector3 fallPos = new Vector3(transform.position.x, finalFallY, transform.position.z);
+        // if (Owner.IsInAir)
+        // {
+        //     float finalFallY = _defaultFallbackLandY;
+        //     NavMeshHit hit;
+        //     if (NavMesh.SamplePosition(Owner.transform.position, out hit, _groundRaycastDistance, NavMesh.AllAreas))
+        //     {
+        //         finalFallY = hit.position.y + _landingYOffset;
+        //     }
+        //     Vector3 fallPos = new Vector3(transform.position.x, finalFallY, transform.position.z);
 
-            Owner.transform.DOMove(fallPos, _fallTime).SetEase(Ease.InQuad);
-            Owner.IsInAir = false;    
-        }
+        //     Owner.transform.DOMove(fallPos, _fallTime).SetEase(Ease.InQuad);
+        //     Owner.IsInAir = false;    
+        // }
+
+        
         
         DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Normal);
         
@@ -50,6 +55,7 @@ public class DeadState : BaseNormalEnemyState
             _deadTimer = 0f;
             DeliveryManager.Instance.KillCount++;
             Owner.Pool.ReturnObject(Owner.gameObject);
+            Owner.SwitchToOriginModel();
             SuperMachine.ChangeState<IdleState>();
         }
     }

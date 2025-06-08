@@ -25,6 +25,9 @@ namespace JY
         public float AttackPower;
         public float MaxHealth;
         public float CurrentHealth;
+        public float CritChance;
+        public float CritDamage;
+        
         public float Gravity = 20f;
         public float JumpSpeed = 15f;
         public float MaxTurnSpeed = 1200f;
@@ -745,7 +748,8 @@ namespace JY
             AttackPower = defaultStat.GetStat(StatType.AttackPower);
             MaxForwardSpeed = defaultStat.GetStat(StatType.Speed);
             MaxHealth = defaultStat.GetStat(StatType.Health);
-            
+            CritChance = defaultStat.GetStat(StatType.CritChance);
+            CritDamage = defaultStat.GetStat(StatType.CritDamage);
 
         }
 

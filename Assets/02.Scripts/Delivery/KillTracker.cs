@@ -57,6 +57,10 @@ public class KillTracker : MonoBehaviour
    
    public void IncreaseKillCount(EnemyType type)
    {
+
+      
+       
+       
        switch (type)
        {
            case EnemyType.Normal:
