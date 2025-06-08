@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+
 public class UI_InventoryPopup : Popup
 {
     public static UI_InventoryPopup Instance;
@@ -339,6 +339,8 @@ public class UI_InventoryPopup : Popup
             item.SetSlotIndex(SlotType.Inventory, emptyIndex);
         }
 
-        GoldText.text = $"{CurrencyManager.Instance.Gold.ToString()}골드";
+        // GoldText.text = $"{CurrencyManager.Instance.Gold.ToString()}골드";
+        // GoldText.text = $"<color=green>$</color>{CurrencyManager.Instance.Gold}";
+        RefreshGold();
     }
 }
