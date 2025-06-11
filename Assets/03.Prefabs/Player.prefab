@@ -3183,6 +3183,8 @@ MonoBehaviour:
   AttackPower: 0
   MaxHealth: 0
   CurrentHealth: 0
+  CritChance: 0
+  CritDamage: 0
   Gravity: 22
   JumpSpeed: 10
   MaxTurnSpeed: 1200
@@ -3191,9 +3193,9 @@ MonoBehaviour:
   CanAttack: 1
   IsInCombo: 1
   IsAirCombo: 0
+  ignoreGravity: 0
   DashCooldown: 1
   DashDuration: 0.2
-  NoGravity: 0
 --- !u!114 &5637839264626966794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3210,6 +3212,7 @@ MonoBehaviour:
   _attackColliders:
   - {fileID: 7448360459939322366}
   _disableOnAwake: 1
+  StretchColliderOnly: {fileID: 0}
 --- !u!114 &5888996659395836914
 MonoBehaviour:
   m_ObjectHideFlags: 0
