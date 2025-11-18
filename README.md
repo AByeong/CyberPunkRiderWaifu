@@ -32,26 +32,6 @@
 - Feel - 피드백 시스템
 - Addressables - 리소스 관리
 
-## 프로젝트 구조
-
-```
-Assets/
-├── 01.Scenes/          # 게임 씬들
-│   ├── KBH_Lobby.unity       # 메인 로비
-│   ├── Loading.unity         # 로딩 화면
-│   └── Prison_KKH.unity      # 감옥 스테이지
-├── 02.Scripts/         # 게임 스크립트
-│   ├── Core/              # 핵심 시스템
-│   ├── Player/            # 플레이어 관련
-│   ├── Enemies/           # 적 AI 시스템
-│   ├── UI/               # 사용자 인터페이스
-│   ├── Inventory/        # 인벤토리 시스템
-│   └── Manager/          # 각종 매니저들
-├── Feel/               # Feel 피드백 시스템
-├── VRM/               # VRM 캐릭터 시스템
-└── CyberPunkGirl&Vehicle/ # 메인 캐릭터 에셋
-```
-
 ## 주요 시스템
 
 ### 플레이어 시스템
