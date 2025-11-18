@@ -42,7 +42,8 @@
 - **NormalMonsterAI**: 일반 몬스터 AI
 - **EliteMonsterAI**: 엘리트 몬스터 AI  
 - **Boss_Waifu_AI**: 보스 AI (다양한 공격 패턴)
-
+  [군집AI_LOD_최적화_시스템](군집AI_LOD_최적화_시스템.md).
+  
 ### 절차적 맵 생성 시스템
 [절차적 맵 생성 다이어그램](절차적_맵_생성_시스템_소개.md)
 ### 전투 시스템
