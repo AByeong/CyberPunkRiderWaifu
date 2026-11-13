@@ -31,6 +31,10 @@ public class Laser : MonoBehaviour
 
     private float timer;
 
+    // 매 프레임 판정하면 프레임레이트에 비례해 데미지가 들어가 사실상 즉사하므로 틱 간격을 둔다
+    [SerializeField] private float _damageTickInterval = 0.25f;
+    private float _tickTimer;
+
     public void SetDamage(Damage damage)
     {
         _playerDamage = damage;
@@ -46,15 +50,24 @@ public class Laser : MonoBehaviour
     private void OnEnable()
     {
         timer = 0;
+        _tickTimer = 0;
     }
 
     private void Update()
     {
-        
-            
         timer += Time.deltaTime;
+        if (timer >= DURATION)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         if(timer >_preDelay && timer <= DURATION - _postDelay)
         {
+            _tickTimer -= Time.deltaTime;
+            if (_tickTimer > 0f) return;
+            _tickTimer = _damageTickInterval;
+
             Vector3 origin = transform.position;
             Vector3 dir = transform.forward;
 
@@ -65,7 +78,7 @@ public class Laser : MonoBehaviour
             Collider[] hits = Physics.OverlapBox(center, halfExtents, rot);
             foreach (var col in hits)
             {
-                IDamageable damageable = col.GetComponent<IDamageable>();
+                if (!col.TryGetComponent(out IDamageable damageable)) continue;
                 if (col.tag == "Player")
                 {
                     damageable.TakeDamage(_playerDamage);

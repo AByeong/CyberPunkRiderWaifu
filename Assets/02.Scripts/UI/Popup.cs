@@ -4,8 +4,9 @@ public abstract class Popup : MonoBehaviour
 
     public virtual void OpenPopup() // 매개변수 없음
     {
-        
-        UIManager.Instance.PopupManager.PopupStack.Push(this); 
+        // 이미 열려 있던 팝업이 다시 열려도 스택에 중복으로 쌓이지 않게 한다
+        UIManager.Instance.PopupManager.RemoveFromStack(this);
+        UIManager.Instance.PopupManager.PopupStack.Push(this);
         SoundManager.Instance.Play(SoundType.UI_Open);
         this.gameObject.SetActive(true);
         UIManager.Instance.CursorLock(false);
@@ -37,15 +38,9 @@ public abstract class Popup : MonoBehaviour
         
         SoundManager.Instance.Play(SoundType.UI_Close);
 
-        if (UIManager.Instance.PopupManager.PopupStack.Count > 0)
-        {
-            string popuplist = "";
-            foreach(Popup popup in UIManager.Instance.PopupManager.PopupStack)
-            {
-                popuplist += popup.name + ", ";
-            }
-            Debug.Log(popuplist);
-        }
+        // 버튼 등에서 ClosePopup()을 직접 호출해도 스택에 남지 않도록 자기 자신을 제거
+        // (CloseLastPopup/CloseAllPopups 경로에서는 이미 Pop된 상태라 아무 일도 하지 않음)
+        UIManager.Instance.PopupManager.RemoveFromStack(this);
 
         if (UIManager.Instance.PopupManager.PopupStack.Count == 0)
         {

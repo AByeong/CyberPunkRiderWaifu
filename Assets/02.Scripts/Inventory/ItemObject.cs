@@ -20,9 +20,17 @@ public class ItemObject : MonoBehaviour
         if (other.CompareTag("Player") == true)
         {
             // Equipment, Chip, Etc 일 경우 (Etc는 추가될 소비아이템) -> 소비아이템 인벤에 들어오는 형식 아니면 추후 수정
-            if (DropType == DropItemType.Etc)
+            // Etc/Gold 드롭 모두 굴린 결과(골드 또는 소모품)를 그대로 지급한다
+            // (기존에는 Etc에서 나온 골드, Gold에서 나온 소모품이 버려졌음)
+            if (DropType == DropItemType.Etc || DropType == DropItemType.Gold)
             {
-                
+                if (_gold != 0)
+                {
+                    CurrencyManager.Instance.Add(CurrencyType.Gold, _gold);
+                    DeliveryManager.Instance.GoldCount += _gold;
+                    if (UI_InventoryPopup.Instance != null) UI_InventoryPopup.Instance.RefreshGold();
+                }
+
                 if (_consumableItem1 == true)
                 {
                     ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.HPRecovery, 1);
@@ -36,20 +44,12 @@ public class ItemObject : MonoBehaviour
                     ConsumableItemManager.Instance.AddItem((int)EConsumableItemType.AllSkillCooldown, 1);
                 }
             }
-            else if (DropType == DropItemType.Gold)
-            {
-                if (_gold != 0)
-                {
-                    CurrencyManager.Instance.Add(CurrencyType.Gold, _gold);
-                    DeliveryManager.Instance.GoldCount += _gold;
-                    UI_InventoryPopup.Instance.RefreshGold();
-                }
-            }
             else
             {
-                Debug.Log("아이템 습득ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-                Debug.Log($"{item.Data.ItemName}");
-                InventoryManager.Instance.Add(item);
+                if (item == null) return;
+                Debug.Log($"아이템 습득: {item.Data.ItemName}");
+                // 가방이 가득 차 있으면 줍지 않고 바닥에 남겨둔다 (기존에는 아이템이 사라졌음)
+                if (!InventoryManager.Instance.Add(item)) return;
             }
 
                 // 파티클과 사운드 중지
@@ -87,7 +87,16 @@ public class ItemObject : MonoBehaviour
             _consumableItem1 = false;
             _consumableItem2 = false;
             _consumableItem3 = false;
-            CreateEtcItem();
+
+            if (DropType == DropItemType.Gold)
+            {
+                // 골드 드롭은 항상 골드를 준다
+                _gold = UnityEngine.Random.Range(200, 400);
+            }
+            else
+            {
+                CreateEtcItem();
+            }
         }
     }
 

@@ -16,7 +16,7 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
 
     private string saveFilePath;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         saveFilePath = Path.Combine(Application.persistentDataPath, "consumable_items.json");
@@ -30,6 +30,10 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
 
     void Update()
     {
+        // 로비(배달 중 아님)나 일시정지 중에는 소모품을 쓰지 않는다.
+        // 로비에서 DeliveryManager.Instance에 접근하면 빈 DeliveryManager가 자동 생성되어 미션이 망가진다.
+        if (!UIManager.Instance.isInDelivery || Time.timeScale == 0f) return;
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
             UseItem((int)EConsumableItemType.HPRecovery);
@@ -93,8 +97,10 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
         }
 
         ConsumableItems[itemIndex] -= 1;
-        UI.RefreshItem();
         Save();
+
+        StageMainUI ui = UI != null ? UI : UIManager.Instance.StageMainUI;
+        if (ui != null) ui.RefreshItem();
     }
 
     public void Save()

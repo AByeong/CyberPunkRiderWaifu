@@ -107,6 +107,7 @@ public class EnemyManager : Singleton<EnemyManager>
             Enemy enemy = child.GetComponent<Enemy>();
             if (enemy != null && enemy.gameObject.activeInHierarchy == true)
             {
+               enemy.ResetForPool();
                enemy.Pool.ReturnObject(enemy.gameObject);
             }
          }
@@ -119,6 +120,7 @@ public class EnemyManager : Singleton<EnemyManager>
             Enemy enemy = child.GetComponent<Enemy>();
             if (enemy != null && enemy.gameObject.activeInHierarchy == true)
             {
+               enemy.ResetForPool();
                enemy.Pool.ReturnObject(enemy.gameObject);
             }
          }

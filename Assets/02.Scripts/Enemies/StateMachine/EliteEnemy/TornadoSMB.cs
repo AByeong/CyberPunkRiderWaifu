@@ -21,7 +21,7 @@ public class TornadoSMB : StateMachineBehaviour
             _eliteFemale.Attack(_eliteFemale.transform.position, _eliteFemale.TornadoRange, _eliteFemale.TorandoDamage, true);    
         }
         
-        if (stateInfo.normalizedTime >= 0.9f)
+        if (stateInfo.normalizedTime >= 0.9f && _stateMachine.IsCurrentState<EliteAttackState>())
         {
             _stateMachine.ChangeState<EliteIdleState>();
         }

@@ -14,7 +14,7 @@ public class EliteDownState : EliteBaseState
 
     public override void Update()
     {
-        base.Update();
+        if (CheckGlobalTransitions()) return;
         _downTimer += Time.deltaTime;
         if (_downTimer >= Owner.EnemyData.DownTime)
         {

@@ -11,7 +11,8 @@ public class Summoner : MonoBehaviour
 
     private void Awake()
     {
-        PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null) PlayerTransform = player.transform;
         StartCoroutine(Count());
     }
 
@@ -29,9 +30,11 @@ public class Summoner : MonoBehaviour
 
     private void MoveTowardPlayer()
     {
-        if (PlayerTransform != null)
+        if (PlayerTransform == null)
         {
-            PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null) return;
+            PlayerTransform = player.transform;
         }
 
         // 방향 벡터 계산
@@ -45,7 +48,9 @@ public class Summoner : MonoBehaviour
 
     private void Boom()
     {
-        if (Vector3.Distance(PlayerTransform.position, this.transform.position) < _bombArea)
+        Instantiate(BombEffect, transform.position, Quaternion.identity);
+
+        if (PlayerTransform != null && Vector3.Distance(PlayerTransform.position, this.transform.position) < _bombArea)
         {
             Damage damage = new Damage
             {
@@ -54,8 +59,7 @@ public class Summoner : MonoBehaviour
                 DamageForce = 5,
                 DamageType = EDamageType.Normal
             };
-            
-            Instantiate(BombEffect);
+
             PlayerTransform.gameObject.GetComponent<PlayerHit>().TakeDamage(damage);
         }
 

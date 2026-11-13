@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace JY
@@ -61,76 +61,45 @@ namespace JY
             _camera.Set(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
             _isJump = Input.GetButton("Jump");
 
-            if (Input.GetButtonDown("Fire1"))
-            {
-                if (_AttackWaitCoroutine != null)
-                    StopCoroutine(_AttackWaitCoroutine);
-
-                _AttackWaitCoroutine = StartCoroutine(AttackWait());
-            }
-
-            if (Input.GetButtonDown("Fire2"))
-            {
-                if (_AttackWaitCoroutine != null)
-                    StopCoroutine(_AttackWaitCoroutine);
-
-                _AttackWaitCoroutine = StartCoroutine(RightAttackWait());
-            }
-
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                if (_AttackWaitCoroutine != null)
-                    StopCoroutine(_AttackWaitCoroutine);
-
-                _AttackWaitCoroutine = StartCoroutine(RollWait());
-            }
+            if (Input.GetButtonDown("Fire1")) StartInputWait(AttackWait());
+            if (Input.GetButtonDown("Fire2")) StartInputWait(RightAttackWait());
+            if (Input.GetKeyDown(KeyCode.LeftShift)) StartInputWait(RollWait());
 
             // 키 입력 처리
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                if (_AttackWaitCoroutine != null)
-                    StopCoroutine(_AttackWaitCoroutine);
+            if (Input.GetKeyDown(KeyCode.Alpha1)) StartInputWait(Skill1Wait());
+            if (Input.GetKeyDown(KeyCode.Alpha2)) StartInputWait(Skill2Wait());
+            if (Input.GetKeyDown(KeyCode.Alpha3)) StartInputWait(Skill3Wait());
+            if (Input.GetKeyDown(KeyCode.Alpha4)) StartInputWait(Skill4Wait());
+            if (Input.GetKeyDown(KeyCode.T)) StartInputWait(UltimateWait());
 
-                _AttackWaitCoroutine = StartCoroutine(Skill1Wait());
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                if (_AttackWaitCoroutine != null)
-                    StopCoroutine(_AttackWaitCoroutine);
-
-                _AttackWaitCoroutine = StartCoroutine(Skill2Wait());
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                if (_AttackWaitCoroutine != null)
-                    StopCoroutine(_AttackWaitCoroutine);
-
-                _AttackWaitCoroutine = StartCoroutine(Skill3Wait());
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                if (_AttackWaitCoroutine != null)
-                    StopCoroutine(_AttackWaitCoroutine);
-
-                _AttackWaitCoroutine = StartCoroutine(Skill4Wait());
-            }
+            // ESC 처리(일시정지 팝업, 조작 잠금/해제)는 UIManager가 담당한다.
+            // 여기서 GainControl()을 호출하면 팝업이 열린 상태에서도 조작 잠금이 풀린다.
             _isPause = Input.GetKeyDown(KeyCode.Escape);
+        }
 
-            if (Input.GetKeyDown(KeyCode.T))
+        // 모든 입력이 코루틴 핸들 하나를 공유하므로, 이전 코루틴을 중단할 때 그 코루틴이
+        // 끄지 못한 플래그를 직접 내려야 입력이 true로 고정되지 않는다.
+        private void StartInputWait(IEnumerator routine)
+        {
+            if (_AttackWaitCoroutine != null)
             {
-                if (_AttackWaitCoroutine != null)
-                {
-                    StopCoroutine(_AttackWaitCoroutine);
-                }
-
-                _AttackWaitCoroutine = StartCoroutine(UltimateWait());
+                StopCoroutine(_AttackWaitCoroutine);
+                ClearBufferedInputs();
             }
 
-            if (_isPause)
-            {
-                GainControl();
-                _isPause = false;
-            }
+            _AttackWaitCoroutine = StartCoroutine(routine);
+        }
+
+        private void ClearBufferedInputs()
+        {
+            _isAttack = false;
+            _isRightAttack = false;
+            _isRoll = false;
+            _isSkill1 = false;
+            _isSkill2 = false;
+            _isSkill3 = false;
+            _isSkill4 = false;
+            _isUltimate = false;
         }
 
         private IEnumerator AttackWait()
@@ -186,7 +155,6 @@ namespace JY
         private IEnumerator UltimateWait()
         {
             _isUltimate = true;
-            Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             yield return _AttackInputWait;
 
             _isUltimate = false;

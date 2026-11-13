@@ -13,7 +13,7 @@ public class IdleState : BaseNormalEnemyState
 
     public override void Update()
     {
-        base.Update();
+        if (CheckGlobalTransitions()) return;
         
         float distance = Vector3.Distance(Owner.Target.transform.position, Owner.transform.position);
         if (distance <= Owner.EnemyData.AttackDistance)

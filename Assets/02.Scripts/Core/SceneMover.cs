@@ -58,8 +58,8 @@ public class SceneMover : Singleton<SceneMover>
     public void MovetoScene(string sceneName)
     {
         UIManager.Instance?.PopupManager?.PopupStack?.Clear();
-        SceneManager.LoadScene(sceneName);
-        UIManager.Instance.BindReferences();
+        SceneManager.LoadScene(sceneName); // 참조 재바인딩은 UIManager가 sceneLoaded에서 처리
+
     }
 
 
@@ -69,13 +69,20 @@ public class SceneMover : Singleton<SceneMover>
         StartCoroutine(LoadLobby());
     }
 
+    public bool IsLoadingLobby { get; private set; }
+
     private IEnumerator LoadLobby()
     {
+        if (IsLoadingLobby) yield break; // 이미 로비로 이동 중
+        IsLoadingLobby = true;
+
         GameManager.Instance.GameReplay();
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("KBJ_Lobby", LoadSceneMode.Single);
         while (!asyncOperation.isDone)
         {
             yield return null;
         }
+
+        IsLoadingLobby = false;
     }
 }

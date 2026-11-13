@@ -20,7 +20,10 @@ public class AnswerPopup : Popup
         PositiveText.text = positiveButtonText;
         NegativeText.text = negativeButtonText;
         ApproveAction = onApprove;
-        
+
+        // 열 때마다 리스너가 누적되어 승인/취소가 여러 번 실행되던 문제 방지
+        NegativeButton.onClick.RemoveAllListeners();
+
         if (onCancel == null)
         {
             NegativeButton.onClick.AddListener(() => ClosePopup());
@@ -47,6 +50,7 @@ public class AnswerPopup : Popup
     
     override public void OpenPopup()
     {
+        PositiveButton.onClick.RemoveAllListeners();
         PositiveButton.onClick.AddListener(() => {
             ApproveAction?.Invoke(); // ApproveAction이 할당되어 있다면 실행
 

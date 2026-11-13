@@ -19,7 +19,15 @@ public class UI_Skill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         Skill = new Skill();
         Skill.Index = skillToEquip.Index;
-        Skill.SkillData = skillToEquip.SkillData.Clone();
+
+        // 칩 효과가 이미 반영된 데이터를 기준으로 삼으면 열 때마다 효과가 중첩되므로,
+        // 가능하면 SkillManager가 가진 원본(칩 미적용) 데이터에서 복제한다
+        SkillData source = skillToEquip.SkillData;
+        if (SkillManager.Instance != null && skillToEquip.Index >= 0 && skillToEquip.Index < SkillManager.Instance.Skills.Count)
+        {
+            source = SkillManager.Instance.Skills[skillToEquip.Index].SkillData;
+        }
+        Skill.SkillData = source.Clone();
     }
 
     public virtual void RemoveSkill()

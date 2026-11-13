@@ -109,8 +109,7 @@ public class BossPhase1 : EliteEnemy
 
     private IEnumerator ShotFire(Vector3 targetPosition)
     {
-        GameObject warningVFX = Instantiate(WarningVFX);
-        WarningVFX.transform.position = targetPosition;
+        GameObject warningVFX = Instantiate(WarningVFX, targetPosition, Quaternion.identity);
 
         yield return new WaitForSeconds(_hitDelay);
         Destroy(warningVFX);
@@ -148,6 +147,7 @@ public class BossPhase1 : EliteEnemy
 
         DOTween.To(() => 0f, t =>
         {
+            if (missile == null) return; // 충돌/타이머로 먼저 폭발해 파괴된 경우
             Vector3 newPos = CalculateQuadraticBezierPoint(t, startPosition, control, targetPosition);
             missile.transform.position = newPos;
 
@@ -156,7 +156,8 @@ public class BossPhase1 : EliteEnemy
 
             previousPos = newPos;
         }, 1f, _hitDelay)
-        .SetEase(Ease.InOutQuad);
+        .SetEase(Ease.InOutQuad)
+        .SetLink(missile.gameObject);
         // .OnComplete(() =>
         // {
         //     ParticleSystem vfx = Instantiate(BulletHitVFX, missile.transform.position, Quaternion.identity);

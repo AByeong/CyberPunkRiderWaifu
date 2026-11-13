@@ -74,15 +74,24 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected virtual async void Start()
     {
-        _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
-        _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
-        
+        // await 이전에 초기화해야 로딩 중 받은 데미지가 덮어써지지 않고 히트 플래시도 바로 동작한다
         CurrentHealthPoint = _enemyData.HealthPoint;
         IsHit = false;
         IsInAir = false;
 
         // Start에서 렌더러와 초기 색상 캐싱
         CacheRenderersAndInitialColors();
+
+        try
+        {
+            _stat = await StatLoader.LoadFromCSVAsync("EnemyStat.csv");
+            if (this == null) return; // 로딩 중 파괴됨
+            _stat = new StatModifierDecorator(_stat, StatType.AttackPower, 20);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e, this);
+        }
     }
 
     private void OnEnable()
@@ -198,6 +207,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         return drops;
     }
 
+    /// <summary>
+    /// 살아있는(또는 사망 연출 중인) 적을 풀로 강제 반환하기 직전에 호출. FSM/모델 상태를 초기화한다.
+    /// </summary>
+    public virtual void ResetForPool()
+    {
+        IsHit = false;
+        IsInAir = false;
+    }
+
     public virtual void OnDie()
     {
         
@@ -211,7 +229,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
             if (hitCollider.tag == "NormalEnemy" && isEnemyHit)
             {
-                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                if (hitCollider.TryGetComponent(out IDamageable damageable))
                 {
                     _enemyDamage = damage;
                     _enemyDamage.DamageValue = 0;
@@ -234,7 +252,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
             if (hitCollider.tag == "Player")
             {
-                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                if (hitCollider.TryGetComponent(out IDamageable damageable))
                 {
                     damageable.TakeDamage(damage);
                 }

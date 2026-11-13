@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class UI_InventoryPopup : Popup
 {
-    public static UI_InventoryPopup Instance;
+    private static UI_InventoryPopup _instance;
+    // 팝업이 비활성 상태로 시작해 Awake가 아직 안 돌았거나, 이전 씬의 팝업이 파괴된 경우에도 현재 씬의 팝업을 찾는다
+    public static UI_InventoryPopup Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<UI_InventoryPopup>(FindObjectsInactive.Include);
+            }
+            return _instance;
+        }
+        private set { _instance = value; }
+    }
     
     [SerializeField]
     private List<UI_InventorySlot> _slots;
@@ -31,6 +44,15 @@ public class UI_InventoryPopup : Popup
         
 
         InventoryManager.Instance.OnDataChanged += Refresh;
+    }
+
+    // 팝업은 씬마다 따로 있고 InventoryManager는 DontDestroyOnLoad이므로,
+    // 씬이 바뀔 때 파괴된 팝업의 Refresh가 호출되지 않게 구독을 해제한다
+    private void OnDestroy()
+    {
+        InventoryManager inventory = InventoryManager.Instance;
+        if (inventory != null) inventory.OnDataChanged -= Refresh;
+        if (_instance == this) _instance = null;
     }
 
     private void Start()
@@ -150,7 +172,15 @@ public class UI_InventoryPopup : Popup
             }
                 
             Debug.Log($"Index : {toIndex}");
-            _fromSlot.Item.SetSlotIndex(toSlot.SlotType, toIndex);   
+            bool wasEquipped = _fromSlot.Item.IsEquipped;
+            _fromSlot.Item.SetSlotIndex(toSlot.SlotType, toIndex);
+
+            // 장비 슬롯 → 빈 인벤토리 칸(장착 해제)일 때도 스탯을 다시 계산한다
+            // (기존에는 장착 시에만 OnEquipChanged가 발생해 해제해도 보너스가 남았음)
+            if (wasEquipped && !_fromSlot.Item.IsEquipped)
+            {
+                InventoryManager.Instance.Equip(_fromSlot.Item);
+            }
         }
         else
         {  

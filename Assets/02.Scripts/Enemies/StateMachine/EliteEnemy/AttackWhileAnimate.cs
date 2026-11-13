@@ -16,7 +16,7 @@ public class AttackWhileAnimate : StateMachineBehaviour
     {
         base.OnStateUpdate(animator, stateInfo, layerIndex);
 
-        if (stateInfo.normalizedTime >= 0.9f)
+        if (stateInfo.normalizedTime >= 0.9f && _stateMachine.IsCurrentState<EliteAttackState>())
         {
             _stateMachine.ChangeState<EliteIdleState>();
         }

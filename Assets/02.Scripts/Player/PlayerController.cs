@@ -237,11 +237,16 @@ namespace JY
         private void OnEnable()
         {
             EquipMeleeWeapon(false);
+            InventoryManager.Instance.OnEquipChanged -= RefreshStat; // 재활성화 시 중복 구독 방지
             InventoryManager.Instance.OnEquipChanged += RefreshStat;
             _renderers = GetComponentsInChildren<Renderer>();
         }
         private void OnDisable()
         {
+            // 씬 전환으로 파괴된 플레이어의 RefreshStat이 계속 호출되지 않도록 해제
+            InventoryManager inventory = InventoryManager.Instance;
+            if (inventory != null) inventory.OnEquipChanged -= RefreshStat;
+
             for (int i = 0; i < _renderers.Length; ++i)
             {
                 _renderers[i].enabled = true;
@@ -701,6 +706,8 @@ namespace JY
         public void TakeDamage(Damage damage, bool ApproveAnimation)
         {
             if (IsUitimate) return;
+            // 사망 후 로비 로딩 중에 또 맞아서 MoveToLobby가 여러 번 호출되지 않게 한다
+            if (SceneMover.Instance.IsLoadingLobby) return;
             if (ApproveAnimation)
             // Set the Hurt parameter of the animator.
             {
@@ -731,12 +738,16 @@ namespace JY
         }
         public void RefreshStat()
         {
+            // CSV 스탯 로딩 전에 장비가 바뀌면 StatModifierDecorator(null)로 NRE가 나므로 무시
+            if (Stat == null) return;
+
             // 스탯을 디폴트 초기화
             IStatsProvider defaultStat = Stat;
             List<Item> equippedItems = InventoryManager.Instance.GetEquippedItems();
             foreach(Item item in equippedItems)
             {
-                defaultStat = ApplyEquipment(defaultStat,StatType.MaxHealth,item.MaxHealth);
+                // 플레이어 최대 체력은 StatType.Health에서 읽으므로 장비 체력 보너스도 Health에 더해야 반영된다
+                defaultStat = ApplyEquipment(defaultStat,StatType.Health,item.MaxHealth);
                 defaultStat = ApplyEquipment(defaultStat,StatType.AttackPower,item.AttackPower);
                 defaultStat = ApplyEquipment(defaultStat,StatType.Defense,item.Defense);
                 defaultStat = ApplyEquipment(defaultStat,StatType.Speed,item.Speed);
@@ -748,6 +759,8 @@ namespace JY
             AttackPower = defaultStat.GetStat(StatType.AttackPower);
             MaxForwardSpeed = defaultStat.GetStat(StatType.Speed);
             MaxHealth = defaultStat.GetStat(StatType.Health);
+            // 체력 장비를 해제해 최대 체력이 줄었을 때 현재 체력이 최대치를 넘지 않도록
+            if (CurrentHealth > MaxHealth) CurrentHealth = MaxHealth;
             CritChance = defaultStat.GetStat(StatType.CritChance);
             CritDamage = defaultStat.GetStat(StatType.CritDamage);
 

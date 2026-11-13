@@ -32,8 +32,7 @@ public class EliteEnemy : Enemy, IDamageable
 
     public override void TakeDamage(Damage damage)
     {
-        base.TakeDamage(damage);
-        if (damage.DamageValue != 0) DeliveryManager.Instance.UltimateGaze++;
+        base.TakeDamage(damage); // 궁극기 게이지 증가는 base(Enemy.TakeDamage)에서 처리
         SoundManager.Instance.Play(SoundType.Elite_male_Hit);
 
         
@@ -43,6 +42,13 @@ public class EliteEnemy : Enemy, IDamageable
             UIManager.Instance.StageMainUI.ProgressSlider.maxValue = EnemyData.HealthPoint;
             UIManager.Instance.StageMainUI.ProgressSlider.value = CurrentHealthPoint;
         }
+    }
+
+    public override void ResetForPool()
+    {
+        base.ResetForPool();
+        ElliteStateMachine fsm = GetComponent<ElliteStateMachine>();
+        if (fsm != null) fsm.ResetToInitialState();
     }
 
     protected override void Start()

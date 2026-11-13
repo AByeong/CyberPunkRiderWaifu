@@ -25,6 +25,24 @@ public class UI_EquipSkill : UI_Skill
                 Skill.SkillData.SkillRange += chipData.SkillRange;
             }
         }
+
+        // 3. 계산 결과를 실제로 게임에서 쓰는 장착 스킬(SkillManager.EquippedSkills)에 반영
+        //    (기존에는 UI 표시용 복제본에만 적용되어 실제 쿨타임/범위는 변하지 않았음)
+        ApplyToEquippedSkill();
+    }
+
+    private void ApplyToEquippedSkill()
+    {
+        if (SkillManager.Instance == null || Skill == null) return;
+
+        var equipped = SkillManager.Instance.EquippedSkills;
+        if (Index < 0 || Index >= equipped.Count) return;
+
+        Skill realSkill = equipped[Index];
+        if (realSkill == null || realSkill.Index != Skill.Index) return;
+
+        // Skill 객체는 그대로 두고 데이터만 교체해 진행 중인 쿨타임은 유지한다
+        realSkill.SkillData = Skill.SkillData.Clone();
     }
 
     public override void SetSkill(Skill skillToEquip, bool isActive)

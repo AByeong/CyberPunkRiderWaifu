@@ -36,6 +36,14 @@ public class NormalEnemy : Enemy
         _rigidbody.AddForce(ragdollForce, ForceMode.Impulse);
     }
 
+    public override void ResetForPool()
+    {
+        base.ResetForPool();
+        NormalStateMachine fsm = GetComponent<NormalStateMachine>();
+        if (fsm != null) fsm.ResetToInitialState();
+        SwitchToOriginModel();
+    }
+
     public void SwitchToOriginModel()
     {
         RagdollModel.SetActive(false);

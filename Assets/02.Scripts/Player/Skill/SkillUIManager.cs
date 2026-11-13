@@ -27,9 +27,15 @@ public class SkillUIManager : Popup
     private void Init()
     {
         // EquippedSkills 버튼은 항상 비활성화 (처음 한 번만 설정)
-        foreach(UI_Skill equippedSkill in EquippedSkills)
+        for (int i = 0; i < EquippedSkills.Count; i++)
         {
-            equippedSkill.Button.interactable = false;
+            EquippedSkills[i].Button.interactable = false;
+
+            // 칩 효과를 실제 장착 스킬에 반영할 때 쓰는 슬롯 번호 (인스펙터 기본값 -1 대비)
+            if (EquippedSkills[i] is UI_EquipSkill equipSkillUI)
+            {
+                equipSkillUI.Index = i;
+            }
         }
 
         // AvailableSkills에 SkillManager의 전체 스킬 연결 (처음 한 번만)

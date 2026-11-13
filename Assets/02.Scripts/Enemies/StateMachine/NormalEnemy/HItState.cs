@@ -94,7 +94,7 @@ public class HItState : BaseNormalEnemyState
 
     public override void Update()
     {
-        base.Update();
+        if (CheckGlobalTransitions()) return;
         _hitTimer += Time.deltaTime; // 일반 deltaTime 사용 (게임 시간에 따른 상태 지속시간)
 
         float currentStaggerTime = Owner.EnemyData.StaggerTime;

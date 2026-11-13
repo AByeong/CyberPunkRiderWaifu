@@ -532,16 +532,28 @@ public class GridGeneration : MonoBehaviour
     {
         while (_totalSpawnerCount > 0)
         {
-            for (int x = 1; x < width - 1; x++)
+            bool hasActivateCell = false;
+            for (int x = 1; x < width - 1 && _totalSpawnerCount > 0; x++)
             {
-                for (int y = 1; y < height - 1; y++)
+                for (int y = 1; y < height - 1 && _totalSpawnerCount > 0; y++)
                 {
-                    if (grid[x, y] == (int)EGirdType.Activate && Random.value < PatternDensity)
+                    if (grid[x, y] != (int)EGirdType.Activate) continue;
+                    hasActivateCell = true;
+
+                    if (Random.value < PatternDensity)
                     {
                         grid[x, y] = (int)EGirdType.Spawner;
                         --_totalSpawnerCount;
                     }
                 }
+            }
+
+            // 남은 Activate 셀이 없으면 무한 루프에 빠지므로 중단
+            if (!hasActivateCell)
+            {
+                Debug.LogWarning($"{gameObject.name}: 스포너를 배치할 셀이 부족합니다. 남은 스포너 {_totalSpawnerCount}개 생략");
+                _totalSpawnerCount = 0;
+                break;
             }
         }
     }
@@ -794,7 +806,8 @@ public class GridGeneration : MonoBehaviour
 
     public GameObject GetStartEntry()
     {
-        int randomIndex = Random.Range(0, entryCount - 1);
+        // int Random.Range는 max를 포함하지 않으므로 Count를 그대로 넘겨야 마지막 입구도 선택된다
+        int randomIndex = Random.Range(0, _entries.Count);
         return _entries[randomIndex];
     }
 

@@ -29,7 +29,7 @@ public class LaserFireSMB : StateMachineBehaviour
         base.OnStateUpdate(animator, stateInfo, layerIndex);
 
         _timer += Time.deltaTime;
-        if (_timer >= AttackDuration)
+        if (_timer >= AttackDuration && _stateMachine.IsCurrentState<EliteAttackState>())
         {
             _timer = 0;
             _stateMachine.ChangeState<EliteIdleState>();

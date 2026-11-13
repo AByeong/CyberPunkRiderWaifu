@@ -24,7 +24,7 @@ public class BustShotSMB : StateMachineBehaviour
         base.OnStateUpdate(animator, stateInfo, layerIndex);
 
         _timer += Time.deltaTime;
-        if(_timer >= AttackTime)
+        if (_timer >= AttackTime && _stateMachine.IsCurrentState<EliteAttackState>())
         {
             _stateMachine.ChangeState<EliteIdleState>();
         }

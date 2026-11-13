@@ -60,4 +60,10 @@ public class DeadState : BaseNormalEnemyState
         }
     }
 
+    public override void OnExit()
+    {
+        base.OnExit();
+        _deadTimer = 0f;
+    }
+
 }

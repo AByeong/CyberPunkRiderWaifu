@@ -13,7 +13,7 @@ public class EliteIdleState : EliteBaseState
 
     public override void Update()
     {
-        base.Update();
+        if (CheckGlobalTransitions()) return;
 
         float distance = Vector3.Distance(Owner.transform.position, Owner.Target.transform.position);
         if (distance < Owner.EnemyData.AttackDistance && Owner.AttackTimer >= Owner.EnemyData.AttackCoolDown)

@@ -87,7 +87,7 @@ public class EliteHitState : EliteBaseState
 
     public override void Update()
     {
-        base.Update();
+        if (CheckGlobalTransitions()) return;
 
         _hitTimer += Time.deltaTime; // 일반 deltaTime 사용 (게임 시간에 따른 상태 지속시간)
 
@@ -112,8 +112,11 @@ public class EliteHitState : EliteBaseState
         if (Owner.NavMeshAgent != null)
         {
             if (!Owner.NavMeshAgent.enabled) Owner.NavMeshAgent.enabled = true;
-            if (Owner.NavMeshAgent.isOnNavMesh) Owner.NavMeshAgent.Warp(Owner.transform.position);
-            Owner.NavMeshAgent.isStopped = false;
+            if (Owner.NavMeshAgent.isOnNavMesh)
+            {
+                Owner.NavMeshAgent.Warp(Owner.transform.position);
+                Owner.NavMeshAgent.isStopped = false;
+            }
         }
     }
     

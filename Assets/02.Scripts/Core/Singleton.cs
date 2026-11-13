@@ -42,7 +42,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     }
     protected virtual void Awake()
     {
-        if (_instance != null)
+        // 다른 스크립트가 Awake 전에 Instance로 이 오브젝트를 먼저 찾아둔 경우(_instance == this)는 중복이 아니다
+        if (_instance != null && _instance != this)
         {
             Destroy(transform.root.gameObject);
             return;
@@ -77,7 +78,11 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        _instance = null;
+        // 중복 인스턴스가 파괴될 때 원본 참조까지 지우지 않도록
+        if (_instance == this)
+        {
+            _instance = null;
+        }
     }
 }
 

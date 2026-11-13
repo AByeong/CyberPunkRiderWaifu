@@ -93,7 +93,7 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        if (stageIndex > SubStageList.Count)
+        if (stageIndex < 0 || stageIndex >= SubStageList.Count)
         {
             Debug.LogError($"{gameObject.name} : {stageIndex}는 유효하지 않은 인덱스입니다!!");
             return;

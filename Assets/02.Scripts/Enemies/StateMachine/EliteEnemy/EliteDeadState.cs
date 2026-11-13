@@ -23,7 +23,9 @@ public class EliteDeadState : EliteBaseState
                 break;
 
             case EEnemyType.Boss:
-                DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Boss);
+                // 보스 1페이즈 종료는 2페이즈로 넘어가는 것이지 처치가 아니므로 킬로 세지 않는다
+                if (!(Owner is BossPhase1))
+                    DeliveryManager.Instance.KillTracker.IncreaseKillCount(EnemyType.Boss);
                 break;
         }
 
@@ -39,7 +41,15 @@ public class EliteDeadState : EliteBaseState
         {
             _deadTimer = 0f;
             DeliveryManager.Instance.KillCount++;
-            Owner.Pool.ReturnObject(Owner.gameObject);
+            if (Owner.Pool != null)
+            {
+                Owner.Pool.ReturnObject(Owner.gameObject);
+            }
+            else
+            {
+                // 풀 없이 직접 스폰된 보스 등
+                Owner.gameObject.SetActive(false);
+            }
             SuperMachine.ChangeState<EliteIdleState>();
         }
     }
@@ -47,5 +57,6 @@ public class EliteDeadState : EliteBaseState
     public override void OnExit()
     {
         base.OnExit();
+        _deadTimer = 0f;
     }
 }

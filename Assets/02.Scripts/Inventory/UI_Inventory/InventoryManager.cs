@@ -79,12 +79,15 @@ public class InventoryManager : Singleton<InventoryManager>
             return;
         }
     
+        bool wasEquipped = item.IsEquipped;
         bool removed = _items.Remove(item);
-    
+
         if (removed)
         {
             Debug.Log($"{item.Data.ItemName} 아이템이 인벤토리에서 제거되었습니다.");
             OnDataChanged?.Invoke();
+            // 장착 중인 장비를 판매/버리면 스탯 보너스가 남지 않도록 다시 계산
+            if (wasEquipped) OnEquipChanged?.Invoke();
             Save(); // 자동 저장
         }
         else

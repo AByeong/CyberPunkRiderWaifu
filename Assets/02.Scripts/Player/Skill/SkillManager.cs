@@ -57,7 +57,7 @@ public class SkillManager : Singleton<SkillManager>
     {
         foreach (Skill skill in EquippedSkills)
         {
-            skill.ClearCooltime();
+            skill?.ClearCooltime(); // 빈 스킬 슬롯이 있을 수 있음
         }
     }
 

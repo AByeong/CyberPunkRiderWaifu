@@ -192,6 +192,16 @@ namespace RobustFSM.Base
         /// </summary>
         /// <typeparam name="T">the state type</typeparam>
         /// <returns><c>true</c>, if state is such type is available else <c>false</c></returns>
+        /// <summary>
+        /// 풀 반환 등으로 재사용할 때 초기 상태로 되돌린다 (현재 상태의 OnExit가 호출되어 트윈/타이머가 정리됨)
+        /// </summary>
+        public void ResetToInitialState()
+        {
+            if (CurrentState == null || InitialState == null) return; // 아직 Initialize 전
+            if (CurrentState == InitialState) return;
+            ChangeState(InitialState.GetType());
+        }
+
         public bool ContainsState<T>() where T : MonoState
         {
             return States.ContainsKey(typeof(T));

@@ -57,6 +57,8 @@ public class KillTracker : MonoBehaviour
    
    public void IncreaseKillCount(EnemyType type)
    {
+       // 목표 달성 후 남은 적을 잡을 때마다 섹션 완료가 반복 호출되지 않도록 증가 전 상태를 기억
+       bool wasCompleted = IsMissionCompleted();
 
       
        
@@ -82,7 +84,7 @@ public class KillTracker : MonoBehaviour
 
        
        
-       if (IsMissionCompleted())
+       if (!wasCompleted && IsMissionCompleted())
        {
            Debug.Log("Mission Completed");
            DeliveryManager.Instance.CompleteCurrentSection();

@@ -88,9 +88,9 @@ public class AIManager : MonoBehaviour
         }
         
 
-        if (playerTransform != null)
+        if (playerTransform == null && GameManager.Instance.player != null)
         {
-            playerTransform =GameManager.Instance.player.transform;
+            playerTransform = GameManager.Instance.player.transform;
         }
         
         // MonsterAI의 Initialize 호출 (여기서 nextIndividualLogicUpdateTime 등이 초기화됨)

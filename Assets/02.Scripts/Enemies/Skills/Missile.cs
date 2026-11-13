@@ -34,15 +34,14 @@ public class Missile : MonoBehaviour
         _damage.From = gameObject;
     }
 
+    private bool _exploded;
+
     private void Update()
     {
         _timer += Time.deltaTime;
         if (_timer >= _duration)
         {
-            Attack(transform.position, DamageRadius, _damage, true);
-            Instantiate(ExplosionVFX, transform.position, Quaternion.identity);
-
-            Destroy(gameObject);
+            Explode();
         }
     }
 
@@ -52,6 +51,15 @@ public class Missile : MonoBehaviour
         {
             return;
         }
+
+        Explode();
+    }
+
+    // Destroy는 프레임 끝에 처리되므로, 같은 프레임에 여러 트리거/타이머가 겹쳐도 한 번만 폭발하게 막는다
+    private void Explode()
+    {
+        if (_exploded) return;
+        _exploded = true;
 
         Attack(transform.position, DamageRadius, _damage, true);
         Instantiate(ExplosionVFX, transform.position, Quaternion.identity);
@@ -67,7 +75,7 @@ public class Missile : MonoBehaviour
 
             if (hitCollider.tag == "NormalEnemy" && isEnemyHit)
             {
-                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                if (hitCollider.TryGetComponent(out IDamageable damageable))
                 {
                     _enemyDamage = damage;
                     _enemyDamage.DamageValue = 0;
@@ -90,7 +98,7 @@ public class Missile : MonoBehaviour
 
             if (hitCollider.tag == "Player")
             {
-                IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+                if (hitCollider.TryGetComponent(out IDamageable damageable))
                 {
                     damageable.TakeDamage(damage);
                 }

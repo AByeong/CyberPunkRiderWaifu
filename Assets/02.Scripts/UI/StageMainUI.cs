@@ -152,18 +152,15 @@ public class StageMainUI : MonoBehaviour
         if (DeliveryManager.Instance.KillTracker.MissionKillCount.Boss == 0)
         
         {
-            ProgressSlider.maxValue = DeliveryManager.Instance.KillTracker.MissionKillCount.Normal +
-                                      DeliveryManager.Instance.KillTracker.MissionKillCount.Elite +
-                                      DeliveryManager.Instance.KillTracker.MissionKillCount.Boss +
-                                      DeliveryManager.Instance.KillTracker.MissionKillCount.Normal;
-            ProgressSlider.value = DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal +
-                                   DeliveryManager.Instance.KillTracker.CurrentKillCount.Elite +
-                                   DeliveryManager.Instance.KillTracker.CurrentKillCount.Boss +
-                                   DeliveryManager.Instance.KillTracker.CurrentKillCount.Normal;
+            ProgressSlider.maxValue = DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
+            ProgressSlider.value = DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total);
         }
 
-        ProgressText.text =
-            $"Progress : {(float)DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total) / (float)DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total)*100}%";
+        int missionTotal = DeliveryManager.Instance.KillTracker.GetMissionKillCount(EnemyType.Total);
+        float progress = missionTotal > 0
+            ? (float)DeliveryManager.Instance.KillTracker.GetCurrentKillCount(EnemyType.Total) / missionTotal * 100f
+            : 0f;
+        ProgressText.text = $"Progress : {progress:0}%";
         FillImage.color = BossColor;
     }
     

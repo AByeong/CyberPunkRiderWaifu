@@ -23,7 +23,8 @@ public class WaifuSpell : StateMachineBehaviour
       if (stateInfo.normalizedTime >= 1f)
       {
          animator.applyRootMotion = false;
-         _stateMachine.ChangeState<EliteIdleState>();
+         if (_stateMachine.IsCurrentState<EliteAttackState>())
+            _stateMachine.ChangeState<EliteIdleState>();
       }
    }
 }

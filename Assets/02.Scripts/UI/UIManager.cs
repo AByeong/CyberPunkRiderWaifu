@@ -1,5 +1,6 @@
 using JY;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class UIManager : Singleton<UIManager>
 {
     public bool ESCisClose;
@@ -12,6 +13,22 @@ public class UIManager : Singleton<UIManager>
     public PlayerInput PlayerInput;
 
     public bool IsCutScenePlaying = false;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // LoadScene 직후에는 이전 씬 오브젝트가 아직 남아 있으므로, 로드가 끝난 뒤 새 씬의 참조를 잡는다
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BindReferences();
+    }
 
     private void Start()
     {
@@ -56,6 +73,20 @@ public class UIManager : Singleton<UIManager>
 
     }
 
+    // 토글 키로 닫을 때는 스택 맨 위가 아니라 해당 팝업을 닫고, 다른 팝업이 남아 있으면 조작을 돌려주지 않는다
+    private void ClosePopupAndRestoreControl(GameObject popupObject)
+    {
+        popupObject.GetComponent<Popup>().ClosePopup();
+        if (PopupManager.PopupStack.Count == 0)
+        {
+            PlayerInput.GainControl();
+        }
+        else
+        {
+            PlayerInput.ReleaseControl();
+        }
+    }
+
     private void SkillPopup()
     {
         if (Input.GetKeyDown(KeyCode.K) && !IsCutScenePlaying)
@@ -68,8 +99,7 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                PopupManager.CloseLastPopup();
-                PlayerInput.GainControl();
+                ClosePopupAndRestoreControl(PopupManager.SkillPopup);
             }
         }
     }
@@ -77,12 +107,13 @@ public class UIManager : Singleton<UIManager>
 
 
     private void DeliveryPopup()
-    {   
+    {
         if (Input.GetKeyDown(KeyCode.Escape) && !IsCutScenePlaying)
         {
-            PlayerInput.GainControl();
             if (!ESCisClose && isInDelivery)
             {
+                // 일시정지 메뉴가 열린 동안 스킬/공격 입력이 들어가지 않도록 조작을 막는다
+                PlayerInput.ReleaseControl();
                 PopupManager.DeliveryPopup.GetComponent<Popup>().OpenPopup();
                 if (PopupManager.PopupStack.Count > 0)
                 {
@@ -92,7 +123,7 @@ public class UIManager : Singleton<UIManager>
             else
             {
                 PopupManager.CloseLastPopup();
-                PlayerInput.GainControl();
+                if (PopupManager.PopupStack.Count == 0) PlayerInput.GainControl();
             }
         }
     }
@@ -110,8 +141,7 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                PopupManager.CloseLastPopup();
-                PlayerInput.GainControl();
+                ClosePopupAndRestoreControl(PopupManager.InventoryPopup);
             }
         }
     }
@@ -166,8 +196,7 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                PopupManager.CloseLastPopup();
-                PlayerInput.GainControl();
+                ClosePopupAndRestoreControl(PopupManager.ShopPopup);
             }
         }
     }

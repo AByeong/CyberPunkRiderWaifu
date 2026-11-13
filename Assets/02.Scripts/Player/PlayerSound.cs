@@ -58,7 +58,8 @@ public class PlayerSound : MonoBehaviour
 
                 for (int i = 0, j = 0; i < soundComponent.clip.Length; i++)
                 {
-                    if (i == _previousSoundIndex || i >= soundComponent.clip.Length-1) continue;
+                    if (i == _previousSoundIndex) continue;
+                    if (j >= newClips.Length) break; // 이전 인덱스가 범위 밖(다른 상태의 값)이면 마지막 클립 제외
                     newClips[j] = soundComponent.clip[i];
                     newIndices[j] = i;
                     j++;
