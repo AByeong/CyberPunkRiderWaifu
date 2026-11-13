@@ -56,7 +56,7 @@ namespace KINEMATION.MagicBlend.Editor
         [InitializeOnLoadMethod]
         private static void OnLoad()
         {
-            DragAndDrop.AddDropHandler(OnInspectorDrop);
+            DragAndDrop.AddDropHandlerV2(OnInspectorDrop);
             DragAndDrop.AddDropHandler(OnHierarchyDrop);
         }
     }

@@ -31,13 +31,23 @@ namespace Borodar.RainbowFolders
 
         static RainbowFoldersGUI()
         {
+            // Unity 6.3에서 ProjectWindowAdapter가 리플렉션으로 찾는 에디터 내부 타입(TreeViewController.IntegerCache 등)이
+            // 바뀌어 초기화가 실패하면, 매 에디터 업데이트마다 예외가 쏟아지므로 경고 한 번만 남기고 플러그인을 끈다.
+            try
+            {
+                var target = typeof(RainbowFoldersGUI);
+                const string method = nameof(DrawIconInObjectList);
+                ProjectWindowAdapter.AddPostAssetIconDrawCallback(target, method);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[Rainbow Folders] 현재 Unity 버전과 호환되지 않아 비활성화합니다: {e.GetBaseException().Message}");
+                return;
+            }
+
             EditorApplication.projectWindowItemOnGUI += DrawRowShading;
             EditorApplication.projectWindowItemOnGUI += DrawEditIcon;
             EditorApplication.update += Update;
-
-            var target = typeof(RainbowFoldersGUI);
-            const string method = nameof(DrawIconInObjectList);
-            ProjectWindowAdapter.AddPostAssetIconDrawCallback(target, method);
         }
 
         //---------------------------------------------------------------------
