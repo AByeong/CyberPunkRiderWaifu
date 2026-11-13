@@ -40,6 +40,23 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             return _instance;
         }
     }
+    /// <summary>
+    /// 이미 존재하는 인스턴스만 반환하고 없으면 null (Instance와 달리 새로 만들지 않음).
+    /// "있으면 정리" 같은 존재 여부 검사에 사용한다.
+    /// </summary>
+    public static T ExistingInstance
+    {
+        get
+        {
+            if (_isQuitting) return null;
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<T>();
+            }
+            return _instance;
+        }
+    }
+
     protected virtual void Awake()
     {
         // 다른 스크립트가 Awake 전에 Instance로 이 오브젝트를 먼저 찾아둔 경우(_instance == this)는 중복이 아니다

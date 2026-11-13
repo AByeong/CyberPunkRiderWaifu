@@ -40,7 +40,10 @@ public class StageMainUI : MonoBehaviour
     private void Start()
     {
         UIManager.Instance.StageMainUI = this;
-        
+
+        // KBJ_Procedure 씬에서 EscapeButton이 인스펙터에 연결되어 있지 않아 NRE가 나던 문제 방지
+        if (EscapeButton == null) return;
+
         EscapeButton.onClick.AddListener(() => {
             UIManager.Instance.PopupManager.ShowAnswerPopup(
                 "정말로 그만두실 건가요?", "나갈래여", "여기 있을래요", () =>

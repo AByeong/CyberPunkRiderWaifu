@@ -32,7 +32,6 @@ public class NormalEnemy : Enemy
         RagdollModel.SetActive(true);
 
         Vector3 ragdollForce = (transform.position - TakedDamage.From.transform.position).normalized * TakedDamage.DamageForce * RagdollForceMultiply;
-        Debug.LogError($"{gameObject.name} :: {ragdollForce}");
         _rigidbody.AddForce(ragdollForce, ForceMode.Impulse);
     }
 

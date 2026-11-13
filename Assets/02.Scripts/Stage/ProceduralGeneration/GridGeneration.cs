@@ -150,7 +150,15 @@ public class GridGeneration : MonoBehaviour
 
         BuildMap();
 
-        _lightProbes.OnMapGenerated();
+        // 라이트 프로브는 부가 기능이므로, 컴포넌트가 없어도 이후 플레이어 배치/스폰이 막히지 않게 한다
+        if (_lightProbes != null)
+        {
+            _lightProbes.OnMapGenerated();
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name}: LightProbeAutoGenerator가 없어 라이트 프로브 생성을 건너뜁니다.");
+        }
         // DebugGrid();
     }
 

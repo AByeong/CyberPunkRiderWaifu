@@ -32,7 +32,12 @@ public class UIManager : Singleton<UIManager>
 
     private void Start()
     {
-        PlayerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
+        // GameManager.player가 이전 씬에서 파괴된 플레이어를 가리킬 수 있으므로 현재 씬에서 찾는다
+        BindReferences();
+        if (PlayerInput == null && GameManager.Instance.player != null)
+        {
+            PlayerInput = GameManager.Instance.player.GetComponent<PlayerInput>();
+        }
         GameManager.Instance.OnReturnToLobby += Initialize;
     }
     private void Update()

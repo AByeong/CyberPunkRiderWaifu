@@ -32,7 +32,10 @@ public class ConsumableItemManager : Singleton<ConsumableItemManager>
     {
         // 로비(배달 중 아님)나 일시정지 중에는 소모품을 쓰지 않는다.
         // 로비에서 DeliveryManager.Instance에 접근하면 빈 DeliveryManager가 자동 생성되어 미션이 망가진다.
-        if (!UIManager.Instance.isInDelivery || Time.timeScale == 0f) return;
+        // UIManager는 씬마다 따로 있는 매니저(_dontDestroy=false)라서, 컷신 씬처럼 UIManager가 없는 씬에서
+        // Instance로 접근하면 빈 UIManager가 자동 생성되어 다음 씬의 진짜 UIManager가 중복으로 파괴된다.
+        UIManager ui = UIManager.ExistingInstance;
+        if (ui == null || !ui.isInDelivery || Time.timeScale == 0f) return;
 
         if (Input.GetKeyDown(KeyCode.Q))
         {

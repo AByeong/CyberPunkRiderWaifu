@@ -6,19 +6,20 @@ public class Lobby : MonoBehaviour
 
     private void Start()
     {
-        if (EnemyManager.Instance != null)
+        // Instance는 없으면 새로 만들기 때문에(빈 DeliveryManager가 생성되며 에러 발생) 기존 것만 찾아서 정리한다
+        if (EnemyManager.ExistingInstance != null)
         {
-            EnemyManager.Instance.DestroyEnemyManager();
+            EnemyManager.ExistingInstance.DestroyEnemyManager();
         }
 
-        if (DeliveryManager.Instance != null)
+        if (DeliveryManager.ExistingInstance != null)
         {
-            Destroy(DeliveryManager.Instance.gameObject);
+            Destroy(DeliveryManager.ExistingInstance.gameObject);
         }
 
-        if (CinemachineManager.Instance != null)
+        if (CinemachineManager.ExistingInstance != null)
         {
-            Destroy(CinemachineManager.Instance.gameObject);
+            Destroy(CinemachineManager.ExistingInstance.gameObject);
         }
 
         UIManager.Instance.CursorLock(false);
